@@ -332,7 +332,7 @@ textarea.field{min-height:84px;resize:none;line-height:1.6}
 </style>
 </head>
 <body>
-<div id="app"></div>
+<div id="app"><div id="main"></div><div id="page" hidden></div></div>
 <nav class="tabs" id="tabs">
   <a href="#/home" data-tab="home"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 10.5 12 4l8 6.5V19a1 1 0 0 1-1 1h-4.5v-5.5h-5V20H5a1 1 0 0 1-1-1z"/></svg>我的</a>
   <a href="#/lib" data-tab="lib"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="4" width="5" height="16" rx="1.2"/><rect x="10" y="4" width="5" height="16" rx="1.2"/><path d="m17.3 5.2 3.4 14.1"/></svg>片库</a>
@@ -444,7 +444,7 @@ async function loadIndex(){
       if (!r.ok) throw new Error(r.status);
       const rows = parseIdx(await r.text());
       for (const row of rows) { S.idx.push(row); S.byId.set(row.id, row); }
-      S.idxReady = i + 1;
+      S.idxReady = i + 1; bump();
       if (i === 0) preloadCrew();
       if (route().name === "search") renderSearchResults();
       else if (i === 0 || route().name === "p") render();
@@ -482,6 +482,7 @@ async function shard(kind, key){
 async function preloadCrew(){
   const ids = active().map(([id]) => id).filter(id => !S.meta[id] || S.meta[id].light || !S.meta[id].cast);
   await Promise.all(ids.slice(0, 400).map(id => shard("p", id)));
+  if (ids.length) bump();
   if (ids.length && ["home", "lib", "stats"].includes(route().name)) render();
 }
 let namesP;
@@ -509,9 +510,11 @@ function vm(id){
     poster: m?.dpic || "", posterKey: m?.poster || "",
   };
 }
+const seenImg = new Set();   // 加载过的海报，再出现时不再淡入
+function imgOk(i){ i.classList.add("ok"); seenImg.add(i.src); }
 function posterHTML(v, w = 200, badge = ""){
   const src = v.poster || imdbImg(v.posterKey, w);
-  return `<div class="ps" data-pid="${v.id}" data-w="${w}">${src ? `<img loading="lazy" src="${esc(src)}" onload="this.classList.add('ok')" onerror="posterErr(this)">` : ""}`
+  return `<div class="ps" data-pid="${v.id}" data-w="${w}">${src ? `<img loading="lazy" src="${esc(src)}"${seenImg.has(src) ? ' class="ok"' : ""} onload="imgOk(this)" onerror="posterErr(this)">` : ""}`
     + `<div class="ph">${esc(v.name)}</div>${badge}</div>`;
 }
 function posterErr(img){
@@ -527,8 +530,10 @@ async function hydratePosters(root = document){
     shard("p", b.dataset.pid).then(p => {
       if (!p?.poster || !b.isConnected) return;
       const img = new Image(); img.loading = "lazy";
-      img.onload = () => img.classList.add("ok"); img.onerror = () => img.remove();
-      img.src = imdbImg(p.poster, +b.dataset.w || 200);
+      const src = imdbImg(p.poster, +b.dataset.w || 200);
+      if (seenImg.has(src)) img.className = "ok";
+      img.onload = () => imgOk(img); img.onerror = () => img.remove();
+      img.src = src;
       b.prepend(img);
     });
   }
@@ -573,16 +578,37 @@ window.addEventListener("hashchange", () => { closeSheet(); scrollMem[lastKey] =
 function go(h){ location.hash = h; }
 function back(){ if (depth > 0) { goingBack = true; history.back(); } else go("#/home"); }
 
+/* 底部四个页面渲染在 #main 里，详情、影人页等在 #page 里。
+   进详情时 #main 只是藏起来，返回时原样显示，不重画、滚动位置不变；数据变了（S.ver 变了）才重画。 */
+const PAGES = ["t", "p", "quick", "settings"];
+let mainKey = "", mainVer = -1;
+const bump = () => { S.ver = (S.ver || 0) + 1; };
 function render(nav){
   const r = route(), key = r.name + "/" + r.arg;
-  const pageMode = ["t", "p", "quick", "settings"].includes(r.name);
-  $("#app").className = pageMode ? "page" : "";
+  const isPage = PAGES.includes(r.name);
+  const main = $("#main"), page = $("#page");
+  $("#app").className = isPage ? "page" : "";
   $$(".tabs a").forEach(a => a.classList.toggle("on", a.dataset.tab === r.name));
-  const fn = {home: renderHome, lib: renderLib, search: renderSearch, stats: renderStats, t: renderTitle, p: renderPerson,
-    quick: renderQuick, settings: renderSettings}[r.name] || renderHome;
-  fn(r.arg);
-  hydratePosters($("#app"));
-  if (nav) requestAnimationFrame(() => scrollTo(0, key === lastKey ? scrollY : (scrollMem[key] || 0)));
+  if (isPage) {
+    main.hidden = true; page.hidden = false;
+    ({t: renderTitle, p: renderPerson, quick: renderQuick, settings: renderSettings})[r.name](r.arg);
+    hydratePosters(page);
+    if (nav) requestAnimationFrame(() => scrollTo(0, scrollMem[key] || 0));
+  } else {
+    page.hidden = true; page.innerHTML = ""; main.hidden = false;
+    let reuse = nav && mainKey === key && mainVer === (S.ver || 0);
+    if (nav && mainKey === key && !reuse && r.name === "search") {
+      // 搜索结果原样保留，只刷新每一行的标记状态（重新搜一遍会丢掉滚动位置）
+      main.querySelectorAll("#res a.lrow").forEach(a => { const id = a.getAttribute("href").split("/").pop(); a.outerHTML = listRow(id); });
+      hydratePosters(main); mainVer = S.ver || 0; reuse = true;
+    }
+    if (!reuse) {
+      ({home: renderHome, lib: renderLib, search: renderSearch, stats: renderStats}[r.name] || renderHome)(r.arg);
+      mainKey = key; mainVer = S.ver || 0;
+      hydratePosters(main);
+    }
+    if (nav) { const y = scrollMem[key] || 0; scrollTo(0, y); requestAnimationFrame(() => scrollTo(0, y)); }
+  }
   lastKey = key;
 }
 
@@ -596,7 +622,7 @@ function renderHome(){
   const head = `<div class="top"><h1>影库</h1><a class="icon-btn" href="#/search" aria-label="搜索">${IC.search}</a><a class="icon-btn" href="#/settings" aria-label="设置">${IC.gear}</a></div>`;
   const syncNote = syncBanner();
   if (!all.length) {
-    $("#app").innerHTML = head + syncNote + `<div class="welcome"><h3>建一座自己的影库</h3>
+    $("#main").innerHTML = head + syncNote + `<div class="welcome"><h3>建一座自己的影库</h3>
       <p>电影、剧集、老片、流媒体都能标记。<br>评分来自豆瓣、IMDb 和烂番茄。</p>
       <div class="btns"><a class="btn" href="#/search">${IC.search} 搜一部片子</a><a class="btn ghost" href="#/quick">${IC.bolt} 快速标记</a></div></div>`
       + popularShelf();
@@ -605,12 +631,12 @@ function renderHome(){
   const ppl = topPeople(done.concat(doing)).slice(0, 12);
   const gs = countBy(done, id => vm(id).genres).slice(0, 14);
   const tags = countBy(all.map(([id]) => id), id => S.marks[id].tags || []);
-  $("#app").innerHTML = head + syncNote + `
+  $("#main").innerHTML = head + syncNote + `
     <div class="hello"><div class="wm">影</div>
       <div class="ln">${greet()}，你已经看过</div>
       <div class="num"><div><b>${films}</b><span>部电影</span></div><div><b>${shows}</b><span>部剧集</span></div><div><b>${thisYear}</b><span>今年看过</span></div></div>
-      <div class="row2"><a href="#/lib" onclick="S.lib.s='doing'"><i style="background:var(--doing)"></i>在看 <b>${doing.length}</b></a>
-        <a href="#/lib" onclick="S.lib.s='wish'"><i style="background:var(--wish)"></i>想看 <b>${wish.length}</b></a>
+      <div class="row2"><a href="#/lib" onclick="libFilter({s:'doing'})"><i style="background:var(--doing)"></i>在看 <b>${doing.length}</b></a>
+        <a href="#/lib" onclick="libFilter({s:'wish'})"><i style="background:var(--wish)"></i>想看 <b>${wish.length}</b></a>
         <a href="#/quick">${"⚡"} 快速标记</a></div></div>
     ${doing.length ? shelfSec("在看", doing, "doing") : ""}
     ${done.length ? shelfSec("最近看过", done.slice(0, 20), "done", done.length) : ""}
@@ -635,7 +661,7 @@ function popularShelf(){
   return shelf("近期热门", fresh) + shelf("即将上映", soon)
     + `<div class="sec"><div class="sec-h"><h2>经典</h2><a href="#/quick">快速标记</a></div><div class="scroller">${S.idx.filter(x => x.cn && x.t === "m").slice(0, 18).map(x => shelfItem(x.id)).join("")}</div></div>`;
 }
-function libFilter(f){ Object.assign(S.lib, {s: "done", type: "all", genre: "", person: "", tag: "", decade: ""}, f); }
+function libFilter(f){ bump(); Object.assign(S.lib, {s: "done", type: "all", genre: "", person: "", tag: "", decade: ""}, f); }
 function countBy(ids, fn){
   const c = new Map();
   for (const id of ids) for (const k of [].concat(fn(id) || [])) if (k) c.set(k, (c.get(k) || 0) + 1);
@@ -700,7 +726,7 @@ function renderLib(){
   const ids = libItems();
   const chip = (label, val, kind) => `<button class="chip ${val ? "on" : ""}" onclick="pickFilter('${kind}')">${esc(val ? label : {genre: "类型", person: "影人", tag: "标签", decade: "年代"}[kind])} ${IC.down}</button>`;
   const personName = L.person ? (S.people[L.person]?.cn || findPersonName(L.person)) : "";
-  $("#app").innerHTML = `<div class="top"><h1>片库</h1><button class="icon-btn" onclick="toggleView()" aria-label="切换视图">${L.view === "grid" ? IC.list : IC.grid}</button></div>
+  $("#main").innerHTML = `<div class="top"><h1>片库</h1><button class="icon-btn" onclick="toggleView()" aria-label="切换视图">${L.view === "grid" ? IC.list : IC.grid}</button></div>
     <div class="seg">${["done", "doing", "wish"].map(s => `<button class="${L.s === s ? "on" : ""}" onclick="S.lib.s='${s}';render()">${STATUS[s]}<b>${cnt(s)}</b></button>`).join("")}</div>
     <div class="filters">
       ${["all", "movie", "tv"].map(t => `<button class="chip ${L.type === t ? "on" : ""}" onclick="S.lib.type='${t}';render()">${{all: "全部", movie: "电影", tv: "剧集"}[t]}</button>`).join("")}
@@ -750,7 +776,7 @@ function listRow(id, mine){
 
 /* ================================================================ 搜索 */
 function renderSearch(){
-  $("#app").innerHTML = `<div class="sbox"><div class="in">${IC.search}<input id="q" type="search" enterkeyhint="search" autocomplete="off" placeholder="片名、英文名、影人，或粘贴 IMDb / 豆瓣链接" value="${esc(S.q)}">
+  $("#main").innerHTML = `<div class="sbox"><div class="in">${IC.search}<input id="q" type="search" enterkeyhint="search" autocomplete="off" placeholder="片名、英文名、影人，或粘贴 IMDb / 豆瓣链接" value="${esc(S.q)}">
     <button class="x ${S.q ? "" : "hide"}" id="qx" aria-label="清空">✕</button></div></div><div id="res"></div>`;
   const q = $("#q");
   let t = 0;
@@ -885,7 +911,7 @@ async function renderTitle(id){
   const seasonsDb = m?.seasons_db || [];
   const nSeasons = m?.seasons || seasonsDb.length || 0;
   const doneSeasons = new Set(k?.ss || []);
-  $("#app").innerHTML = `
+  $("#page").innerHTML = `
     <div class="bar" id="bar"><button class="icon-btn" onclick="back()" aria-label="返回">${IC.back}</button><div class="tt">${esc(v.name)}</div><span style="width:36px"></span></div>
     <div class="hero">${posterHTML(v, 360)}<div class="bd">
       <h2>${esc(v.name)}</h2>
@@ -936,7 +962,7 @@ async function renderTitle(id){
     <div style="height:20px"></div>`;
   tint(v);
   const intr = $("#intro"); if (intr && intr.scrollHeight <= intr.clientHeight + 2) $("#more")?.remove();
-  hydratePosters($("#app"));
+  hydratePosters($("#page"));
 }
 function castCard(p, role){
   return `<a class="person" href="#/p/${p.id}">${avatarHTML(p, 160)}<div class="nm">${esc(pname(p))}</div>${role ? `<div class="role">${esc(role)}</div>` : ""}</a>`;
@@ -958,7 +984,7 @@ function tint(v){
 
 /* ================================================================ 标记 */
 function setMark(id, patch){
-  const now = Date.now();
+  const now = Date.now(); bump();
   if (patch === null) S.marks[id] = {del: true, t: now};
   else {
     const old = mark(id) || {at: new Date().toISOString()};
@@ -1047,7 +1073,7 @@ async function renderPerson(nm){
   const others = [...new Set([...(n?.dir || []), ...(n?.act || [])])].filter(id => !mineIds.includes(id));
   const dirSet = new Set(n?.dir || []);
   const cnt = s => mineIds.filter(id => S.marks[id].s === s).length;
-  $("#app").innerHTML = `
+  $("#page").innerHTML = `
     <div class="bar" id="bar"><button class="icon-btn" onclick="back()" aria-label="返回">${IC.back}</button><div class="tt">${esc(cn || en)}</div><span style="width:36px"></span></div>
     <div class="phero">${avatarHTML(p, 240)}<div><h2>${esc(cn || en)}</h2>${cn ? `<div class="o">${esc(en)}</div>` : ""}
       <div class="cnt"><span><b>${cnt("done")}</b>看过</span><span><b>${cnt("doing")}</b>在看</span><span><b>${cnt("wish")}</b>想看</span></div></div></div>
@@ -1057,15 +1083,15 @@ async function renderPerson(nm){
     ${!n && !mineIds.length ? `<div class="empty">离线片库里没有这位影人的作品。</div>` : ""}
     <div class="hint" style="margin-top:14px">作品来自离线片库，只算前几位主演和导演。</div>
     <div style="height:20px"></div>`;
-  hydratePosters($("#app"));
+  hydratePosters($("#page"));
 }
 
 /* ================================================================ 快速标记 */
 let quickType = "m", quickMode = "done";
 function renderQuick(){
-  if (S.idxReady < 1) { $("#app").innerHTML = `<div class="bar"><button class="icon-btn" onclick="back()">${IC.back}</button></div><div class="empty">片库加载中…</div>`; return; }
+  if (S.idxReady < 1) { $("#page").innerHTML = `<div class="bar"><button class="icon-btn" onclick="back()">${IC.back}</button></div><div class="empty">片库加载中…</div>`; return; }
   const pick = S.idx.filter(x => (quickType === "m" ? ["m"].includes(x.t) : ["s", "ms"].includes(x.t)) && x.v > 0 && (x.cn || x.v > 200000)).slice(0, 150);
-  $("#app").innerHTML = `<div class="bar solid"><button class="icon-btn" onclick="back()" aria-label="返回">${IC.back}</button><div class="tt">快速标记</div><span style="width:36px"></span></div>
+  $("#page").innerHTML = `<div class="bar solid"><button class="icon-btn" onclick="back()" aria-label="返回">${IC.back}</button><div class="tt">快速标记</div><span style="width:36px"></span></div>
     <div class="hint" style="padding-top:12px">点一下海报就标记为<b>${STATUS[quickMode]}</b>，再点一下取消。之后可以在详情页补评分和短评。</div>
     <div class="seg" style="margin-top:6px"><button class="${quickType === "m" ? "on" : ""}" onclick="quickType='m';render()">电影</button><button class="${quickType === "s" ? "on" : ""}" onclick="quickType='s';render()">剧集</button></div>
     <div class="filters"><button class="chip ${quickMode === "done" ? "on" : ""}" onclick="quickMode='done';render()">标为看过</button><button class="chip ${quickMode === "wish" ? "on" : ""}" onclick="quickMode='wish';render()">标为想看</button></div>
@@ -1080,7 +1106,7 @@ function renderQuick(){
     ps.querySelector(".badge")?.remove();
     if (k2) ps.insertAdjacentHTML("beforeend", `<span class="badge ${k2.s}">${STATUS[k2.s]}</span>`);
   });
-  hydratePosters($("#app"));
+  hydratePosters($("#page"));
 }
 
 /* ================================================================ 统计 */
@@ -1094,7 +1120,7 @@ function renderStats(){
   const rated = ids.filter(id => S.marks[id].r);
   const avg = rated.length ? rated.reduce((s, id) => s + S.marks[id].r, 0) / rated.length : 0;
   const head = `<div class="top"><h1>统计</h1></div><div class="filters" style="padding-top:2px">${["all", ...years].map(y => `<button class="chip ${Y === y ? "on" : ""}" onclick="S.statYear='${y}';render()">${y === "all" ? "全部" : y + " 年"}</button>`).join("")}</div>`;
-  if (!ids.length) { $("#app").innerHTML = head + `<div class="empty"><div class="big">还没有数据</div>标记几部看过的片子，这里就会出现你的观影统计。</div>`; return; }
+  if (!ids.length) { $("#main").innerHTML = head + `<div class="empty"><div class="big">还没有数据</div>标记几部看过的片子，这里就会出现你的观影统计。</div>`; return; }
   // 每月
   let months = "";
   if (Y !== "all") {
@@ -1115,7 +1141,7 @@ function renderStats(){
   const rs = [5, 4, 3, 2, 1].map(r => [RATE_WORD[r], ids.filter(id => S.marks[id].r === r).length]);
   const dirs = topPeople(ids, "d").slice(0, 8), acts = topPeople(ids, "c").slice(0, 12);
   const hiDb = ids.filter(id => vm(id).douban?.v && S.marks[id].r).map(id => [id, S.marks[id].r * 2 - vm(id).douban.v]).sort((a, b) => b[1] - a[1]);
-  $("#app").innerHTML = head + `
+  $("#main").innerHTML = head + `
     <div class="hero-stat"><div class="big">${ids.length}<small>部看过</small></div>
       <div class="sub"><span><b>${films.length}</b>电影</span><span><b>${shows}</b>剧集</span>${mins ? `<span><b>${Math.round(mins / 60)}</b>小时（电影）</span>` : ""}${avg ? `<span><b>${avg.toFixed(1)}</b>平均给星</span>` : ""}</div></div>
     ${months}
@@ -1264,19 +1290,25 @@ async function watchPending(){
   await new Promise(r => setTimeout(r, 25000));
   while (S.pending.size && Date.now() < end) {
     try {
-      await pullMeta();
+      const before = S.pending.size;
+      const changed = await pullMeta();
       for (const id of [...S.pending]) if (S.meta[id] && !S.meta[id].light && (S.meta[id].at?.douban || S.meta[id].missing)) S.pending.delete(id);
       setPref("pendingIds", [...S.pending]);
-      render();
+      if (changed || S.pending.size !== before) render();
     } catch {}
     if (S.pending.size) await new Promise(r => setTimeout(r, 10000));
   }
   watching = false;
 }
+let metaSig = "";
 async function pullMeta(){
   const [m, p] = await Promise.all([readJSON("meta.json"), readJSON("people.json")]);
+  const sig = (m.text || "").length + ":" + (p.text || "").length + ":" + (m.text || "").slice(-200);
+  if (sig === metaSig) return false;    // 没变就不重画
+  metaSig = sig; bump();
   if (m.data) { const light = Object.fromEntries(Object.entries(S.meta).filter(([id, x]) => x.light && !m.data[id])); S.meta = {...m.data, ...light}; kv.set("meta", m.data); }
   if (p.data) { S.people = p.data; kv.set("people", p.data); }
+  return true;
 }
 async function pullAll(){
   if (!gh.token() || IS_PREVIEW) return;
@@ -1285,9 +1317,11 @@ async function pullAll(){
     const remote = (mk.data && mk.data.items) || {};
     const merged = mergeMarks(remote, S.marks);
     const changedLocal = Object.keys(merged).some(id => merged[id] !== remote[id]);
+    const changedRemote = Object.keys(remote).some(id => S.marks[id]?.t !== remote[id]?.t);
+    if (changedRemote) bump();
     S.marks = merged; kv.set("marks", S.marks);
     S.status = st.data; setPref("status", S.status);
-    await pullMeta();
+    const metaChanged = await pullMeta();
     for (const id of [...S.pending]) if (S.meta[id] && !S.meta[id].light && S.meta[id].at?.douban) S.pending.delete(id);
     setPref("pendingIds", [...S.pending]);
     // 有些标记了但还没详情的（比如另一台手机上加的），补一下
@@ -1298,8 +1332,9 @@ async function pullAll(){
     }
     if (S.pending.size) watchPending();
     S.synced = Date.now();
-    render();
-  } catch (e) { S.syncErr = e.message; render(); }
+    if (changedRemote || metaChanged || !S.firstSync || route().name === "settings") render();
+    S.firstSync = true;
+  } catch (e) { const had = S.syncErr; S.syncErr = e.message; if (had !== e.message) { bump(); render(); } }
 }
 function syncBanner(){
   if (IS_PREVIEW) return `<div class="note" style="margin-top:4px"><div class="bd">这是预览版：数据是示例，改动只存在这台设备上。</div></div>`;
@@ -1312,7 +1347,7 @@ function syncBanner(){
 function renderSettings(){
   const st = S.status?.sources || {};
   const NAMES = {imdb: "IMDb", douban: "豆瓣", rt: "烂番茄", wikidata: "Wikidata（编号对照）", search: "在线搜索"};
-  $("#app").innerHTML = `<div class="bar solid"><button class="icon-btn" onclick="back()" aria-label="返回">${IC.back}</button><div class="tt">设置</div><span style="width:36px"></span></div>
+  $("#page").innerHTML = `<div class="bar solid"><button class="icon-btn" onclick="back()" aria-label="返回">${IC.back}</button><div class="tt">设置</div><span style="width:36px"></span></div>
     <div style="padding:0 var(--pad)">
     <div class="set-sec"><h4>GitHub 同步</h4><div class="set-card" style="padding:14px">
       ${gh.token() ? `<div style="display:flex;align-items:center;gap:8px"><span class="dot"></span><b style="flex:1;font-weight:500">已连接</b><button class="pill add" id="unlink">断开</button></div>
