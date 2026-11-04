@@ -264,6 +264,16 @@ class Sync:
         self.changed = True
         return True
 
+    def img_ok(self, url):
+        try:
+            r = self.db.s.get(url, timeout=12, stream=True,
+                              headers={"Referer": "https://github.io/", "User-Agent": self.db.s.headers["User-Agent"]})
+            ok = r.status_code == 200 and r.headers.get("content-type", "").startswith("image")
+            r.close()
+            return ok
+        except Exception:
+            return True       # 网络问题不算图坏
+
     # ------------------------------------------------------------ 影人（追的人：完整作品表、照片、简介、获奖）
     def refresh_person(self, nm):
         try:
@@ -284,6 +294,8 @@ class Sync:
         except SourceError as e:
             self.fail("douban", e)
             d = old.get("db")
+        if d and d.get("cover") and not self.img_ok(d["cover"]):
+            d["cover"] = ""          # 豆瓣有些照片不让外站用，用不了就不存，网页会用 IMDb 的
         if d:
             x["db"] = d
             rec = self.people.setdefault(nm, {})
