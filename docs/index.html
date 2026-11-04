@@ -483,6 +483,7 @@ textarea.field{min-height:84px;resize:none;line-height:1.6}
 .isub b{font-family:var(--num)}
 .inext{display:flex;align-items:center;gap:8px;margin-top:12px;padding:9px 12px;border-radius:12px;background:var(--rose-bg);color:var(--ink);font-size:13.5px;font-weight:500}
 .inext span{min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.inext small{font-family:var(--num);font-size:12px;color:var(--dim);flex:none}
 .inext em{font-style:normal;font-size:11px;color:var(--rose-ink);font-weight:600;flex:none}
 .inext b{margin-left:auto;color:var(--rose-ink);font-size:16px}
 .toast{position:fixed;left:50%;bottom:calc(var(--sb) + 86px);z-index:60;transform:translate(-50%,20px);opacity:0;pointer-events:none;
@@ -842,7 +843,7 @@ function renderHome(){
       + followSection() + popularShelf();
     return;
   }
-  const ppl = topPeople(done.concat(doing)).slice(0, 12);
+  const ppl = topPeople(done).slice(0, 12);
   const gs = countBy(done, id => vm(id).genres).slice(0, 14);
   const tags = countBy(all.map(([id]) => id), id => S.marks[id].tags || []);
   $("#main").innerHTML = head + syncNote + followSection() + `
@@ -888,11 +889,32 @@ function credits(id){   // 一部片子的导演 + 演员（详情优先，没�
   const p = S.crew.get(id);     // 还没补全的，用离线片库里的前几位主创
   return p ? {d: isSeries(vm(id).t) ? [] : p.d, c: p.c} : {d: [], c: []};
 }
+/* 一部片子里的人：片子自己的演职员表（只有前几位）+ 后台抓过完整作品表的影人（不管排第几都算） */
+let pxCache = null, pxVer = -1;
+function personIndex(){
+  if (pxCache && pxVer === Object.keys(S.persons).length) return pxCache;
+  pxCache = new Map(); pxVer = Object.keys(S.persons).length;
+  for (const [nm, P] of Object.entries(S.persons)) for (const c of P.credits || []) {
+    if (c.cats.length === 1 && c.cats[0] === "self") continue;
+    if (!pxCache.has(c.id)) pxCache.set(c.id, []);
+    pxCache.get(c.id).push({id: nm, n: P.n, img: P.img, dir: c.cats.includes("director"), act: c.cats.includes("actor")});
+  }
+  return pxCache;
+}
+function allCredits(id, top = 10){
+  const {d, c} = credits(id);
+  const dd = [...d], cc = c.slice(0, top);
+  for (const x of personIndex().get(id) || []) {
+    if (x.dir && !dd.some(p => p.id === x.id)) dd.push(x);
+    if (x.act && !cc.some(p => p.id === x.id)) cc.push(x);
+  }
+  return {d: dd, c: cc};
+}
 function topPeople(ids, role){
   const c = new Map();
   for (const id of ids) {
-    const {d, c: cast} = credits(id);
-    const list = role === "d" ? d : role === "c" ? cast.slice(0, 10) : d.concat(cast.slice(0, 10));
+    const {d, c: cast} = allCredits(id);
+    const list = role === "d" ? d : role === "c" ? cast : d.concat(cast);
     for (const p of list) {
       const e = c.get(p.id) || {id: p.id, n: p.n, img: p.img, c: 0, ids: []};
       if (!e.ids.includes(id)) { e.c++; e.ids.push(id); }
@@ -923,7 +945,7 @@ function libItems(){
   if (L.genre) ids = ids.filter(id => vm(id).genres.includes(L.genre));
   if (L.tag) ids = ids.filter(id => (S.marks[id].tags || []).includes(L.tag));
   if (L.decade) ids = ids.filter(id => Math.floor(vm(id).year / 10) * 10 === +L.decade);
-  if (L.person) ids = ids.filter(id => { const c = credits(id); return c.d.concat(c.c).some(p => p.id === L.person); });
+  if (L.person) ids = ids.filter(id => { const c = allCredits(id, 99); return c.d.concat(c.c).some(p => p.id === L.person); });
   const key = {
     t: id => -(S.marks[id].d ? Date.parse(S.marks[id].d) : 0) * 1e3 - (S.marks[id].t || 0) / 1e9,
     r: id => -(S.marks[id].r || 0) * 1e6 - (vm(id).douban?.v || 0),
@@ -1374,10 +1396,10 @@ function refreshPersonCounts(nm){
 }
 function nextHint(seen, tot){ const n = nextBadge(seen, tot); return n ? `再集 <b>${n.left}</b> 部解锁 ${n.ic}「${n.n}」` : "全部集齐，太强了 👑"; }
 /* 下一部推荐：没看过、已上映、评分高、人多 */
+/* 下一部：按上映时间从早到晚，挑最早一部还没看过的（想看的也算）；同一年里看的人多的优先 */
 function nextPick(ws){
-  const cand = ws.filter(w => !w.self && !w.upcoming && !mark(w.id));
-  const score = w => { const v = vm(w.id); const r = v.douban?.v || w.r || v.imdb?.v || 0; const n = w.v || v.imdb?.c || 0; return r * Math.log10(n + 10) + (w.guest ? -5 : 0); };
-  return cand.sort((a, b) => score(b) - score(a))[0] || null;
+  const cand = ws.filter(w => !w.self && !w.upcoming && !["done", "doing"].includes(mark(w.id)?.s) && w.y);
+  return cand.sort((a, b) => a.y - b.y || (b.v || 0) - (a.v || 0))[0] || null;
 }
 
 /* ================================================================ 追影人 */
@@ -1501,7 +1523,7 @@ async function renderPerson(nm){
   for (const w of list) { const y = w.y || "待定"; if (!byYear.length || byYear[byYear.length - 1][0] !== y) byYear.push([y, []]); byYear[byYear.length - 1][1].push(w); }
   // 常一起出现的人（在我标记过的片子里）
   const co = new Map();
-  for (const w of works) if (mark(w.id)) { const c = credits(w.id); for (const p of c.d.concat(c.c.slice(0, 10))) if (p.id !== nm) {
+  for (const w of works) if (mark(w.id)) { const c = allCredits(w.id); for (const p of c.d.concat(c.c)) if (p.id !== nm) {
     const e = co.get(p.id) || {...p, c: 0}; e.c++; co.set(p.id, e); } }
   const partners = [...co.values()].filter(e => e.c >= 2).sort((a, b) => b.c - a.c).slice(0, 10);
   const awardsWon = (D?.awards || []).filter(a => a.won), awardsNom = (D?.awards || []).filter(a => !a.won);
@@ -1523,6 +1545,7 @@ async function renderPerson(nm){
         <div class="sm">电影 ${seenOf(films)}/${films.length} · 剧集 ${seenOf(shows)}/${shows.length}${pr.doing.length ? ` · 在看 ${pr.doing.length}` : ""}${pr.wish.length ? ` · 想看 ${pr.wish.length}` : ""}</div>
         <div class="sm nextb">${nextHint(pr.seen.length, pr.main.length)}</div></div>
       ${badgeRow(pr.seen.length, pr.main.length)}
+      ${(() => { const pk = P && nextPick(works); return pk ? `<a class="inext" style="width:100%" href="#/t/${pk.id}"><em>下一部</em><span>${esc(workName(pk))}</span><small>${pk.y}</small><b>›</b></a>` : ""; })()}
     </div>
     ${!P ? `<div class="note rosey">${waiting ? `<div class="spin"></div><div class="bd">正在整理 TA 的完整作品、照片和简介，一两分钟后自动刷新。</div>`
       : `<div class="bd">${gh.token() ? "完整作品表、照片、中文简介还没整理好。" : "连接 GitHub 后，会自动整理 TA 的完整作品表、照片、中文简介和获奖记录。"}</div>${gh.token() ? `<button onclick="requestPerson('${nm}')">现在整理</button>` : ""}`}</div>` : ""}
@@ -1613,7 +1636,7 @@ function followSection(){
         <div class="ibar"><i style="width:${Math.max(frac * 100, st.seen ? 3 : 0)}%"></i></div>
         <div class="ibadges">${eb.length ? eb.map(b => `<i title="${b.n}">${b.ic}</i>`).join("") : `<span>还没有徽章</span>`}</div>
         ${got.length ? `<div class="igot">${got.map(w => `<span>${workPoster(w, 80)}</span>`).join("")}</div>` : `<div class="isub">${nextHint(st.seen, st.tot)}</div>`}
-        ${pick ? `<a class="inext" href="#/t/${pick.id}" onclick="event.stopPropagation()"><em>下一部</em><span>${esc(workName(pick))}</span><b>›</b></a>` : ""}`;
+        ${pick ? `<a class="inext" href="#/t/${pick.id}" onclick="event.stopPropagation()"><em>下一部</em><span>${esc(workName(pick))}</span><small>${pick.y}</small><b>›</b></a>` : ""}`;
     }
     cards.push(`<div class="idol" onclick="go('#/p/${nm}')"><div class="ibg" style="${photo ? `background-image:url('${esc(photo)}')` : ""}"></div>
       <div class="itop"><div class="iav" data-i="${esc(name.slice(0, 1))}">${photo ? `<img decoding="async" src="${esc(photo)}"${alt} onerror="avatarErr(this)">` : esc(name.slice(0, 1))}</div>
