@@ -6,7 +6,7 @@
 <meta name="theme-color" content="#F3F4F8">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="影库">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <link rel="preconnect" href="https://m.media-amazon.com" crossorigin>
@@ -55,7 +55,7 @@ img{display:block}
 /* ---------- 顶部 / 底栏 ---------- */
 #app{min-height:100vh;padding:calc(var(--st) + 6px) 0 calc(var(--sb) + 78px);overflow-x:clip}
 #page{position:fixed;inset:0;z-index:15;background:var(--bg);overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;overscroll-behavior:contain;
-  padding:calc(var(--st) + 6px) 0 calc(var(--sb) + 30px)}
+  padding:0 0 calc(var(--sb) + 30px)}
 #page.in{animation:pin .28s cubic-bezier(.2,.8,.2,1)}
 @keyframes pin{from{transform:translateX(36%);opacity:.4}to{transform:none;opacity:1}}
 #page.out{animation:pout .2s ease-in forwards}
@@ -194,9 +194,9 @@ img{display:block}
 @keyframes sp{to{transform:rotate(360deg)}}
 
 /* ---------- 条目页 ---------- */
-.bar{position:sticky;top:0;z-index:6;display:flex;align-items:center;gap:8px;padding:calc(var(--st) + 6px) 12px 6px;margin-top:calc(-6px - var(--st));
+.bar{position:sticky;top:0;z-index:6;display:flex;align-items:center;gap:8px;padding:calc(var(--st) + 6px) 12px 6px;margin-top:0;
   background:rgba(247,246,242,.0);transition:background .2s}
-.bar.solid{background:rgba(247,246,242,.94);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);box-shadow:0 .5px 0 var(--hair)}
+.bar.solid{background:rgba(250,248,253,.94);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);box-shadow:0 .5px 0 var(--hair)}
 .bar .tt{flex:1;font-weight:600;font-size:15px;text-align:center;opacity:0;transition:opacity .2s;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .bar.solid .tt{opacity:1}
 .hero{position:relative;padding:4px var(--pad) 0;display:flex;gap:16px}
@@ -830,18 +830,32 @@ body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;ba
 .links a{background:var(--paper);box-shadow:var(--line)}
 .cast .av{box-shadow:0 0 0 1px rgba(201,164,108,.3) inset}
 .person.fav .av{box-shadow:0 0 0 2px var(--acc),0 0 0 4px #fff}
-/* TA 在这部里 */
-.spot{display:block;margin:16px var(--pad) 0;border-radius:18px;overflow:hidden;background:var(--paper);box-shadow:var(--line),var(--shadow)}
-.spot .simg{position:relative;height:170px;background:linear-gradient(160deg,#EEE9F6,#DED6EC)}
-.spot .simg img{width:100%;height:100%;object-fit:cover}
-.spot .simg::after{content:"";position:absolute;inset:0;background:linear-gradient(rgba(40,24,64,0) 35%,rgba(40,24,64,.75))}
-.spot .sov{position:absolute;left:14px;right:14px;bottom:12px;z-index:1;color:#fff}
-.spot .sov small{display:flex;align-items:center;gap:6px;font-size:12px;opacity:.95;font-weight:600}
-.spot .sov small img{width:22px;height:22px;border-radius:50%;object-fit:cover;object-position:50% 20%;box-shadow:0 0 0 1.5px #fff}
-.spot .sov b{display:block;font-family:var(--serif);font-weight:900;font-size:22px;letter-spacing:.1em;margin-top:6px;text-shadow:0 1px 6px rgba(30,10,50,.5)}
-.spot .sov i{display:block;font-family:var(--sign);font-style:normal;font-size:24px;line-height:1.1;opacity:.95}
-.spot p{margin:0;padding:12px 14px 14px;font-size:13.5px;line-height:1.75;color:var(--ink-2)}
-.spot p.w{color:var(--dim)}
+/* 状态栏彩带（主屏幕打开时才有高度） */
+.sbar{position:fixed;left:0;right:0;top:0;height:var(--st);z-index:30;pointer-events:none;
+  background:linear-gradient(90deg,rgba(214,108,156,.9),rgba(152,122,214,.9) 55%,rgba(112,146,226,.9))}
+.sbar::after{content:"";position:absolute;left:0;right:0;top:100%;height:12px;background:linear-gradient(rgba(152,122,214,.22),rgba(152,122,214,0))}
+/* TA 在这部里：小卡 + 角色名牌 + 这部里的剧照 */
+.spot{margin:16px var(--pad) 0;padding:14px;border-radius:18px;background:var(--paper);box-shadow:var(--line),var(--shadow)}
+.spot + .spot{margin-top:10px}
+.spot .sh{display:flex;gap:14px;align-items:center}
+.spot .ic.mini{width:58px;flex:none;transform:rotate(-3deg)}
+.ic.mini{border-radius:10px;padding:3px}
+.ic.mini::before{inset:1.5px;border-radius:9px}
+.ic.mini .in{border-radius:7px}
+.ic.mini .plate,.ic.mini .rar,.ic.mini .cnt,.ic.mini .crest,.ic.mini .orn,.ic.mini .sticker,.ic.mini .bday,.ic.mini .crown,.ic.mini .ini,.ic.mini .in::after,.ic.mini .in::before{display:none}
+.spot .sb{flex:1;min-width:0}
+.spot .sb small{display:block;font-size:12px;color:var(--acc-ink);font-weight:600}
+.spot .sb b{display:block;font-family:var(--serif);font-weight:900;font-size:20px;letter-spacing:.08em;line-height:1.25;margin-top:3px;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.spot .sb b.lat{font-family:var(--latin);font-style:italic;font-weight:600;font-size:23px;letter-spacing:.01em}
+.spot .sb i{display:block;font-family:var(--latin);font-style:italic;font-size:15px;color:var(--dim);line-height:1.2}
+.spot .sb .sm{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--dim);margin-top:5px}
+.spot .sb .sm .rk{font-size:11px;padding:1px 6px 2px}
+.spot .sgo{color:var(--faint);font-size:20px;flex:none}
+.spot p{margin:12px 0 0;padding-left:10px;border-left:2px solid var(--gold-2);font-size:13.5px;line-height:1.75;color:var(--ink-2)}
+.spot .sst{display:flex;gap:6px;overflow-x:auto;margin:12px -14px 0;padding:0 14px;scrollbar-width:none}
+.spot .sst::-webkit-scrollbar{display:none}
+.spot .sst button{flex:none;height:86px;border-radius:10px;overflow:hidden;background:var(--soft)}
+.spot .sst img{height:100%;width:auto;max-width:160px;object-fit:cover;display:block}
 
 /* 片库、统计、搜索 */
 .lrow + .lrow{border-top:1px dashed rgba(201,164,108,.25)}
@@ -886,6 +900,7 @@ body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;ba
 </style>
 </head>
 <body>
+<div class="sbar" aria-hidden="true"></div>
 <div id="app"><div id="main"></div><div id="page" hidden></div></div>
 <nav class="tabs" id="tabs">
   <a href="#/home" data-tab="home"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 10.5 12 4l8 6.5V19a1 1 0 0 1-1 1h-4.5v-5.5h-5V20H5a1 1 0 0 1-1-1z"/></svg>我的</a>
@@ -2258,7 +2273,7 @@ async function renderPerson(nm){
   const intr = $("#intro"); if (intr && intr.scrollHeight <= intr.clientHeight + 2) $("#more")?.remove();
   hydratePosters($("#page"));
 }
-/* 条目页：追的人在这部里演谁 */
+/* 条目页：追的人在这部里演谁。有这部的剧照才放剧照，没有就只放名牌，不拿别的照片凑数 */
 function spotlight(id, dirs, cast){
   const out = [];
   for (const nm of followList()) {
@@ -2266,16 +2281,19 @@ function spotlight(id, dirs, cast){
     let c = (P?.credits || []).find(c => c.id === id && !(c.cats.length === 1 && c.cats[0] === "self"));
     if (!c) { const p = cast.find(p => p.id === nm), d = dirs.find(p => p.id === nm); if (!p && !d) continue; c = {role: p?.role || "", cats: d ? ["director"] : ["actor"]}; }
     const w = worksFromP({credits: [{eps: null, ty: "", ...c, id}]})[0];
-    const r = roleOf(c), st = stillsOf(nm, id)[0], face = faceOf(nm, 300);
-    const img = st ? imdbImg(st.k, 800) : face.src;
-    const what = c.cats.includes("director") && !c.cats.includes("actor") ? (vm(id).series ? "主创" : "执导") : w.guest ? `客串${c.eps ? ` ${c.eps} 集` : ""}` : c.eps && vm(id).series ? `出演 ${c.eps} 集` : "出演";
-    out.push(`<a class="spot" href="#/p/${nm}"><div class="simg">${img ? `<img decoding="async" src="${esc(img)}" style="object-position:${st ? "50% 30%" : face.pos}" onerror="this.remove()">` : ""}
-      <div class="sov"><small>${face.src ? `<img src="${esc(face.src)}" style="object-position:${face.pos}" onerror="this.remove()">` : ""}你追的 ${esc(pName(nm))} · ${what}</small>
-      ${r.any ? `<b${r.cn ? "" : ' class="lat"'}>${esc(r.cn || r.en || r.any)}</b>${r.cn && r.en ? `<i>${esc(r.en)}</i>` : ""}` : ""}</div></div>
-      ${c.rintro ? `<p>${esc(c.rintro)}</p>` : ""}</a>`);
+    const r = roleOf(c), st = stillsOf(nm, id).slice(0, 12), stat = statOf(nm), t = stat ? tierOf(stat.seen, stat.tot) : null;
+    const series = vm(id).series;
+    const what = c.cats.includes("director") && !c.cats.includes("actor") ? (series ? "主创" : "导演") : w.guest ? `客串${c.eps ? ` ${c.eps} 集` : ""}` : c.eps && series ? `出演 ${c.eps} 集` : "出演";
+    out.push(`<div class="spot"><a class="sh" href="#/p/${nm}">${idolCard(nm, {w: 200, cls: "mini", count: false})}
+      <div class="sb"><small>♥ 你追的 ${esc(pName(nm))}</small>
+        ${r.any ? `<b${r.cn ? "" : ' class="lat"'}>${esc(r.cn || r.en || r.any)}</b>${r.cn && r.en ? `<i>${esc(r.en)}</i>` : ""}` : `<b>${what}</b>`}
+        <div class="sm">${r.any ? `<span>${what}</span>` : ""}${t ? `<span class="rk" data-r="${t.r}">${t.r}</span><span>已集 ${stat.seen}/${stat.tot}</span>` : ""}</div></div><span class="sgo">›</span></a>
+      ${c.rintro ? `<p>${esc(c.rintro)}</p>` : ""}
+      ${st.length ? `<div class="sst">${st.map((s, j) => `<button onclick="spotBox('${nm}','${id}',${j})"><img loading="lazy" decoding="async" src="${esc(imdbImg(s.k, 360))}" onerror="this.parentNode.remove()"></button>`).join("")}</div>` : ""}</div>`);
   }
   return out.join("");
 }
+function spotBox(nm, id, j){ window.__album = {nm, keys: stillsOf(nm, id).slice(0, 12).map(s => s.k)}; lightbox(j); }
 function ceremonyEvolve(nm, from, to, b){
   const el = document.createElement("div"); el.className = "cere";
   el.innerHTML = `<div class="cc"><div class="evo">${idolCard(nm, {w: 500, stat: {seen: b.seen, tot: b.tot}})}</div>
