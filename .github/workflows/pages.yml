@@ -5,7 +5,7 @@ on:
     branches: [main]
     paths: ["docs/**"]
   schedule:
-    - cron: "23 19 * * 6"     # 每周日凌晨 3 点（北京时间）重建离线片库
+    - cron: "23 19 * * *"     # 每天凌晨 3 点（北京时间）重建离线片库，新片、待映片当天就能搜到
   workflow_dispatch:
     inputs:
       rebuild:

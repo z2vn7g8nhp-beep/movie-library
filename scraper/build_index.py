@@ -63,10 +63,20 @@ def has_cjk(s):
     return bool(re.search(r"[㐀-鿿]", s or ""))
 
 
-def build(src, out, min_votes, min_votes_zh, poster_cache, no_posters):
+def hotness(r):
+    """排序用：打分人数，和热度排名换算的分数，取大的。"""
+    return max(r["v"], 3_000_000 // (r["h"] + 10) if r["h"] != "" else 0)
+
+
+def build(src, out, min_votes, min_votes_zh, poster_cache, no_posters, hot_n=3000):
     t0 = time.time()
+    posters = {}
     import opencc
     t2s = opencc.OpenCC("t2s")
+
+    # 0. 近期和待映的热门片（上映前 IMDb 不让打分，按打分人数会漏掉，所以按热度另取）
+    hot = fetch_hot(hot_n) if hot_n else {}
+    log("近期热门", len(hot))
 
     # 1. 评分
     votes, rating = {}, {}
@@ -81,7 +91,7 @@ def build(src, out, min_votes, min_votes_zh, poster_cache, no_posters):
     for l in ds_lines(src, "title.akas"):
         p = l.rstrip("\n").split("\t")
         tid, title, region, lang, types = p[0], p[2], p[3], p[4], p[5]
-        if votes.get(tid, 0) < min_votes_zh:
+        if votes.get(tid, 0) < min_votes_zh and tid not in hot:
             continue
         if region not in ZH_REGIONS and lang not in ZH_LANGS:
             continue
@@ -103,7 +113,7 @@ def build(src, out, min_votes, min_votes_zh, poster_cache, no_posters):
             continue
         v = votes.get(tid, 0)
         need = min_votes * {"tvSeries": .75, "tvMiniSeries": .75, "tvSpecial": 4, "video": 1.5}.get(ttype, 1)
-        if v < need and not (tid in zh and v >= min_votes_zh):
+        if v < need and not (tid in zh and v >= min_votes_zh) and tid not in hot:
             continue
         gm = 0
         for g in genres.split(","):
@@ -117,8 +127,21 @@ def build(src, out, min_votes, min_votes_zh, poster_cache, no_posters):
             "t": TYPES[ttype], "y": sy if sy != "\\N" else "", "ey": ey if ey != "\\N" else "",
             "n": clean(primary), "o": clean(original) if original != primary else "",
             "cn": cn, "alt": "|".join(alt[:2]), "g": gm, "r": rating.get(tid, ""), "v": v,
-            "rt": rt if rt != "\\N" else "", "d": [], "c": [],
+            "rt": rt if rt != "\\N" else "", "d": [], "c": [], "h": hot[tid]["rank"] if tid in hot else "",
         }
+    # 数据集里还没有的新条目，直接用接口拿到的信息
+    for tid, h in hot.items():
+        if tid not in rows and h["type"] in TYPES:
+            gm = 0
+            for g in h["genres"]:
+                gm |= GBIT.get(g, 0)
+            d = zh.get(tid, {})
+            rows[tid] = {"t": TYPES[h["type"]], "y": str(h["year"] or ""), "ey": "", "n": clean(h["title"]),
+                         "o": clean(h["orig"]) if h["orig"] != h["title"] else "", "cn": d.get("cn", ""),
+                         "alt": "|".join(sorted(d.get("alt", ()))[:2]), "g": gm, "r": str(h["rating"] or ""),
+                         "v": h["votes"] or 0, "rt": str(h["runtime"] or ""), "d": [], "c": [], "h": h["rank"]}
+        if h.get("poster"):
+            posters.setdefault(tid, h["poster"])
     del zh
     log("收录", len(rows))
 
@@ -156,7 +179,6 @@ def build(src, out, min_votes, min_votes_zh, poster_cache, no_posters):
     log("影人", len(names))
 
     # 6. 海报（IMDb 接口批量查，只查缓存里没有的）
-    posters = {}
     if poster_cache and Path(poster_cache).exists():
         for f in Path(poster_cache).glob("*.txt"):
             for line in f.read_text(encoding="utf-8").splitlines():
@@ -171,14 +193,14 @@ def build(src, out, min_votes, min_votes_zh, poster_cache, no_posters):
     out = Path(out)
     for sub in ("p", "n"):
         (out / sub).mkdir(parents=True, exist_ok=True)
-    order = sorted(rows, key=lambda t: -rows[t]["v"])   # 热门在前，搜索同分时自然靠前
+    order = sorted(rows, key=lambda t: -hotness(rows[t]))   # 热门在前，搜索同分时自然靠前
     tier1 = {t for t in order[:TIER1]}
     with open(out / "s1.txt", "w", encoding="utf-8") as f1, open(out / "s2.txt", "w", encoding="utf-8") as f2:
         for tid in order:
             r = rows[tid]
             (f1 if tid in tier1 else f2).write("\t".join([
                 tid[2:], r["t"], r["y"], r["ey"], r["n"], r["o"], r["cn"], r["alt"],
-                format(r["g"], "x"), r["r"], str(r["v"])]) + "\n")
+                format(r["g"], "x"), r["r"], str(r["v"]), str(r["h"])]) + "\n")
 
     def ppl(ids):
         return "|".join(f"{x[2:]}:{names[x]}" for x in ids if x in names)
@@ -223,6 +245,46 @@ GQL_HEADERS = {
     "content-type": "application/json", "x-imdb-client-name": "imdb-web-next-localized",
     "x-imdb-user-language": "en-US", "x-imdb-user-country": "US",
 }
+
+
+def fetch_hot(n):
+    """IMDb 按热度排的近期 / 待映电影和剧集（前 n 部）。"""
+    from datetime import date, timedelta
+    start = (date.today() - timedelta(days=540)).isoformat()
+    end = (date.today() + timedelta(days=3 * 365)).isoformat()
+    q = """query($after:String,$start:Date,$end:Date){ advancedTitleSearch(first:250, after:$after,
+      constraints:{ titleTypeConstraint:{anyTitleTypeIds:["movie","tvSeries","tvMiniSeries"]},
+                    releaseDateConstraint:{releaseDateRange:{start:$start, end:$end}} },
+      sort:{sortBy:POPULARITY, sortOrder:ASC}){ pageInfo{hasNextPage endCursor} edges{ node{ title{
+        id titleText{text} originalTitleText{text} releaseYear{year} titleType{id} runtime{seconds}
+        genres{genres{text}} ratingsSummary{aggregateRating voteCount} primaryImage{url} } } } } }"""
+    s = requests.Session()
+    s.headers.update(GQL_HEADERS)
+    out, after = {}, None
+    while len(out) < n:
+        try:
+            r = s.post(GQL, json={"query": q, "variables": {"after": after, "start": start, "end": end}}, timeout=40)
+            a = r.json()["data"]["advancedTitleSearch"]
+        except (requests.RequestException, ValueError, KeyError, TypeError) as e:
+            log("热门片获取中断", e.__class__.__name__)
+            break
+        for e in a["edges"]:
+            t = e["node"]["title"]
+            rs = t.get("ratingsSummary") or {}
+            url = (t.get("primaryImage") or {}).get("url") or ""
+            out[t["id"]] = {
+                "rank": len(out), "type": (t.get("titleType") or {}).get("id", ""),
+                "title": (t.get("titleText") or {}).get("text", ""), "orig": (t.get("originalTitleText") or {}).get("text", ""),
+                "year": (t.get("releaseYear") or {}).get("year"), "votes": rs.get("voteCount") or 0,
+                "rating": rs.get("aggregateRating") or "", "runtime": round(t["runtime"]["seconds"] / 60) if (t.get("runtime") or {}).get("seconds") else "",
+                "genres": [g["text"] for g in ((t.get("genres") or {}).get("genres") or [])],
+                "poster": url[len(POSTER_PREFIX):-len("._V1_.jpg")] if url.startswith(POSTER_PREFIX) and url.endswith("._V1_.jpg") else "",
+            }
+        if not a["pageInfo"]["hasNextPage"]:
+            break
+        after = a["pageInfo"]["endCursor"]
+        time.sleep(0.5)
+    return out
 
 
 def fetch_posters(ids, posters, batch=200, workers=4):
@@ -276,5 +338,6 @@ if __name__ == "__main__":
     ap.add_argument("--min-votes-zh", type=int, default=40, help="有中文译名的片子门槛放宽")
     ap.add_argument("--poster-cache", default="", help="上一次的 p/ 目录，已有的海报不再查")
     ap.add_argument("--no-posters", action="store_true")
+    ap.add_argument("--hot", type=int, default=3000, help="另外收录近期 / 待映最热门的多少部")
     a = ap.parse_args()
-    build(a.src, a.out, a.min_votes, a.min_votes_zh, a.poster_cache, a.no_posters)
+    build(a.src, a.out, a.min_votes, a.min_votes_zh, a.poster_cache, a.no_posters, a.hot)

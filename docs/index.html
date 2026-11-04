@@ -427,7 +427,8 @@ function parseIdx(text){
     const x = line.split("\t");
     const alt = x[7] ? x[7].split("|") : [];
     const row = {id: "tt" + x[0], t: x[1], y: +x[2] || 0, ey: +x[3] || 0, n: x[4], o: x[5], cn: x[6], alt,
-      g: parseInt(x[8] || "0", 16), r: +x[9] || 0, v: +x[10] || 0};
+      g: parseInt(x[8] || "0", 16), r: +x[9] || 0, v: +x[10] || 0, h: x[11] === undefined || x[11] === "" ? -1 : +x[11]};
+    row.hv = Math.max(row.v, row.h >= 0 ? Math.floor(3e6 / (row.h + 10)) : 0);   // 待映片没人打分，用热度排名换算
     row.k = "\u0001" + [row.cn, ...alt, row.n, row.o].filter(Boolean).map(norm).join("\u0001") + "\u0001";
     out.push(row);
   }
@@ -624,10 +625,15 @@ function shelfSec(title, ids, s, total){
   return `<div class="sec"><div class="sec-h"><h2>${title}${total > ids.length ? `<small>${total}</small>` : ""}</h2><a href="#/lib" onclick="libFilter({s:'${s}'})">全部</a></div>
     <div class="scroller">${ids.map(id => shelfItem(id)).join("")}</div></div>`;
 }
+let hotList = null;
 function popularShelf(){
   if (S.idxReady < 1) return "";
-  const pick = S.idx.filter(x => x.cn && x.t === "m").slice(0, 18).map(x => x.id);
-  return `<div class="sec"><div class="sec-h"><h2>大家都在看</h2><a href="#/quick">快速标记</a></div><div class="scroller">${pick.map(id => shelfItem(id)).join("")}</div></div>`;
+  if (!hotList) hotList = S.idx.filter(x => x.h >= 0).sort((a, b) => a.h - b.h);
+  const now = new Date().getFullYear();
+  const shelf = (title, list) => list.length ? `<div class="sec"><div class="sec-h"><h2>${title}</h2></div><div class="scroller">${list.slice(0, 20).map(x => shelfItem(x.id)).join("")}</div></div>` : "";
+  const fresh = hotList.filter(x => x.cn && x.v > 0), soon = hotList.filter(x => x.cn && x.v === 0 && x.y >= now);
+  return shelf("近期热门", fresh) + shelf("即将上映", soon)
+    + `<div class="sec"><div class="sec-h"><h2>经典</h2><a href="#/quick">快速标记</a></div><div class="scroller">${S.idx.filter(x => x.cn && x.t === "m").slice(0, 18).map(x => shelfItem(x.id)).join("")}</div></div>`;
 }
 function libFilter(f){ Object.assign(S.lib, {s: "done", type: "all", genre: "", person: "", tag: "", decade: ""}, f); }
 function countBy(ids, fn){
@@ -738,7 +744,7 @@ function listRow(id, mine){
     : (k ? `<span class="pill ${k.s}">${STATUS[k.s]}</span>` : `<button class="pill add" onclick="event.preventDefault();event.stopPropagation();quickWish('${id}',this)">+ 想看</button>`);
   return `<a class="lrow" href="#/t/${id}">${posterHTML(v, 120)}<div class="bd"><div class="t">${esc(v.name)}</div>
     ${v.sub ? `<div class="o">${esc(v.sub)}</div>` : ""}<div class="m">${esc(metaLine)}</div>
-    <div class="rs">${scoreHTML(v) || `<span class="sc none">暂无评分</span>`}</div>
+    <div class="rs">${scoreHTML(v) || `<span class="sc none">${v.x && v.x.v === 0 && v.year >= new Date().getFullYear() ? "待上映" : "暂无评分"}</span>`}</div>
     ${mine && k?.c ? `<div class="m" style="font-family:var(--serif)">“${esc(k.c)}”</div>` : ""}</div><div class="side">${right}</div></a>`;
 }
 
@@ -769,7 +775,7 @@ function searchIdx(q){
     const i = k.indexOf(nq); if (i < 0) return;
     if (yr && Math.abs((row.y || 0) - yr) > 1) return;
     const exact = k.includes("\u0001" + nq + "\u0001"), pre = k[i - 1] === "\u0001";
-    hits.push({id: row.id, s: (exact ? 3 : pre ? 2 : 1) * 1e9 + (row.v || 0) + (mark(row.id) ? 5e8 : 0)});
+    hits.push({id: row.id, s: (exact ? 3 : pre ? 2 : 1) * 1e9 + (row.hv || row.v || 0) + (mark(row.id) ? 5e8 : 0)});
   };
   for (const row of S.idx) consider(row, row.k);
   for (const [id, m] of Object.entries(S.meta)) {   // 不在索引里的冷门片（在线搜到、手动加的）
@@ -1058,7 +1064,7 @@ async function renderPerson(nm){
 let quickType = "m", quickMode = "done";
 function renderQuick(){
   if (S.idxReady < 1) { $("#app").innerHTML = `<div class="bar"><button class="icon-btn" onclick="back()">${IC.back}</button></div><div class="empty">片库加载中…</div>`; return; }
-  const pick = S.idx.filter(x => (quickType === "m" ? ["m"].includes(x.t) : ["s", "ms"].includes(x.t)) && (x.cn || x.v > 200000)).slice(0, 150);
+  const pick = S.idx.filter(x => (quickType === "m" ? ["m"].includes(x.t) : ["s", "ms"].includes(x.t)) && x.v > 0 && (x.cn || x.v > 200000)).slice(0, 150);
   $("#app").innerHTML = `<div class="bar solid"><button class="icon-btn" onclick="back()" aria-label="返回">${IC.back}</button><div class="tt">快速标记</div><span style="width:36px"></span></div>
     <div class="hint" style="padding-top:12px">点一下海报就标记为<b>${STATUS[quickMode]}</b>，再点一下取消。之后可以在详情页补评分和短评。</div>
     <div class="seg" style="margin-top:6px"><button class="${quickType === "m" ? "on" : ""}" onclick="quickType='m';render()">电影</button><button class="${quickType === "s" ? "on" : ""}" onclick="quickType='s';render()">剧集</button></div>
@@ -1323,7 +1329,7 @@ function renderSettings(){
       ${Object.entries(st).map(([k, s]) => `<div class="opt"><span class="dot ${s.ok ? "" : "bad"}"></span><span class="k">${NAMES[k] || k}</span><b style="max-width:55%;text-align:right;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${esc(s.msg)}</b></div>`).join("")}</div></div>` : ""}
     <div class="set-sec"><h4>离线片库</h4><div class="set-card"><div class="opt"><span class="k">收录</span><b>${S.idxInfo ? `${S.idxInfo.titles.toLocaleString()} 部` : S.idxReady < 0 ? "加载失败" : "加载中"}</b></div>
       <div class="opt"><span class="k">更新于</span><b>${S.idxInfo ? esc(S.idxInfo.built.slice(0, 10)) : "—"}</b></div></div>
-      <div class="small" style="margin-top:6px">每周用 IMDb 官方数据集更新一次，收录有一定人气的电影和剧集。搜不到的冷门片可以用在线搜索。</div></div>
+      <div class="small" style="margin-top:6px">每天用 IMDb 官方数据集更新，收录有一定人气的电影和剧集，以及近期、待映的热门片。搜不到的冷门片可以用在线搜索。</div></div>
     <div class="set-sec"><h4>备份</h4><div class="set-card"><div class="opt" id="exp"><span class="k">导出全部标记（JSON）</span>›</div>
       <label class="opt"><span class="k">从备份恢复</span>›<input type="file" id="imp" accept="application/json" class="hide"></label></div></div>
     <div class="small" style="margin:20px 0 30px;text-align:center">数据来自 IMDb、豆瓣、烂番茄，仅供个人使用。</div></div>`;
