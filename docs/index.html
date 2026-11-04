@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover">
-<meta name="theme-color" content="#f7f6f2">
+<meta name="theme-color" content="#F3F4F8">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
@@ -503,6 +503,189 @@ textarea.field{min-height:84px;resize:none;line-height:1.6}
 .quick .ps.on.wish{box-shadow:0 0 0 3px var(--wish)}
 .pop{animation:pop .35s cubic-bezier(.3,1.6,.5,1)}
 @keyframes pop{0%{transform:scale(.92)}100%{transform:none}}
+/* ================================================================
+   视觉 v2：小卡 / 卡册
+   底色冷珍珠白，墨色字，樱桃粉一个主色；数字用圆体；
+   唯一的"重点"是偶像小卡和集到的卡的镭射光，其余都收着。
+   ================================================================ */
+:root{
+  --bg:#F3F4F8; --card:#FFFFFF; --soft:#E9EBF2; --hair:rgba(31,26,46,.08);
+  --ink:#1F1A2E; --ink-2:#4A4659; --dim:#86839A; --faint:#B9B7C6;
+  --acc:#F0447F; --acc-ink:#C9245E; --acc-bg:#FFE9F1; --acc-line:#FFC9DC;
+  --rose:#F0447F; --rose-ink:#C9245E; --rose-bg:#FFE9F1; --rose-line:#FFD0E1;
+  --wish:#7A86F0; --wish-bg:#ECEEFF; --doing:#5B6BE8; --doing-bg:#E7EAFF;
+  --gold:#FFB21E;
+  --serif:-apple-system,BlinkMacSystemFont,"PingFang SC","Hiragino Sans GB",sans-serif;
+  --latin:-apple-system,BlinkMacSystemFont,"SF Pro Text","Helvetica Neue",sans-serif;
+  --num:ui-rounded,"SF Pro Rounded",-apple-system,BlinkMacSystemFont,"PingFang SC",sans-serif;
+  --shadow:0 1px 1px rgba(31,26,46,.03),0 10px 30px -12px rgba(31,26,46,.18);
+  --holo:linear-gradient(115deg,#ffd1e6 0%,#d4e2ff 22%,#e9d8ff 40%,#cff7ee 58%,#fff1c9 76%,#ffd1e6 100%);
+  --pad:20px;
+}
+html,body{background:var(--bg)}
+body{letter-spacing:.005em}
+/* 字：标题加粗苹方，英文不再用斜体衬线 */
+.top h1{font-family:var(--num);font-weight:800;font-size:28px;letter-spacing:-.01em}
+.sec-h h2{font-size:18px;font-weight:700;letter-spacing:-.005em}
+.sec-h h2 small{font-family:var(--num)}
+.lrow .o,.hero .o,.wrow .o,.phero2 .en,.iname small{font-family:var(--latin);font-style:normal;letter-spacing:0}
+.hero h2,.phero h2,.phero2 h2{font-family:var(--serif);font-weight:800;letter-spacing:-.01em}
+.chip{background:var(--card);border:0;box-shadow:0 0 0 .5px var(--hair) inset;font-weight:500}
+.chip.on{background:var(--ink);box-shadow:none}
+.btn{font-weight:600}
+.btn.acc{background:var(--acc)}
+.icon-btn{box-shadow:0 0 0 .5px var(--hair),0 4px 12px -6px rgba(31,26,46,.25)}
+
+/* 底部导航：悬浮磨砂胶囊 */
+.tabs{left:50%;right:auto;bottom:calc(var(--sb) + 10px);transform:translateX(-50%);width:min(330px,calc(100% - 40px));border:0;border-radius:28px;padding:7px 10px;
+  background:rgba(255,255,255,.78);-webkit-backdrop-filter:blur(20px) saturate(1.6);backdrop-filter:blur(20px) saturate(1.6);
+  box-shadow:0 0 0 .5px rgba(31,26,46,.08),0 12px 30px -10px rgba(31,26,46,.3)}
+.tabs a{font-family:var(--num);font-weight:600;font-size:10.5px;color:var(--faint);border-radius:20px;padding:4px 0}
+.tabs a.on{color:var(--acc-ink);background:var(--acc-bg)}
+.tabs a svg{width:22px;height:22px}
+#app{padding-bottom:calc(var(--sb) + 96px)}
+
+/* 海报：小卡比例，集到的有一圈镭射边 */
+.ps{border-radius:10px;background:linear-gradient(160deg,#eceef5,#e2e4ee)}
+.ps .ph{font-family:var(--serif);font-weight:600;color:#9a98ab}
+.ps.got::after{content:"";position:absolute;inset:0;border-radius:inherit;padding:2px;background:var(--holo);pointer-events:none;
+  -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude}
+.shelf-item .nm{font-weight:600}
+.shelf-item .mt,.lrow .m,.wi .mt{font-family:var(--num)}
+.scroller{gap:14px}
+
+/* 首页开头：不再用大白卡，数字直接放在底色上 */
+.hello{background:none;box-shadow:none;padding:2px var(--pad) 0;margin:4px 0 0;border-radius:0}
+.hello .wm{display:none}
+.hello .ln{font-size:13px;color:var(--dim)}
+.hello .num{gap:26px;margin-top:4px}
+.hello .num b{font-family:var(--num);font-weight:700;font-size:34px;letter-spacing:-.02em}
+.hello .num span{font-size:12px}
+.hello .row2 a{background:var(--card);box-shadow:0 0 0 .5px var(--hair) inset;font-weight:500}
+.hello .row2 a b{font-family:var(--num);font-weight:700}
+
+/* ---------------- 偶像小卡 ---------------- */
+.idols{gap:16px;padding:6px var(--pad) 14px;align-items:flex-start}
+.pcw{flex:none;width:214px;scroll-snap-align:start}
+.idols .pcw:only-child{width:240px}
+.pc{position:relative;aspect-ratio:5/7;border-radius:18px;overflow:hidden;background:#dfe1ea;cursor:pointer;
+  box-shadow:0 0 0 4px #fff,0 0 0 4.5px rgba(31,26,46,.06),0 18px 34px -14px rgba(60,30,80,.45);transform:rotate(-1.2deg)}
+.pcw:nth-child(2n) .pc{transform:rotate(1deg)}
+.pc img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 20%}
+.pc .ini{position:absolute;inset:0;display:grid;place-items:center;font-family:var(--num);font-weight:800;font-size:64px;color:#c3c5d3}
+.pc .foil{position:absolute;inset:0;background:var(--holo);background-size:300% 300%;mix-blend-mode:soft-light;opacity:.85;animation:foil 7s ease-in-out infinite alternate;pointer-events:none}
+.pc .shine{position:absolute;inset:-40%;background:linear-gradient(105deg,transparent 42%,rgba(255,255,255,.55) 50%,transparent 58%);animation:shine 5.5s ease-in-out infinite;pointer-events:none}
+@keyframes foil{from{background-position:0% 30%}to{background-position:100% 70%}}
+@keyframes shine{0%,55%{transform:translateX(-60%)}100%{transform:translateX(60%)}}
+@media (prefers-reduced-motion:reduce){.pc .foil,.pc .shine{animation:none}}
+.pc .pcn{position:absolute;left:0;right:0;bottom:0;padding:40px 14px 12px;background:linear-gradient(transparent,rgba(20,14,30,.72));color:#fff}
+.pc .pcn b{display:block;font-size:19px;font-weight:800;letter-spacing:-.01em;line-height:1.2}
+.pc .pcn small{display:block;font-size:11.5px;opacity:.8;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pc .pcc{position:absolute;right:10px;top:10px;font-family:var(--num);font-weight:800;font-size:13px;color:var(--ink);background:rgba(255,255,255,.88);
+  border-radius:12px;padding:3px 9px;-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)}
+.pc .pcc i{font-style:normal;color:var(--dim);font-weight:600}
+.sticker{position:absolute;left:10px;top:10px;font-family:var(--num);font-weight:800;font-size:11.5px;color:#fff;background:var(--acc);padding:4px 9px 4px 8px;border-radius:12px;
+  transform:rotate(-6deg);box-shadow:0 0 0 2px #fff,0 4px 10px -2px rgba(240,68,127,.5)}
+.pcm{padding:14px 4px 0}
+.pcbar{height:5px;border-radius:3px;background:#e3e5ee;overflow:hidden}
+.pcbar i{display:block;height:100%;border-radius:3px;background:var(--acc)}
+.pcst{display:flex;align-items:center;gap:4px;margin-top:9px;min-height:22px;font-size:16px}
+.pcst i{font-style:normal}
+.pcst span{font-family:var(--num);font-size:12px;color:var(--dim);font-weight:600}
+.pcst .lock{filter:grayscale(1);opacity:.25}
+.pcnext{display:flex;align-items:center;gap:6px;margin-top:10px;padding:9px 11px;border-radius:12px;background:var(--card);box-shadow:0 0 0 .5px var(--hair) inset;font-size:13px;font-weight:600;color:var(--ink)}
+.pcnext em{font-style:normal;font-size:11px;font-weight:700;color:var(--acc-ink);flex:none}
+.pcnext span{min-width:0;flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pcnext small{font-family:var(--num);font-size:11.5px;color:var(--dim);flex:none}
+.pcadd{flex:none;width:120px;aspect-ratio:5/7;border-radius:18px;border:2px dashed #cfd1dc;display:grid;place-items:center;text-align:center;color:var(--dim);font-size:12.5px;font-weight:600;margin-top:2px}
+.pcadd b{display:block;font-family:var(--num);font-size:28px;color:var(--faint);font-weight:500}
+
+/* ---------------- 影人页：TA 的小卡 + 卡册 ---------------- */
+.phero2{padding-bottom:10px}
+.phero2 .pbg{opacity:.35;filter:blur(40px) saturate(1.4)}
+.phero2::after{background:linear-gradient(rgba(243,244,248,.2),rgba(243,244,248,.6) 55%,var(--bg) 96%)}
+.pimg{width:176px;height:246px;border-radius:20px;box-shadow:0 0 0 5px #fff,0 0 0 5.5px rgba(31,26,46,.06),0 22px 40px -16px rgba(60,30,80,.5);transform:rotate(-2deg);position:relative}
+.pimg::after{content:"";position:absolute;inset:0;background:var(--holo);background-size:300% 300%;mix-blend-mode:soft-light;opacity:.8;animation:foil 7s ease-in-out infinite alternate;pointer-events:none}
+.phero2 h2{font-size:28px;margin-top:22px}
+.phero2 .pmeta{font-family:var(--num);font-weight:500}
+.pfollow{background:var(--acc);box-shadow:0 8px 18px -6px rgba(240,68,127,.55);font-weight:700}
+.pfollow.on{background:#fff;color:var(--acc-ink);box-shadow:0 0 0 1.5px var(--acc-line) inset}
+.pstat{background:none;box-shadow:none;padding:6px var(--pad) 0;margin:0}
+.pring b{font-family:var(--num);font-weight:800}
+.pstat .big{font-weight:700}
+.pstat .big b{font-family:var(--num);font-weight:800;font-size:26px}
+.bd2{background:var(--card);box-shadow:0 0 0 .5px var(--hair) inset;font-family:var(--num);font-weight:700}
+.bd2.on{background:var(--acc-bg);box-shadow:none}
+.inext{background:var(--card);box-shadow:0 0 0 .5px var(--hair) inset}
+
+/* 卡位：没集到是空卡套，集到是插进去的卡 */
+.wall{gap:16px 12px}
+.wi .ps{border-radius:10px;overflow:visible}
+.wi .ps img{border-radius:10px}
+.wi.not .ps{outline:0;background:linear-gradient(180deg,rgba(255,255,255,.95),rgba(246,247,251,.9));
+  box-shadow:0 0 0 1px rgba(31,26,46,.09) inset,0 1px 0 rgba(255,255,255,.9) inset}
+.wi.not .ps::before{content:"";position:absolute;left:0;right:0;top:0;height:22%;border-radius:10px 10px 0 0;background:linear-gradient(180deg,rgba(31,26,46,.04),transparent);border-bottom:1px solid rgba(31,26,46,.06)}
+.wi.not .ps img{opacity:.16!important;filter:grayscale(1) blur(.5px);mix-blend-mode:multiply}
+.wi.not .ps::after{content:"";position:absolute;inset:0;border-radius:10px;pointer-events:none;
+  background:linear-gradient(125deg,rgba(255,255,255,.75) 0%,rgba(255,255,255,0) 35%,rgba(255,255,255,0) 60%,rgba(255,255,255,.45) 72%,rgba(255,255,255,0) 85%)}
+.wi.not .ps .ph{align-items:center;justify-content:center;text-align:center;padding:14px 10px 34px;font-size:11.5px;line-height:1.35;color:#b3b1c2;font-weight:600}
+.wi.not .nm{color:var(--dim)}
+.wi.got .ps{box-shadow:0 10px 20px -10px rgba(31,26,46,.45)}
+.wi.got .ps::after{content:"";position:absolute;inset:0;border-radius:10px;padding:2px;background:var(--holo);pointer-events:none;
+  -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude}
+.chk{right:50%;bottom:10px;transform:translateX(50%);width:auto;height:26px;padding:0 11px;border-radius:13px;background:var(--acc);color:#fff;box-shadow:0 6px 14px -6px rgba(240,68,127,.7);
+  font-family:var(--num);font-weight:800;font-size:12px}
+.chk::after{content:"插卡";position:static;border:0;width:auto;height:auto;transform:none}
+.chk:active{transform:translateX(50%) scale(.9)}
+.seal{width:30px;height:30px;right:-6px;bottom:auto;top:-8px;border:0;background:var(--acc);color:#fff;font-size:0;transform:rotate(12deg);
+  box-shadow:0 0 0 2.5px #fff,0 4px 10px -3px rgba(240,68,127,.6)}
+.seal::before{content:"♥";font-size:14px;line-height:1}
+.wi.just .ps{animation:insert .55s cubic-bezier(.2,1.3,.4,1)}
+@keyframes insert{0%{transform:translateY(-26px) scale(1.06) rotate(-3deg);opacity:.3}100%{transform:none;opacity:1}}
+.wi.just .seal{animation:seal2 .5s .35s cubic-bezier(.3,1.8,.5,1) both}
+@keyframes seal2{0%{transform:rotate(-30deg) scale(0)}100%{transform:rotate(12deg) scale(1)}}
+.stamped-h .seal{width:56px;height:56px;position:static;display:inline-grid;transform:rotate(-8deg);font-size:0}
+.stamped-h .seal::before{font-size:26px}
+
+/* 条目页 */
+.hero .ps{border-radius:12px;box-shadow:0 0 0 3px #fff,0 16px 30px -14px rgba(31,26,46,.5)}
+.ratings{background:none;box-shadow:none;margin-top:20px;gap:10px}
+.ratings > div{background:var(--card);border-radius:14px;box-shadow:0 0 0 .5px var(--hair) inset}
+.ratings > div + div{border-left:0}
+.ratings .v{font-family:var(--num);font-weight:700}
+.mine{background:none;box-shadow:none;padding:0}
+.mine .acts button{background:var(--card);box-shadow:0 0 0 .5px var(--hair) inset;border-radius:14px;height:46px}
+.mine .acts button.on.done{background:var(--acc)}
+.mine .acts button.on.doing{background:var(--doing)}
+.mine .acts button.on.wish{background:var(--wish)}
+.mine .rec{padding:0 2px}
+.mine .rec .q{font-family:var(--serif);font-weight:500;border-left-color:var(--acc-line)}
+.mine .mtags span{background:var(--acc-bg);color:var(--acc-ink)}
+.seasons{background:var(--card);box-shadow:0 0 0 .5px var(--hair) inset}
+.seasons .r .ck.on{background:var(--acc);border-color:var(--acc)}
+.note{background:var(--card);color:var(--ink-2);box-shadow:0 0 0 .5px var(--hair) inset}
+.note button{color:var(--acc-ink)}
+.favline{background:var(--acc-bg)}
+.person.fav .av{box-shadow:0 0 0 2.5px var(--acc),0 0 0 4.5px #fff}
+
+/* 片库、列表、统计 */
+.seg{background:#e6e8ef}
+.seg button b{font-family:var(--num);font-weight:700}
+.lrow + .lrow{border-top-color:rgba(31,26,46,.06)}
+.lrow .t small{font-family:var(--num)}
+.pill{font-family:var(--num);font-weight:700}
+.pill.done{background:var(--acc-bg);color:var(--acc-ink)}
+.hero-stat,.panel{box-shadow:0 0 0 .5px var(--hair) inset}
+.hero-stat .big{font-family:var(--num);font-weight:700}
+.months .m i,.hbar .tr i{background:var(--acc);opacity:.85}
+.welcome{background:var(--card);box-shadow:0 0 0 .5px var(--hair) inset}
+.welcome h3{font-family:var(--serif);font-weight:800}
+.badge.done{background:var(--acc)}
+.sheet{background:#F7F8FB}
+.toast{background:rgba(31,26,46,.92);border-radius:16px}
+.toast button{color:#ffb3cd}
+.cere .cc{background:#fff}
+.ct{font-family:var(--serif);font-weight:900}
 </style>
 </head>
 <body>
@@ -692,7 +875,7 @@ const dbSmall = (u, w) => u && w <= 240 ? u.replace("/m_ratio_poster/", "/s_rati
 let eagerImgs = false;   // 横排、首屏的图立刻加载；长列表才等滚到附近再加载
 function posterHTML(v, w = 200, badge = ""){
   const src = dbSmall(v.poster, w) || imdbImg(v.posterKey, w);
-  return `<div class="ps" data-pid="${v.id}" data-w="${w}">${src ? `<img ${eagerImgs ? "" : 'loading="lazy" '}decoding="async" src="${esc(src)}"${seenImg.has(src) ? ' class="ok"' : ""} onload="imgOk(this)" onerror="posterErr(this)">` : ""}`
+  return `<div class="ps${mark(v.id)?.s === "done" ? " got" : ""}" data-pid="${v.id}" data-w="${w}">${src ? `<img ${eagerImgs ? "" : 'loading="lazy" '}decoding="async" src="${esc(src)}"${seenImg.has(src) ? ' class="ok"' : ""} onload="imgOk(this)" onerror="posterErr(this)">` : ""}`
     + `<div class="ph">${esc(v.name)}</div>${badge}</div>`;
 }
 function dropImg(u){ try { caches.open("yingku-img-v1").then(c => c.delete(u)); } catch {} }   // 坏图别留在缓存里
@@ -1486,7 +1669,7 @@ let pTab = "all", pUnseen = false, pView = getPref("pview", "wall");
 function wallItem(w, nm){
   const k = mark(w.id), got = k?.s === "done";
   const badge = !got && k ? `<span class="badge ${k.s}">${STATUS[k.s]}</span>` : "";
-  return `<a class="wi ${got ? "got" : "not"}" href="#/t/${w.id}">${workPoster(w, 220).replace("</div>", (got ? `<span class="seal">已集</span>` : `<button class="chk" onclick="stampWork(event,'${w.id}','${nm}')" aria-label="集到这一张"></button>`) + badge + "</div>")}
+  return `<a class="wi ${got ? "got" : "not"}" href="#/t/${w.id}">${workPoster(w, 220).replace(/<\/div>$/, () => (got ? `<span class="seal">已集</span>` : `<button class="chk" onclick="stampWork(event,'${w.id}','${nm}')" aria-label="集到这一张"></button>`) + badge + "</div>")}
     <div class="nm">${esc(workName(w))}</div><div class="mt">${w.y || ""}${w.series ? " · 剧" : ""}${w.guest ? " · 客串" : ""}</div></a>`;
 }
 async function renderPerson(nm){
@@ -1638,13 +1821,24 @@ function followSection(){
         ${got.length ? `<div class="igot">${got.map(w => `<span>${workPoster(w, 80)}</span>`).join("")}</div>` : `<div class="isub">${nextHint(st.seen, st.tot)}</div>`}
         ${pick ? `<a class="inext" href="#/t/${pick.id}" onclick="event.stopPropagation()"><em>下一部</em><span>${esc(workName(pick))}</span><small>${pick.y}</small><b>›</b></a>` : ""}`;
     }
-    cards.push(`<div class="idol" onclick="go('#/p/${nm}')"><div class="ibg" style="${photo ? `background-image:url('${esc(photo)}')` : ""}"></div>
-      <div class="itop"><div class="iav" data-i="${esc(name.slice(0, 1))}">${photo ? `<img decoding="async" src="${esc(photo)}"${alt} onerror="avatarErr(this)">` : esc(name.slice(0, 1))}</div>
-      <div class="iname"><b>${esc(name)}</b>${hasNew ? `<span class="newb2">有新作</span>` : ""}<small>${esc(P?.n && P.n !== name ? P.n : "")}</small></div></div>${body}</div>`);
+    const stHTML = st ? (() => {
+      const frac = st.tot ? st.seen / st.tot : 0, eb = earned(st.seen, st.tot), pick = nextPick(st.ws);
+      return `<div class="pcbar"><i style="width:${Math.max(frac * 100, st.seen ? 3 : 0)}%"></i></div>
+        <div class="pcst">${eb.map(b => `<i title="${b.n}">${b.ic}</i>`).join("")}<span>${(() => { const n = nextBadge(st.seen, st.tot); return n ? `${eb.length ? "　" : ""}再集 ${n.left} 部得 ${n.ic}` : "全部集齐 👑"; })()}</span></div>
+        ${pick ? `<a class="pcnext" href="#/t/${pick.id}"><em>下一部</em><span>${esc(workName(pick))}</span><small>${pick.y}</small></a>` : `<div class="pcst"><span>${nextHint(st.seen, st.tot)}</span></div>`}`;
+    })() : `<div class="pcst"><span>正在整理 TA 的作品…</span></div>`;
+    cards.push(`<div class="pcw"><div class="pc" onclick="go('#/p/${nm}')">
+      <div class="ini">${esc(name.slice(0, 1))}</div>${photo ? `<img decoding="async" src="${esc(photo)}"${alt} onerror="if(this.dataset.alt){this.src=this.dataset.alt;delete this.dataset.alt}else this.remove()">` : ""}
+      <div class="foil"></div><div class="shine"></div>
+      ${hasNew ? `<span class="sticker">有新作</span>` : ""}
+      ${st ? `<span class="pcc">${st.seen}<i>/${st.tot}</i></span>` : ""}
+      <div class="pcn"><b>${esc(name)}</b>${P?.n && P.n !== name ? `<small>${esc(P.n)}</small>` : ""}</div></div>
+      <div class="pcm">${stHTML}</div></div>`);
+
   }
   const seenIds = new Set(); const uniq = news.filter(w => !seenIds.has(w.id) && seenIds.add(w.id)).sort((a, b) => (a.y || 9999) - (b.y || 9999));
-  return `<div class="sec fsec"><div class="sec-h"><h2>我追的人</h2><span class="muted" style="font-size:12px">左右滑</span></div>
-    <div class="idols">${eager(() => cards.join(""))}</div>
+  return `<div class="sec fsec" style="margin-top:8px"><div class="sec-h"><h2>我的小卡</h2><span class="muted" style="font-size:12px">${list.length} 位</span></div>
+    <div class="idols">${eager(() => cards.join(""))}<a class="pcadd" href="#/search"><div><b>+</b>再追一个</div></a></div>
     ${uniq.length ? `<div class="sec-h" style="margin-top:16px"><h2 style="font-size:15px">TA 们的新作</h2></div><div class="scroller">${eager(() => uniq.slice(0, 16).map(w =>
       `<a class="shelf-item" href="#/t/${w.id}">${workPoster(w, 220)}<div class="nm">${esc(workName(w))}</div><div class="mt rosey-t">♥ ${esc(w.who)}</div></a>`).join(""))}</div>` : ""}</div>`;
 }
