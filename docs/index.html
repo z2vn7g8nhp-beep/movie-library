@@ -9,6 +9,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="影库">
 <meta name="referrer" content="strict-origin-when-cross-origin">
+<link rel="preconnect" href="https://m.media-amazon.com" crossorigin>
 <link rel="manifest" href="manifest.json">
 <link rel="apple-touch-icon" href="icon-180.png">
 <link rel="icon" href="icon-192.png">
@@ -607,16 +608,21 @@ function vm(id){
 }
 const seenImg = new Set();   // 加载过的海报，再出现时不再淡入
 function imgOk(i){ i.classList.add("ok"); seenImg.add(i.src); }
+const dbSmall = (u, w) => u && w <= 240 ? u.replace("/m_ratio_poster/", "/s_ratio_poster/").replace("/l_ratio_poster/", "/s_ratio_poster/") : u;
+let eagerImgs = false;   // 横排、首屏的图立刻加载；长列表才等滚到附近再加载
 function posterHTML(v, w = 200, badge = ""){
-  const src = v.poster || imdbImg(v.posterKey, w);
-  return `<div class="ps" data-pid="${v.id}" data-w="${w}">${src ? `<img loading="lazy" src="${esc(src)}"${seenImg.has(src) ? ' class="ok"' : ""} onload="imgOk(this)" onerror="posterErr(this)">` : ""}`
+  const src = dbSmall(v.poster, w) || imdbImg(v.posterKey, w);
+  return `<div class="ps" data-pid="${v.id}" data-w="${w}">${src ? `<img ${eagerImgs ? "" : 'loading="lazy" '}decoding="async" src="${esc(src)}"${seenImg.has(src) ? ' class="ok"' : ""} onload="imgOk(this)" onerror="posterErr(this)">` : ""}`
     + `<div class="ph">${esc(v.name)}</div>${badge}</div>`;
 }
+function dropImg(u){ try { caches.open("yingku-img-v1").then(c => c.delete(u)); } catch {} }   // 坏图别留在缓存里
 function posterErr(img){
+  dropImg(img.src);
   const box = img.closest(".ps"), v = vm(box.dataset.pid);
   const alt = imdbImg(v.posterKey, +box.dataset.w || 200);
   if (!img.dataset.src0) img.dataset.src0 = img.getAttribute("src");
-  if (alt && img.src !== alt && !img.dataset.tried) { img.dataset.tried = 1; img.src = alt; } else img.remove();
+  if (alt && img.src !== alt && !img.dataset.tried) { img.dataset.tried = 1; img.src = alt; }
+  else { const parent = box.parentElement; img.remove(); if (!box.dataset.h) hydratePosters(parent); }   // 再从离线片库里找海报
 }
 /* 没有海报的格子，按需从分片里补 */
 async function hydratePosters(root = document){
@@ -625,7 +631,9 @@ async function hydratePosters(root = document){
     b.dataset.h = 1;
     shard("p", b.dataset.pid).then(p => {
       if (!p?.poster || !b.isConnected) return;
-      const img = new Image(); img.loading = "lazy";
+      const img = new Image();
+      if (!b.closest(".scroller,.hero,.pstat") ) img.loading = "lazy";
+      img.decoding = "async";
       const src = imdbImg(p.poster, +b.dataset.w || 200);
       if (seenImg.has(src)) img.className = "ok";
       img.onload = () => imgOk(img); img.onerror = () => img.remove();
@@ -774,16 +782,17 @@ function renderHome(){
     <div style="height:10px"></div>`;
 }
 function greet(){ const h = new Date().getHours(); return h < 5 ? "夜深了" : h < 11 ? "早上好" : h < 14 ? "中午好" : h < 18 ? "下午好" : "晚上好"; }
+function eager(fn){ eagerImgs = true; try { return fn(); } finally { eagerImgs = false; } }
 function shelfSec(title, ids, s, total){
-  return `<div class="sec"><div class="sec-h"><h2>${title}${total > ids.length ? `<small>${total}</small>` : ""}</h2><a href="#/lib" onclick="libFilter({s:'${s}'})">全部</a></div>
-    <div class="scroller">${ids.map(id => shelfItem(id)).join("")}</div></div>`;
+  return eager(() => `<div class="sec"><div class="sec-h"><h2>${title}${total > ids.length ? `<small>${total}</small>` : ""}</h2><a href="#/lib" onclick="libFilter({s:'${s}'})">全部</a></div>
+    <div class="scroller">${ids.map(id => shelfItem(id)).join("")}</div></div>`);
 }
 let hotList = null;
 function popularShelf(){
   if (S.idxReady < 1) return "";
   if (!hotList) hotList = S.idx.filter(x => x.h >= 0).sort((a, b) => a.h - b.h);
   const now = new Date().getFullYear();
-  const shelf = (title, list) => list.length ? `<div class="sec"><div class="sec-h"><h2>${title}</h2></div><div class="scroller">${list.slice(0, 20).map(x => shelfItem(x.id)).join("")}</div></div>` : "";
+  const shelf = (title, list) => list.length ? `<div class="sec"><div class="sec-h"><h2>${title}</h2></div><div class="scroller">${eager(() => list.slice(0, 20).map(x => shelfItem(x.id)).join(""))}</div></div>` : "";
   const fresh = hotList.filter(x => x.cn && x.v > 0), soon = hotList.filter(x => x.cn && x.v === 0 && x.y >= now);
   return shelf("近期热门", fresh) + shelf("即将上映", soon)
     + `<div class="sec"><div class="sec-h"><h2>经典</h2><a href="#/quick">快速标记</a></div><div class="scroller">${S.idx.filter(x => x.cn && x.t === "m").slice(0, 18).map(x => shelfItem(x.id)).join("")}</div></div>`;
@@ -818,9 +827,10 @@ function avatarHTML(p, w = 140){
   const d = S.people[p.id]?.dimg, im = imdbImg(p.img, w), src = d || im;
   const nm = pname(p);
   const alt = d && im ? ` data-alt="${esc(im)}"` : "";
-  return `<div class="av" data-i="${esc(nm.slice(0, 1))}">${src ? `<img loading="lazy" src="${esc(src)}"${alt} onerror="avatarErr(this)">` : esc(nm.slice(0, 1))}</div>`;
+  return `<div class="av" data-i="${esc(nm.slice(0, 1))}">${src ? `<img decoding="async" src="${esc(src)}"${alt} onerror="avatarErr(this)">` : esc(nm.slice(0, 1))}</div>`;
 }
 function avatarErr(img){
+  dropImg(img.src);
   if (img.dataset.alt) { img.src = img.dataset.alt; delete img.dataset.alt; return; }
   const box = img.parentNode; img.remove(); box.textContent = box.dataset.i;
 }
@@ -1040,7 +1050,7 @@ async function renderTitle(id){
   const doneSeasons = new Set(k?.ss || []);
   $("#page").innerHTML = `
     <div class="bar" id="bar"><button class="icon-btn" onclick="back()" aria-label="返回">${IC.back}</button><div class="tt">${esc(v.name)}</div><span style="width:36px"></span></div>
-    <div class="hero">${posterHTML(v, 360)}<div class="bd">
+    <div class="hero">${eager(() => posterHTML(v, 360))}<div class="bd">
       <h2>${esc(v.name)}</h2>
       ${v.sub || years ? `<div class="o">${esc(v.sub)}${years ? ` <span>(${years})</span>` : ""}</div>` : ""}
       <div class="info">${infoBits.join("<br>")}</div>
@@ -1284,7 +1294,8 @@ async function renderPerson(nm){
   if (!en || en === nm) { const n = await shard("n", nm); en = n?.n || en; }
   const cn = S.people[nm]?.cn || D?.cn || "";
   const name = cn || en;
-  const photo = D?.cover && !/default|celebrity-default/.test(D.cover) ? D.cover : imdbImg(img, 600);
+  const imPhoto = imdbImg(img, 600);
+  const photo = D?.cover && !/default|celebrity-default/.test(D.cover) ? D.cover : imPhoto;
   const fol = followed(nm), waiting = S_pendingPeople.has(nm);
   const pr = progressOf(works);
   const frac = pr.main.length ? pr.seen.length / pr.main.length : 0;
@@ -1315,7 +1326,7 @@ async function renderPerson(nm){
       <button class="icon-btn ${fol ? "rose" : ""}" onclick="toggleFollow('${nm}','${esc(name).replace(/'/g, "")}')" aria-label="追 TA">${fol ? "♥" : "♡"}</button></div>
     <div class="phero2">
       <div class="pbg" style="${photo ? `background-image:url('${esc(photo)}')` : ""}"></div>
-      <div class="pimg">${photo ? `<img src="${esc(photo)}" onload="this.classList.add('ok')" onerror="this.remove()">` : ""}<span>${esc(name.slice(0, 1))}</span></div>
+      <div class="pimg">${photo ? `<img src="${esc(photo)}" fetchpriority="high"${imPhoto && imPhoto !== photo ? ` data-alt="${esc(imPhoto)}"` : ""} onload="this.classList.add('ok')" onerror="dropImg(this.src);if(this.dataset.alt){this.src=this.dataset.alt;delete this.dataset.alt;document.querySelector('.pbg').style.backgroundImage='url('+this.src+')'}else this.remove()">` : ""}<span>${esc(name.slice(0, 1))}</span></div>
       <h2>${esc(name)}</h2>${cn && en && cn !== en ? `<div class="en">${esc(en)}</div>` : ""}
       ${P?.birth ? `<div class="pmeta">${birthLine(P)}</div>` : ""}
       ${D?.place || P?.place ? `<div class="pmeta">${esc((D?.place || P.place).replace(/,/g, " · "))}</div>` : ""}
@@ -1329,7 +1340,7 @@ async function renderPerson(nm){
     </div>
     ${!P ? `<div class="note rosey">${waiting ? `<div class="spin"></div><div class="bd">正在整理 TA 的完整作品、照片和简介，一两分钟后自动刷新。</div>`
       : `<div class="bd">${fol ? "完整资料还没整理好。" : "追 TA 以后，会补齐完整作品表（含剧集、新作）、照片、中文简介和获奖记录。"}</div>${fol || gh.token() ? `<button onclick="requestPerson('${nm}')">现在整理</button>` : ""}`}</div>` : ""}
-    ${upcoming.length ? `<div class="sec"><div class="sec-h"><h2>新作 <small>${upcoming.length}</small></h2></div><div class="scroller">${upcoming.map(w => workCard(w, true)).join("")}</div></div>` : ""}
+    ${upcoming.length ? `<div class="sec"><div class="sec-h"><h2>新作 <small>${upcoming.length}</small></h2></div><div class="scroller">${eager(() => upcoming.map(w => workCard(w, true)).join(""))}</div></div>` : ""}
     ${photos.length ? `<div class="sec"><div class="sec-h"><h2>照片 <small>${photos.length}</small></h2></div><div class="photos">${photos.map((u, i) => `<button onclick="lightbox(${i})"><img loading="lazy" src="${esc(u)}" onload="this.classList.add('ok')" onerror="this.parentNode.remove()"></button>`).join("")}</div></div>` : ""}
     ${bio ? `<div class="blk"><h3>简介${!D?.bio ? ` <span class="muted" style="font-size:12px;font-weight:400">英文</span>` : ""}</h3><div class="intro clip" id="intro">${esc(bio)}</div><button class="more" id="more" onclick="$('#intro').classList.remove('clip');this.remove()">展开</button>
       ${D?.family ? `<div class="small" style="margin-top:8px">家人：${esc(D.family)}</div>` : ""}</div>` : ""}
@@ -1383,6 +1394,10 @@ function lightbox(i){
   el.onclick = () => { el.classList.remove("on"); setTimeout(() => el.remove(), 250); };
 }
 
+function personImg(nm){   // 在已补全的片子里找这个人的 IMDb 头像
+  for (const m of Object.values(S.meta)) { const h = (m.directors || []).concat(m.cast || []).find(p => p.id === nm); if (h?.img) return h.img; }
+  return "";
+}
 /* 首页：我追的人 */
 function followSection(){
   const list = followList(); if (!list.length) return "";
@@ -1398,15 +1413,15 @@ function followSection(){
       const pr = progressOf(ws); seen = pr.seen.length; tot = pr.main.length; frac = tot ? seen / tot : 0;
       for (const w of ws.filter(w => w.upcoming && !w.guest)) { hasNew = true; news.push({...w, who: name}); }
     }
-    const photo = S.people[nm]?.dimg || P?.db?.cover || imdbImg(P?.img, 200);
-    cards.push(`<a class="fcard" href="#/p/${nm}"><div class="fav-av">${ringSVG(frac, 78, 3)}<div class="av">${photo ? `<img loading="lazy" src="${esc(photo)}" onerror="this.remove()">` : esc(name.slice(0, 1))}</div>${hasNew ? `<span class="newb">新作</span>` : ""}</div>
+    const dphoto = S.people[nm]?.dimg || P?.db?.cover || "", iphoto = imdbImg(P?.img || personImg(nm), 200), photo = dphoto || iphoto;
+    cards.push(`<a class="fcard" href="#/p/${nm}"><div class="fav-av">${ringSVG(frac, 78, 3)}<div class="av" data-i="${esc(name.slice(0, 1))}">${photo ? `<img decoding="async" src="${esc(photo)}"${dphoto && iphoto ? ` data-alt="${esc(iphoto)}"` : ""} onerror="avatarErr(this)">` : esc(name.slice(0, 1))}</div>${hasNew ? `<span class="newb">新作</span>` : ""}</div>
       <div class="nm">${esc(name)}</div><div class="mt">${tot ? `${seen} / ${tot}` : "整理中"}</div></a>`);
   }
   const seenIds = new Set(); const uniq = news.filter(w => !seenIds.has(w.id) && seenIds.add(w.id)).sort((a, b) => (a.y || 9999) - (b.y || 9999));
   return `<div class="sec fsec"><div class="sec-h"><h2>我追的人</h2><span class="muted" style="font-size:12px">圈是看过的比例</span></div>
     <div class="people">${cards.join("")}</div>
-    ${uniq.length ? `<div class="sec-h" style="margin-top:14px"><h2 style="font-size:15px">TA 们的新作</h2></div><div class="scroller">${uniq.slice(0, 16).map(w =>
-      `<a class="shelf-item" href="#/t/${w.id}">${workPoster(w, 220)}<div class="nm">${esc(workName(w))}</div><div class="mt rosey-t">♥ ${esc(w.who)}</div></a>`).join("")}</div>` : ""}</div>`;
+    ${uniq.length ? `<div class="sec-h" style="margin-top:14px"><h2 style="font-size:15px">TA 们的新作</h2></div><div class="scroller">${eager(() => uniq.slice(0, 16).map(w =>
+      `<a class="shelf-item" href="#/t/${w.id}">${workPoster(w, 220)}<div class="nm">${esc(workName(w))}</div><div class="mt rosey-t">♥ ${esc(w.who)}</div></a>`).join(""))}</div>` : ""}</div>`;
 }
 
 /* ================================================================ 快速标记 */
@@ -1734,7 +1749,7 @@ function renderSettings(){
   pullAll();
   if (S.pending.size && gh.token()) watchPending();
   document.addEventListener("visibilitychange", () => { if (!document.hidden && Date.now() - (S.synced || 0) > 60000) pullAll(); });
-  if ("serviceWorker" in navigator && !IS_PREVIEW && location.protocol === "https:") navigator.serviceWorker.register("sw.js").catch(() => {});
+  if ("serviceWorker" in navigator && !IS_PREVIEW && (location.protocol === "https:" || location.hostname === "localhost")) navigator.serviceWorker.register("sw.js").catch(() => {});
 })();
 </script>
 </body>
