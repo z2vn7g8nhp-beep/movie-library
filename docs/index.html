@@ -53,7 +53,12 @@ img{display:block}
 
 /* ---------- 顶部 / 底栏 ---------- */
 #app{min-height:100vh;padding:calc(var(--st) + 6px) 0 calc(var(--sb) + 78px);overflow-x:clip}
-#app.page{padding-bottom:calc(var(--sb) + 30px)}
+#page{position:fixed;inset:0;z-index:15;background:var(--bg);overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;overscroll-behavior:contain;
+  padding:calc(var(--st) + 6px) 0 calc(var(--sb) + 30px)}
+#page.in{animation:pin .28s cubic-bezier(.2,.8,.2,1)}
+@keyframes pin{from{transform:translateX(36%);opacity:.4}to{transform:none;opacity:1}}
+#page.out{animation:pout .2s ease-in forwards}
+@keyframes pout{to{transform:translateX(40%);opacity:0}}
 .top{display:flex;align-items:center;gap:10px;padding:8px var(--pad) 6px;min-height:52px}
 .top h1{flex:1;margin:0;font-family:var(--serif);font-weight:700;font-size:26px;letter-spacing:.06em}
 .top .sub{font-size:12px;color:var(--dim);letter-spacing:0}
@@ -610,6 +615,7 @@ function posterHTML(v, w = 200, badge = ""){
 function posterErr(img){
   const box = img.closest(".ps"), v = vm(box.dataset.pid);
   const alt = imdbImg(v.posterKey, +box.dataset.w || 200);
+  if (!img.dataset.src0) img.dataset.src0 = img.getAttribute("src");
   if (alt && img.src !== alt && !img.dataset.tried) { img.dataset.tried = 1; img.src = alt; } else img.remove();
 }
 /* 没有海报的格子，按需从分片里补 */
@@ -664,10 +670,35 @@ function route(){
 const scrollMem = {};
 let lastKey = "";
 let depth = 0, goingBack = false;
-window.addEventListener("hashchange", () => { closeSheet(); scrollMem[lastKey] = scrollY; if (goingBack) { depth = Math.max(0, depth - 1); goingBack = false; } else depth++; render(true); });
+window.addEventListener("hashchange", () => { closeSheet(); scrollMem[lastKey] = PAGES.includes(lastKey.split("/")[0]) ? $("#page").scrollTop : scrollY; if (goingBack) { depth = Math.max(0, depth - 1); goingBack = false; } else depth++; render(true); });
 function go(h){ location.hash = h; }
 function back(){ if (depth > 0) { goingBack = true; history.back(); } else go("#/home"); }
 
+/* 重画时，把已经显示过的图片元素原样搬进新页面（不重新下载、不重新解码，就不会闪一下空白） */
+function keepImages(root, ret){
+  const bySrc = new Map(), byBox = new Map();
+  root.querySelectorAll("img").forEach(i => {
+    if (!i.complete || !i.naturalWidth) return;
+    const k = i.dataset.src0 || i.getAttribute("src");
+    if (!bySrc.has(k)) bySrc.set(k, i);
+    const box = i.closest(".ps");
+    if (box && !byBox.has(box.dataset.pid + "@" + box.dataset.w)) byBox.set(box.dataset.pid + "@" + box.dataset.w, i);
+  });
+  const take = (map, k) => { const o = map.get(k); if (o) map.delete(k); return o; };
+  const swap = () => {
+    root.querySelectorAll("img").forEach(n => {
+      const o = take(bySrc, n.getAttribute("src"));
+      if (o && o !== n && !o.isConnected) { o.classList.add("ok"); n.replaceWith(o); }
+    });
+    root.querySelectorAll(".ps").forEach(b => {   // 新页面里还没图的格子（海报是后来从分片补的）
+      if (b.querySelector("img")) return;
+      const o = take(byBox, b.dataset.pid + "@" + b.dataset.w);
+      if (o && !o.isConnected) { o.classList.add("ok"); b.prepend(o); b.dataset.h = 1; }
+    });
+    hydratePosters(root);
+  };
+  return Promise.resolve(typeof ret === "function" ? ret() : ret).then(swap);
+}
 /* 底部四个页面渲染在 #main 里，详情、影人页等在 #page 里。
    进详情时 #main 只是藏起来，返回时原样显示，不重画、滚动位置不变；数据变了（S.ver 变了）才重画。 */
 const PAGES = ["t", "p", "quick", "settings"];
@@ -680,24 +711,29 @@ function render(nav){
   $("#app").className = isPage ? "page" : "";
   $$(".tabs a").forEach(a => a.classList.toggle("on", a.dataset.tab === r.name));
   if (isPage) {
-    main.hidden = true; page.hidden = false;
-    ({t: renderTitle, p: renderPerson, quick: renderQuick, settings: renderSettings})[r.name](r.arg);
-    hydratePosters(page);
-    if (nav) requestAnimationFrame(() => scrollTo(0, scrollMem[key] || 0));
+    const entering = page.hidden;
+    page.hidden = false;
+    if (nav && entering) { page.classList.remove("out"); page.classList.remove("in"); void page.offsetWidth; page.classList.add("in"); }
+    const done = keepImages(page, () => ({t: renderTitle, p: renderPerson, quick: renderQuick, settings: renderSettings})[r.name](r.arg));
+    if (nav) { page.scrollTop = scrollMem[key] || 0; done.then(() => { if (route().name + "/" + route().arg === key) page.scrollTop = scrollMem[key] || 0; }); }
   } else {
-    page.hidden = true; page.innerHTML = ""; main.hidden = false;
+    if (!page.hidden) {   // 关掉详情层：列表一直在底下，没被隐藏过，图片和位置都还在
+      if (nav) { page.classList.remove("in"); page.classList.add("out"); setTimeout(() => { if (!PAGES.includes(route().name)) { page.hidden = true; page.innerHTML = ""; page.classList.remove("out"); } }, 200); }
+      else { page.hidden = true; page.innerHTML = ""; }
+    }
+    main.hidden = false;
     let reuse = nav && mainKey === key && mainVer === (S.ver || 0);
     if (nav && mainKey === key && !reuse && r.name === "search") {
       // 搜索结果原样保留，只刷新每一行的标记状态（重新搜一遍会丢掉滚动位置）
       main.querySelectorAll("#res a.lrow").forEach(a => { const id = a.getAttribute("href").split("/").pop(); a.outerHTML = listRow(id); });
       hydratePosters(main); mainVer = S.ver || 0; reuse = true;
     }
+    const sameTab = mainKey === key;
     if (!reuse) {
-      ({home: renderHome, lib: renderLib, search: renderSearch, stats: renderStats}[r.name] || renderHome)(r.arg);
+      keepImages(main, () => ({home: renderHome, lib: renderLib, search: renderSearch, stats: renderStats}[r.name] || renderHome)(r.arg));
       mainKey = key; mainVer = S.ver || 0;
-      hydratePosters(main);
     }
-    if (nav) { const y = scrollMem[key] || 0; scrollTo(0, y); requestAnimationFrame(() => scrollTo(0, y)); }
+    if (nav && !sameTab) { const y = scrollMem[key] || 0; scrollTo(0, y); requestAnimationFrame(() => scrollTo(0, y)); }
   }
   lastKey = key;
 }
@@ -1060,7 +1096,7 @@ async function renderTitle(id){
 function castCard(p, role){
   return `<a class="person ${followed(p.id) ? "fav" : ""}" href="#/p/${p.id}">${avatarHTML(p, 160)}<div class="nm">${esc(pname(p))}</div>${role ? `<div class="role">${esc(role)}</div>` : ""}</a>`;
 }
-window.addEventListener("scroll", () => { const b = $("#bar"); if (b) b.classList.toggle("solid", scrollY > 120); }, {passive: true});
+$("#page").addEventListener("scroll", () => { const b = $("#bar"); if (b) b.classList.toggle("solid", $("#page").scrollTop > 120); }, {passive: true});
 /* 用海报的主色给顶部染一层淡淡的颜色 */
 function tint(v){
   const shown = $(".hero .ps img"); if (!shown) return;

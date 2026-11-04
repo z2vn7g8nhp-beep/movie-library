@@ -1,5 +1,5 @@
 // 离线缓存：网页本身先走网络（拿到最新版），片库索引按版本号缓存，打开秒出、没网也能搜。
-const SHELL = "yingku-shell-v1", IDX = "yingku-idx";
+const SHELL = "yingku-shell-v2", IDX = "yingku-idx";
 self.addEventListener("install", e => { self.skipWaiting(); e.waitUntil(caches.open(SHELL).then(c => c.addAll(["./", "manifest.json", "icon-180.png"]).catch(() => {}))); });
 self.addEventListener("activate", e => e.waitUntil(self.clients.claim()));
 self.addEventListener("fetch", e => {
