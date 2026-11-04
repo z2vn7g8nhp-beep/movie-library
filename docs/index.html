@@ -407,6 +407,84 @@ textarea.field{min-height:84px;resize:none;line-height:1.6}
 .lbs > div{flex:none;width:100vw;height:100%;display:grid;place-items:center;scroll-snap-align:center;padding:calc(var(--st) + 30px) 10px calc(var(--sb) + 40px)}
 .lbs img{max-width:100%;max-height:100%;object-fit:contain;border-radius:6px}
 .lbn{position:absolute;left:0;right:0;bottom:calc(var(--sb) + 14px);text-align:center;color:rgba(255,255,255,.7);font-size:13px;font-family:var(--num)}
+
+/* ---------- 集邮 ---------- */
+.badges{display:flex;flex-wrap:wrap;gap:6px;width:100%;margin-top:4px}
+.bd2{display:inline-flex;align-items:center;gap:3px;height:24px;padding:0 9px 0 6px;border-radius:12px;background:var(--soft);color:var(--faint);font-size:11.5px;font-weight:500}
+.bd2 i{font-style:normal;font-size:13px;filter:grayscale(1);opacity:.5}
+.bd2.on{background:var(--rose-bg);color:var(--rose-ink)}
+.bd2.on i{filter:none;opacity:1}
+.pstat{flex-wrap:wrap}
+.pstat .nextb{color:var(--rose-ink);margin-top:6px}
+.pstat .nextb b{font-family:var(--num)}
+.vtog{display:flex;gap:6px;align-items:center}
+.vtog button{height:28px;padding:0 10px;border-radius:14px;background:var(--card);box-shadow:0 0 0 .5px var(--hair) inset;font-size:12px;color:var(--ink-2);display:inline-flex;align-items:center}
+.vtog button.on{background:var(--rose);color:#fff;box-shadow:none}
+.vtog svg{width:14px;height:14px}
+.wall{display:grid;grid-template-columns:repeat(3,1fr);gap:14px 10px;padding:0 var(--pad)}
+.wi{display:block;min-width:0}
+.wi .ps{border-radius:8px}
+.wi.not .ps{outline:1.5px dashed var(--faint);outline-offset:-1.5px;background:repeating-linear-gradient(135deg,#f0eee8 0 6px,#ebe8e1 6px 12px)}
+.wi.not .ps img{filter:grayscale(1) contrast(.85) brightness(1.08);opacity:.38!important}
+.wi .ps img{transition:filter .6s,opacity .6s}
+.wi.got .ps{box-shadow:0 4px 14px rgba(40,36,28,.16)}
+.wi .nm{margin-top:6px;font-size:12.5px;line-height:1.3;font-weight:500;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.wi.not .nm{color:var(--dim)}
+.wi .mt{font-size:11px;color:var(--faint)}
+.chk{position:absolute;right:6px;bottom:6px;width:32px;height:32px;border-radius:16px;background:#fff;box-shadow:0 0 0 2px var(--rose),0 3px 10px rgba(120,20,60,.25);z-index:2}
+.chk::after{content:"";position:absolute;left:11px;top:8px;width:7px;height:12px;border:solid var(--rose);border-width:0 2.5px 2.5px 0;transform:rotate(45deg)}
+.chk:active{transform:scale(.88)}
+.seal{position:absolute;right:5px;bottom:5px;z-index:2;width:40px;height:40px;border-radius:50%;border:2px solid var(--rose);color:var(--rose);background:rgba(255,255,255,.88);
+  display:grid;place-items:center;font-family:var(--serif);font-weight:900;font-size:12px;letter-spacing:.05em;transform:rotate(-14deg);box-shadow:0 0 0 2px rgba(255,255,255,.6) inset}
+.wi.just .seal{animation:seal .5s cubic-bezier(.3,1.8,.5,1)}
+@keyframes seal{0%{transform:rotate(-30deg) scale(2.4);opacity:0}60%{opacity:1}100%{transform:rotate(-14deg) scale(1)}}
+.wi.just .ps{animation:pop .45s cubic-bezier(.3,1.6,.5,1)}
+.stamped-h{text-align:center;margin:-2px 0 -6px}
+.stamped-h .seal{position:static;display:inline-grid;width:54px;height:54px;font-size:15px;animation:seal .55s cubic-bezier(.3,1.8,.5,1)}
+.cere{position:fixed;inset:0;z-index:95;background:rgba(30,10,20,.45);display:grid;place-items:center;opacity:0;transition:opacity .3s;padding:30px}
+.cere.on{opacity:1}
+.cere .cc{width:100%;max-width:320px;background:linear-gradient(170deg,#fff,#fff5f8);border-radius:26px;padding:28px 22px 22px;text-align:center;box-shadow:0 30px 80px rgba(120,20,60,.35);transform:scale(.8);transition:transform .45s cubic-bezier(.3,1.6,.5,1)}
+.cere.on .cc{transform:none}
+.cbadge{font-size:64px;line-height:1;animation:spin1 1s cubic-bezier(.3,1.4,.5,1)}
+@keyframes spin1{from{transform:rotateY(180deg) scale(.4)}to{transform:none}}
+.ct{font-family:var(--serif);font-size:24px;font-weight:900;color:var(--rose-ink);margin-top:10px}
+.cp{display:flex;align-items:center;justify-content:center;gap:8px;margin-top:12px;font-size:15px}
+.cp img{width:36px;height:36px;border-radius:18px;object-fit:cover;object-position:center 22%}
+.cn{font-size:13px;color:var(--dim);margin:6px 0 12px;font-family:var(--num)}
+.cere .badges{justify-content:center}
+.idols{display:flex;gap:12px;overflow-x:auto;padding:2px var(--pad) 8px;scroll-snap-type:x mandatory;scroll-padding:0 var(--pad);scrollbar-width:none}
+.idols::-webkit-scrollbar{display:none}
+.idol{position:relative;flex:none;width:282px;border-radius:22px;background:var(--card);box-shadow:var(--shadow);overflow:hidden;padding:16px;scroll-snap-align:start;cursor:pointer}
+.idols .idol:only-child{width:100%}
+.ibg{position:absolute;left:-20px;right:-20px;top:-20px;height:130px;background:center 20%/cover;filter:blur(26px) saturate(1.3);opacity:.45}
+.idol::before{content:"";position:absolute;left:0;right:0;top:0;height:130px;background:linear-gradient(rgba(255,255,255,0),#fff 95%);z-index:0}
+.idol > *:not(.ibg){position:relative;z-index:1}
+.itop{display:flex;gap:12px;align-items:center}
+.iav{width:64px;height:64px;border-radius:32px;overflow:hidden;position:relative;background:var(--soft);display:grid;place-items:center;font-family:var(--serif);font-size:22px;color:var(--faint);
+  box-shadow:0 0 0 3px #fff,0 0 0 5px var(--rose-line),0 6px 16px rgba(120,20,60,.18);flex:none}
+.iav img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 22%}
+.iname{min-width:0;display:flex;flex-direction:column}
+.iname b{font-family:var(--serif);font-size:19px;line-height:1.2}
+.iname small{font-family:var(--latin);font-style:italic;color:var(--dim);font-size:12.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.newb2{align-self:flex-start;margin-top:3px;background:var(--rose);color:#fff;font-size:10.5px;font-weight:600;padding:1px 7px;border-radius:8px}
+.inum{margin-top:14px;font-family:var(--num);font-size:14px;color:var(--dim);display:flex;align-items:baseline;gap:4px}
+.inum b{font-size:30px;font-weight:300;color:var(--rose-ink);letter-spacing:-.02em}
+.inum span{margin-left:auto;font-size:13px;color:var(--rose-ink);font-weight:500}
+.ibar{height:6px;border-radius:3px;background:var(--rose-bg);overflow:hidden;margin-top:6px}
+.ibar i{display:block;height:100%;border-radius:3px;background:linear-gradient(90deg,#f28cae,var(--rose))}
+.ibadges{display:flex;gap:4px;margin-top:10px;font-size:17px;min-height:22px}
+.ibadges i{font-style:normal}
+.ibadges span{font-size:12px;color:var(--faint)}
+.igot{display:flex;gap:5px;margin-top:10px}
+.igot span{width:34px;flex:none}
+.igot .ps{border-radius:4px}
+.igot .ph{display:none}
+.isub{font-size:12.5px;color:var(--rose-ink);margin-top:10px}
+.isub b{font-family:var(--num)}
+.inext{display:flex;align-items:center;gap:8px;margin-top:12px;padding:9px 12px;border-radius:12px;background:var(--rose-bg);color:var(--ink);font-size:13.5px;font-weight:500}
+.inext span{min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.inext em{font-style:normal;font-size:11px;color:var(--rose-ink);font-weight:600;flex:none}
+.inext b{margin-left:auto;color:var(--rose-ink);font-size:16px}
 .toast{position:fixed;left:50%;bottom:calc(var(--sb) + 86px);z-index:60;transform:translate(-50%,20px);opacity:0;pointer-events:none;
   background:rgba(29,28,26,.92);color:#fff;font-size:13.5px;padding:10px 16px;border-radius:14px;max-width:calc(100vw - 40px);transition:all .25s;display:flex;gap:12px;align-items:center}
 .toast.on{opacity:1;transform:translate(-50%,0);pointer-events:auto}
@@ -619,7 +697,8 @@ function posterHTML(v, w = 200, badge = ""){
 function dropImg(u){ try { caches.open("yingku-img-v1").then(c => c.delete(u)); } catch {} }   // 坏图别留在缓存里
 function posterErr(img){
   dropImg(img.src);
-  const box = img.closest(".ps"), v = vm(box.dataset.pid);
+  const box = img.closest(".ps"); if (!box) { img.remove(); return; }
+  const v = vm(box.dataset.pid);
   const alt = imdbImg(v.posterKey, +box.dataset.w || 200);
   if (!img.dataset.src0) img.dataset.src0 = img.getAttribute("src");
   if (alt && img.src !== alt && !img.dataset.tried) { img.dataset.tried = 1; img.src = alt; }
@@ -766,14 +845,13 @@ function renderHome(){
   const ppl = topPeople(done.concat(doing)).slice(0, 12);
   const gs = countBy(done, id => vm(id).genres).slice(0, 14);
   const tags = countBy(all.map(([id]) => id), id => S.marks[id].tags || []);
-  $("#main").innerHTML = head + syncNote + `
+  $("#main").innerHTML = head + syncNote + followSection() + `
     <div class="hello"><div class="wm">影</div>
       <div class="ln">${greet()}，你已经看过</div>
       <div class="num"><div><b>${films}</b><span>部电影</span></div><div><b>${shows}</b><span>部剧集</span></div><div><b>${thisYear}</b><span>今年看过</span></div></div>
       <div class="row2"><a href="#/lib" onclick="libFilter({s:'doing'})"><i style="background:var(--doing)"></i>在看 <b>${doing.length}</b></a>
         <a href="#/lib" onclick="libFilter({s:'wish'})"><i style="background:var(--wish)"></i>想看 <b>${wish.length}</b></a>
         <a href="#/quick">${"⚡"} 快速标记</a></div></div>
-    ${followSection()}
     ${doing.length ? shelfSec("在看", doing, "doing") : ""}
     ${done.length ? shelfSec("最近看过", done.slice(0, 20), "done", done.length) : ""}
     ${wish.length ? shelfSec("想看", wish.slice(0, 20), "wish", wish.length) : ""}
@@ -833,7 +911,7 @@ function avatarHTML(p, w = 140){
 function avatarErr(img){
   dropImg(img.src);
   if (img.dataset.alt) { img.src = img.dataset.alt; delete img.dataset.alt; return; }
-  const box = img.parentNode; img.remove(); box.textContent = box.dataset.i;
+  const box = img.parentNode; img.remove(); if (box && box.dataset) box.textContent = box.dataset.i || "";
 }
 function personChip(p){ return `<a class="person ${followed(p.id) ? "fav" : ""}" href="#/p/${p.id}">${avatarHTML(p)}<div class="nm">${esc(pname(p))}</div><div class="mt">${p.c} 部</div></a>`; }
 
@@ -1137,9 +1215,16 @@ function setMark(id, patch){
 }
 let markDraft = null;
 function openMark(id, s){
-  const v = vm(id), k = mark(id);
+  let v = vm(id), k = mark(id), stamped = false;
+  if (s === "done" && k?.s !== "done") {   // 一键盖章，评分短评可以跳过
+    const msgs = stampAndCelebrate(id, {s: "done", d: today(), ...(v.series && v.m?.seasons ? {ss: Array.from({length: v.m.seasons}, (_, i) => i + 1)} : {})});
+    k = mark(id); stamped = true; render();
+    const b = $("#page .mine .acts .done"); if (b) { b.classList.add("pop"); burst(b, 7); }
+    if (msgs.length) toast(`+1 ${msgs.join("  ")}`);
+  }
   markDraft = {id, s, r: k?.r || 0, c: k?.c || "", tags: [...(k?.tags || [])], d: k?.d ?? today(), ss: [...(k?.ss || [])]};
   if (s === "done" && v.series && v.m?.seasons && !k?.ss?.length) markDraft.ss = Array.from({length: v.m.seasons}, (_, i) => i + 1);
+  markDraft.stamped = stamped;
   drawMarkSheet();
 }
 function drawMarkSheet(){
@@ -1147,7 +1232,7 @@ function drawMarkSheet(){
   const myTags = countBy(active().map(([id]) => id), id => S.marks[id].tags || []).map(([t]) => t);
   const allTags = [...new Set([...D.tags, ...myTags])];
   const nS = v.m?.seasons || 0;
-  openSheet(`<div class="grab"></div><h3>${esc(v.name)}<small>${v.year || ""} ${TYPE_ZH[v.t]}</small></h3>
+  openSheet(`<div class="grab"></div>${D.stamped ? `<div class="stamped-h"><span class="seal">已集</span></div>` : ""}<h3>${D.stamped ? "✓ 看过了" : esc(v.name)}<small>${D.stamped ? `《${esc(v.name)}》· 打个分、写句话（可以跳过）` : `${v.year || ""} ${TYPE_ZH[v.t]}`}</small></h3>
     <div class="seg" style="margin:0">${["wish", ...(v.series ? ["doing"] : []), "done"].map(s => `<button class="${D.s === s ? "on" : ""}" data-s="${s}">${STATUS[s]}</button>`).join("")}</div>
     ${D.s !== "wish" ? `<div class="lab">${D.s === "done" ? "给个评价" : "目前感觉"}</div>
       <div class="bigstars">${[1,2,3,4,5].map(i => `<button class="${D.r >= i ? "f" : ""}" data-r="${i}" aria-label="${i} 星"><i></i></button>`).join("")}</div>
@@ -1158,7 +1243,7 @@ function drawMarkSheet(){
     <div class="lab">标签</div><div class="tagpick" id="tp">${allTags.map(t => `<button class="chip ${D.tags.includes(t) ? "on" : ""}" data-t="${esc(t)}">${esc(t)}</button>`).join("")}
       <input class="field" id="newtag" placeholder="+ 新标签" style="width:110px;height:28px;padding:0 10px;border-radius:14px;font-size:13px!important"></div>
     <div class="lab">${D.s === "wish" ? "备注" : "短评"}</div><textarea class="field" id="mc" maxlength="350" placeholder="${D.s === "wish" ? "为什么想看、谁推荐的……" : "写点什么，只有你自己看得到"}">${esc(D.c)}</textarea>
-    <div class="foot"><button class="btn ghost" onclick="closeSheet()">取消</button><button class="btn acc" id="msave">保存</button></div>
+    <div class="foot"><button class="btn ghost" onclick="closeSheet()">${D.stamped ? "跳过" : "取消"}</button><button class="btn acc" id="msave">保存</button></div>
     ${k ? `<button class="del" id="mdel">删除这条标记</button>` : ""}`);
   const sh = $("#sheet");
   const keep = () => { D.c = $("#mc").value; const md = $("#md"); if (md) D.d = md.value; };
@@ -1197,6 +1282,104 @@ function toggleSeason(id, n){
 }
 
 /* ================================================================ 影人页 */
+/* ================================================================ 集邮：徽章、盖章、解锁仪式 */
+const BADGES = [
+  {k: "first", n: "入坑", ic: "🌱", t: (s) => s >= 1, need: (s, tot) => 1 - s},
+  {k: "five", n: "五部达成", ic: "🎞", t: (s) => s >= 5, need: (s) => 5 - s},
+  {k: "ten", n: "十部达成", ic: "🌟", t: (s) => s >= 10, need: (s) => 10 - s},
+  {k: "quarter", n: "四分之一", ic: "🍀", t: (s, tot) => tot && s / tot >= .25, need: (s, tot) => Math.ceil(tot * .25) - s},
+  {k: "half", n: "半壁江山", ic: "🌗", t: (s, tot) => tot && s / tot >= .5, need: (s, tot) => Math.ceil(tot * .5) - s},
+  {k: "most", n: "骨灰级", ic: "💎", t: (s, tot) => tot && s / tot >= .8, need: (s, tot) => Math.ceil(tot * .8) - s},
+  {k: "all", n: "大满贯", ic: "👑", t: (s, tot) => tot && s >= tot, need: (s, tot) => tot - s},
+];
+function worksFromP(P){
+  const thisYear = new Date().getFullYear();
+  return P.credits.map(c => {
+    const series = ["tvSeries", "tvMiniSeries"].includes(c.ty);
+    const self = c.cats.length === 1 && c.cats[0] === "self";
+    const guest = !self && series && c.ty === "tvSeries" && c.eps && c.eps <= 2 && !c.cats.includes("director");
+    const upcoming = (c.y && c.y > thisYear) || (!c.v && (!c.y || c.y >= thisYear));
+    return {...c, series, guest, self, upcoming, dir: c.cats.includes("director"), act: c.cats.includes("actor")};
+  });
+}
+function personStat(nm){   // 追的人的集邮进度（有完整资料才算）
+  const P = S.persons[nm]; if (!P) return null;
+  const ws = worksFromP(P), pr = progressOf(ws);
+  return {ws, seen: pr.seen.length, tot: pr.main.length, pr};
+}
+const earned = (seen, tot) => BADGES.filter(b => b.t(seen, tot));
+function nextBadge(seen, tot){ const b = BADGES.find(b => !b.t(seen, tot) && b.need(seen, tot) > 0 && (b.k !== "all" || tot)); return b ? {...b, left: b.need(seen, tot)} : null; }
+function badgeRow(seen, tot){
+  return `<div class="badges">${BADGES.map(b => `<span class="bd2 ${b.t(seen, tot) ? "on" : ""}"><i>${b.ic}</i>${b.n}</span>`).join("")}</div>`;
+}
+/* 片子里有我追的人：盖章前后比一下，出提示 / 解锁仪式 */
+function followedIn(id){
+  const out = [];
+  for (const nm of followList()) {
+    const P = S.persons[nm];
+    const hit = P ? P.credits.some(c => c.id === id) : credits(id).d.concat(credits(id).c).some(p => p.id === nm);
+    if (hit) out.push(nm);
+  }
+  return out;
+}
+function stampAndCelebrate(id, patch){
+  const ppl = followedIn(id);
+  const before = Object.fromEntries(ppl.map(nm => [nm, personStat(nm)]));
+  setMark(id, patch);
+  const msgs = [], unlocks = [];
+  for (const nm of ppl) {
+    const a = before[nm], b = personStat(nm); if (!b) continue;
+    const name = S.people[nm]?.cn || S.persons[nm]?.db?.cn || S.persons[nm]?.n || nm;
+    if (b.seen > (a?.seen || 0)) msgs.push(`♥ ${name} ${b.seen}/${b.tot}`);
+    for (const bd of BADGES) if (bd.t(b.seen, b.tot) && !(a && bd.t(a.seen, a.tot))) unlocks.push({bd, nm, name, b});
+  }
+  if (unlocks.length) setTimeout(() => ceremony(unlocks[unlocks.length - 1]), 650);
+  return msgs;
+}
+function ceremony(u){
+  const photo = S.people[u.nm]?.dimg || imdbImg(S.persons[u.nm]?.img, 300);
+  const el = document.createElement("div"); el.className = "cere";
+  el.innerHTML = `<div class="cc"><div class="cbadge">${u.bd.ic}</div><div class="ct">解锁「${u.bd.n}」</div>
+    <div class="cp">${photo ? `<img src="${esc(photo)}" onerror="this.remove()">` : ""}<b>${esc(u.name)}</b></div>
+    <div class="cn">已集 ${u.b.seen} / ${u.b.tot} 部</div>${badgeRow(u.b.seen, u.b.tot)}<button class="btn" style="background:var(--rose);margin-top:16px">收下</button></div>`;
+  document.body.appendChild(el);
+  requestAnimationFrame(() => el.classList.add("on"));
+  setTimeout(() => burst(el.querySelector(".cbadge"), 18), 250);
+  el.onclick = () => { el.classList.remove("on"); setTimeout(() => el.remove(), 300); };
+}
+/* 集邮墙上点圆圈：直接盖章 */
+function stampWork(ev, id, nm){
+  ev.preventDefault(); ev.stopPropagation();
+  const k = mark(id);
+  const item = ev.currentTarget.closest(".wi");
+  if (k?.s === "done") return;
+  const v = vm(id);
+  const msgs = stampAndCelebrate(id, {s: "done", d: k?.d || "",
+    ...(v.series && v.m?.seasons ? {ss: Array.from({length: v.m.seasons}, (_, i) => i + 1)} : {})});
+  item.classList.remove("not"); item.classList.add("got", "just");
+  item.querySelector(".chk")?.remove();
+  item.querySelector(".ps").insertAdjacentHTML("beforeend", `<span class="seal">已集</span>`);
+  refreshPersonCounts(nm);
+  burst(item, 6);
+  toast(msgs[0] ? `+1 ${msgs[0]}` : `已集《${workNameById(id)}》`, "撤销", () => { setMark(id, k || null); render(); });
+}
+function workNameById(id){ const v = vm(id); return v.name; }
+function refreshPersonCounts(nm){
+  const st = personStat(nm); if (!st) return;
+  const frac = st.tot ? st.seen / st.tot : 0;
+  const ring = $("#page .pring"); if (ring) ring.innerHTML = ringSVG(frac, 92, 5) + `<div><b>${Math.round(frac * 100)}</b><small>%</small></div>`;
+  const big = $("#page .pstat .big"); if (big) big.innerHTML = `已集 <b>${st.seen}</b> / ${st.tot} 部`;
+  const bs = $("#page .pstat .badges"); if (bs) bs.outerHTML = badgeRow(st.seen, st.tot);
+  const nb = $("#page .pstat .nextb"); if (nb) nb.innerHTML = nextHint(st.seen, st.tot);
+}
+function nextHint(seen, tot){ const n = nextBadge(seen, tot); return n ? `再集 <b>${n.left}</b> 部解锁 ${n.ic}「${n.n}」` : "全部集齐，太强了 👑"; }
+/* 下一部推荐：没看过、已上映、评分高、人多 */
+function nextPick(ws){
+  const cand = ws.filter(w => !w.self && !w.upcoming && !mark(w.id));
+  const score = w => { const v = vm(w.id); const r = v.douban?.v || w.r || v.imdb?.v || 0; const n = w.v || v.imdb?.c || 0; return r * Math.log10(n + 10) + (w.guest ? -5 : 0); };
+  return cand.sort((a, b) => score(b) - score(a))[0] || null;
+}
+
 /* ================================================================ 追影人 */
 const followed = nm => !!(S.follows[nm] && !S.follows[nm].del);
 const followList = () => Object.entries(S.follows).filter(([, f]) => !f.del).sort((a, b) => (b[1].t || 0) - (a[1].t || 0)).map(([nm]) => nm);
@@ -1233,9 +1416,9 @@ async function watchPeople(){
   watchingPeople = false;
 }
 /* 点"追 TA"时冒几颗小心心 */
-function burst(el){
+function burst(el, n = 9){
   const r = el.getBoundingClientRect();
-  for (let i = 0; i < 9; i++) {
+  for (let i = 0; i < n; i++) {
     const h = document.createElement("i"); h.className = "heart-fx"; h.textContent = "♥";
     h.style.left = r.left + r.width / 2 + "px"; h.style.top = r.top + r.height / 2 + "px";
     h.style.setProperty("--dx", (Math.random() * 140 - 70) + "px"); h.style.setProperty("--dy", (-60 - Math.random() * 90) + "px");
@@ -1259,15 +1442,7 @@ function birthLine(P){
 async function personWorks(nm){
   const P = S.persons[nm];
   const thisYear = new Date().getFullYear();
-  if (P) {
-    return P.credits.map(c => {
-      const series = ["tvSeries", "tvMiniSeries"].includes(c.ty);
-      const self = c.cats.length === 1 && c.cats[0] === "self";     // 上节目、接受采访
-      const guest = !self && series && c.ty === "tvSeries" && c.eps && c.eps <= 2 && !c.cats.includes("director");
-      const upcoming = (c.y && c.y > thisYear) || (!c.v && (!c.y || c.y >= thisYear));
-      return {...c, series, guest, self, upcoming, dir: c.cats.includes("director"), act: c.cats.includes("actor")};
-    });
-  }
+  if (P) return worksFromP(P);
   const n = await shard("n", nm);
   const ids = [...new Set([...(n?.dir || []), ...(n?.act || [])])];
   for (const [id] of active()) { const c = credits(id); if (c.d.concat(c.c).some(p => p.id === nm) && !ids.includes(id)) ids.push(id); }
@@ -1285,7 +1460,13 @@ function ringSVG(frac, size = 74, stroke = 3){
   return `<svg class="ring" width="${size}" height="${size}" viewBox="0 0 ${size} ${size}"><circle cx="${size / 2}" cy="${size / 2}" r="${r}" fill="none" stroke="var(--rose-line)" stroke-width="${stroke}"/>`
     + `<circle cx="${size / 2}" cy="${size / 2}" r="${r}" fill="none" stroke="var(--rose)" stroke-width="${stroke}" stroke-linecap="round" stroke-dasharray="${(c * Math.min(1, frac)).toFixed(1)} ${c.toFixed(1)}" transform="rotate(-90 ${size / 2} ${size / 2})"/></svg>`;
 }
-let pTab = "all", pUnseen = false;
+let pTab = "all", pUnseen = false, pView = getPref("pview", "wall");
+function wallItem(w, nm){
+  const k = mark(w.id), got = k?.s === "done";
+  const badge = !got && k ? `<span class="badge ${k.s}">${STATUS[k.s]}</span>` : "";
+  return `<a class="wi ${got ? "got" : "not"}" href="#/t/${w.id}">${workPoster(w, 220).replace("</div>", (got ? `<span class="seal">已集</span>` : `<button class="chk" onclick="stampWork(event,'${w.id}','${nm}')" aria-label="集到这一张"></button>`) + badge + "</div>")}
+    <div class="nm">${esc(workName(w))}</div><div class="mt">${w.y || ""}${w.series ? " · 剧" : ""}${w.guest ? " · 客串" : ""}</div></a>`;
+}
 async function renderPerson(nm){
   if (!/^nm\d+$/.test(nm)) return go("#/home");
   const works = await personWorks(nm);
@@ -1338,9 +1519,10 @@ async function renderPerson(nm){
     </div>
     <div class="pstat">
       <div class="pring">${ringSVG(frac, 92, 5)}<div><b>${Math.round(frac * 100)}</b><small>%</small></div></div>
-      <div class="bd"><div class="big">看过 <b>${pr.seen.length}</b> / ${pr.main.length} 部</div>
+      <div class="bd"><div class="big">已集 <b>${pr.seen.length}</b> / ${pr.main.length} 部</div>
         <div class="sm">电影 ${seenOf(films)}/${films.length} · 剧集 ${seenOf(shows)}/${shows.length}${pr.doing.length ? ` · 在看 ${pr.doing.length}` : ""}${pr.wish.length ? ` · 想看 ${pr.wish.length}` : ""}</div>
-        <div class="sm faint">${P ? "含客串；不算综艺访谈和还没上映的" : "离线片库里的主要作品，完整作品表整理中"}</div></div>
+        <div class="sm nextb">${nextHint(pr.seen.length, pr.main.length)}</div></div>
+      ${badgeRow(pr.seen.length, pr.main.length)}
     </div>
     ${!P ? `<div class="note rosey">${waiting ? `<div class="spin"></div><div class="bd">正在整理 TA 的完整作品、照片和简介，一两分钟后自动刷新。</div>`
       : `<div class="bd">${gh.token() ? "完整作品表、照片、中文简介还没整理好。" : "连接 GitHub 后，会自动整理 TA 的完整作品表、照片、中文简介和获奖记录。"}</div>${gh.token() ? `<button onclick="requestPerson('${nm}')">现在整理</button>` : ""}`}</div>` : ""}
@@ -1350,10 +1532,12 @@ async function renderPerson(nm){
       ${D?.family ? `<div class="small" style="margin-top:8px">家人：${esc(D.family)}</div>` : ""}</div>` : ""}
     ${awardsWon.length || awardsNom.length ? `<div class="blk"><h3>获奖与提名${D?.awardsTotal ? ` <span class="muted" style="font-size:12.5px;font-weight:400">共 ${D.awardsTotal} 项</span>` : ""}</h3>
       <div class="awards">${awardsWon.concat(awardsNom).map(a => `<div class="aw ${a.won ? "won" : ""}"><i>${a.won ? "🏆" : "🎖"}</i><div><b>${esc(a.ceremony)}</b><span>${esc(a.cat)}${a.work ? ` ·《${esc(a.work)}》` : ""}</span></div><em>${a.won ? "获奖" : "提名"}</em></div>`).join("")}</div></div>` : ""}
-    <div class="sec"><div class="sec-h"><h2>作品 <small>${works.filter(w => !w.upcoming && !w.self).length}</small></h2><button onclick="pUnseen=!pUnseen;render()">${pUnseen ? "✓ " : ""}只看没看过</button></div>
-      <div class="seg" style="margin-bottom:6px">${tabs.map(([k, l]) => `<button class="${pTab === k ? "on" : ""}" onclick="pTab='${k}';render()">${l}</button>`).join("")}</div>
-      <div class="tl">${byYear.map(([y, ws]) => `<div class="ty"><div class="yy">${y}</div><div class="ws">${ws.map(w => workRow(w)).join("")}</div></div>`).join("")
-        || `<div class="empty">${pUnseen ? "这一类全都看过了 🎉" : "暂无"}</div>`}</div></div>
+    <div class="sec"><div class="sec-h"><h2>${pView === "wall" && pTab !== "self" ? "集邮册" : "作品"} <small>${works.filter(w => !w.upcoming && !w.self).length}</small></h2>
+      <span class="vtog"><button class="${pUnseen ? "on" : ""}" onclick="pUnseen=!pUnseen;render()">只看没集的</button><button onclick="pView=pView==='wall'?'list':'wall';setPref('pview',pView);render()">${pView === "wall" ? IC.list : IC.grid}</button></span></div>
+      <div class="seg" style="margin-bottom:8px">${tabs.map(([k, l]) => `<button class="${pTab === k ? "on" : ""}" onclick="pTab='${k}';render()">${l}</button>`).join("")}</div>
+      ${pView === "wall" && pTab !== "self" ? (list.length ? `<div class="hint" style="padding-top:0">点海报右下角的圈，就算集到一张；点海报进详情。</div><div class="wall">${list.map(w => wallItem(w, nm)).join("")}</div>` : `<div class="empty">${pUnseen ? "这一类全都集齐了 🎉" : "暂无"}</div>`)
+        : `<div class="tl">${byYear.map(([y, ws]) => `<div class="ty"><div class="yy">${y}</div><div class="ws">${ws.map(w => workRow(w)).join("")}</div></div>`).join("")
+        || `<div class="empty">${pUnseen ? "这一类全都看过了 🎉" : "暂无"}</div>`}</div>`}</div>
     ${partners.length ? `<div class="sec"><div class="sec-h"><h2>常和 TA 同框</h2><span class="muted" style="font-size:12px">在你看过的片子里</span></div><div class="people">${partners.map(personChip).join("")}</div></div>` : ""}
     <div style="height:24px"></div>`;
   window.__photos = photos;
@@ -1410,26 +1594,35 @@ function personImg(nm){   // 在已补全的片子里找这个人的 IMDb 头像
 /* 首页：我追的人 */
 function followSection(){
   const list = followList(); if (!list.length) return "";
-  const thisYear = new Date().getFullYear();
   const cards = [], news = [];
   for (const nm of list) {
-    const P = S.persons[nm];
+    const P = S.persons[nm], st = personStat(nm);
     const name = S.people[nm]?.cn || P?.db?.cn || P?.n || S.follows[nm].n || findPersonName(nm);
-    let frac = 0, seen = 0, tot = 0, hasNew = false;
-    if (P) {
-      const ws = P.credits.filter(c => !(c.cats.length === 1 && c.cats[0] === "self")).map(c => ({...c, series: ["tvSeries", "tvMiniSeries"].includes(c.ty),
-        upcoming: (c.y && c.y > thisYear) || (!c.v && (!c.y || c.y >= thisYear))}));
-      const pr = progressOf(ws); seen = pr.seen.length; tot = pr.main.length; frac = tot ? seen / tot : 0;
-      for (const w of ws.filter(w => w.upcoming)) { hasNew = true; news.push({...w, who: name}); }
+    const dphoto = S.people[nm]?.dimg || P?.db?.cover || "", iphoto = imdbImg(P?.img || personImg(nm), 300), photo = dphoto || iphoto;
+    const alt = dphoto && iphoto ? ` data-alt="${esc(iphoto)}"` : "";
+    let body = `<div class="isub">资料整理中…</div>`, hasNew = false;
+    if (st) {
+      const frac = st.tot ? st.seen / st.tot : 0;
+      const got = st.pr.seen.sort((a, b) => (S.marks[b.id]?.t || 0) - (S.marks[a.id]?.t || 0)).slice(0, 6);
+      const up = st.ws.filter(w => w.upcoming && !w.self);
+      for (const w of up) news.push({...w, who: name});
+      hasNew = up.length > 0;
+      const pick = nextPick(st.ws);
+      const eb = earned(st.seen, st.tot);
+      body = `<div class="inum"><b>${st.seen}</b> / ${st.tot}<span>${Math.round(frac * 100)}%</span></div>
+        <div class="ibar"><i style="width:${Math.max(frac * 100, st.seen ? 3 : 0)}%"></i></div>
+        <div class="ibadges">${eb.length ? eb.map(b => `<i title="${b.n}">${b.ic}</i>`).join("") : `<span>还没有徽章</span>`}</div>
+        ${got.length ? `<div class="igot">${got.map(w => `<span>${workPoster(w, 80)}</span>`).join("")}</div>` : `<div class="isub">${nextHint(st.seen, st.tot)}</div>`}
+        ${pick ? `<a class="inext" href="#/t/${pick.id}" onclick="event.stopPropagation()"><em>下一部</em><span>${esc(workName(pick))}</span><b>›</b></a>` : ""}`;
     }
-    const dphoto = S.people[nm]?.dimg || P?.db?.cover || "", iphoto = imdbImg(P?.img || personImg(nm), 200), photo = dphoto || iphoto;
-    cards.push(`<a class="fcard" href="#/p/${nm}"><div class="fav-av">${ringSVG(frac, 78, 3)}<div class="av" data-i="${esc(name.slice(0, 1))}">${photo ? `<img decoding="async" src="${esc(photo)}"${dphoto && iphoto ? ` data-alt="${esc(iphoto)}"` : ""} onerror="avatarErr(this)">` : esc(name.slice(0, 1))}</div>${hasNew ? `<span class="newb">新作</span>` : ""}</div>
-      <div class="nm">${esc(name)}</div><div class="mt">${tot ? `${seen} / ${tot}` : "整理中"}</div></a>`);
+    cards.push(`<div class="idol" onclick="go('#/p/${nm}')"><div class="ibg" style="${photo ? `background-image:url('${esc(photo)}')` : ""}"></div>
+      <div class="itop"><div class="iav" data-i="${esc(name.slice(0, 1))}">${photo ? `<img decoding="async" src="${esc(photo)}"${alt} onerror="avatarErr(this)">` : esc(name.slice(0, 1))}</div>
+      <div class="iname"><b>${esc(name)}</b>${hasNew ? `<span class="newb2">有新作</span>` : ""}<small>${esc(P?.n && P.n !== name ? P.n : "")}</small></div></div>${body}</div>`);
   }
   const seenIds = new Set(); const uniq = news.filter(w => !seenIds.has(w.id) && seenIds.add(w.id)).sort((a, b) => (a.y || 9999) - (b.y || 9999));
-  return `<div class="sec fsec"><div class="sec-h"><h2>我追的人</h2><span class="muted" style="font-size:12px">圈是看过的比例</span></div>
-    <div class="people">${cards.join("")}</div>
-    ${uniq.length ? `<div class="sec-h" style="margin-top:14px"><h2 style="font-size:15px">TA 们的新作</h2></div><div class="scroller">${eager(() => uniq.slice(0, 16).map(w =>
+  return `<div class="sec fsec"><div class="sec-h"><h2>我追的人</h2><span class="muted" style="font-size:12px">左右滑</span></div>
+    <div class="idols">${eager(() => cards.join(""))}</div>
+    ${uniq.length ? `<div class="sec-h" style="margin-top:16px"><h2 style="font-size:15px">TA 们的新作</h2></div><div class="scroller">${eager(() => uniq.slice(0, 16).map(w =>
       `<a class="shelf-item" href="#/t/${w.id}">${workPoster(w, 220)}<div class="nm">${esc(workName(w))}</div><div class="mt rosey-t">♥ ${esc(w.who)}</div></a>`).join(""))}</div>` : ""}</div>`;
 }
 
