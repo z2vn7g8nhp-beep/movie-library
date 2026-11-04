@@ -1,0 +1,2 @@
+requests>=2.31
+opencc>=1.1

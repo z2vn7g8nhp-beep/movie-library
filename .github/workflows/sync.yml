@@ -1,0 +1,80 @@
+name: 补全详情和评分
+
+on:
+  schedule:
+    - cron: "41 */6 * * *"    # 每 6 小时刷新一轮评分；网页上标记后会立刻叫它跑一次
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  actions: write
+
+concurrency:
+  group: sync
+  cancel-in-progress: false
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - run: pip install -r requirements.txt
+
+      - name: 取离线片库里的中文片名（豆瓣按名字找条目时用）
+        run: |
+          mkdir -p idx
+          if git fetch --depth=1 origin index 2>/dev/null; then
+            git archive FETCH_HEAD s1.txt s2.txt | tar -x -C idx || true
+          fi
+
+      - name: 取私有数据仓库
+        env:
+          DATA_REPO: ${{ vars.DATA_REPO }}
+          DATA_TOKEN: ${{ secrets.DATA_TOKEN }}
+        run: |
+          repo="${DATA_REPO:-${{ github.repository }}-data}"
+          git clone -q --depth 1 "https://x-access-token:${DATA_TOKEN}@github.com/${repo}.git" data
+          echo "DATA_URL=https://x-access-token:${DATA_TOKEN}@github.com/${repo}.git" >> "$GITHUB_ENV"
+
+      - name: 补全
+        run: python scraper/sync.py --data data --idx idx
+
+      - name: 保存
+        run: |
+          cd data
+          git config user.name "movie-library-bot"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add meta.json people.json status.json lookup.json requests.json 2>/dev/null || true
+          git add -A
+          git diff --cached --quiet && { echo "没有变化"; exit 0; }
+          git commit -q -m "补全详情 $(TZ=Asia/Shanghai date '+%m-%d %H:%M')"
+          if ! git ls-remote --exit-code --heads origin >/dev/null 2>&1; then
+            git push -q origin HEAD:main && exit 0    # 数据仓库还是空的，第一次推
+          fi
+          for i in 1 2 3 4; do
+            # 网页可能刚好也在写 marks.json / requests.json，先合并再推
+            if git pull -q --rebase -X theirs origin HEAD && git push -q origin HEAD; then exit 0; fi
+            sleep $((i * 3))
+          done
+          echo "保存失败" && exit 1
+
+      - name: 防止 GitHub 60 天无活动自动停用定时任务
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh api -X PUT "repos/${{ github.repository }}/actions/workflows/sync.yml/enable" || true
+          gh api -X PUT "repos/${{ github.repository }}/actions/workflows/pages.yml/enable" || true
+          f=.github/keepalive.txt
+          last=$(cat "$f" 2>/dev/null || echo 0); now=$(date +%s)
+          if [ $((now - last)) -gt 2160000 ]; then
+            echo "$now" > "$f"
+            git config user.name "movie-library-bot"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git add "$f" && git commit -q -m "保活" && git push -q || echo "保活提交没成功，下次再试"
+          fi

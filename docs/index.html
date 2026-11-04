@@ -1,0 +1,1371 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#f7f6f2">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="影库">
+<meta name="referrer" content="strict-origin-when-cross-origin">
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="icon-180.png">
+<link rel="icon" href="icon-192.png">
+<title>影库</title>
+<style>
+:root{
+  --bg:#f7f6f2;
+  --card:#ffffff;
+  --soft:#efede7;
+  --hair:rgba(40,36,28,.09);
+  --ink:#1d1c1a;
+  --ink-2:#55524b;
+  --dim:#8a867d;
+  --faint:#b8b4aa;
+  --acc:#24875a;          /* 主色：沉一点的绿 */
+  --acc-ink:#1b6b47;
+  --acc-bg:#e7f3ec;
+  --acc-line:#c3e3d0;
+  --wish:#d9822b; --wish-bg:#fbf0e3;
+  --doing:#3a76c4; --doing-bg:#e8f0fa;
+  --gold:#f2a515;
+  --db:#00a31a; --im:#e2b100; --tm:#f0350c;
+  --sans:-apple-system,BlinkMacSystemFont,"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
+  --num:-apple-system,BlinkMacSystemFont,"SF Pro Display","Helvetica Neue",sans-serif;
+  --serif:"Songti SC","STSong","Noto Serif CJK SC","Source Han Serif SC",serif;
+  --latin:ui-serif,"New York","Iowan Old Style",Georgia,serif;
+  --shadow:0 1px 2px rgba(40,36,28,.05),0 6px 20px rgba(40,36,28,.07);
+  --st:env(safe-area-inset-top,0px);
+  --sb:env(safe-area-inset-bottom,0px);
+  --pad:18px;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:15px;line-height:1.5;
+  -webkit-font-smoothing:antialiased;font-variant-numeric:tabular-nums;overflow-x:hidden;-webkit-text-size-adjust:100%}
+body{touch-action:manipulation}
+button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:pointer}
+input,textarea{font:inherit;font-size:16px;color:var(--ink)}
+a{color:inherit;text-decoration:none}
+img{display:block}
+.hide{display:none!important}
+
+/* ---------- 顶部 / 底栏 ---------- */
+#app{min-height:100vh;padding:calc(var(--st) + 6px) 0 calc(var(--sb) + 78px);overflow-x:clip}
+#app.page{padding-bottom:calc(var(--sb) + 30px)}
+.top{display:flex;align-items:center;gap:10px;padding:8px var(--pad) 6px;min-height:52px}
+.top h1{flex:1;margin:0;font-family:var(--serif);font-weight:700;font-size:26px;letter-spacing:.06em}
+.top .sub{font-size:12px;color:var(--dim);letter-spacing:0}
+.icon-btn{width:36px;height:36px;border-radius:18px;display:grid;place-items:center;background:var(--card);color:var(--ink-2);box-shadow:0 1px 3px rgba(40,36,28,.08);flex:none}
+.icon-btn svg{width:18px;height:18px}
+.tabs{position:fixed;left:0;right:0;bottom:0;z-index:20;background:#fbfaf7;border-top:.5px solid var(--hair);
+  display:flex;padding:6px 8px calc(var(--sb) + 6px)}
+.tabs a{flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;font-size:10.5px;color:var(--faint);padding:2px 0;font-weight:500}
+.tabs a svg{width:23px;height:23px}
+.tabs a.on{color:var(--ink)}
+#app.page + .tabs{display:none}
+
+/* ---------- 通用 ---------- */
+.sec{margin:22px 0 0}
+.sec-h{display:flex;align-items:baseline;justify-content:space-between;padding:0 var(--pad);margin-bottom:10px}
+.sec-h h2{margin:0;font-size:17px;font-weight:600;letter-spacing:.02em}
+.sec-h h2 small{font-family:var(--num);font-size:13px;color:var(--dim);font-weight:400;margin-left:6px}
+.sec-h a,.sec-h button{font-size:13px;color:var(--dim)}
+.card{background:var(--card);border-radius:16px;box-shadow:var(--shadow)}
+.muted{color:var(--dim)}
+.chip{display:inline-flex;align-items:center;gap:4px;height:30px;padding:0 12px;border-radius:15px;background:var(--card);
+  border:.5px solid var(--hair);font-size:13px;color:var(--ink-2);white-space:nowrap;flex:none}
+.chip b{font-family:var(--num);font-weight:500;color:var(--dim);font-size:12px}
+.chip.on{background:var(--ink);border-color:var(--ink);color:#fff}
+.chip.on b{color:rgba(255,255,255,.7)}
+.chips{display:flex;flex-wrap:wrap;gap:8px;padding:0 var(--pad)}
+.scroller{display:flex;gap:12px;overflow-x:auto;padding:2px var(--pad) 6px;scroll-snap-type:x proximity;scroll-padding:0 var(--pad);scrollbar-width:none;overscroll-behavior-x:contain}
+.scroller::-webkit-scrollbar{display:none}
+.scroller > *{scroll-snap-align:start}
+.empty{text-align:center;color:var(--dim);font-size:14px;padding:40px 30px}
+.empty .big{font-family:var(--serif);font-size:20px;color:var(--ink);margin-bottom:6px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;height:42px;padding:0 18px;border-radius:21px;background:var(--ink);color:#fff;font-weight:500;font-size:15px}
+.btn.ghost{background:var(--card);color:var(--ink);box-shadow:0 0 0 .5px var(--hair) inset}
+.btn.acc{background:var(--acc)}
+.btn[disabled]{opacity:.5}
+
+/* ---------- 海报 ---------- */
+.ps{position:relative;border-radius:8px;overflow:hidden;background:linear-gradient(145deg,#e9e6de,#dcd8ce);aspect-ratio:2/3}
+.ps img{width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity .35s}
+.ps img.ok{opacity:1}
+.ps .ph{position:absolute;inset:0;display:flex;align-items:flex-end;padding:8px;font-family:var(--serif);font-size:12px;line-height:1.3;color:#8f8a7e}
+.ps img.ok + .ph{display:none}
+.ps .badge{position:absolute;left:6px;top:6px;height:18px;padding:0 6px;border-radius:9px;font-size:10.5px;font-weight:600;line-height:18px;color:#fff;background:rgba(0,0,0,.42);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)}
+.ps .badge.wish{background:var(--wish)} .ps .badge.doing{background:var(--doing)} .ps .badge.done{background:var(--acc)}
+
+.shelf-item{width:104px;flex:none}
+.shelf-item .nm{margin-top:7px;font-size:13px;line-height:1.3;font-weight:500;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.shelf-item .mt{font-size:11.5px;color:var(--dim);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.stars{display:inline-flex;gap:1px;vertical-align:-1px}
+.stars i{width:11px;height:11px;background:var(--faint);-webkit-mask:var(--star) center/contain no-repeat;mask:var(--star) center/contain no-repeat}
+.stars i.f{background:var(--gold)}
+.stars i.h{background:linear-gradient(90deg,var(--gold) 50%,var(--faint) 50%)}
+:root{--star:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 2.6l2.9 5.9 6.5.9-4.7 4.6 1.1 6.5L12 17.4l-5.8 3.1 1.1-6.5L2.6 9.4l6.5-.9z'/%3E%3C/svg%3E")}
+
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px 12px;padding:0 var(--pad)}
+.grid .shelf-item{width:auto}
+
+/* ---------- 首页 ---------- */
+.hello{margin:6px var(--pad) 0;padding:18px 18px 16px;border-radius:20px;background:var(--card);box-shadow:var(--shadow);position:relative;overflow:hidden}
+.hello .ln{font-size:13px;color:var(--dim)}
+.hello .num{display:flex;gap:22px;margin-top:10px}
+.hello .num div{display:flex;flex-direction:column}
+.hello .num b{font-family:var(--num);font-weight:300;font-size:32px;line-height:1.05;letter-spacing:-.02em}
+.hello .num span{font-size:12px;color:var(--dim);margin-top:2px}
+.hello .row2{display:flex;gap:8px;margin-top:14px;flex-wrap:wrap}
+.hello .row2 a{display:inline-flex;align-items:center;gap:6px;height:30px;padding:0 12px;border-radius:15px;background:var(--soft);font-size:13px;color:var(--ink-2)}
+.hello .row2 a i{width:7px;height:7px;border-radius:4px;background:var(--dim)}
+.hello .row2 a b{font-family:var(--num);font-weight:500}
+.hello .wm{position:absolute;right:-14px;top:-18px;font-family:var(--serif);font-size:110px;line-height:1;color:var(--soft);font-weight:700;pointer-events:none;letter-spacing:-.05em}
+.hello > *:not(.wm){position:relative}
+.prog{height:3px;border-radius:2px;background:var(--soft);margin-top:6px;overflow:hidden}
+.prog i{display:block;height:100%;background:var(--doing);border-radius:2px}
+.people{display:flex;gap:14px;overflow-x:auto;padding:2px var(--pad) 6px;scrollbar-width:none}
+.people::-webkit-scrollbar{display:none}
+.person{width:66px;flex:none;text-align:center}
+.av{width:62px;height:62px;border-radius:31px;margin:0 auto;background:var(--soft) center/cover;display:grid;place-items:center;font-family:var(--serif);font-size:20px;color:var(--dim);overflow:hidden;box-shadow:0 0 0 .5px var(--hair) inset}
+.av img{width:100%;height:100%;object-fit:cover}
+.person .nm{font-size:12px;margin-top:6px;line-height:1.25;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.person .mt{font-size:11px;color:var(--dim)}
+.welcome{margin:10px var(--pad) 0;padding:26px 22px;border-radius:20px;background:var(--card);box-shadow:var(--shadow);text-align:center}
+.welcome h3{font-family:var(--serif);font-size:22px;margin:0 0 6px}
+.welcome p{color:var(--dim);font-size:14px;margin:0 0 18px}
+.welcome .btns{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+
+/* ---------- 片库 ---------- */
+.seg{display:flex;margin:4px var(--pad) 0;background:var(--soft);border-radius:12px;padding:3px}
+.seg button{flex:1;height:34px;border-radius:9px;font-size:14px;color:var(--ink-2);font-weight:500}
+.seg button b{font-family:var(--num);font-weight:400;font-size:12px;color:var(--dim);margin-left:3px}
+.seg button.on{background:var(--card);color:var(--ink);box-shadow:0 1px 3px rgba(40,36,28,.1)}
+.filters{display:flex;gap:8px;overflow-x:auto;padding:12px var(--pad) 4px;scrollbar-width:none}
+.filters::-webkit-scrollbar{display:none}
+.filters .chip svg{width:12px;height:12px;opacity:.6}
+.libmeta{padding:8px var(--pad) 10px;font-size:12.5px;color:var(--dim);display:flex;justify-content:space-between;align-items:center}
+.libmeta button{color:var(--ink-2);font-size:12.5px}
+.lrow{display:flex;gap:12px;padding:10px var(--pad);align-items:flex-start}
+.lrow + .lrow{border-top:.5px solid var(--hair)}
+.lrow .ps{width:58px;flex:none;border-radius:6px}
+.lrow .bd{flex:1;min-width:0}
+.lrow .t{font-size:15.5px;font-weight:600;line-height:1.3}
+.lrow .t small{font-family:var(--num);font-weight:400;color:var(--dim);font-size:13px;margin-left:4px}
+.lrow .o{font-family:var(--latin);font-style:italic;font-size:12.5px;color:var(--dim);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.lrow .m{font-size:12.5px;color:var(--ink-2);margin-top:3px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.lrow .rs{display:flex;gap:10px;margin-top:5px;align-items:center;flex-wrap:wrap}
+.lrow .side{flex:none;display:flex;flex-direction:column;align-items:flex-end;gap:6px}
+.pill{height:26px;padding:0 10px;border-radius:13px;font-size:12px;font-weight:600;display:inline-flex;align-items:center;gap:3px;white-space:nowrap}
+.pill.add{background:var(--soft);color:var(--ink-2)}
+.pill.wish{background:var(--wish-bg);color:var(--wish)}
+.pill.doing{background:var(--doing-bg);color:var(--doing)}
+.pill.done{background:var(--acc-bg);color:var(--acc-ink)}
+.sc{display:inline-flex;align-items:center;gap:4px;font-family:var(--num);font-size:12.5px;font-weight:500}
+.sc i{font-style:normal;font-size:9.5px;font-weight:800;padding:1px 3px;border-radius:3px;color:#fff;letter-spacing:.02em;line-height:1.2}
+.sc i.db{background:var(--db)} .sc i.im{background:var(--im);color:#000} .sc i.tm{background:var(--tm)}
+.sc.none{color:var(--faint)}
+
+/* ---------- 搜索 ---------- */
+.sbox{position:sticky;top:0;z-index:5;background:var(--bg);padding:calc(var(--st) + 8px) var(--pad) 8px;margin-top:calc(-6px - var(--st))}
+.sbox .in{display:flex;align-items:center;gap:8px;background:var(--card);border-radius:14px;padding:0 12px;height:44px;box-shadow:0 1px 3px rgba(40,36,28,.06),0 0 0 .5px var(--hair) inset}
+.sbox svg{width:17px;height:17px;color:var(--dim);flex:none}
+.sbox input::-webkit-search-cancel-button{display:none;-webkit-appearance:none}
+.sbox input{flex:1;border:0;outline:0;background:none;height:44px;min-width:0}
+.sbox .x{width:22px;height:22px;border-radius:11px;background:var(--soft);display:grid;place-items:center;color:var(--dim);font-size:13px}
+.hint{padding:6px var(--pad);font-size:13px;color:var(--dim)}
+.hint b{color:var(--ink-2);font-weight:500}
+.loading{padding:10px var(--pad);font-size:12.5px;color:var(--dim);display:flex;align-items:center;gap:8px}
+.loading i{flex:1;height:3px;border-radius:2px;background:var(--soft);overflow:hidden}
+.loading i b{display:block;height:100%;background:var(--acc);border-radius:2px;transition:width .3s}
+.online{margin:14px var(--pad);padding:14px 16px;border-radius:14px;background:var(--card);box-shadow:0 0 0 .5px var(--hair) inset;display:flex;align-items:center;gap:12px;font-size:13.5px}
+.online .bd{flex:1;color:var(--ink-2)}
+.online .bd small{display:block;color:var(--dim);font-size:12px}
+.spin{width:16px;height:16px;border-radius:8px;border:2px solid var(--acc-line);border-top-color:var(--acc);animation:sp 0.8s linear infinite;flex:none}
+@keyframes sp{to{transform:rotate(360deg)}}
+
+/* ---------- 条目页 ---------- */
+.bar{position:sticky;top:0;z-index:6;display:flex;align-items:center;gap:8px;padding:calc(var(--st) + 6px) 12px 6px;margin-top:calc(-6px - var(--st));
+  background:rgba(247,246,242,.0);transition:background .2s}
+.bar.solid{background:rgba(247,246,242,.94);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);box-shadow:0 .5px 0 var(--hair)}
+.bar .tt{flex:1;font-weight:600;font-size:15px;text-align:center;opacity:0;transition:opacity .2s;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.bar.solid .tt{opacity:1}
+.hero{position:relative;padding:4px var(--pad) 0;display:flex;gap:16px}
+.hero::before{content:"";position:absolute;left:0;right:0;top:-80px;height:300px;background:var(--tint,transparent);opacity:.55;z-index:-1;
+  -webkit-mask:linear-gradient(#000 30%,transparent);mask:linear-gradient(#000 30%,transparent)}
+.hero .ps{width:116px;flex:none;border-radius:10px;box-shadow:0 8px 24px rgba(40,36,28,.18)}
+.hero .bd{flex:1;min-width:0;padding-top:2px}
+.hero h2{font-family:var(--serif);font-weight:700;font-size:23px;line-height:1.22;margin:0;letter-spacing:.02em}
+.hero .o{font-family:var(--latin);font-style:italic;color:var(--ink-2);font-size:14px;line-height:1.3;margin-top:4px}
+.hero .o span{font-family:var(--num);font-style:normal;color:var(--dim)}
+.hero .info{font-size:12.5px;color:var(--ink-2);margin-top:8px;line-height:1.6}
+.hero .info a{color:var(--ink);text-decoration:underline;text-decoration-color:var(--faint);text-underline-offset:2px}
+.gtags{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.gtags a{height:22px;padding:0 9px;border-radius:11px;background:rgba(255,255,255,.7);box-shadow:0 0 0 .5px var(--hair) inset;font-size:11.5px;line-height:22px;color:var(--ink-2)}
+.ratings{margin:18px var(--pad) 0;display:grid;grid-template-columns:1.3fr 1fr 1fr;background:var(--card);border-radius:16px;box-shadow:var(--shadow)}
+.ratings > div{padding:12px 12px 11px;display:flex;flex-direction:column;gap:2px;min-width:0}
+.ratings > div + div{border-left:.5px solid var(--hair)}
+.ratings .lb{font-size:11.5px;color:var(--dim);display:flex;align-items:center;gap:5px}
+.ratings .lb i{width:6px;height:6px;border-radius:3px}
+.ratings .v{font-family:var(--num);font-size:26px;font-weight:300;line-height:1.1;letter-spacing:-.02em}
+.ratings .v small{font-size:13px;color:var(--dim);font-weight:400;margin-left:1px}
+.ratings .v.na{font-size:14px;color:var(--faint);font-weight:400;padding:7px 0 4px;letter-spacing:0}
+.ratings .c{font-size:11px;color:var(--dim);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.seasons{margin:10px var(--pad) 0;padding:6px 14px;background:var(--card);border-radius:14px;box-shadow:0 0 0 .5px var(--hair) inset}
+.seasons .r{display:flex;align-items:center;gap:10px;height:34px;font-size:13px}
+.seasons .r + .r{border-top:.5px solid var(--hair)}
+.seasons .r .n{width:54px;color:var(--ink-2)}
+.seasons .r .bar2{flex:1;height:4px;border-radius:2px;background:var(--soft);overflow:hidden}
+.seasons .r .bar2 i{display:block;height:100%;border-radius:2px;background:var(--db);opacity:.75}
+.seasons .r b{font-family:var(--num);font-weight:500;width:28px;text-align:right}
+.seasons .r .ck{width:20px;height:20px;border-radius:10px;border:1.5px solid var(--faint);display:grid;place-items:center;color:#fff;font-size:11px}
+.seasons .r .ck.on{background:var(--doing);border-color:var(--doing)}
+.mine{margin:14px var(--pad) 0;padding:14px;border-radius:16px;background:var(--card);box-shadow:var(--shadow)}
+.mine .acts{display:flex;gap:8px}
+.mine .acts button{flex:1;height:42px;border-radius:12px;background:var(--soft);font-weight:600;font-size:14.5px;color:var(--ink-2);display:flex;align-items:center;justify-content:center;gap:5px}
+.mine .acts button svg{width:16px;height:16px}
+.mine .acts button.on.wish{background:var(--wish);color:#fff}
+.mine .acts button.on.doing{background:var(--doing);color:#fff}
+.mine .acts button.on.done{background:var(--acc);color:#fff}
+.mine .rec{margin-top:12px;font-size:13.5px;color:var(--ink-2);display:flex;flex-direction:column;gap:6px}
+.mine .rec .q{font-family:var(--serif);font-size:15px;color:var(--ink);line-height:1.6;padding-left:10px;border-left:2px solid var(--acc-line)}
+.mine .rec .edit{align-self:flex-start;font-size:13px;color:var(--acc-ink)}
+.mine .mtags{display:flex;gap:6px;flex-wrap:wrap}
+.mine .mtags span{height:22px;padding:0 9px;border-radius:11px;background:var(--acc-bg);color:var(--acc-ink);font-size:12px;line-height:22px}
+.blk{margin:22px var(--pad) 0}
+.blk h3{font-size:16px;margin:0 0 8px;font-weight:600}
+.intro{font-size:14.5px;line-height:1.75;color:var(--ink-2);white-space:pre-line}
+.intro.clip{max-height:calc(1.75em * 5);overflow:hidden}
+.more{font-size:13px;color:var(--acc-ink);margin-top:4px}
+.cast{display:flex;gap:12px;overflow-x:auto;padding:2px var(--pad) 6px;scrollbar-width:none}
+.cast::-webkit-scrollbar{display:none}
+.cast .person{width:70px}
+.cast .av{width:70px;height:94px;border-radius:10px}
+.cast .role{font-size:10.5px;color:var(--dim);line-height:1.25;margin-top:1px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.links{display:flex;gap:8px;flex-wrap:wrap}
+.links a{height:32px;padding:0 12px;border-radius:16px;background:var(--card);box-shadow:0 0 0 .5px var(--hair) inset;font-size:13px;display:inline-flex;align-items:center;gap:5px}
+.note{margin:14px var(--pad) 0;padding:12px 14px;border-radius:14px;background:var(--acc-bg);color:var(--acc-ink);font-size:13px;display:flex;gap:10px;align-items:center}
+.note .bd{flex:1}
+.note button{font-weight:600;color:var(--acc-ink);white-space:nowrap}
+
+/* ---------- 影人页 ---------- */
+.phero{display:flex;gap:16px;padding:4px var(--pad) 0;align-items:center}
+.phero .av{width:86px;height:86px;border-radius:43px;margin:0;font-size:30px}
+.phero h2{font-family:var(--serif);font-size:24px;margin:0;line-height:1.2}
+.phero .o{font-family:var(--latin);font-style:italic;color:var(--dim);font-size:14px}
+.phero .cnt{display:flex;gap:16px;margin-top:8px;font-size:12.5px;color:var(--dim)}
+.phero .cnt b{font-family:var(--num);font-size:18px;font-weight:400;color:var(--ink);margin-right:2px}
+
+/* ---------- 统计 ---------- */
+.hero-stat{margin:6px var(--pad) 0;padding:20px;border-radius:20px;background:var(--card);box-shadow:var(--shadow)}
+.hero-stat .big{font-family:var(--num);font-size:52px;font-weight:200;line-height:1;letter-spacing:-.03em}
+.hero-stat .big small{font-family:var(--sans);font-size:15px;color:var(--dim);font-weight:400;margin-left:6px;letter-spacing:0}
+.hero-stat .sub{display:flex;gap:18px;margin-top:12px;font-size:12.5px;color:var(--dim);flex-wrap:wrap}
+.hero-stat .sub b{display:block;font-family:var(--num);font-size:19px;font-weight:400;color:var(--ink)}
+.months{display:flex;align-items:flex-end;gap:5px;height:120px;padding:0 2px}
+.months .m{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:100%;gap:5px;position:relative}
+.months .m i{width:100%;max-width:18px;background:var(--acc);border-radius:4px 4px 0 0;min-height:0;opacity:.85}
+.months .m i.z{background:var(--soft);height:2px!important;border-radius:1px}
+.months .m span{font-size:10px;color:var(--dim);font-family:var(--num)}
+.months .m b{font-family:var(--num);font-size:10.5px;font-weight:500;color:var(--ink-2);opacity:0;transition:opacity .15s;line-height:1}
+.months .m.sel b{opacity:1}
+.months .m.sel i{opacity:1}
+.panel{margin:0 var(--pad);padding:16px;border-radius:16px;background:var(--card);box-shadow:var(--shadow)}
+.hbar{display:flex;align-items:center;gap:10px;height:30px;font-size:13px}
+.hbar .k{width:64px;color:var(--ink-2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.hbar .tr{flex:1;height:8px}
+.hbar .tr i{display:block;height:100%;border-radius:0 4px 4px 0;background:var(--acc);opacity:.8;min-width:3px}
+.hbar b{width:30px;text-align:right;font-family:var(--num);font-weight:500;color:var(--ink-2)}
+.ranks .person{width:62px}
+.ranks .av{width:56px;height:56px}
+.cap{font-size:12px;color:var(--dim);margin-top:10px}
+
+/* ---------- 弹层 ---------- */
+.mask{position:fixed;inset:0;z-index:40;background:rgba(20,18,14,.32);opacity:0;pointer-events:none;transition:opacity .25s}
+.mask.on{opacity:1;pointer-events:auto}
+.sheet{position:fixed;left:0;right:0;bottom:0;z-index:41;background:var(--bg);border-radius:22px 22px 0 0;max-height:88vh;overflow-y:auto;
+  transform:translateY(105%);transition:transform .32s cubic-bezier(.2,.8,.2,1);padding:8px var(--pad) calc(var(--sb) + 18px);overscroll-behavior:contain}
+.sheet.on{transform:none}
+.sheet .grab{width:36px;height:5px;border-radius:3px;background:var(--faint);opacity:.5;margin:0 auto 10px}
+.sheet h3{margin:4px 0 14px;font-family:var(--serif);font-size:19px;text-align:center}
+.sheet h3 small{display:block;font-family:var(--sans);font-size:12.5px;color:var(--dim);font-weight:400;margin-top:2px}
+.sheet .lab{font-size:12.5px;color:var(--dim);margin:16px 0 8px}
+.bigstars{display:flex;gap:6px;justify-content:center;align-items:center}
+.bigstars button{width:42px;height:42px;display:grid;place-items:center}
+.bigstars button i{width:34px;height:34px;background:var(--soft);-webkit-mask:var(--star) center/contain no-repeat;mask:var(--star) center/contain no-repeat;transition:transform .15s,background .15s}
+.bigstars button.f i{background:var(--gold)}
+.bigstars button:active i{transform:scale(.85)}
+.rlabel{text-align:center;font-size:13px;color:var(--ink-2);height:20px;margin-top:2px}
+.field{width:100%;border:0;border-radius:12px;background:var(--card);padding:11px 13px;box-shadow:0 0 0 .5px var(--hair) inset;outline:none}
+textarea.field{min-height:84px;resize:none;line-height:1.6}
+.daterow{display:flex;gap:8px;align-items:center}
+.daterow input{flex:1}
+.tagpick{display:flex;flex-wrap:wrap;gap:8px}
+.tagpick .chip{height:28px}
+.tagpick .chip.on{background:var(--acc);border-color:var(--acc)}
+.sheet .foot{display:flex;gap:10px;margin-top:22px}
+.sheet .foot .btn{flex:1}
+.sheet .del{display:block;margin:14px auto 0;font-size:13.5px;color:#c7442e}
+.opt{display:flex;align-items:center;gap:10px;height:46px;font-size:15px;border-bottom:.5px solid var(--hair)}
+.opt .k{flex:1}
+.opt b{font-family:var(--num);font-weight:400;color:var(--dim);font-size:13px}
+.opt.on{color:var(--acc-ink);font-weight:600}
+.opt .av{width:32px;height:32px;margin:0;font-size:13px}
+.toast{position:fixed;left:50%;bottom:calc(var(--sb) + 86px);z-index:60;transform:translate(-50%,20px);opacity:0;pointer-events:none;
+  background:rgba(29,28,26,.92);color:#fff;font-size:13.5px;padding:10px 16px;border-radius:14px;max-width:calc(100vw - 40px);transition:all .25s;display:flex;gap:12px;align-items:center}
+.toast.on{opacity:1;transform:translate(-50%,0);pointer-events:auto}
+.toast button{color:#9fe0bd;font-weight:600;white-space:nowrap}
+.set-sec{margin-top:18px}
+.set-sec h4{font-size:13px;color:var(--dim);font-weight:500;margin:0 0 8px}
+.set-card{background:var(--card);border-radius:14px;padding:4px 14px;box-shadow:0 0 0 .5px var(--hair) inset}
+.set-card .opt:last-child{border-bottom:0}
+.dot{width:8px;height:8px;border-radius:4px;background:var(--acc);flex:none}
+.dot.bad{background:#d9483b}
+.small{font-size:12.5px;color:var(--dim);line-height:1.6}
+.quick .grid{gap:12px 10px}
+.quick .ps{cursor:pointer}
+.quick .ps.on{box-shadow:0 0 0 3px var(--acc)}
+.quick .ps.on.wish{box-shadow:0 0 0 3px var(--wish)}
+.pop{animation:pop .35s cubic-bezier(.3,1.6,.5,1)}
+@keyframes pop{0%{transform:scale(.92)}100%{transform:none}}
+</style>
+</head>
+<body>
+<div id="app"></div>
+<nav class="tabs" id="tabs">
+  <a href="#/home" data-tab="home"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 10.5 12 4l8 6.5V19a1 1 0 0 1-1 1h-4.5v-5.5h-5V20H5a1 1 0 0 1-1-1z"/></svg>我的</a>
+  <a href="#/lib" data-tab="lib"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="4" width="5" height="16" rx="1.2"/><rect x="10" y="4" width="5" height="16" rx="1.2"/><path d="m17.3 5.2 3.4 14.1"/></svg>片库</a>
+  <a href="#/search" data-tab="search"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="11" cy="11" r="6.5"/><path d="m20 20-4.2-4.2"/></svg>搜索</a>
+  <a href="#/stats" data-tab="stats"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M5 20V11M10 20V5M15 20v-7M20 20V9"/></svg>统计</a>
+</nav>
+<div class="mask" id="mask"></div>
+<div class="sheet" id="sheet"></div>
+<div class="toast" id="toast"></div>
+
+<script>
+"use strict";
+/* ================================================================ 基础 */
+const $ = s => document.querySelector(s), $$ = s => [...document.querySelectorAll(s)];
+const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const norm = s => String(s || "").toLowerCase().replace(/&/g, "and")
+  .replace(/[\s:：·・,，.。!！?？'"“”‘’《》()（）\[\]【】\-—_/、~～​-‏﻿]/g, "");
+const getPref = (k, d) => { try { const v = localStorage.getItem("yk:" + k); return v === null ? d : JSON.parse(v); } catch { return d; } };
+const setPref = (k, v) => { try { localStorage.setItem("yk:" + k, JSON.stringify(v)); } catch {} };
+const today = () => { const d = new Date(); return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`; };
+const fmtCount = n => !n ? "" : n >= 1e4 ? (n / 1e4).toFixed(n >= 1e5 ? 0 : 1) + "万" : String(n);
+const IS_PREVIEW = !!window.__PREVIEW__;
+
+/* 一个很小的 IndexedDB 键值存储（详情可能超过 localStorage 的 5MB） */
+const kv = (() => {
+  let dbp;
+  const db = () => dbp || (dbp = new Promise((res, rej) => {
+    const r = indexedDB.open("yingku", 1);
+    r.onupgradeneeded = () => r.result.createObjectStore("kv");
+    r.onsuccess = () => res(r.result); r.onerror = () => rej(r.error);
+  }));
+  const tx = async (mode, fn) => { try { const d = await db(); return await new Promise((res, rej) => {
+    const t = d.transaction("kv", mode), s = t.objectStore("kv"), q = fn(s);
+    t.oncomplete = () => res(q && q.result); t.onerror = () => rej(t.error); }); } catch { return undefined; } };
+  return { get: k => tx("readonly", s => s.get(k)), set: (k, v) => tx("readwrite", s => s.put(v, k)) };
+})();
+
+const GENRE_ZH = {Action:"动作",Adventure:"冒险",Animation:"动画",Biography:"传记",Comedy:"喜剧",Crime:"犯罪",Documentary:"纪录片",
+  Drama:"剧情",Family:"家庭",Fantasy:"奇幻","Film-Noir":"黑色电影","Game-Show":"游戏节目",History:"历史",Horror:"恐怖",Music:"音乐",
+  Musical:"歌舞",Mystery:"悬疑",News:"新闻","Reality-TV":"真人秀",Romance:"爱情","Sci-Fi":"科幻",Short:"短片",Sport:"运动",
+  "Talk-Show":"脱口秀",Thriller:"惊悚",War:"战争",Western:"西部"};
+const COUNTRY_ZH = {"United States":"美国","United Kingdom":"英国",China:"中国大陆","Hong Kong":"中国香港",Taiwan:"中国台湾",Japan:"日本",
+  "South Korea":"韩国",France:"法国",Germany:"德国",Italy:"意大利",Spain:"西班牙",India:"印度",Canada:"加拿大",Australia:"澳大利亚",
+  Thailand:"泰国",Russia:"俄罗斯",Mexico:"墨西哥",Brazil:"巴西",Sweden:"瑞典",Denmark:"丹麦",Norway:"挪威",Ireland:"爱尔兰",
+  Belgium:"比利时",Netherlands:"荷兰",Iran:"伊朗",Turkey:"土耳其",Poland:"波兰","New Zealand":"新西兰",Argentina:"阿根廷"};
+const TYPE_ZH = {m:"电影", tm:"电视电影", s:"剧集", ms:"迷你剧", sp:"特别节目", v:"视频电影",
+  movie:"m", tvMovie:"tm", tvSeries:"s", tvMiniSeries:"ms", tvSpecial:"sp", video:"v", short:"m"};
+const typeCode = t => t && t.length > 2 ? (TYPE_ZH[t] || "m") : (t || "m");
+const isSeries = t => ["s", "ms"].includes(typeCode(t));
+const STATUS = {wish:"想看", doing:"在看", done:"看过"};
+const RATE_WORD = ["", "很差", "较差", "还行", "推荐", "力荐"];
+const PFX = "https://m.media-amazon.com/images/M/";
+const imdbImg = (k, w) => k ? `${PFX}${k}._V1_QL75_UX${w}_.jpg` : "";
+
+const IC = {
+  back:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 5-7 7 7 7"/></svg>',
+  gear:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg>',
+  search:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="6.5"/><path d="m20 20-4.2-4.2"/></svg>',
+  down:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>',
+  heart:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z"/></svg>',
+  play:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M8 5.5v13l10.5-6.5z"/></svg>',
+  check:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg>',
+  grid:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="4" width="6.5" height="6.5" rx="1.5"/><rect x="13.5" y="4" width="6.5" height="6.5" rx="1.5"/><rect x="4" y="13.5" width="6.5" height="6.5" rx="1.5"/><rect x="13.5" y="13.5" width="6.5" height="6.5" rx="1.5"/></svg>',
+  list:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M9 6h11M9 12h11M9 18h11M4.5 6h.01M4.5 12h.01M4.5 18h.01"/></svg>',
+  bolt:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M13 3 5 13.5h6L10 21l8-10.5h-6z"/></svg>',
+};
+
+function toast(msg, act, fn, ms = 3200){
+  const t = $("#toast"); t.innerHTML = `<span>${esc(msg)}</span>${act ? `<button>${esc(act)}</button>` : ""}`;
+  if (act) t.querySelector("button").onclick = () => { t.classList.remove("on"); fn(); };
+  t.classList.add("on"); clearTimeout(toast.t); toast.t = setTimeout(() => t.classList.remove("on"), act ? ms + 2000 : ms);
+}
+
+/* ================================================================ 状态 */
+const S = {
+  idx: [], byId: new Map(), idxReady: 0, idxInfo: null,   // 0 未加载 / 1 热门已加载 / 2 全部
+  marks: {},       // tt -> {s, r, c, tags, d, ss, at, t, del}
+  meta: {}, people: {}, status: null, lookup: null,
+  shardP: new Map(), shardN: new Map(), crew: new Map(),
+  lib: {s: "done", type: "all", genre: "", person: "", tag: "", decade: "", sort: "t", view: getPref("view", "grid")},
+  q: "", statYear: "all",
+  pending: new Set(getPref("pendingIds", [])),  // 等后台补全的片子
+  dirty: getPref("dirty", false),               // 还没同步到 GitHub 的改动
+};
+
+/* ================================================================ 离线索引 */
+const IDX_BASE = "idx/";
+function parseIdx(text){
+  const out = [];
+  for (const line of text.split("\n")) {
+    if (!line) continue;
+    const x = line.split("\t");
+    const alt = x[7] ? x[7].split("|") : [];
+    const row = {id: "tt" + x[0], t: x[1], y: +x[2] || 0, ey: +x[3] || 0, n: x[4], o: x[5], cn: x[6], alt,
+      g: parseInt(x[8] || "0", 16), r: +x[9] || 0, v: +x[10] || 0};
+    row.k = "\u0001" + [row.cn, ...alt, row.n, row.o].filter(Boolean).map(norm).join("\u0001") + "\u0001";
+    out.push(row);
+  }
+  return out;
+}
+async function loadIndex(){
+  try {
+    const info = await (await fetch(IDX_BASE + "info.json", {cache: "no-cache"})).json();
+    S.idxInfo = info;
+    const v = encodeURIComponent(info.built);
+    for (const [i, f] of ["s1", "s2"].entries()) {
+      const r = await fetch(`${IDX_BASE}${f}.txt?v=${v}`);
+      if (!r.ok) throw new Error(r.status);
+      const rows = parseIdx(await r.text());
+      for (const row of rows) { S.idx.push(row); S.byId.set(row.id, row); }
+      S.idxReady = i + 1;
+      if (i === 0) preloadCrew();
+      if (route().name === "search") renderSearchResults();
+      else if (i === 0 || route().name === "p") render();
+    }
+  } catch (e) {
+    S.idxReady = -1;
+    if (route().name === "search") render();
+  }
+}
+async function shard(kind, key){
+  const map = kind === "p" ? S.shardP : S.shardN;
+  const n = kind === "p" ? (S.idxInfo?.shards || 512) : (S.idxInfo?.nshards || 256);
+  const i = parseInt(key.slice(2), 10) % n;
+  if (!map.has(i)) map.set(i, (async () => {
+    const out = new Map();
+    try {
+      const v = encodeURIComponent(S.idxInfo?.built || "");
+      const text = await (await fetch(`${IDX_BASE}${kind}/${i}.txt?v=${v}`)).text();
+      for (const line of text.split("\n")) {
+        if (!line) continue;
+        const x = line.split("\t");
+        if (kind === "p") {
+          const ppl = s => (s ? s.split("|") : []).map(p => { const j = p.indexOf(":"); return {id: "nm" + p.slice(0, j), n: p.slice(j + 1)}; });
+          const rec = {poster: x[1], rt: +x[2] || 0, d: ppl(x[3]), c: ppl(x[4])};
+          out.set("tt" + x[0], rec); S.crew.set("tt" + x[0], rec);
+        } else {
+          out.set("nm" + x[0], {n: x[1], dir: x[2] ? x[2].split("|").map(i => "tt" + i) : [], act: x[3] ? x[3].split("|").map(i => "tt" + i) : []});
+        }
+      }
+    } catch { map.delete(i); }
+    return out;
+  })());
+  return (await map.get(i)).get(key);
+}
+async function preloadCrew(){
+  const ids = active().map(([id]) => id).filter(id => !S.meta[id] || S.meta[id].light || !S.meta[id].cast);
+  await Promise.all(ids.slice(0, 400).map(id => shard("p", id)));
+  if (ids.length && ["home", "lib", "stats"].includes(route().name)) render();
+}
+let namesP;
+function loadNames(){
+  return namesP || (namesP = fetch(`${IDX_BASE}names.txt?v=${encodeURIComponent(S.idxInfo?.built || "")}`).then(r => r.text()).then(t =>
+    t.split("\n").filter(Boolean).map(l => { const x = l.split("\t"); return {id: "nm" + x[0], n: x[1], c: +x[2], k: norm(x[1])}; }))
+    .catch(() => { namesP = null; return []; }));
+}
+
+/* ================================================================ 片子信息（合并 详情 + 索引 + 分片） */
+function vm(id){
+  const m = S.meta[id] && !S.meta[id].missing ? S.meta[id] : null, x = S.byId.get(id);
+  const t = typeCode(m?.type || x?.t);
+  const genres = m?.dgenres?.length ? m.dgenres : (m?.genres || (x ? (S.idxInfo?.genres || []).filter((g, i) => x.g & (1 << i)) : []))
+    .map(g => GENRE_ZH[g] || g);
+  const primary = m?.title || x?.n || id;
+  const cn = m?.cn || x?.cn || "";
+  return {
+    id, t, series: isSeries(t), m, x,
+    name: cn || primary, sub: cn ? (m?.orig || x?.o || primary) : (m?.orig || x?.o || ""),
+    year: m?.year || x?.y || 0, ey: m?.ey || x?.ey || 0,
+    genres: genres.filter(g => g !== "短片" || t === "m"),
+    imdb: m?.imdb?.v ? m.imdb : (x?.r ? {v: x.r, c: x.v} : null),
+    douban: m?.douban || null, rt: m?.rt || null,
+    poster: m?.dpic || "", posterKey: m?.poster || "",
+  };
+}
+function posterHTML(v, w = 200, badge = ""){
+  const src = v.poster || imdbImg(v.posterKey, w);
+  return `<div class="ps" data-pid="${v.id}" data-w="${w}">${src ? `<img loading="lazy" src="${esc(src)}" onload="this.classList.add('ok')" onerror="posterErr(this)">` : ""}`
+    + `<div class="ph">${esc(v.name)}</div>${badge}</div>`;
+}
+function posterErr(img){
+  const box = img.closest(".ps"), v = vm(box.dataset.pid);
+  const alt = imdbImg(v.posterKey, +box.dataset.w || 200);
+  if (alt && img.src !== alt && !img.dataset.tried) { img.dataset.tried = 1; img.src = alt; } else img.remove();
+}
+/* 没有海报的格子，按需从分片里补 */
+async function hydratePosters(root = document){
+  const boxes = [...root.querySelectorAll(".ps:not([data-h])")].filter(b => !b.querySelector("img"));
+  for (const b of boxes) {
+    b.dataset.h = 1;
+    shard("p", b.dataset.pid).then(p => {
+      if (!p?.poster || !b.isConnected) return;
+      const img = new Image(); img.loading = "lazy";
+      img.onload = () => img.classList.add("ok"); img.onerror = () => img.remove();
+      img.src = imdbImg(p.poster, +b.dataset.w || 200);
+      b.prepend(img);
+    });
+  }
+}
+function starsHTML(n10){   // 10 分制 → 5 颗星
+  const s = Math.round((n10 || 0)) / 2;
+  return `<span class="stars">${[1,2,3,4,5].map(i => `<i class="${s >= i ? "f" : s >= i - .5 ? "h" : ""}"></i>`).join("")}</span>`;
+}
+function myStars(r){ return r ? `<span class="stars">${[1,2,3,4,5].map(i => `<i class="${r >= i ? "f" : ""}"></i>`).join("")}</span>` : ""; }
+function scoreHTML(v, which = ["db", "im", "tm"]){
+  const out = [];
+  if (which.includes("db")) out.push(v.douban?.v ? `<span class="sc"><i class="db">豆</i>${v.douban.v.toFixed(1)}</span>` : "");
+  if (which.includes("im")) out.push(v.imdb?.v ? `<span class="sc"><i class="im">IMDb</i>${(+v.imdb.v).toFixed(1)}</span>` : "");
+  if (which.includes("tm")) out.push(v.rt?.critics != null ? `<span class="sc"><i class="tm">番茄</i>${v.rt.critics}%</span>` : "");
+  return out.join("");
+}
+const mark = id => { const k = S.marks[id]; return k && !k.del ? k : null; };
+const active = () => Object.entries(S.marks).filter(([, k]) => !k.del);
+
+function shelfItem(id, extra = ""){
+  const v = vm(id), k = mark(id);
+  let mt = "";
+  if (k?.s === "done") mt = k.r ? myStars(k.r) : (v.douban?.v ? `豆瓣 ${v.douban.v.toFixed(1)}` : v.year || "");
+  else if (k?.s === "doing" && v.series) {
+    const seen = (k.ss || []).length, tot = v.m?.seasons || 0;
+    mt = seen ? `看到第 ${Math.max(...k.ss)} 季${tot ? ` / 共 ${tot} 季` : ""}` : (tot ? `共 ${tot} 季` : "在看");
+    if (tot) extra += `<div class="prog"><i style="width:${Math.min(100, seen / tot * 100)}%"></i></div>`;
+  } else mt = [v.year || "", v.douban?.v ? `豆瓣 ${v.douban.v.toFixed(1)}` : v.imdb?.v ? `IMDb ${(+v.imdb.v).toFixed(1)}` : ""].filter(Boolean).join(" · ");
+  return `<a class="shelf-item" href="#/t/${id}">${posterHTML(v, 220)}<div class="nm">${esc(v.name)}</div><div class="mt">${mt}</div>${extra}</a>`;
+}
+
+/* ================================================================ 路由 */
+function route(){
+  const h = location.hash.replace(/^#\/?/, "");
+  const [name, arg] = h.split("/");
+  return {name: name || "home", arg: decodeURIComponent(arg || "")};
+}
+const scrollMem = {};
+let lastKey = "";
+let depth = 0, goingBack = false;
+window.addEventListener("hashchange", () => { closeSheet(); scrollMem[lastKey] = scrollY; if (goingBack) { depth = Math.max(0, depth - 1); goingBack = false; } else depth++; render(true); });
+function go(h){ location.hash = h; }
+function back(){ if (depth > 0) { goingBack = true; history.back(); } else go("#/home"); }
+
+function render(nav){
+  const r = route(), key = r.name + "/" + r.arg;
+  const pageMode = ["t", "p", "quick", "settings"].includes(r.name);
+  $("#app").className = pageMode ? "page" : "";
+  $$(".tabs a").forEach(a => a.classList.toggle("on", a.dataset.tab === r.name));
+  const fn = {home: renderHome, lib: renderLib, search: renderSearch, stats: renderStats, t: renderTitle, p: renderPerson,
+    quick: renderQuick, settings: renderSettings}[r.name] || renderHome;
+  fn(r.arg);
+  hydratePosters($("#app"));
+  if (nav) requestAnimationFrame(() => scrollTo(0, key === lastKey ? scrollY : (scrollMem[key] || 0)));
+  lastKey = key;
+}
+
+/* ================================================================ 首页 */
+function renderHome(){
+  const all = active();
+  const by = s => all.filter(([, k]) => k.s === s).sort((a, b) => (b[1].d || b[1].at || "").localeCompare(a[1].d || a[1].at || "") || b[1].t - a[1].t).map(([id]) => id);
+  const done = by("done"), doing = by("doing"), wish = all.filter(([, k]) => k.s === "wish").sort((a, b) => b[1].t - a[1].t).map(([id]) => id);
+  const films = done.filter(id => !vm(id).series).length, shows = done.length - films;
+  const year = String(new Date().getFullYear()), thisYear = done.filter(id => (S.marks[id].d || "").startsWith(year)).length;
+  const head = `<div class="top"><h1>影库</h1><a class="icon-btn" href="#/search" aria-label="搜索">${IC.search}</a><a class="icon-btn" href="#/settings" aria-label="设置">${IC.gear}</a></div>`;
+  const syncNote = syncBanner();
+  if (!all.length) {
+    $("#app").innerHTML = head + syncNote + `<div class="welcome"><h3>建一座自己的影库</h3>
+      <p>电影、剧集、老片、流媒体都能标记。<br>评分来自豆瓣、IMDb 和烂番茄。</p>
+      <div class="btns"><a class="btn" href="#/search">${IC.search} 搜一部片子</a><a class="btn ghost" href="#/quick">${IC.bolt} 快速标记</a></div></div>`
+      + popularShelf();
+    return;
+  }
+  const ppl = topPeople(done.concat(doing)).slice(0, 12);
+  const gs = countBy(done, id => vm(id).genres).slice(0, 14);
+  const tags = countBy(all.map(([id]) => id), id => S.marks[id].tags || []);
+  $("#app").innerHTML = head + syncNote + `
+    <div class="hello"><div class="wm">影</div>
+      <div class="ln">${greet()}，你已经看过</div>
+      <div class="num"><div><b>${films}</b><span>部电影</span></div><div><b>${shows}</b><span>部剧集</span></div><div><b>${thisYear}</b><span>今年看过</span></div></div>
+      <div class="row2"><a href="#/lib" onclick="S.lib.s='doing'"><i style="background:var(--doing)"></i>在看 <b>${doing.length}</b></a>
+        <a href="#/lib" onclick="S.lib.s='wish'"><i style="background:var(--wish)"></i>想看 <b>${wish.length}</b></a>
+        <a href="#/quick">${"⚡"} 快速标记</a></div></div>
+    ${doing.length ? shelfSec("在看", doing, "doing") : ""}
+    ${done.length ? shelfSec("最近看过", done.slice(0, 20), "done", done.length) : ""}
+    ${wish.length ? shelfSec("想看", wish.slice(0, 20), "wish", wish.length) : ""}
+    ${ppl.length ? `<div class="sec"><div class="sec-h"><h2>常看的影人</h2><a href="#/stats">更多</a></div><div class="people">${ppl.map(personChip).join("")}</div></div>` : ""}
+    ${gs.length ? `<div class="sec"><div class="sec-h"><h2>类型</h2></div><div class="chips">${gs.map(([g, c]) => `<a class="chip" href="#/lib" onclick="libFilter({s:'done',genre:'${esc(g)}'})">${esc(g)} <b>${c}</b></a>`).join("")}</div></div>` : ""}
+    ${tags.length ? `<div class="sec"><div class="sec-h"><h2>我的标签</h2></div><div class="chips">${tags.map(([g, c]) => `<a class="chip" href="#/lib" onclick="libFilter({s:'',tag:'${esc(g)}'})"># ${esc(g)} <b>${c}</b></a>`).join("")}</div></div>` : ""}
+    <div style="height:10px"></div>`;
+}
+function greet(){ const h = new Date().getHours(); return h < 5 ? "夜深了" : h < 11 ? "早上好" : h < 14 ? "中午好" : h < 18 ? "下午好" : "晚上好"; }
+function shelfSec(title, ids, s, total){
+  return `<div class="sec"><div class="sec-h"><h2>${title}${total > ids.length ? `<small>${total}</small>` : ""}</h2><a href="#/lib" onclick="libFilter({s:'${s}'})">全部</a></div>
+    <div class="scroller">${ids.map(id => shelfItem(id)).join("")}</div></div>`;
+}
+function popularShelf(){
+  if (S.idxReady < 1) return "";
+  const pick = S.idx.filter(x => x.cn && x.t === "m").slice(0, 18).map(x => x.id);
+  return `<div class="sec"><div class="sec-h"><h2>大家都在看</h2><a href="#/quick">快速标记</a></div><div class="scroller">${pick.map(id => shelfItem(id)).join("")}</div></div>`;
+}
+function libFilter(f){ Object.assign(S.lib, {s: "done", type: "all", genre: "", person: "", tag: "", decade: ""}, f); }
+function countBy(ids, fn){
+  const c = new Map();
+  for (const id of ids) for (const k of [].concat(fn(id) || [])) if (k) c.set(k, (c.get(k) || 0) + 1);
+  return [...c].sort((a, b) => b[1] - a[1]);
+}
+function credits(id){   // 一部片子的导演 + 演员（详情优先，没有就用索引分片里的）
+  const m = S.meta[id];
+  if (m && !m.missing && !m.light && (m.directors || m.cast)) return {d: m.directors || [], c: m.cast || []};
+  const p = S.crew.get(id);     // 还没补全的，用离线片库里的前几位主创
+  return p ? {d: isSeries(vm(id).t) ? [] : p.d, c: p.c} : {d: [], c: []};
+}
+function topPeople(ids, role){
+  const c = new Map();
+  for (const id of ids) {
+    const {d, c: cast} = credits(id);
+    const list = role === "d" ? d : role === "c" ? cast.slice(0, 10) : d.concat(cast.slice(0, 10));
+    for (const p of list) {
+      const e = c.get(p.id) || {id: p.id, n: p.n, img: p.img, c: 0, ids: []};
+      if (!e.ids.includes(id)) { e.c++; e.ids.push(id); }
+      c.set(p.id, e);
+    }
+  }
+  return [...c.values()].filter(e => e.c >= 2 || ids.length < 6).sort((a, b) => b.c - a.c);
+}
+const pname = p => S.people[p.id]?.cn || p.n;
+function avatarHTML(p, w = 140){
+  const d = S.people[p.id]?.dimg, im = imdbImg(p.img, w), src = d || im;
+  const nm = pname(p);
+  const alt = d && im ? ` data-alt="${esc(im)}"` : "";
+  return `<div class="av" data-i="${esc(nm.slice(0, 1))}">${src ? `<img loading="lazy" src="${esc(src)}"${alt} onerror="avatarErr(this)">` : esc(nm.slice(0, 1))}</div>`;
+}
+function avatarErr(img){
+  if (img.dataset.alt) { img.src = img.dataset.alt; delete img.dataset.alt; return; }
+  const box = img.parentNode; img.remove(); box.textContent = box.dataset.i;
+}
+function personChip(p){ return `<a class="person" href="#/p/${p.id}">${avatarHTML(p)}<div class="nm">${esc(pname(p))}</div><div class="mt">${p.c} 部</div></a>`; }
+
+/* ================================================================ 片库 */
+function libItems(){
+  const L = S.lib;
+  let ids = active().filter(([, k]) => !L.s || k.s === L.s).map(([id]) => id);
+  if (L.type !== "all") ids = ids.filter(id => (L.type === "tv") === vm(id).series);
+  if (L.genre) ids = ids.filter(id => vm(id).genres.includes(L.genre));
+  if (L.tag) ids = ids.filter(id => (S.marks[id].tags || []).includes(L.tag));
+  if (L.decade) ids = ids.filter(id => Math.floor(vm(id).year / 10) * 10 === +L.decade);
+  if (L.person) ids = ids.filter(id => { const c = credits(id); return c.d.concat(c.c).some(p => p.id === L.person); });
+  const key = {
+    t: id => -(S.marks[id].d ? Date.parse(S.marks[id].d) : 0) * 1e3 - (S.marks[id].t || 0) / 1e9,
+    r: id => -(S.marks[id].r || 0) * 1e6 - (vm(id).douban?.v || 0),
+    db: id => -(vm(id).douban?.v || 0),
+    im: id => -(vm(id).imdb?.v || 0),
+    y: id => -(vm(id).year || 0),
+  }[L.sort] || (id => -(S.marks[id].t || 0));
+  if (L.sort === "t" && L.s !== "done") ids.sort((a, b) => (S.marks[b].t || 0) - (S.marks[a].t || 0));
+  else ids.sort((a, b) => key(a) - key(b));
+  return ids;
+}
+const SORTS = {t: "标记时间", r: "我的评分", db: "豆瓣评分", im: "IMDb 评分", y: "上映年份"};
+function renderLib(){
+  const L = S.lib, all = active();
+  const cnt = s => all.filter(([, k]) => k.s === s).length;
+  const ids = libItems();
+  const chip = (label, val, kind) => `<button class="chip ${val ? "on" : ""}" onclick="pickFilter('${kind}')">${esc(val ? label : {genre: "类型", person: "影人", tag: "标签", decade: "年代"}[kind])} ${IC.down}</button>`;
+  const personName = L.person ? (S.people[L.person]?.cn || findPersonName(L.person)) : "";
+  $("#app").innerHTML = `<div class="top"><h1>片库</h1><button class="icon-btn" onclick="toggleView()" aria-label="切换视图">${L.view === "grid" ? IC.list : IC.grid}</button></div>
+    <div class="seg">${["done", "doing", "wish"].map(s => `<button class="${L.s === s ? "on" : ""}" onclick="S.lib.s='${s}';render()">${STATUS[s]}<b>${cnt(s)}</b></button>`).join("")}</div>
+    <div class="filters">
+      ${["all", "movie", "tv"].map(t => `<button class="chip ${L.type === t ? "on" : ""}" onclick="S.lib.type='${t}';render()">${{all: "全部", movie: "电影", tv: "剧集"}[t]}</button>`).join("")}
+      ${chip(L.genre, L.genre, "genre")}${chip(personName, L.person, "person")}${chip("# " + L.tag, L.tag, "tag")}${chip(L.decade + " 年代", L.decade, "decade")}
+    </div>
+    <div class="libmeta"><span>${ids.length} 部${L.genre || L.person || L.tag || L.decade ? ` · <button onclick="libFilter({s:S.lib.s,type:S.lib.type});render()">清除筛选</button>` : ""}</span>
+      <button onclick="pickSort()">按${SORTS[L.sort]}排序 ▾</button></div>
+    ${!ids.length ? `<div class="empty"><div class="big">这里还空着</div>${L.genre || L.person || L.tag || L.decade ? "换个筛选看看" : `<a class="btn ghost" href="#/search" style="margin-top:14px">${IC.search} 去搜索标记</a>`}</div>`
+      : L.view === "grid" ? `<div class="grid">${ids.map(id => shelfItem(id)).join("")}</div>` : `<div>${ids.map(id => listRow(id, true)).join("")}</div>`}
+    <div style="height:10px"></div>`;
+}
+function findPersonName(nm){
+  for (const m of Object.values(S.meta)) for (const p of (m.directors || []).concat(m.cast || [])) if (p.id === nm) return p.n;
+  return nm;
+}
+function toggleView(){ S.lib.view = S.lib.view === "grid" ? "list" : "grid"; setPref("view", S.lib.view); render(); }
+function pickSort(){
+  openSheet(`<h3>排序</h3>${Object.entries(SORTS).map(([k, v]) => `<div class="opt ${S.lib.sort === k ? "on" : ""}" onclick="S.lib.sort='${k}';closeSheet();render()"><span class="k">${v}</span>${S.lib.sort === k ? "✓" : ""}</div>`).join("")}`);
+}
+function pickFilter(kind){
+  const L = S.lib;
+  const base = active().filter(([, k]) => !L.s || k.s === L.s).map(([id]) => id).filter(id => L.type === "all" || (L.type === "tv") === vm(id).series);
+  let opts = [];
+  if (kind === "genre") opts = countBy(base, id => vm(id).genres).map(([g, c]) => ({v: g, label: g, c}));
+  if (kind === "tag") opts = countBy(base, id => S.marks[id].tags || []).map(([g, c]) => ({v: g, label: "# " + g, c}));
+  if (kind === "decade") opts = countBy(base, id => vm(id).year ? String(Math.floor(vm(id).year / 10) * 10) : "").sort((a, b) => b[0] - a[0]).map(([g, c]) => ({v: g, label: g + " 年代", c}));
+  if (kind === "person") opts = topPeople(base).filter(p => p.c >= 1).slice(0, 60).map(p => ({v: p.id, label: pname(p), c: p.c, p}));
+  const cur = L[kind];
+  openSheet(`<h3>${{genre: "按类型", person: "按影人", tag: "按标签", decade: "按年代"}[kind]}<small>${STATUS[L.s] || "全部"}的片子里</small></h3>
+    <div class="opt ${!cur ? "on" : ""}" data-v=""><span class="k">不限</span></div>
+    ${opts.length ? opts.map(o => `<div class="opt ${cur === o.v ? "on" : ""}" data-v="${esc(o.v)}">${o.p ? avatarHTML(o.p, 80) : ""}<span class="k">${esc(o.label)}</span><b>${o.c}</b></div>`).join("")
+      : `<div class="empty">${kind === "tag" ? "还没有标签。标记片子时可以加上自己的标签。" : kind === "person" ? "详情补全后，这里会按导演和演员归类。" : "暂无"}</div>`}`);
+  $$("#sheet .opt").forEach(el => el.onclick = () => { L[kind] = el.dataset.v; closeSheet(); render(); });
+}
+function listRow(id, mine){
+  const v = vm(id), k = mark(id);
+  const metaLine = [v.year ? (v.series && v.ey && v.ey !== v.year ? `${v.year}–${v.ey}` : v.year) : "", TYPE_ZH[v.t] !== "电影" ? TYPE_ZH[v.t] : "",
+    v.genres.slice(0, 3).join(" "), v.m?.directors?.[0] ? pname(v.m.directors[0]) : ""].filter(Boolean).join(" · ");
+  const right = mine && k
+    ? (k.r ? myStars(k.r) : "") + (k.d && k.s === "done" ? `<span class="muted" style="font-size:11.5px">${k.d}</span>` : "")
+    : (k ? `<span class="pill ${k.s}">${STATUS[k.s]}</span>` : `<button class="pill add" onclick="event.preventDefault();event.stopPropagation();quickWish('${id}',this)">+ 想看</button>`);
+  return `<a class="lrow" href="#/t/${id}">${posterHTML(v, 120)}<div class="bd"><div class="t">${esc(v.name)}</div>
+    ${v.sub ? `<div class="o">${esc(v.sub)}</div>` : ""}<div class="m">${esc(metaLine)}</div>
+    <div class="rs">${scoreHTML(v) || `<span class="sc none">暂无评分</span>`}</div>
+    ${mine && k?.c ? `<div class="m" style="font-family:var(--serif)">“${esc(k.c)}”</div>` : ""}</div><div class="side">${right}</div></a>`;
+}
+
+/* ================================================================ 搜索 */
+function renderSearch(){
+  $("#app").innerHTML = `<div class="sbox"><div class="in">${IC.search}<input id="q" type="search" enterkeyhint="search" autocomplete="off" placeholder="片名、英文名、影人，或粘贴 IMDb / 豆瓣链接" value="${esc(S.q)}">
+    <button class="x ${S.q ? "" : "hide"}" id="qx" aria-label="清空">✕</button></div></div><div id="res"></div>`;
+  const q = $("#q");
+  let t = 0;
+  q.oninput = () => { S.q = q.value; $("#qx").classList.toggle("hide", !S.q); clearTimeout(t); t = setTimeout(renderSearchResults, 120); };
+  q.onkeydown = e => { if (e.key === "Enter") q.blur(); };
+  $("#qx").onclick = () => { S.q = ""; q.value = ""; q.focus(); $("#qx").classList.add("hide"); renderSearchResults(); };
+  if (!S.q) setTimeout(() => q.focus(), 60);
+  renderSearchResults();
+}
+function idFromText(s){
+  const m = s.match(/\btt\d{6,9}\b/);
+  if (m) return {imdb: m[0]};
+  const d = s.match(/douban\.com\/(?:movie\/)?subject\/(\d+)/);
+  return d ? {douban: d[1]} : null;
+}
+function searchIdx(q){
+  let yr = 0; q = q.replace(/(^|\s)((?:19|20)\d{2})(\s|$)/, (a, b, y) => { yr = +y; return " "; });
+  const nq = norm(q);
+  if (!nq) return [];
+  const hits = [];
+  const consider = (row, k) => {
+    const i = k.indexOf(nq); if (i < 0) return;
+    if (yr && Math.abs((row.y || 0) - yr) > 1) return;
+    const exact = k.includes("\u0001" + nq + "\u0001"), pre = k[i - 1] === "\u0001";
+    hits.push({id: row.id, s: (exact ? 3 : pre ? 2 : 1) * 1e9 + (row.v || 0) + (mark(row.id) ? 5e8 : 0)});
+  };
+  for (const row of S.idx) consider(row, row.k);
+  for (const [id, m] of Object.entries(S.meta)) {   // 不在索引里的冷门片（在线搜到、手动加的）
+    if (S.byId.has(id) || m.missing) continue;
+    consider({id, y: m.year, v: m.imdb?.c || 0}, "\u0001" + [m.cn, m.title, m.orig].filter(Boolean).map(norm).join("\u0001") + "\u0001");
+  }
+  hits.sort((a, b) => b.s - a.s);
+  return hits.slice(0, 60).map(h => h.id);
+}
+async function renderSearchResults(){
+  const box = $("#res"); if (!box) return;
+  const q = S.q.trim();
+  const loading = S.idxReady < 2 && S.idxReady >= 0 ? `<div class="loading">${S.idxReady < 1 ? "正在载入片库" : "正在载入冷门片"}<i><b style="width:${S.idxReady < 1 ? 30 : 75}%"></b></i></div>` : "";
+  if (S.idxReady < 0 && !q) { box.innerHTML = `<div class="empty">片库索引没加载成功，可能是网络问题。<br>还是可以用下面的在线搜索。</div>`; }
+  if (!q) {
+    const recent = getPref("recentQ", []);
+    box.innerHTML = loading + `<div class="hint">可以搜<b>中文名、英文名、原名</b>，加年份更准，比如 <b>沙丘 2021</b>。<br>也可以直接粘贴 IMDb 或豆瓣的链接。</div>
+      ${recent.length ? `<div class="sec"><div class="sec-h"><h2>最近搜过</h2><button onclick="setPref('recentQ',[]);renderSearchResults()">清空</button></div><div class="chips">${recent.map(r => `<button class="chip" data-q="${esc(r)}">${esc(r)}</button>`).join("")}</div></div>` : ""}
+      ${popularShelf()}`;
+    box.querySelectorAll("[data-q]").forEach(b => b.onclick = () => { S.q = b.dataset.q; $("#q").value = S.q; $("#qx").classList.remove("hide"); renderSearchResults(); });
+    hydratePosters(box);
+    return;
+  }
+  const direct = idFromText(q);
+  if (direct?.imdb) { box.innerHTML = `${listRow(direct.imdb)}<div class="hint">按 IMDb 编号打开。点进去就能标记。</div>`; hydratePosters(box); return; }
+  if (direct?.douban) {
+    box.innerHTML = onlineBox(q, "豆瓣链接要让后台查一下对应的 IMDb 条目，大约一分钟。");
+    return;
+  }
+  const ids = searchIdx(q);
+  let ppl = [];
+  if (norm(q).length >= 2) {
+    const nq = norm(q), seen = new Set();
+    for (const [id, p] of Object.entries(S.people)) if (p.cn && norm(p.cn).includes(nq)) { ppl.push({id, n: findPersonName(id), cn: p.cn}); seen.add(id); }
+    if (/[a-z]/i.test(q) && S.idxReady > 0) {
+      const names = await loadNames();
+      if (S.q.trim() !== q) return;
+      for (const p of names) { if (ppl.length >= 8) break; if (!seen.has(p.id) && p.k.includes(nq)) { ppl.push(p); seen.add(p.id); } }
+    }
+    ppl = ppl.slice(0, 8);
+  }
+  const L = S.lookup && S.lookup.q === q ? S.lookup : null;
+  box.innerHTML = loading
+    + (ppl.length ? `<div class="sec" style="margin-top:8px"><div class="sec-h"><h2>影人</h2></div><div class="people">${ppl.map(p => `<a class="person" href="#/p/${p.id}">${avatarHTML({id: p.id, n: p.cn || p.n})}<div class="nm">${esc(S.people[p.id]?.cn || p.cn || p.n)}</div>${p.c ? `<div class="mt">${p.c} 部</div>` : ""}</a>`).join("")}</div></div>` : "")
+    + (ids.length ? `<div class="sec" style="margin-top:${ppl.length ? 14 : 4}px">${ppl.length ? `<div class="sec-h"><h2>影视</h2></div>` : ""}${ids.map(id => listRow(id)).join("")}</div>`
+      : S.idxReady >= 1 && !ppl.length ? `<div class="empty" style="padding-bottom:10px">片库里没找到「${esc(q)}」</div>` : "")
+    + (L && L.results?.length ? `<div class="sec"><div class="sec-h"><h2>在线搜索结果</h2></div>${L.results.filter(r => !ids.includes(r.id)).map(r => onlineRow(r)).join("") || `<div class="hint">在线结果和上面一样。</div>`}</div>` : "")
+    + onlineBox(q);
+  hydratePosters(box);
+  clearTimeout(renderSearchResults.t);
+  renderSearchResults.t = setTimeout(() => { const r = getPref("recentQ", []).filter(x => x !== q); r.unshift(q); setPref("recentQ", r.slice(0, 10)); }, 1500);
+}
+function onlineRow(r){
+  if (!S.meta[r.id]) S.meta[r.id] = {id: r.id, title: r.n, year: r.y, type: r.ty, poster: r.img, cn: r.cn || "", at: {}, light: true};
+  return listRow(r.id);
+}
+function onlineBox(q, why){
+  const busy = S.searching === q;
+  return `<div class="online">${busy ? `<div class="spin"></div>` : IC.search.replace("<svg", '<svg style="width:18px;height:18px;color:var(--acc)"')}
+    <div class="bd">${busy ? "后台正在搜索…" : why ? "用后台在线查找" : "没找到想要的？"}<small>${busy ? "大约一分钟，可以先去做别的，结果会出现在这里" : why || "让后台去 IMDb 和豆瓣在线搜，冷门片也能找到（约一分钟）"}</small></div>
+    ${busy ? "" : `<button class="pill done" onclick="onlineSearch()">在线搜</button>`}</div>`;
+}
+async function onlineSearch(){
+  const q = S.q.trim(); if (!q) return;
+  if (!gh.token()) { toast("在线搜索要用到后台，先在设置里连接 GitHub。", "去设置", () => go("#/settings")); return; }
+  S.searching = q; renderSearchResults();
+  try {
+    const d = idFromText(q);
+    await addRequest({q: d?.douban ? "douban:" + d.douban : q});
+    const res = await pollFile("lookup.json", j => j && j.q === (d?.douban ? "douban:" + d.douban : q), 240);
+    S.lookup = {...res, q};
+    for (const r of res.results || []) if (!S.meta[r.id]) S.meta[r.id] = {id: r.id, title: r.n, year: r.y, type: r.ty, poster: r.img, cn: r.cn || "", at: {}, light: true};
+    if (res.err) toast("在线搜索出错：" + res.err);
+    else if (!res.results?.length) toast("在线也没找到，换个名字试试");
+  } catch (e) { toast(e.message); }
+  S.searching = null;
+  if (route().name === "search") renderSearchResults();
+}
+async function quickWish(id, btn){
+  setMark(id, {s: "wish"});
+  btn.outerHTML = `<span class="pill wish pop">想看</span>`;
+  toast(`已加入想看`, "撤销", () => { setMark(id, null); render(); });
+}
+
+/* ================================================================ 条目页 */
+async function renderTitle(id){
+  if (!/^tt\d+$/.test(id)) return go("#/home");
+  const v = vm(id), k = mark(id), m = v.m;
+  const p = await shard("p", id);   // 分片：海报、片长、主创（没补全详情时用）
+  if (route().arg !== id) return;
+  if (!v.posterKey && p?.poster) v.posterKey = p.poster;
+  const dirs = m?.directors?.length ? m.directors : (p?.d || []);
+  const cast = m?.cast?.length ? m.cast : (p?.c || []);
+  const runtime = m?.runtime || p?.rt || 0;
+  const countries = (m?.dcountries?.length ? m.dcountries : (m?.countries || []).map(c => COUNTRY_ZH[c] || c)).slice(0, 3);
+  const plink = list => list.slice(0, 3).map(x => `<a href="#/p/${x.id}">${esc(pname(x))}</a>`).join(" / ");
+  const years = v.series && v.ey && v.ey !== v.year ? `${v.year}–${v.ey}` : v.series && m && !m.ey && v.year ? `${v.year}–` : v.year || "";
+  const infoBits = [
+    [TYPE_ZH[v.t], countries.join(" / "), v.series ? [m?.seasons ? `${m.seasons} 季` : "", m?.episodes ? `${m.episodes} 集` : ""].filter(Boolean).join(" ") : runtime ? `${runtime} 分钟` : ""].filter(Boolean).join(" · "),
+    dirs.length ? `${v.series ? "主创" : "导演"} ${plink(dirs)}` : "",
+    cast.length ? `主演 ${plink(cast)}` : "",
+    m?.date && !v.series ? `上映 ${m.date}` : "",
+  ].filter(Boolean);
+  const enriched = m && !m.light;
+  const waiting = S.pending.has(id);
+  const intro = m?.intro || m?.plot || "";
+  const seasonsDb = m?.seasons_db || [];
+  const nSeasons = m?.seasons || seasonsDb.length || 0;
+  const doneSeasons = new Set(k?.ss || []);
+  $("#app").innerHTML = `
+    <div class="bar" id="bar"><button class="icon-btn" onclick="back()" aria-label="返回">${IC.back}</button><div class="tt">${esc(v.name)}</div><span style="width:36px"></span></div>
+    <div class="hero">${posterHTML(v, 360)}<div class="bd">
+      <h2>${esc(v.name)}</h2>
+      ${v.sub || years ? `<div class="o">${esc(v.sub)}${years ? ` <span>(${years})</span>` : ""}</div>` : ""}
+      <div class="info">${infoBits.join("<br>")}</div>
+      ${v.genres.length ? `<div class="gtags">${v.genres.slice(0, 5).map(g => `<a href="#/lib" onclick="libFilter({s:'',genre:'${esc(g)}'})">${esc(g)}</a>`).join("")}</div>` : ""}
+    </div></div>
+    <div class="ratings">
+      <div><span class="lb"><i style="background:var(--db)"></i>豆瓣${v.douban?.season ? ` · ${esc(v.douban.season)}` : ""}</span>
+        ${v.douban?.v ? `<span class="v">${v.douban.v.toFixed(1)}</span>${starsHTML(v.douban.v)}<span class="c">${fmtCount(v.douban.c)} 人评价</span>`
+          : `<span class="v na">${enriched && m.at?.douban ? (v.douban?.reason || (m.dbid === "" ? "没找到条目" : "暂无评分")) : "待获取"}</span>`}</div>
+      <div><span class="lb"><i style="background:var(--im)"></i>IMDb</span>
+        ${v.imdb?.v ? `<span class="v">${(+v.imdb.v).toFixed(1)}</span><span class="c">${fmtCount(v.imdb.c)} 人</span>` : `<span class="v na">暂无</span>`}</div>
+      <div><span class="lb"><i style="background:var(--tm)"></i>烂番茄</span>
+        ${v.rt?.critics != null ? `<span class="v">${v.rt.critics}<small>%</small></span><span class="c">观众 ${v.rt.audience != null ? v.rt.audience + "%" : "—"}</span>`
+          : v.rt?.audience != null ? `<span class="v">${v.rt.audience}<small>%</small></span><span class="c">观众评分</span>`
+          : `<span class="v na">${enriched && m.at?.rt ? "暂无" : "待获取"}</span>`}</div>
+    </div>
+    ${!enriched ? `<div class="note">${waiting ? `<div class="spin"></div><div class="bd">后台正在补全海报、简介、演职员和三家评分，一两分钟后自动刷新。</div>`
+      : `<div class="bd">${k ? "详情还没补全。" : "现在显示的是离线片库里的基本信息。"}</div><button onclick="requestDetail('${id}')">获取完整信息</button>`}</div>` : ""}
+    <div class="mine">
+      <div class="acts">
+        <button class="wish ${k?.s === "wish" ? "on" : ""}" onclick="openMark('${id}','wish')">${IC.heart}想看</button>
+        ${v.series ? `<button class="doing ${k?.s === "doing" ? "on" : ""}" onclick="openMark('${id}','doing')">${IC.play}在看</button>` : ""}
+        <button class="done ${k?.s === "done" ? "on" : ""}" onclick="openMark('${id}','done')">${IC.check}看过</button>
+      </div>
+      ${k ? `<div class="rec">
+        <div>${STATUS[k.s]}${k.s === "done" && k.d ? ` · ${k.d}` : ""}${k.r ? ` · ${myStars(k.r)} ${RATE_WORD[k.r]}` : ""}${v.series && doneSeasons.size ? ` · 看完 ${doneSeasons.size} 季` : ""}</div>
+        ${k.c ? `<div class="q">${esc(k.c)}</div>` : ""}
+        ${(k.tags || []).length ? `<div class="mtags">${k.tags.map(t => `<span># ${esc(t)}</span>`).join("")}</div>` : ""}
+        <button class="edit" onclick="openMark('${id}','${k.s}')">修改${k.s === "done" ? "评分和短评" : ""}</button></div>` : ""}
+    </div>
+    ${v.series && nSeasons ? `<div class="blk" style="margin-bottom:-12px"><h3>分季 <span class="muted" style="font-size:12.5px;font-weight:400">点圆圈标记看完的季</span></h3></div>
+      <div class="seasons">${Array.from({length: Math.min(nSeasons, 30)}, (_, i) => i + 1).map(n => {
+        const s = seasonsDb.find(x => x.n === n);
+        return `<div class="r"><button class="ck ${doneSeasons.has(n) ? "on" : ""}" onclick="toggleSeason('${id}',${n})" aria-label="第${n}季看完">${doneSeasons.has(n) ? "✓" : ""}</button>
+          <span class="n">第 ${n} 季</span><span class="bar2"><i style="width:${s?.v ? Math.max(4, (s.v - 5) * 20) : 0}%"></i></span><b>${s?.v ? s.v.toFixed(1) : "–"}</b></div>`; }).join("")}</div>
+      ${seasonsDb.length ? `<div class="cap" style="padding:0 var(--pad)">豆瓣分季评分</div>` : ""}` : ""}
+    ${intro ? `<div class="blk"><h3>简介${!m?.intro ? ` <span class="muted" style="font-size:12px;font-weight:400">英文，豆瓣简介补全后替换</span>` : ""}</h3>
+      <div class="intro clip" id="intro">${esc(intro)}</div><button class="more" id="more" onclick="$('#intro').classList.remove('clip');this.remove()">展开</button></div>` : ""}
+    ${dirs.length || cast.length ? `<div class="sec"><div class="sec-h"><h2>演职员</h2></div><div class="cast">
+      ${dirs.slice(0, 3).map(p => castCard(p, v.series ? "主创" : "导演")).join("")}${cast.slice(0, 18).map(p => castCard(p, p.role || "")).join("")}</div></div>` : ""}
+    <div class="blk"><h3>去看看</h3><div class="links">
+      ${v.douban?.id || m?.dbid ? `<a href="https://m.douban.com/movie/subject/${v.douban?.id || m.dbid}/" target="_blank" rel="noopener">豆瓣</a>` : `<a href="https://m.douban.com/search/?query=${encodeURIComponent(v.name)}" target="_blank" rel="noopener">在豆瓣搜</a>`}
+      <a href="https://m.imdb.com/title/${id}/" target="_blank" rel="noopener">IMDb</a>
+      ${m?.rtslug ? `<a href="https://www.rottentomatoes.com/${m.rtslug}" target="_blank" rel="noopener">烂番茄</a>` : ""}</div>
+      ${enriched ? `<button class="more" style="margin-top:10px" onclick="fixDouban('${id}')">豆瓣条目对不上？</button>` : ""}</div>
+    <div style="height:20px"></div>`;
+  tint(v);
+  const intr = $("#intro"); if (intr && intr.scrollHeight <= intr.clientHeight + 2) $("#more")?.remove();
+  hydratePosters($("#app"));
+}
+function castCard(p, role){
+  return `<a class="person" href="#/p/${p.id}">${avatarHTML(p, 160)}<div class="nm">${esc(pname(p))}</div>${role ? `<div class="role">${esc(role)}</div>` : ""}</a>`;
+}
+window.addEventListener("scroll", () => { const b = $("#bar"); if (b) b.classList.toggle("solid", scrollY > 120); }, {passive: true});
+/* 用海报的主色给顶部染一层淡淡的颜色 */
+function tint(v){
+  const shown = $(".hero .ps img"); if (!shown) return;
+  const img = new Image(); img.crossOrigin = "anonymous";   // 单独加载一份来取色，取不到就算了
+  const run = () => { try {
+    const c = document.createElement("canvas"); c.width = c.height = 8;
+    const x = c.getContext("2d"); x.drawImage(img, 0, 0, 8, 8);
+    const d = x.getImageData(0, 0, 8, 8).data; let r = 0, g = 0, b = 0;
+    for (let i = 0; i < d.length; i += 4) { r += d[i]; g += d[i + 1]; b += d[i + 2]; }
+    const n = d.length / 4; $(".hero").style.setProperty("--tint", `rgb(${r / n | 0},${g / n | 0},${b / n | 0})`);
+  } catch {} };
+  img.onload = run; img.src = shown.src;
+}
+
+/* ================================================================ 标记 */
+function setMark(id, patch){
+  const now = Date.now();
+  if (patch === null) S.marks[id] = {del: true, t: now};
+  else {
+    const old = mark(id) || {at: new Date().toISOString()};
+    S.marks[id] = {...old, ...patch, t: now};
+    delete S.marks[id].del;
+    if (!S.meta[id] || S.meta[id].light || S.meta[id].missing) S.pending.add(id);
+  }
+  persistLocal();
+  scheduleSave();
+}
+let markDraft = null;
+function openMark(id, s){
+  const v = vm(id), k = mark(id);
+  markDraft = {id, s, r: k?.r || 0, c: k?.c || "", tags: [...(k?.tags || [])], d: k?.d ?? today(), ss: [...(k?.ss || [])]};
+  if (s === "done" && v.series && v.m?.seasons && !k?.ss?.length) markDraft.ss = Array.from({length: v.m.seasons}, (_, i) => i + 1);
+  drawMarkSheet();
+}
+function drawMarkSheet(){
+  const D = markDraft, v = vm(D.id), k = mark(D.id);
+  const myTags = countBy(active().map(([id]) => id), id => S.marks[id].tags || []).map(([t]) => t);
+  const allTags = [...new Set([...D.tags, ...myTags])];
+  const nS = v.m?.seasons || 0;
+  openSheet(`<div class="grab"></div><h3>${esc(v.name)}<small>${v.year || ""} ${TYPE_ZH[v.t]}</small></h3>
+    <div class="seg" style="margin:0">${["wish", ...(v.series ? ["doing"] : []), "done"].map(s => `<button class="${D.s === s ? "on" : ""}" data-s="${s}">${STATUS[s]}</button>`).join("")}</div>
+    ${D.s !== "wish" ? `<div class="lab">${D.s === "done" ? "给个评价" : "目前感觉"}</div>
+      <div class="bigstars">${[1,2,3,4,5].map(i => `<button class="${D.r >= i ? "f" : ""}" data-r="${i}" aria-label="${i} 星"><i></i></button>`).join("")}</div>
+      <div class="rlabel">${D.r ? RATE_WORD[D.r] : "点星星打分（可不打）"}</div>` : ""}
+    ${D.s === "done" ? `<div class="lab">看的日期</div><div class="daterow"><input class="field" type="date" id="md" value="${esc(D.d)}" max="${today()}">
+      <button class="chip ${!D.d ? "on" : ""}" id="nodate">记不清了</button></div>` : ""}
+    ${v.series && nS && D.s !== "wish" ? `<div class="lab">看完的季</div><div class="tagpick">${Array.from({length: Math.min(nS, 30)}, (_, i) => i + 1).map(n => `<button class="chip ${D.ss.includes(n) ? "on" : ""}" data-ss="${n}">第 ${n} 季</button>`).join("")}</div>` : ""}
+    <div class="lab">标签</div><div class="tagpick" id="tp">${allTags.map(t => `<button class="chip ${D.tags.includes(t) ? "on" : ""}" data-t="${esc(t)}">${esc(t)}</button>`).join("")}
+      <input class="field" id="newtag" placeholder="+ 新标签" style="width:110px;height:28px;padding:0 10px;border-radius:14px;font-size:13px!important"></div>
+    <div class="lab">${D.s === "wish" ? "备注" : "短评"}</div><textarea class="field" id="mc" maxlength="350" placeholder="${D.s === "wish" ? "为什么想看、谁推荐的……" : "写点什么，只有你自己看得到"}">${esc(D.c)}</textarea>
+    <div class="foot"><button class="btn ghost" onclick="closeSheet()">取消</button><button class="btn acc" id="msave">保存</button></div>
+    ${k ? `<button class="del" id="mdel">删除这条标记</button>` : ""}`);
+  const sh = $("#sheet");
+  const keep = () => { D.c = $("#mc").value; const md = $("#md"); if (md) D.d = md.value; };
+  sh.querySelectorAll("[data-s]").forEach(b => b.onclick = () => { keep(); D.s = b.dataset.s; drawMarkSheet(); });
+  sh.querySelectorAll("[data-r]").forEach(b => b.onclick = () => { keep(); D.r = D.r === +b.dataset.r ? 0 : +b.dataset.r; drawMarkSheet(); });
+  sh.querySelectorAll("[data-ss]").forEach(b => b.onclick = () => { keep(); const n = +b.dataset.ss; D.ss = D.ss.includes(n) ? D.ss.filter(x => x !== n) : [...D.ss, n].sort((a, b) => a - b); drawMarkSheet(); });
+  sh.querySelectorAll("[data-t]").forEach(b => b.onclick = () => { keep(); const t = b.dataset.t; D.tags = D.tags.includes(t) ? D.tags.filter(x => x !== t) : [...D.tags, t]; drawMarkSheet(); });
+  const nt = $("#newtag");
+  nt.onkeydown = e => { if (e.key === "Enter") { e.preventDefault(); addTag(); } };
+  function addTag(){ keep(); const t = nt.value.trim().replace(/^#/, "").slice(0, 12); if (t && !D.tags.includes(t)) D.tags.push(t); drawMarkSheet(); setTimeout(() => $("#newtag")?.focus(), 50); }
+  const nd = $("#nodate"); if (nd) nd.onclick = () => { keep(); D.d = D.d ? "" : today(); drawMarkSheet(); };
+  $("#msave").onclick = () => {
+    keep();
+    const extra = $("#newtag").value.trim().replace(/^#/, "").slice(0, 12);
+    if (extra && !D.tags.includes(extra)) D.tags.push(extra);
+    const patch = {s: D.s, tags: D.tags, c: D.c.trim()};
+    patch.r = D.s === "wish" ? 0 : D.r;
+    patch.d = D.s === "done" ? D.d : "";
+    if (v.series) patch.ss = D.s === "wish" ? [] : D.ss;
+    const first = !mark(D.id);
+    setMark(D.id, patch);
+    closeSheet(); render();
+    toast(`已标记为${STATUS[D.s]}${first && !gh.token() ? "（保存在这台手机上，连接 GitHub 后同步）" : ""}`);
+  };
+  const del = $("#mdel"); if (del) del.onclick = () => { setMark(D.id, null); closeSheet(); render(); toast("已删除标记", "撤销", () => { setMark(D.id, k); render(); }); };
+}
+function toggleSeason(id, n){
+  const k = mark(id), v = vm(id);
+  const ss = new Set(k?.ss || []);
+  ss.has(n) ? ss.delete(n) : ss.add(n);
+  const list = [...ss].sort((a, b) => a - b);
+  const all = v.m?.seasons && list.length >= v.m.seasons && v.m.ey;
+  setMark(id, {s: k?.s === "done" || all ? "done" : "doing", ss: list, ...(all && k?.s !== "done" ? {d: today()} : {})});
+  if (all && k?.s !== "done") toast("全部看完，已标记为看过 🎉");
+  render();
+}
+
+/* ================================================================ 影人页 */
+async function renderPerson(nm){
+  if (!/^nm\d+$/.test(nm)) return go("#/home");
+  const n = await shard("n", nm);
+  if (route().arg !== nm) return;
+  let img = "", en = n?.n || findPersonName(nm);
+  const mineIds = [];
+  for (const [id] of active()) {
+    const c = credits(id); const hit = c.d.concat(c.c).find(p => p.id === nm);
+    if (hit) { mineIds.push(id); if (!img) img = hit.img; if (!en || en === nm) en = hit.n; }
+  }
+  for (const m of Object.values(S.meta)) if (!img) { const h = (m.directors || []).concat(m.cast || []).find(p => p.id === nm); if (h) img = h.img; }
+  const p = {id: nm, n: en, img};
+  const cn = S.people[nm]?.cn;
+  const others = [...new Set([...(n?.dir || []), ...(n?.act || [])])].filter(id => !mineIds.includes(id));
+  const dirSet = new Set(n?.dir || []);
+  const cnt = s => mineIds.filter(id => S.marks[id].s === s).length;
+  $("#app").innerHTML = `
+    <div class="bar" id="bar"><button class="icon-btn" onclick="back()" aria-label="返回">${IC.back}</button><div class="tt">${esc(cn || en)}</div><span style="width:36px"></span></div>
+    <div class="phero">${avatarHTML(p, 240)}<div><h2>${esc(cn || en)}</h2>${cn ? `<div class="o">${esc(en)}</div>` : ""}
+      <div class="cnt"><span><b>${cnt("done")}</b>看过</span><span><b>${cnt("doing")}</b>在看</span><span><b>${cnt("wish")}</b>想看</span></div></div></div>
+    ${mineIds.length ? `<div class="sec"><div class="sec-h"><h2>我标记过的<small>${mineIds.length}</small></h2></div><div class="grid">${mineIds.sort((a, b) => vm(b).year - vm(a).year).map(id => shelfItem(id)).join("")}</div></div>` : ""}
+    ${others.length ? `<div class="sec"><div class="sec-h"><h2>TA 的其他作品<small>${others.length}</small></h2></div>${others.slice(0, 80).map(id => listRow(id).replace('<div class="side">', dirSet.has(id) ? '<div class="side"><span class="muted" style="font-size:11px">导演</span>' : '<div class="side">')).join("")}
+      ${others.length > 80 ? `<div class="hint">只显示最热门的 80 部</div>` : ""}</div>` : ""}
+    ${!n && !mineIds.length ? `<div class="empty">离线片库里没有这位影人的作品。</div>` : ""}
+    <div class="hint" style="margin-top:14px">作品来自离线片库，只算前几位主演和导演。</div>
+    <div style="height:20px"></div>`;
+  hydratePosters($("#app"));
+}
+
+/* ================================================================ 快速标记 */
+let quickType = "m", quickMode = "done";
+function renderQuick(){
+  if (S.idxReady < 1) { $("#app").innerHTML = `<div class="bar"><button class="icon-btn" onclick="back()">${IC.back}</button></div><div class="empty">片库加载中…</div>`; return; }
+  const pick = S.idx.filter(x => (quickType === "m" ? ["m"].includes(x.t) : ["s", "ms"].includes(x.t)) && (x.cn || x.v > 200000)).slice(0, 150);
+  $("#app").innerHTML = `<div class="bar solid"><button class="icon-btn" onclick="back()" aria-label="返回">${IC.back}</button><div class="tt">快速标记</div><span style="width:36px"></span></div>
+    <div class="hint" style="padding-top:12px">点一下海报就标记为<b>${STATUS[quickMode]}</b>，再点一下取消。之后可以在详情页补评分和短评。</div>
+    <div class="seg" style="margin-top:6px"><button class="${quickType === "m" ? "on" : ""}" onclick="quickType='m';render()">电影</button><button class="${quickType === "s" ? "on" : ""}" onclick="quickType='s';render()">剧集</button></div>
+    <div class="filters"><button class="chip ${quickMode === "done" ? "on" : ""}" onclick="quickMode='done';render()">标为看过</button><button class="chip ${quickMode === "wish" ? "on" : ""}" onclick="quickMode='wish';render()">标为想看</button></div>
+    <div class="quick" style="margin-top:8px"><div class="grid">${pick.map(x => { const k = mark(x.id), v = vm(x.id);
+      return `<div class="shelf-item" data-id="${x.id}"><div class="qp">${posterHTML(v, 200, k ? `<span class="badge ${k.s}">${STATUS[k.s]}</span>` : "").replace('class="ps"', `class="ps ${k ? "on " + k.s : ""}"`)}</div><div class="nm">${esc(v.name)}</div><div class="mt">${v.year}</div></div>`; }).join("")}</div></div>
+    <div style="height:30px"></div>`;
+  $$(".quick .shelf-item").forEach(el => el.onclick = () => {
+    const id = el.dataset.id, k = mark(id);
+    if (k && k.s === quickMode) setMark(id, null); else setMark(id, {s: quickMode, d: quickMode === "done" ? (k?.d || "") : ""});
+    const k2 = mark(id), ps = el.querySelector(".ps");
+    ps.className = `ps ${k2 ? "on " + k2.s : ""} pop`;
+    ps.querySelector(".badge")?.remove();
+    if (k2) ps.insertAdjacentHTML("beforeend", `<span class="badge ${k2.s}">${STATUS[k2.s]}</span>`);
+  });
+  hydratePosters($("#app"));
+}
+
+/* ================================================================ 统计 */
+function renderStats(){
+  const done = active().filter(([, k]) => k.s === "done").map(([id]) => id);
+  const years = [...new Set(done.map(id => (S.marks[id].d || "").slice(0, 4)).filter(Boolean))].sort().reverse();
+  const Y = S.statYear;
+  const ids = Y === "all" ? done : done.filter(id => (S.marks[id].d || "").startsWith(Y));
+  const films = ids.filter(id => !vm(id).series), shows = ids.length - films.length;
+  const mins = films.reduce((s, id) => s + (S.meta[id]?.runtime || S.crew.get(id)?.rt || 0), 0);
+  const rated = ids.filter(id => S.marks[id].r);
+  const avg = rated.length ? rated.reduce((s, id) => s + S.marks[id].r, 0) / rated.length : 0;
+  const head = `<div class="top"><h1>统计</h1></div><div class="filters" style="padding-top:2px">${["all", ...years].map(y => `<button class="chip ${Y === y ? "on" : ""}" onclick="S.statYear='${y}';render()">${y === "all" ? "全部" : y + " 年"}</button>`).join("")}</div>`;
+  if (!ids.length) { $("#app").innerHTML = head + `<div class="empty"><div class="big">还没有数据</div>标记几部看过的片子，这里就会出现你的观影统计。</div>`; return; }
+  // 每月
+  let months = "";
+  if (Y !== "all") {
+    const c = Array(12).fill(0); ids.forEach(id => { const m = +(S.marks[id].d || "").slice(5, 7); if (m) c[m - 1]++; });
+    const mx = Math.max(...c, 1), best = c.indexOf(Math.max(...c));
+    months = `<div class="sec"><div class="sec-h"><h2>每月</h2><span class="muted" style="font-size:12.5px">${c[best] ? `${best + 1} 月最多，${c[best]} 部` : ""}</span></div><div class="panel"><div class="months" id="months">${c.map((n, i) =>
+      `<div class="m ${i === best && n ? "sel" : ""}" data-i="${i}"><b>${n}</b><i class="${n ? "" : "z"}" style="height:${n / mx * 68}%"></i><span>${i + 1}</span></div>`).join("")}</div></div></div>`;
+  } else if (years.length > 1) {
+    const ys = [...years].reverse().slice(-12), c = ys.map(y => done.filter(id => (S.marks[id].d || "").startsWith(y)).length), mx = Math.max(...c, 1);
+    months = `<div class="sec"><div class="sec-h"><h2>每年</h2></div><div class="panel"><div class="months" id="months">${c.map((n, i) =>
+      `<div class="m ${i === c.length - 1 ? "sel" : ""}"><b>${n}</b><i style="height:${n / mx * 68}%"></i><span>${ys[i].slice(2)}</span></div>`).join("")}</div></div></div>`;
+  }
+  const bars = (rows, unit = "") => { const mx = Math.max(...rows.map(r => r[1]), 1);
+    return rows.map(([k, n]) => `<div class="hbar"><span class="k">${esc(k)}</span><span class="tr">${n ? `<i style="width:${n / mx * 100}%"></i>` : ""}</span><b>${n}${unit}</b></div>`).join(""); };
+  const gs = countBy(ids, id => vm(id).genres).slice(0, 8);
+  const cs = countBy(ids, id => { const m = S.meta[id]; return (m?.dcountries?.length ? m.dcountries : (m?.countries || []).map(c => COUNTRY_ZH[c] || c)).slice(0, 1); }).slice(0, 6);
+  const ds = countBy(ids, id => vm(id).year ? Math.floor(vm(id).year / 10) * 10 + "s" : "").sort((a, b) => a[0].localeCompare(b[0]));
+  const rs = [5, 4, 3, 2, 1].map(r => [RATE_WORD[r], ids.filter(id => S.marks[id].r === r).length]);
+  const dirs = topPeople(ids, "d").slice(0, 8), acts = topPeople(ids, "c").slice(0, 12);
+  const hiDb = ids.filter(id => vm(id).douban?.v && S.marks[id].r).map(id => [id, S.marks[id].r * 2 - vm(id).douban.v]).sort((a, b) => b[1] - a[1]);
+  $("#app").innerHTML = head + `
+    <div class="hero-stat"><div class="big">${ids.length}<small>部看过</small></div>
+      <div class="sub"><span><b>${films.length}</b>电影</span><span><b>${shows}</b>剧集</span>${mins ? `<span><b>${Math.round(mins / 60)}</b>小时（电影）</span>` : ""}${avg ? `<span><b>${avg.toFixed(1)}</b>平均给星</span>` : ""}</div></div>
+    ${months}
+    ${gs.length ? `<div class="sec"><div class="sec-h"><h2>最爱的类型</h2></div><div class="panel">${bars(gs)}</div></div>` : ""}
+    ${dirs.length ? `<div class="sec"><div class="sec-h"><h2>看得最多的导演</h2></div><div class="people ranks">${dirs.map(personChip).join("")}</div></div>` : ""}
+    ${acts.length ? `<div class="sec"><div class="sec-h"><h2>看得最多的演员</h2></div><div class="people ranks">${acts.map(personChip).join("")}</div></div>` : ""}
+    ${rated.length ? `<div class="sec"><div class="sec-h"><h2>我的打分</h2><span class="muted" style="font-size:12.5px">${rated.length} 部打过分</span></div><div class="panel">${bars(rs)}
+      ${hiDb.length >= 3 ? `<div class="cap">比豆瓣打得最高：《${esc(vm(hiDb[0][0]).name)}》；最低：《${esc(vm(hiDb[hiDb.length - 1][0]).name)}》</div>` : ""}</div></div>` : ""}
+    ${cs.length ? `<div class="sec"><div class="sec-h"><h2>国家和地区</h2></div><div class="panel">${bars(cs)}</div></div>` : ""}
+    ${ds.length > 1 ? `<div class="sec"><div class="sec-h"><h2>年代</h2></div><div class="panel">${bars(ds)}</div></div>` : ""}
+    <div class="hint" style="margin-top:16px">按“看过”的日期统计；记不清日期的只算在“全部”里。导演、演员、国家要等详情补全后才计入。</div>
+    <div style="height:10px"></div>`;
+  $$("#months .m").forEach(el => el.onclick = () => { $$("#months .m").forEach(x => x.classList.remove("sel")); el.classList.add("sel"); });
+}
+
+/* ================================================================ 弹层 */
+function openSheet(html){ const s = $("#sheet"); s.innerHTML = html; s.classList.add("on"); $("#mask").classList.add("on"); }
+function closeSheet(){ $("#sheet").classList.remove("on"); $("#mask").classList.remove("on"); }
+$("#mask").onclick = closeSheet;
+
+/* ================================================================ 本地保存 */
+function persistLocal(){
+  kv.set("marks", S.marks); setPref("pendingIds", [...S.pending]);
+  S.dirty = true; setPref("dirty", true);
+}
+
+/* ================================================================ GitHub 同步 */
+const gh = {
+  token(){ return getPref("ghToken", ""); },
+  repo(){
+    const saved = getPref("ghRepo", ""); if (saved) return saved;
+    const h = location.hostname; if (!h.endsWith(".github.io")) return "";
+    const owner = h.split(".")[0], first = location.pathname.split("/").filter(Boolean)[0];
+    return `${owner}/${first || h}`;
+  },
+  dataRepo(){ const s = getPref("ghDataRepo", ""); if (s) return s; const r = gh.repo(); return r ? `${r.split("/")[0]}/${r.split("/")[1]}-data` : ""; },
+  async req(repo, method, path, body, accept){
+    let r;
+    try {
+      r = await fetch(`https://api.github.com/repos/${repo}${path}`, {method, cache: "no-store",
+        headers: {Authorization: `Bearer ${gh.token()}`, Accept: accept || "application/vnd.github+json"}, body: body ? JSON.stringify(body) : undefined});
+    } catch { throw new Error("连不上 GitHub，可能要开一下网络环境。改动已存在手机上，下次会自动同步。"); }
+    if (r.status === 401) throw new Error("GitHub 密钥无效或已过期，请到设置里重新填写");
+    if (r.status === 403) throw new Error("密钥权限不够：Contents 要选 Read and write");
+    if (r.status === 404 && method !== "GET") throw new Error(`找不到仓库 ${repo}，确认已经建好、密钥里也选了它`);
+    return r;
+  },
+  data(method, path, body, accept){ return gh.req(gh.dataRepo(), method, path, body, accept); },
+  site(method, path, body){ return gh.req(gh.repo(), method, path, body); },
+};
+const b64e = s => { const b = new TextEncoder().encode(s); let o = ""; for (let i = 0; i < b.length; i += 0x8000) o += String.fromCharCode(...b.subarray(i, i + 0x8000)); return btoa(o); };
+async function readJSON(path){
+  const r = await gh.data("GET", `/contents/${path}?t=${Date.now()}`, null, "application/vnd.github.raw+json");
+  if (r.status === 404) return {data: null, sha: null};
+  if (!r.ok) throw new Error(`读取 ${path} 失败（HTTP ${r.status}）`);
+  const text = await r.text();
+  let data = null; try { data = JSON.parse(text); } catch {}
+  return {data, sha: (r.headers.get("etag") || "").replace(/^W\//, "").replace(/"/g, "") || null, text};
+}
+async function shaOf(path){
+  const r = await gh.data("GET", `/contents/${path}?t=${Date.now()}`);
+  if (r.status === 404) return null;
+  if (!r.ok) throw new Error(`读取 ${path} 失败（HTTP ${r.status}）`);
+  return (await r.json()).sha;
+}
+async function writeJSON(path, mutate, message){
+  for (let i = 0; i < 4; i++) {
+    const [{data}, sha] = await Promise.all([readJSON(path), shaOf(path)]);
+    const next = mutate(data);
+    const r = await gh.data("PUT", `/contents/${path}`, {message, sha: sha || undefined, content: b64e(JSON.stringify(next) + "\n")});
+    if (r.ok) return next;
+    if (r.status !== 409 && r.status !== 422) throw new Error(`保存失败（HTTP ${r.status}）`);
+    await new Promise(r => setTimeout(r, 600 + i * 800));
+  }
+  throw new Error("保存冲突，请稍后再试");
+}
+function mergeMarks(a, b){
+  const out = {...a};
+  for (const [id, x] of Object.entries(b || {})) if (!out[id] || (x.t || 0) > (out[id].t || 0)) out[id] = x;
+  return out;
+}
+let saveT = 0, saving = false;
+function scheduleSave(){ clearTimeout(saveT); saveT = setTimeout(saveRemote, 1500); }
+async function saveRemote(){
+  if (!gh.token() || IS_PREVIEW) return;
+  if (saving) { scheduleSave(); return; }
+  saving = true;
+  try {
+    const before = S.marks;
+    const merged = await writeJSON("marks.json", d => ({v: 1, items: mergeMarks((d && d.items) || {}, before)}), "更新标记");
+    S.marks = mergeMarks(merged.items, S.marks);
+    kv.set("marks", S.marks);
+    S.dirty = false; setPref("dirty", false);
+    const need = [...S.pending].filter(id => mark(id));
+    if (need.length) await addRequest({ids: need});
+  } catch (e) { toast(e.message); }
+  saving = false;
+}
+/* 让后台补全 / 在线搜索：写进 requests.json，再叫后台马上跑一次 */
+async function addRequest(req){
+  await writeJSON("requests.json", d => {
+    d = d || {};
+    if (req.ids) d.ids = [...new Set([...(d.ids || []), ...req.ids])];
+    if (req.q) d.q = req.q;
+    if (req.fix) d.fix = {...(d.fix || {}), ...req.fix};
+    return d;
+  }, req.q ? "在线搜索" : "补全详情");
+  const r = await gh.site("POST", "/actions/workflows/sync.yml/dispatches", {ref: "main"});
+  if (!r.ok && r.status !== 204) toast("已排队，后台会在下次定时运行时处理（密钥没有 Actions 权限，没法马上运行）");
+  if (req.ids) watchPending();
+}
+function fixDouban(id){
+  if (!gh.token()) { toast("要用到后台，先在设置里连接 GitHub。", "去设置", () => go("#/settings")); return; }
+  const v = vm(id);
+  openSheet(`<div class="grab"></div><h3>指定豆瓣条目<small>${esc(v.name)}</small></h3>
+    <div class="small">在豆瓣找到这部片子，复制链接粘贴到这里。剧集请用第一季的链接。</div>
+    <input class="field" id="dburl" placeholder="https://movie.douban.com/subject/…" style="margin-top:12px" autocapitalize="off">
+    <div class="foot"><button class="btn ghost" onclick="closeSheet()">取消</button><button class="btn acc" id="dbok">保存</button></div>`);
+  $("#dbok").onclick = async () => {
+    const u = $("#dburl").value.trim(), did = (u.match(/(\d{5,})/) || [])[1];
+    if (!did) { toast("没认出豆瓣编号，粘贴完整链接试试"); return; }
+    closeSheet(); S.pending.add(id); setPref("pendingIds", [...S.pending]);
+    if (S.meta[id]) S.meta[id].at = {...(S.meta[id].at || {}), douban: 0};
+    render();
+    try { await addRequest({ids: [id], fix: {[id]: did}}); toast("已提交，一两分钟后更新"); } catch (e) { toast(e.message); }
+  };
+}
+async function requestDetail(id){
+  if (!gh.token()) { toast("补全详情要用到后台，先在设置里连接 GitHub。", "去设置", () => go("#/settings")); return; }
+  S.pending.add(id); setPref("pendingIds", [...S.pending]); render();
+  try { await addRequest({ids: [id]}); } catch (e) { toast(e.message); S.pending.delete(id); render(); }
+}
+async function pollFile(path, ok, seconds){
+  const end = Date.now() + seconds * 1000;
+  await new Promise(r => setTimeout(r, 20000));
+  while (Date.now() < end) {
+    try { const {data} = await readJSON(path); if (ok(data)) return data; } catch {}
+    await new Promise(r => setTimeout(r, 8000));
+  }
+  throw new Error("后台还没处理完，稍后再看看（GitHub 忙的时候会慢一些）");
+}
+let watching = false;
+async function watchPending(){
+  if (watching) return; watching = true;
+  const end = Date.now() + 5 * 60 * 1000;
+  await new Promise(r => setTimeout(r, 25000));
+  while (S.pending.size && Date.now() < end) {
+    try {
+      await pullMeta();
+      for (const id of [...S.pending]) if (S.meta[id] && !S.meta[id].light && (S.meta[id].at?.douban || S.meta[id].missing)) S.pending.delete(id);
+      setPref("pendingIds", [...S.pending]);
+      render();
+    } catch {}
+    if (S.pending.size) await new Promise(r => setTimeout(r, 10000));
+  }
+  watching = false;
+}
+async function pullMeta(){
+  const [m, p] = await Promise.all([readJSON("meta.json"), readJSON("people.json")]);
+  if (m.data) { const light = Object.fromEntries(Object.entries(S.meta).filter(([id, x]) => x.light && !m.data[id])); S.meta = {...m.data, ...light}; kv.set("meta", m.data); }
+  if (p.data) { S.people = p.data; kv.set("people", p.data); }
+}
+async function pullAll(){
+  if (!gh.token() || IS_PREVIEW) return;
+  try {
+    const [mk, st] = await Promise.all([readJSON("marks.json"), readJSON("status.json")]);
+    const remote = (mk.data && mk.data.items) || {};
+    const merged = mergeMarks(remote, S.marks);
+    const changedLocal = Object.keys(merged).some(id => merged[id] !== remote[id]);
+    S.marks = merged; kv.set("marks", S.marks);
+    S.status = st.data; setPref("status", S.status);
+    await pullMeta();
+    for (const id of [...S.pending]) if (S.meta[id] && !S.meta[id].light && S.meta[id].at?.douban) S.pending.delete(id);
+    setPref("pendingIds", [...S.pending]);
+    // 有些标记了但还没详情的（比如另一台手机上加的），补一下
+    const missing = active().map(([id]) => id).filter(id => !S.meta[id] || S.meta[id].light);
+    if (changedLocal || S.dirty) await saveRemote();
+    else if (missing.length && !getPref("askedAt", 0) || (missing.length && Date.now() - getPref("askedAt", 0) > 3600e3)) {
+      setPref("askedAt", Date.now()); missing.forEach(id => S.pending.add(id)); await addRequest({ids: missing});
+    }
+    if (S.pending.size) watchPending();
+    S.synced = Date.now();
+    render();
+  } catch (e) { S.syncErr = e.message; render(); }
+}
+function syncBanner(){
+  if (IS_PREVIEW) return `<div class="note" style="margin-top:4px"><div class="bd">这是预览版：数据是示例，改动只存在这台设备上。</div></div>`;
+  if (!gh.token()) return active().length ? `<div class="note" style="margin-top:4px"><div class="bd">标记只存在这台手机上。连接 GitHub 后可以同步、补全详情和评分。</div><button onclick="go('#/settings')">去连接</button></div>` : "";
+  if (S.syncErr) return `<div class="note" style="margin-top:4px;background:#fdecea;color:#a3352a"><div class="bd">${esc(S.syncErr)}</div><button style="color:#a3352a" onclick="S.syncErr='';pullAll()">重试</button></div>`;
+  return "";
+}
+
+/* ================================================================ 设置 */
+function renderSettings(){
+  const st = S.status?.sources || {};
+  const NAMES = {imdb: "IMDb", douban: "豆瓣", rt: "烂番茄", wikidata: "Wikidata（编号对照）", search: "在线搜索"};
+  $("#app").innerHTML = `<div class="bar solid"><button class="icon-btn" onclick="back()" aria-label="返回">${IC.back}</button><div class="tt">设置</div><span style="width:36px"></span></div>
+    <div style="padding:0 var(--pad)">
+    <div class="set-sec"><h4>GitHub 同步</h4><div class="set-card" style="padding:14px">
+      ${gh.token() ? `<div style="display:flex;align-items:center;gap:8px"><span class="dot"></span><b style="flex:1;font-weight:500">已连接</b><button class="pill add" id="unlink">断开</button></div>
+        <div class="small" style="margin-top:6px">网站仓库 ${esc(gh.repo())}<br>数据仓库 ${esc(gh.dataRepo())}${S.synced ? `<br>上次同步 ${new Date(S.synced).toLocaleTimeString("zh-CN", {hour: "2-digit", minute: "2-digit"})}` : ""}</div>`
+      : `<div class="small" style="margin-bottom:10px">粘贴 GitHub 密钥（fine-grained token），需要勾选 <b>${esc(gh.repo() || "movie-library")}</b> 和 <b>${esc(gh.dataRepo() || "movie-library-data")}</b> 两个仓库，权限 Contents 和 Actions 都选 Read and write。</div>
+        <input class="field" id="tok" placeholder="github_pat_…" autocomplete="off" autocapitalize="off" spellcheck="false">
+        <button class="btn acc" id="link" style="width:100%;margin-top:10px">连接</button>`}
+      <details style="margin-top:12px"><summary class="small">仓库名不一样？</summary>
+        <input class="field" id="repo" placeholder="网站仓库，如 name/movie-library" value="${esc(getPref("ghRepo", ""))}" style="margin-top:8px">
+        <input class="field" id="drepo" placeholder="数据仓库，如 name/movie-library-data" value="${esc(getPref("ghDataRepo", ""))}" style="margin-top:8px">
+        <button class="pill add" id="saverepo" style="margin-top:8px">保存</button></details>
+    </div></div>
+    ${Object.keys(st).length ? `<div class="set-sec"><h4>数据源${S.status?.updated ? ` · 后台上次运行 ${esc(S.status.updated.slice(5, 16).replace("T", " "))}` : ""}</h4><div class="set-card">
+      ${Object.entries(st).map(([k, s]) => `<div class="opt"><span class="dot ${s.ok ? "" : "bad"}"></span><span class="k">${NAMES[k] || k}</span><b style="max-width:55%;text-align:right;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${esc(s.msg)}</b></div>`).join("")}</div></div>` : ""}
+    <div class="set-sec"><h4>离线片库</h4><div class="set-card"><div class="opt"><span class="k">收录</span><b>${S.idxInfo ? `${S.idxInfo.titles.toLocaleString()} 部` : S.idxReady < 0 ? "加载失败" : "加载中"}</b></div>
+      <div class="opt"><span class="k">更新于</span><b>${S.idxInfo ? esc(S.idxInfo.built.slice(0, 10)) : "—"}</b></div></div>
+      <div class="small" style="margin-top:6px">每周用 IMDb 官方数据集更新一次，收录有一定人气的电影和剧集。搜不到的冷门片可以用在线搜索。</div></div>
+    <div class="set-sec"><h4>备份</h4><div class="set-card"><div class="opt" id="exp"><span class="k">导出全部标记（JSON）</span>›</div>
+      <label class="opt"><span class="k">从备份恢复</span>›<input type="file" id="imp" accept="application/json" class="hide"></label></div></div>
+    <div class="small" style="margin:20px 0 30px;text-align:center">数据来自 IMDb、豆瓣、烂番茄，仅供个人使用。</div></div>`;
+  const link = $("#link");
+  if (link) link.onclick = async () => {
+    const t = $("#tok").value.trim(); if (!t) return;
+    setPref("ghToken", t); link.disabled = true; link.textContent = "连接中…";
+    try {
+      const r = await gh.data("GET", "");
+      if (!r.ok) throw new Error(r.status === 404 ? `找不到数据仓库 ${gh.dataRepo()}，确认已经建好、密钥里勾选了它` : `连接失败（HTTP ${r.status}）`);
+      toast("连接成功，正在同步"); await pullAll(); render();
+    } catch (e) { setPref("ghToken", ""); toast(e.message); link.disabled = false; link.textContent = "连接"; }
+  };
+  const ul = $("#unlink"); if (ul) ul.onclick = () => { setPref("ghToken", ""); render(); };
+  $("#saverepo").onclick = () => { setPref("ghRepo", $("#repo").value.trim()); setPref("ghDataRepo", $("#drepo").value.trim()); toast("已保存"); render(); };
+  $("#exp").onclick = () => {
+    const blob = new Blob([JSON.stringify({exported: new Date().toISOString(), items: S.marks}, null, 1)], {type: "application/json"});
+    const a = document.createElement("a"); a.href = URL.createObjectURL(blob); a.download = `影库备份-${today()}.json`; a.click();
+  };
+  $("#imp").onchange = async e => {
+    try { const j = JSON.parse(await e.target.files[0].text()); const n = Object.keys(j.items || {}).length; if (!n) throw 0;
+      S.marks = mergeMarks(S.marks, j.items); Object.keys(j.items).forEach(id => { if (!S.meta[id]) S.pending.add(id); }); persistLocal(); scheduleSave(); toast(`已恢复 ${n} 条标记`); }
+    catch { toast("这个文件不是影库的备份"); }
+  };
+}
+
+/* ================================================================ 启动 */
+(async function boot(){
+  if (window.__PREVIEW__) {
+    const P = window.__PREVIEW__;
+    S.marks = P.marks; S.meta = P.meta; S.people = P.people; S.status = P.status;
+  } else {
+    const [mk, mt, pp] = await Promise.all([kv.get("marks"), kv.get("meta"), kv.get("people")]);
+    S.marks = mk || {}; S.meta = mt || {}; S.people = pp || {}; S.status = getPref("status", null);
+  }
+  render();
+  loadIndex();
+  pullAll();
+  if (S.pending.size && gh.token()) watchPending();
+  document.addEventListener("visibilitychange", () => { if (!document.hidden && Date.now() - (S.synced || 0) > 60000) pullAll(); });
+  if ("serviceWorker" in navigator && !IS_PREVIEW && location.protocol === "https:") navigator.serviceWorker.register("sw.js").catch(() => {});
+})();
+</script>
+</body>
+</html>

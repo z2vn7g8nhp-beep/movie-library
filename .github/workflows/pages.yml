@@ -1,0 +1,93 @@
+name: 片库索引和网页
+
+on:
+  push:
+    branches: [main]
+    paths: ["docs/**"]
+  schedule:
+    - cron: "23 19 * * 6"     # 每周日凌晨 3 点（北京时间）重建离线片库
+  workflow_dispatch:
+    inputs:
+      rebuild:
+        description: "重新生成离线片库（约 5 分钟）"
+        type: boolean
+        default: true
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  pages:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    environment:
+      name: github-pages
+      url: ${{ steps.deploy.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: 取回上一次的片库
+        id: prev
+        run: |
+          mkdir -p prev
+          if git fetch --depth=1 origin index 2>/dev/null; then
+            git archive FETCH_HEAD | tar -x -C prev
+            echo "have=1" >> "$GITHUB_OUTPUT"
+          else
+            echo "have=0" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: 判断要不要重建
+        id: need
+        run: |
+          if [ "${{ github.event_name }}" = "schedule" ] || [ "${{ inputs.rebuild }}" = "true" ] || [ "${{ steps.prev.outputs.have }}" = "0" ]; then
+            echo "build=1" >> "$GITHUB_OUTPUT"
+          else
+            echo "build=0" >> "$GITHUB_OUTPUT"
+          fi
+
+      - uses: actions/setup-python@v5
+        if: steps.need.outputs.build == '1'
+        with:
+          python-version: "3.12"
+          cache: pip
+      - if: steps.need.outputs.build == '1'
+        run: pip install -r requirements.txt
+
+      - name: 生成离线片库（IMDb 官方数据集）
+        if: steps.need.outputs.build == '1'
+        run: |
+          python scraper/build_index.py --src /tmp/ds --out out/idx --poster-cache prev/p
+          rm -rf prev && mkdir -p prev && cp -r out/idx/. prev/
+
+      - name: 保存片库（覆盖式，不让仓库越来越大）
+        if: steps.need.outputs.build == '1'
+        run: |
+          cd prev
+          git init -q -b index
+          git config user.name "movie-library-bot"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -q -m "片库 $(TZ=Asia/Shanghai date '+%Y-%m-%d')"
+          git push -q -f "https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git" index
+
+      - name: 组装网页
+        run: |
+          mkdir -p site
+          cp -r docs/. site/
+          rm -rf site/idx && mkdir -p site/idx && cp -r prev/. site/idx/
+          rm -rf site/idx/.git
+          ls site site/idx | head -20
+
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: site
+      - id: deploy
+        uses: actions/deploy-pages@v4
