@@ -140,6 +140,61 @@ class IMDb:
             d["orig"] = ""
         return d
 
+    PERSON = """query($id:ID!){ name(id:$id){ id nameText{text} birthDate{dateComponents{year month day}}
+      birthLocation{text} deathDate{dateComponents{year month day}} bio{text{plainText}} primaryImage{url}
+      images(first:16){edges{node{url width height}}}
+      knownFor(first:6){edges{node{title{id}}}}
+      credits(first:250, filter:{categories:["actor","actress","director","self"]}){ edges{node{ category{id}
+        title{id titleText{text} originalTitleText{text} releaseYear{year endYear} titleType{id} primaryImage{url}
+              ratingsSummary{aggregateRating voteCount} genres{genres{text}}}
+        ... on Cast{ characters{name} episodeCredits(first:1){total} } }}} } }"""
+    KEEP_TYPES = {"movie", "tvMovie", "tvSeries", "tvMiniSeries", "tvSpecial", "video", "short"}
+
+    def person(self, nm):
+        n = self._gql(self.PERSON, {"id": nm}).get("name")
+        if not n:
+            return None
+
+        def date(x):
+            c = (x or {}).get("dateComponents") or {}
+            return "-".join(f"{v:02d}" if i else str(v) for i, v in enumerate(
+                v for v in (c.get("year"), c.get("month"), c.get("day")) if v)) or None
+        credits = {}
+        for e in ((n.get("credits") or {}).get("edges") or []):
+            node = e.get("node") or {}
+            t = node.get("title") or {}
+            ty = (t.get("titleType") or {}).get("id")
+            if not t.get("id") or ty not in self.KEEP_TYPES:
+                continue
+            cat = (node.get("category") or {}).get("id", "")
+            cat = "self" if cat == "self" else "director" if cat == "director" else "actor"
+            c = credits.get(t["id"])
+            if c:      # 同一部又演又导
+                if cat == "director" and "director" not in c["cats"]:
+                    c["cats"].append("director")
+                continue
+            ry, rs = t.get("releaseYear") or {}, t.get("ratingsSummary") or {}
+            ch = node.get("characters") or []
+            credits[t["id"]] = {
+                "id": t["id"], "n": (t.get("titleText") or {}).get("text", ""), "ty": ty, "cats": [cat],
+                "y": ry.get("year"), "ey": ry.get("endYear"), "role": ch[0].get("name", "") if ch else "",
+                "eps": ((node.get("episodeCredits") or {}).get("total")) or None,
+                "img": img_key((t.get("primaryImage") or {}).get("url")),
+                "r": rs.get("aggregateRating"), "v": rs.get("voteCount") or 0,
+                "g": [g["text"] for g in ((t.get("genres") or {}).get("genres") or [])][:3],
+            }
+        return {
+            "id": n["id"], "n": (n.get("nameText") or {}).get("text", ""),
+            "birth": date(n.get("birthDate")), "death": date(n.get("deathDate")),
+            "place": (n.get("birthLocation") or {}).get("text", ""),
+            "bio": (((n.get("bio") or {}).get("text") or {}).get("plainText") or "").strip(),
+            "img": img_key((n.get("primaryImage") or {}).get("url")),
+            "photos": [img_key((e.get("node") or {}).get("url")) for e in ((n.get("images") or {}).get("edges") or [])
+                       if img_key((e.get("node") or {}).get("url"))],
+            "known": [e["node"]["title"]["id"] for e in ((n.get("knownFor") or {}).get("edges") or []) if e.get("node")],
+            "credits": list(credits.values()),
+        }
+
     def suggest(self, q):
         q = q.strip()
         if not q:
@@ -270,6 +325,51 @@ class Douban:
                     continue
                 return x["id"]
         return None
+
+    def find_person(self, name, nm):
+        """按英文名搜豆瓣影人，逐个核对资料里的 IMDb 编号，对上才算。"""
+        nap(0.8, 1.6)
+        try:
+            r = self.s.get("https://www.douban.com/search", params={"cat": "1065", "q": name}, timeout=15,
+                           headers={"User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 14_0) AppleWebKit/605.1.15 "
+                                                  "(KHTML, like Gecko) Version/17.0 Safari/605.1.15",
+                                    "Referer": "https://www.douban.com/"})
+        except requests.RequestException as e:
+            raise SourceError(f"豆瓣影人搜索失败：{e.__class__.__name__}")
+        ids = re.findall(r"sid: (\d+)", r.text)
+        for pid in list(dict.fromkeys(ids))[:3]:
+            d = self.personage(pid)
+            if d and d.get("imdb") == nm:
+                return d
+        return None
+
+    def personage(self, pid):
+        d = self._json(f"https://m.douban.com/rexxar/api/v2/elessar/subject/{pid}", {"ck": "", "for_mobile": 1})
+        if not d or not d.get("title"):
+            return None
+        info = {k: v for k, v in ((d.get("extra") or {}).get("info") or []) if isinstance(k, str)}
+        desc = d.get("desc") or ""
+        m = re.search(r'<div class="content">(.*?)</div>', desc, re.S)
+        bio = re.sub(r"<[^>]+>", "", re.sub(r"</p>\s*<p>", "\n", m.group(1))).strip() if m else ""
+        mods = {x.get("type"): x.get("payload") or {} for x in d.get("modules") or []}
+        works = []
+        for c in (mods.get("work_collections") or {}).get("collections") or []:
+            for w in c.get("works") or []:
+                sub = w.get("subject") or {}
+                role = (w.get("roles") or [""])[0]
+                rm = re.search(r"饰\s*([^)）]+)", role)
+                works.append({"cn": sub.get("title", ""), "role": rm.group(1).strip() if rm else "", "id": sub.get("id")})
+        photos = [((p.get("image") or {}).get("large") or {}).get("url") for p in (mods.get("photos") or {}).get("photos") or []]
+        awards = []
+        for a in (mods.get("award_result_collection") or {}).get("awards") or []:
+            cer = a.get("ceremony") or {}
+            awards.append({"won": bool(a.get("is_won")), "ceremony": cer.get("title", ""), "year": cer.get("year"),
+                           "cat": (a.get("category") or {}).get("title", ""), "work": (a.get("subject") or {}).get("title", "")})
+        return {"pid": str(d.get("id")), "cn": d.get("title", ""), "en": d.get("latin_title", ""),
+                "imdb": (info.get("IMDb编号") or "").strip(), "birth": info.get("出生日期", ""), "place": info.get("出生地", ""),
+                "family": info.get("家庭成员", ""), "bio": bio, "cover": ((d.get("cover") or {}).get("large") or {}).get("url", ""),
+                "photos": [p for p in photos if p][:16], "awards": awards, "works": works,
+                "awardsTotal": (mods.get("award_result_collection") or {}).get("total")}
 
     def subject(self, did):
         """电影、剧集共用：先按电影查，没有再按剧集查。"""

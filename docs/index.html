@@ -30,6 +30,7 @@
   --wish:#d9822b; --wish-bg:#fbf0e3;
   --doing:#3a76c4; --doing-bg:#e8f0fa;
   --gold:#f2a515;
+  --rose:#e2457a; --rose-ink:#c23465; --rose-bg:#fdedf2; --rose-line:#f6d3df;   /* 追星用的玫瑰色 */
   --db:#00a31a; --im:#e2b100; --tm:#f0350c;
   --sans:-apple-system,BlinkMacSystemFont,"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
   --num:-apple-system,BlinkMacSystemFont,"SF Pro Display","Helvetica Neue",sans-serif;
@@ -312,6 +313,93 @@ textarea.field{min-height:84px;resize:none;line-height:1.6}
 .opt b{font-family:var(--num);font-weight:400;color:var(--dim);font-size:13px}
 .opt.on{color:var(--acc-ink);font-weight:600}
 .opt .av{width:32px;height:32px;margin:0;font-size:13px}
+
+/* ---------- 追影人 ---------- */
+.icon-btn.rose{color:var(--rose);font-size:18px}
+.bar .icon-btn{font-size:18px;color:var(--ink-2)}
+.bar .icon-btn.rose{color:var(--rose)}
+.phero2{position:relative;margin-top:calc(-52px - var(--st));padding:calc(var(--st) + 64px) var(--pad) 18px;text-align:center;overflow:hidden}
+.phero2 .pbg{position:absolute;inset:-40px;background:center 20%/cover;filter:blur(36px) saturate(1.2);opacity:.55;transform:scale(1.1)}
+.phero2::after{content:"";position:absolute;inset:0;background:linear-gradient(rgba(247,246,242,.15),rgba(247,246,242,.55) 55%,var(--bg) 96%)}
+.phero2 > *:not(.pbg){position:relative;z-index:1}
+.pimg{width:168px;height:212px;margin:0 auto;border-radius:22px;overflow:hidden;background:var(--soft);box-shadow:0 18px 40px rgba(60,30,40,.25),0 0 0 4px rgba(255,255,255,.85);
+  display:grid;place-items:center;font-family:var(--serif);font-size:56px;color:var(--faint)}
+.pimg img{width:100%;height:100%;object-fit:cover;object-position:center 22%;grid-area:1/1;opacity:0;transition:opacity .4s}
+.pimg img.ok{opacity:1}
+.pimg span{grid-area:1/1}
+.pimg img.ok + span{display:none}
+.phero2 h2{font-family:var(--serif);font-size:30px;font-weight:700;margin:18px 0 0;letter-spacing:.04em;line-height:1.2}
+.phero2 .en{font-family:var(--latin);font-style:italic;font-size:16px;color:var(--ink-2);margin-top:2px}
+.phero2 .pmeta{font-size:13px;color:var(--ink-2);margin-top:6px}
+.bday{display:inline-block;padding:0 8px;border-radius:10px;background:var(--rose);color:#fff;font-size:12px;margin-left:4px}
+.pfollow{margin-top:14px;height:40px;padding:0 24px;border-radius:20px;background:var(--rose);color:#fff;font-weight:600;font-size:15px;box-shadow:0 6px 16px rgba(226,69,122,.3)}
+.pfollow.on{background:#fff;color:var(--rose-ink);box-shadow:0 0 0 1px var(--rose-line) inset}
+.pstat{margin:4px var(--pad) 0;padding:16px;border-radius:18px;background:var(--card);box-shadow:var(--shadow);display:flex;gap:16px;align-items:center}
+.pring{position:relative;width:92px;height:92px;flex:none}
+.pring > div{position:absolute;inset:0;display:flex;align-items:baseline;justify-content:center;padding-top:30px;font-family:var(--num)}
+.pring b{font-size:28px;font-weight:300;letter-spacing:-.02em}
+.pring small{font-size:13px;color:var(--dim)}
+.pstat .big{font-size:16px;font-weight:500}
+.pstat .big b{font-family:var(--num);font-size:24px;font-weight:500;color:var(--rose-ink)}
+.pstat .sm{font-size:12.5px;color:var(--ink-2);margin-top:3px}
+.pstat .faint{color:var(--faint);font-size:11.5px}
+.note.rosey{background:var(--rose-bg);color:var(--rose-ink)}
+.note.rosey button{color:var(--rose-ink)}
+.photos{display:flex;gap:8px;overflow-x:auto;padding:2px var(--pad) 6px;scrollbar-width:none;scroll-snap-type:x proximity;scroll-padding:0 var(--pad)}
+.photos::-webkit-scrollbar{display:none}
+.photos button{flex:none;height:168px;border-radius:12px;overflow:hidden;background:var(--soft);scroll-snap-align:start}
+.photos img{height:100%;width:auto;max-width:280px;object-fit:cover;opacity:0;transition:opacity .3s}
+.photos img.ok{opacity:1}
+.awards{display:flex;flex-direction:column;gap:8px}
+.aw{display:flex;gap:10px;align-items:center;padding:10px 12px;border-radius:12px;background:var(--card);box-shadow:0 0 0 .5px var(--hair) inset;font-size:13px}
+.aw i{font-style:normal;font-size:18px}
+.aw div{flex:1;min-width:0;display:flex;flex-direction:column}
+.aw b{font-weight:600}
+.aw span{color:var(--ink-2);font-size:12.5px}
+.aw em{font-style:normal;font-size:11.5px;color:var(--dim)}
+.aw.won{background:linear-gradient(90deg,#fff8e6,#fff);box-shadow:0 0 0 .5px #f3dfa6 inset}
+.aw.won em{color:#b57d00;font-weight:600}
+.tl{padding:4px var(--pad) 0}
+.ty{display:flex;gap:10px}
+.ty + .ty{border-top:.5px solid var(--hair)}
+.ty .yy{width:40px;flex:none;font-family:var(--num);font-size:14px;font-weight:500;color:var(--dim);padding-top:12px}
+.ty .ws{flex:1;min-width:0}
+.wrow{display:flex;gap:10px;padding:10px 0;align-items:flex-start}
+.wrow + .wrow{border-top:.5px dashed var(--hair)}
+.wrow .ps{width:48px;flex:none;border-radius:6px}
+.wrow .bd{flex:1;min-width:0}
+.wrow .t{font-size:15px;font-weight:600;line-height:1.3}
+.wrow .t em{font-style:normal;font-size:10px;font-weight:600;color:var(--doing);background:var(--doing-bg);padding:1px 4px;border-radius:4px;vertical-align:2px}
+.wrow .o{font-family:var(--latin);font-style:italic;font-size:12px;color:var(--dim);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.wrow .m{font-size:12px;color:var(--ink-2);margin-top:2px}
+.wrow .rs{margin-top:3px}
+.wrow .side{flex:none;align-self:center}
+.wrow .seen{width:26px;height:26px;border-radius:13px;background:var(--rose);color:#fff;display:grid;place-items:center}
+.wrow .seen svg{width:14px;height:14px}
+.wrow.done .t{color:var(--ink)}
+.fsec .people{gap:12px}
+.fcard{width:80px;flex:none;text-align:center}
+.fav-av{position:relative;width:78px;height:78px;margin:0 auto}
+.fav-av .ring{position:absolute;inset:0}
+.fav-av .av{position:absolute;inset:6px;width:auto;height:auto;border-radius:50%}
+.newb{position:absolute;right:-4px;top:-2px;background:var(--rose);color:#fff;font-size:10px;font-weight:600;padding:1px 6px;border-radius:8px;box-shadow:0 0 0 2px var(--bg)}
+.fcard .nm{font-size:12.5px;margin-top:6px;font-weight:500;line-height:1.25;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.fcard .mt{font-size:11px;color:var(--rose-ink);font-family:var(--num)}
+.rosey-t{color:var(--rose-ink)!important}
+.person.fav .av{box-shadow:0 0 0 2.5px var(--rose),0 0 0 4.5px #fff}
+.person.fav .nm::before{content:"♥ ";color:var(--rose)}
+.favline{margin:12px var(--pad) 0;padding:10px 14px;border-radius:14px;background:var(--rose-bg);color:var(--rose-ink);font-size:13.5px;display:flex;align-items:center;gap:10px}
+.favline .av{width:34px;height:34px;margin:0;flex:none;font-size:13px}
+.favline b{font-weight:600}
+.heart-fx{position:fixed;z-index:80;color:var(--rose);pointer-events:none;font-style:normal;animation:hfx 1.2s ease-out forwards;transform:translate(-50%,-50%)}
+@keyframes hfx{to{transform:translate(calc(-50% + var(--dx)),calc(-50% + var(--dy))) scale(1.3);opacity:0}}
+.lbox{position:fixed;inset:0;z-index:90;background:rgba(10,8,10,.94);opacity:0;transition:opacity .25s}
+.lbox.on{opacity:1}
+.lbs{display:flex;height:100%;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none}
+.lbs::-webkit-scrollbar{display:none}
+.lbs > div{flex:none;width:100vw;height:100%;display:grid;place-items:center;scroll-snap-align:center;padding:calc(var(--st) + 30px) 10px calc(var(--sb) + 40px)}
+.lbs img{max-width:100%;max-height:100%;object-fit:contain;border-radius:6px}
+.lbn{position:absolute;left:0;right:0;bottom:calc(var(--sb) + 14px);text-align:center;color:rgba(255,255,255,.7);font-size:13px;font-family:var(--num)}
 .toast{position:fixed;left:50%;bottom:calc(var(--sb) + 86px);z-index:60;transform:translate(-50%,20px);opacity:0;pointer-events:none;
   background:rgba(29,28,26,.92);color:#fff;font-size:13.5px;padding:10px 16px;border-radius:14px;max-width:calc(100vw - 40px);transition:all .25s;display:flex;gap:12px;align-items:center}
 .toast.on{opacity:1;transform:translate(-50%,0);pointer-events:auto}
@@ -410,6 +498,8 @@ function toast(msg, act, fn, ms = 3200){
 const S = {
   idx: [], byId: new Map(), idxReady: 0, idxInfo: null,   // 0 未加载 / 1 热门已加载 / 2 全部
   marks: {},       // tt -> {s, r, c, tags, d, ss, at, t, del}
+  follows: {},     // nm -> {t, at, del}   追的影人
+  persons: {},     // nm -> 完整资料（后台抓的：作品表、照片、简介、获奖）
   meta: {}, people: {}, status: null, lookup: null,
   shardP: new Map(), shardN: new Map(), crew: new Map(),
   lib: {s: "done", type: "all", genre: "", person: "", tag: "", decade: "", sort: "t", view: getPref("view", "grid")},
@@ -625,7 +715,7 @@ function renderHome(){
     $("#main").innerHTML = head + syncNote + `<div class="welcome"><h3>建一座自己的影库</h3>
       <p>电影、剧集、老片、流媒体都能标记。<br>评分来自豆瓣、IMDb 和烂番茄。</p>
       <div class="btns"><a class="btn" href="#/search">${IC.search} 搜一部片子</a><a class="btn ghost" href="#/quick">${IC.bolt} 快速标记</a></div></div>`
-      + popularShelf();
+      + followSection() + popularShelf();
     return;
   }
   const ppl = topPeople(done.concat(doing)).slice(0, 12);
@@ -638,6 +728,7 @@ function renderHome(){
       <div class="row2"><a href="#/lib" onclick="libFilter({s:'doing'})"><i style="background:var(--doing)"></i>在看 <b>${doing.length}</b></a>
         <a href="#/lib" onclick="libFilter({s:'wish'})"><i style="background:var(--wish)"></i>想看 <b>${wish.length}</b></a>
         <a href="#/quick">${"⚡"} 快速标记</a></div></div>
+    ${followSection()}
     ${doing.length ? shelfSec("在看", doing, "doing") : ""}
     ${done.length ? shelfSec("最近看过", done.slice(0, 20), "done", done.length) : ""}
     ${wish.length ? shelfSec("想看", wish.slice(0, 20), "wish", wish.length) : ""}
@@ -697,7 +788,7 @@ function avatarErr(img){
   if (img.dataset.alt) { img.src = img.dataset.alt; delete img.dataset.alt; return; }
   const box = img.parentNode; img.remove(); box.textContent = box.dataset.i;
 }
-function personChip(p){ return `<a class="person" href="#/p/${p.id}">${avatarHTML(p)}<div class="nm">${esc(pname(p))}</div><div class="mt">${p.c} 部</div></a>`; }
+function personChip(p){ return `<a class="person ${followed(p.id) ? "fav" : ""}" href="#/p/${p.id}">${avatarHTML(p)}<div class="nm">${esc(pname(p))}</div><div class="mt">${p.c} 部</div></a>`; }
 
 /* ================================================================ 片库 */
 function libItems(){
@@ -753,7 +844,7 @@ function pickFilter(kind){
   if (kind === "genre") opts = countBy(base, id => vm(id).genres).map(([g, c]) => ({v: g, label: g, c}));
   if (kind === "tag") opts = countBy(base, id => S.marks[id].tags || []).map(([g, c]) => ({v: g, label: "# " + g, c}));
   if (kind === "decade") opts = countBy(base, id => vm(id).year ? String(Math.floor(vm(id).year / 10) * 10) : "").sort((a, b) => b[0] - a[0]).map(([g, c]) => ({v: g, label: g + " 年代", c}));
-  if (kind === "person") opts = topPeople(base).filter(p => p.c >= 1).slice(0, 60).map(p => ({v: p.id, label: pname(p), c: p.c, p}));
+  if (kind === "person") opts = topPeople(base).filter(p => p.c >= 1).sort((a, b) => followed(b.id) - followed(a.id)).slice(0, 60).map(p => ({v: p.id, label: (followed(p.id) ? "♥ " : "") + pname(p), c: p.c, p}));
   const cur = L[kind];
   openSheet(`<h3>${{genre: "按类型", person: "按影人", tag: "按标签", decade: "按年代"}[kind]}<small>${STATUS[L.s] || "全部"}的片子里</small></h3>
     <div class="opt ${!cur ? "on" : ""}" data-v=""><span class="k">不限</span></div>
@@ -930,6 +1021,8 @@ async function renderTitle(id){
           : v.rt?.audience != null ? `<span class="v">${v.rt.audience}<small>%</small></span><span class="c">观众评分</span>`
           : `<span class="v na">${enriched && m.at?.rt ? "暂无" : "待获取"}</span>`}</div>
     </div>
+    ${(() => { const favs = dirs.concat(cast).filter((p, i, a) => followed(p.id) && a.findIndex(q => q.id === p.id) === i);
+      return favs.map(p => `<a class="favline" href="#/p/${p.id}">${avatarHTML(p, 80)}<span>♥ 你追的 <b>${esc(pname(p))}</b>${dirs.some(d => d.id === p.id) ? (v.series ? " 主创" : " 导演") : p.role ? ` 饰 ${esc(p.role)}` : " 出演"}</span></a>`).join(""); })()}
     ${!enriched ? `<div class="note">${waiting ? `<div class="spin"></div><div class="bd">后台正在补全海报、简介、演职员和三家评分，一两分钟后自动刷新。</div>`
       : `<div class="bd">${k ? "详情还没补全。" : "现在显示的是离线片库里的基本信息。"}</div><button onclick="requestDetail('${id}')">获取完整信息</button>`}</div>` : ""}
     <div class="mine">
@@ -953,7 +1046,7 @@ async function renderTitle(id){
     ${intro ? `<div class="blk"><h3>简介${!m?.intro ? ` <span class="muted" style="font-size:12px;font-weight:400">英文，豆瓣简介补全后替换</span>` : ""}</h3>
       <div class="intro clip" id="intro">${esc(intro)}</div><button class="more" id="more" onclick="$('#intro').classList.remove('clip');this.remove()">展开</button></div>` : ""}
     ${dirs.length || cast.length ? `<div class="sec"><div class="sec-h"><h2>演职员</h2></div><div class="cast">
-      ${dirs.slice(0, 3).map(p => castCard(p, v.series ? "主创" : "导演")).join("")}${cast.slice(0, 18).map(p => castCard(p, p.role || "")).join("")}</div></div>` : ""}
+      ${dirs.slice(0, 3).map(p => castCard(p, v.series ? "主创" : "导演")).join("")}${[...cast.slice(0, 18)].sort((a, b) => followed(b.id) - followed(a.id)).map(p => castCard(p, p.role || "")).join("")}</div></div>` : ""}
     <div class="blk"><h3>去看看</h3><div class="links">
       ${v.douban?.id || m?.dbid ? `<a href="https://m.douban.com/movie/subject/${v.douban?.id || m.dbid}/" target="_blank" rel="noopener">豆瓣</a>` : `<a href="https://m.douban.com/search/?query=${encodeURIComponent(v.name)}" target="_blank" rel="noopener">在豆瓣搜</a>`}
       <a href="https://m.imdb.com/title/${id}/" target="_blank" rel="noopener">IMDb</a>
@@ -965,7 +1058,7 @@ async function renderTitle(id){
   hydratePosters($("#page"));
 }
 function castCard(p, role){
-  return `<a class="person" href="#/p/${p.id}">${avatarHTML(p, 160)}<div class="nm">${esc(pname(p))}</div>${role ? `<div class="role">${esc(role)}</div>` : ""}</a>`;
+  return `<a class="person ${followed(p.id) ? "fav" : ""}" href="#/p/${p.id}">${avatarHTML(p, 160)}<div class="nm">${esc(pname(p))}</div>${role ? `<div class="role">${esc(role)}</div>` : ""}</a>`;
 }
 window.addEventListener("scroll", () => { const b = $("#bar"); if (b) b.classList.toggle("solid", scrollY > 120); }, {passive: true});
 /* 用海报的主色给顶部染一层淡淡的颜色 */
@@ -1057,33 +1150,227 @@ function toggleSeason(id, n){
 }
 
 /* ================================================================ 影人页 */
+/* ================================================================ 追影人 */
+const followed = nm => !!(S.follows[nm] && !S.follows[nm].del);
+const followList = () => Object.entries(S.follows).filter(([, f]) => !f.del).sort((a, b) => (b[1].t || 0) - (a[1].t || 0)).map(([nm]) => nm);
+const S_pendingPeople = new Set(getPref("pendingPeople", []));
+async function toggleFollow(nm, name){
+  const on = !followed(nm);
+  S.follows[nm] = on ? {t: Date.now(), at: new Date().toISOString(), n: name || ""} : {t: Date.now(), del: true};
+  bump(); kv.set("follows", S.follows); S.dirty = true; setPref("dirty", true);
+  render();
+  toast(on ? `已追 ${name || ""}，会出现在首页最上面` : `已取消追 ${name || ""}`);
+  if (on && document.querySelector(".pfollow")) { const b = document.querySelector(".pfollow"); b.classList.add("pop"); burst(b); }
+  scheduleSave();
+  if (on && !S.persons[nm]) requestPerson(nm, true);
+}
+async function requestPerson(nm, quiet){
+  if (!gh.token() || IS_PREVIEW) { if (!quiet && !IS_PREVIEW) toast("要用到后台，先在设置里连接 GitHub。", "去设置", () => go("#/settings")); return; }
+  S_pendingPeople.add(nm); setPref("pendingPeople", [...S_pendingPeople]); if (!quiet) render();
+  try { await addRequest({people: [nm]}); watchPeople(); } catch (e) { toast(e.message); }
+}
+let watchingPeople = false;
+async function watchPeople(){
+  if (watchingPeople) return; watchingPeople = true;
+  const end = Date.now() + 5 * 60 * 1000;
+  await new Promise(r => setTimeout(r, 25000));
+  while (S_pendingPeople.size && Date.now() < end) {
+    try {
+      const changed = await pullMeta();
+      for (const nm of [...S_pendingPeople]) if (S.persons[nm]) S_pendingPeople.delete(nm);
+      setPref("pendingPeople", [...S_pendingPeople]);
+      if (changed) render();
+    } catch {}
+    if (S_pendingPeople.size) await new Promise(r => setTimeout(r, 10000));
+  }
+  watchingPeople = false;
+}
+/* 点"追 TA"时冒几颗小心心 */
+function burst(el){
+  const r = el.getBoundingClientRect();
+  for (let i = 0; i < 9; i++) {
+    const h = document.createElement("i"); h.className = "heart-fx"; h.textContent = "♥";
+    h.style.left = r.left + r.width / 2 + "px"; h.style.top = r.top + r.height / 2 + "px";
+    h.style.setProperty("--dx", (Math.random() * 140 - 70) + "px"); h.style.setProperty("--dy", (-60 - Math.random() * 90) + "px");
+    h.style.fontSize = 12 + Math.random() * 12 + "px"; h.style.animationDelay = Math.random() * .12 + "s";
+    document.body.appendChild(h); setTimeout(() => h.remove(), 1400);
+  }
+}
+const ZODIAC = [[1, 20, "摩羯座"], [2, 19, "水瓶座"], [3, 21, "双鱼座"], [4, 20, "白羊座"], [5, 21, "金牛座"], [6, 22, "双子座"],
+  [7, 23, "巨蟹座"], [8, 23, "狮子座"], [9, 23, "处女座"], [10, 24, "天秤座"], [11, 23, "天蝎座"], [12, 22, "射手座"], [12, 32, "摩羯座"]];
+function zodiac(m, d){ for (let i = 0; i < ZODIAC.length; i++) { const [zm, zd] = ZODIAC[i]; if (m < zm || (m === zm && d < zd)) return ZODIAC[i][2]; } return ""; }
+function birthLine(P){
+  const b = P?.birth; if (!b) return "";
+  const [y, m, d] = b.split("-").map(Number);
+  const now = new Date(), end = P.death ? new Date(P.death) : now;
+  let age = end.getFullYear() - y; if (m && (end.getMonth() + 1 < m || (end.getMonth() + 1 === m && end.getDate() < (d || 1)))) age--;
+  const bday = m && d && now.getMonth() + 1 === m && now.getDate() === d && !P.death;
+  return [`${y}年${m ? m + "月" : ""}${d ? d + "日" : ""}`, P.death ? `享年 ${age} 岁` : `${age} 岁`, m && d ? zodiac(m, d) : ""].filter(Boolean).join(" · ")
+    + (bday ? ` <span class="bday">🎂 今天生日</span>` : "");
+}
+/* 一位影人的作品：有完整资料用完整的，没有就用离线片库 + 自己的标记 */
+async function personWorks(nm){
+  const P = S.persons[nm];
+  const thisYear = new Date().getFullYear();
+  if (P) {
+    return P.credits.filter(c => !c.cats.includes("self") || c.cats.length > 1).map(c => {
+      const series = ["tvSeries", "tvMiniSeries"].includes(c.ty);
+      const guest = series && c.ty === "tvSeries" && c.eps && c.eps <= 2 && !c.cats.includes("director");
+      const upcoming = (c.y && c.y > thisYear) || (!c.v && (!c.y || c.y >= thisYear));
+      return {...c, series, guest, upcoming, dir: c.cats.includes("director"), act: c.cats.includes("actor")};
+    });
+  }
+  const n = await shard("n", nm);
+  const ids = [...new Set([...(n?.dir || []), ...(n?.act || [])])];
+  for (const [id] of active()) { const c = credits(id); if (c.d.concat(c.c).some(p => p.id === nm) && !ids.includes(id)) ids.push(id); }
+  const dirSet = new Set(n?.dir || []);
+  return ids.map(id => { const v = vm(id); return {id, n: v.name, y: v.year, ty: v.t, series: v.series, dir: dirSet.has(id), act: !dirSet.has(id),
+    v: v.imdb?.c || 0, r: v.imdb?.v, upcoming: v.x && v.x.v === 0 && v.year >= thisYear, light: true}; });
+}
+function progressOf(works){
+  const main = works.filter(w => !w.guest && !w.upcoming && w.ty !== "tvSpecial" && w.ty !== "video" && w.ty !== "short");
+  const seen = main.filter(w => mark(w.id)?.s === "done");
+  return {main, seen, doing: main.filter(w => mark(w.id)?.s === "doing"), wish: main.filter(w => mark(w.id)?.s === "wish")};
+}
+function ringSVG(frac, size = 74, stroke = 3){
+  const r = (size - stroke) / 2, c = 2 * Math.PI * r;
+  return `<svg class="ring" width="${size}" height="${size}" viewBox="0 0 ${size} ${size}"><circle cx="${size / 2}" cy="${size / 2}" r="${r}" fill="none" stroke="var(--rose-line)" stroke-width="${stroke}"/>`
+    + `<circle cx="${size / 2}" cy="${size / 2}" r="${r}" fill="none" stroke="var(--rose)" stroke-width="${stroke}" stroke-linecap="round" stroke-dasharray="${(c * Math.min(1, frac)).toFixed(1)} ${c.toFixed(1)}" transform="rotate(-90 ${size / 2} ${size / 2})"/></svg>`;
+}
+let pTab = "all", pUnseen = false;
 async function renderPerson(nm){
   if (!/^nm\d+$/.test(nm)) return go("#/home");
-  const n = await shard("n", nm);
+  const works = await personWorks(nm);
   if (route().arg !== nm) return;
-  let img = "", en = n?.n || findPersonName(nm);
-  const mineIds = [];
-  for (const [id] of active()) {
-    const c = credits(id); const hit = c.d.concat(c.c).find(p => p.id === nm);
-    if (hit) { mineIds.push(id); if (!img) img = hit.img; if (!en || en === nm) en = hit.n; }
-  }
-  for (const m of Object.values(S.meta)) if (!img) { const h = (m.directors || []).concat(m.cast || []).find(p => p.id === nm); if (h) img = h.img; }
-  const p = {id: nm, n: en, img};
-  const cn = S.people[nm]?.cn;
-  const others = [...new Set([...(n?.dir || []), ...(n?.act || [])])].filter(id => !mineIds.includes(id));
-  const dirSet = new Set(n?.dir || []);
-  const cnt = s => mineIds.filter(id => S.marks[id].s === s).length;
+  const P = S.persons[nm], D = P?.db;
+  let en = P?.n || findPersonName(nm), img = P?.img || "";
+  if (!img) for (const m of Object.values(S.meta)) { const h = (m.directors || []).concat(m.cast || []).find(p => p.id === nm); if (h?.img) { img = h.img; break; } }
+  if (!en || en === nm) { const n = await shard("n", nm); en = n?.n || en; }
+  const cn = S.people[nm]?.cn || D?.cn || "";
+  const name = cn || en;
+  const photo = D?.cover && !/default|celebrity-default/.test(D.cover) ? D.cover : imdbImg(img, 600);
+  const fol = followed(nm), waiting = S_pendingPeople.has(nm);
+  const pr = progressOf(works);
+  const frac = pr.main.length ? pr.seen.length / pr.main.length : 0;
+  const films = pr.main.filter(w => !w.series), shows = pr.main.filter(w => w.series);
+  const seenOf = list => list.filter(w => mark(w.id)?.s === "done").length;
+  const upcoming = works.filter(w => w.upcoming && !w.guest).sort((a, b) => (a.y || 9999) - (b.y || 9999));
+  const photos = (P?.photos || []).map(k => imdbImg(k, 900)).slice(0, 20);   // 豆瓣相册有防盗链，外站加载不了
+  const bio = D?.bio || P?.bio || "";
+  const hasDir = works.some(w => w.dir);
+  const tabs = [["all", "全部"], ["movie", "电影"], ["tv", "剧集"], ...(hasDir ? [["dir", "导演"]] : [])];
+  let list = works.filter(w => !w.upcoming || w.y);
+  if (pTab === "movie") list = list.filter(w => !w.series);
+  if (pTab === "tv") list = list.filter(w => w.series);
+  if (pTab === "dir") list = list.filter(w => w.dir);
+  if (pUnseen) list = list.filter(w => mark(w.id)?.s !== "done");
+  list.sort((a, b) => (b.y || 9999) - (a.y || 9999) || (b.v || 0) - (a.v || 0));
+  const byYear = [];
+  for (const w of list) { const y = w.y || "待定"; if (!byYear.length || byYear[byYear.length - 1][0] !== y) byYear.push([y, []]); byYear[byYear.length - 1][1].push(w); }
+  // 常一起出现的人（在我标记过的片子里）
+  const co = new Map();
+  for (const w of works) if (mark(w.id)) { const c = credits(w.id); for (const p of c.d.concat(c.c.slice(0, 10))) if (p.id !== nm) {
+    const e = co.get(p.id) || {...p, c: 0}; e.c++; co.set(p.id, e); } }
+  const partners = [...co.values()].filter(e => e.c >= 2).sort((a, b) => b.c - a.c).slice(0, 10);
+  const awardsWon = (D?.awards || []).filter(a => a.won), awardsNom = (D?.awards || []).filter(a => !a.won);
+
   $("#page").innerHTML = `
-    <div class="bar" id="bar"><button class="icon-btn" onclick="back()" aria-label="返回">${IC.back}</button><div class="tt">${esc(cn || en)}</div><span style="width:36px"></span></div>
-    <div class="phero">${avatarHTML(p, 240)}<div><h2>${esc(cn || en)}</h2>${cn ? `<div class="o">${esc(en)}</div>` : ""}
-      <div class="cnt"><span><b>${cnt("done")}</b>看过</span><span><b>${cnt("doing")}</b>在看</span><span><b>${cnt("wish")}</b>想看</span></div></div></div>
-    ${mineIds.length ? `<div class="sec"><div class="sec-h"><h2>我标记过的<small>${mineIds.length}</small></h2></div><div class="grid">${mineIds.sort((a, b) => vm(b).year - vm(a).year).map(id => shelfItem(id)).join("")}</div></div>` : ""}
-    ${others.length ? `<div class="sec"><div class="sec-h"><h2>TA 的其他作品<small>${others.length}</small></h2></div>${others.slice(0, 80).map(id => listRow(id).replace('<div class="side">', dirSet.has(id) ? '<div class="side"><span class="muted" style="font-size:11px">导演</span>' : '<div class="side">')).join("")}
-      ${others.length > 80 ? `<div class="hint">只显示最热门的 80 部</div>` : ""}</div>` : ""}
-    ${!n && !mineIds.length ? `<div class="empty">离线片库里没有这位影人的作品。</div>` : ""}
-    <div class="hint" style="margin-top:14px">作品来自离线片库，只算前几位主演和导演。</div>
-    <div style="height:20px"></div>`;
+    <div class="bar" id="bar"><button class="icon-btn" onclick="back()" aria-label="返回">${IC.back}</button><div class="tt">${esc(name)}</div>
+      <button class="icon-btn ${fol ? "rose" : ""}" onclick="toggleFollow('${nm}','${esc(name).replace(/'/g, "")}')" aria-label="追 TA">${fol ? "♥" : "♡"}</button></div>
+    <div class="phero2">
+      <div class="pbg" style="${photo ? `background-image:url('${esc(photo)}')` : ""}"></div>
+      <div class="pimg">${photo ? `<img src="${esc(photo)}" onload="this.classList.add('ok')" onerror="this.remove()">` : ""}<span>${esc(name.slice(0, 1))}</span></div>
+      <h2>${esc(name)}</h2>${cn && en && cn !== en ? `<div class="en">${esc(en)}</div>` : ""}
+      ${P?.birth ? `<div class="pmeta">${birthLine(P)}</div>` : ""}
+      ${D?.place || P?.place ? `<div class="pmeta">${esc((D?.place || P.place).replace(/,/g, " · "))}</div>` : ""}
+      <button class="pfollow ${fol ? "on" : ""}" onclick="toggleFollow('${nm}','${esc(name).replace(/'/g, "")}')">${fol ? "♥ 已追" : "♡ 追 TA"}</button>
+    </div>
+    <div class="pstat">
+      <div class="pring">${ringSVG(frac, 92, 5)}<div><b>${Math.round(frac * 100)}</b><small>%</small></div></div>
+      <div class="bd"><div class="big">看过 <b>${pr.seen.length}</b> / ${pr.main.length} 部</div>
+        <div class="sm">电影 ${seenOf(films)}/${films.length} · 剧集 ${seenOf(shows)}/${shows.length}${pr.doing.length ? ` · 在看 ${pr.doing.length}` : ""}${pr.wish.length ? ` · 想看 ${pr.wish.length}` : ""}</div>
+        <div class="sm faint">${P ? "不算客串、访谈和还没上映的" : "离线片库里的主要作品"}</div></div>
+    </div>
+    ${!P ? `<div class="note rosey">${waiting ? `<div class="spin"></div><div class="bd">正在整理 TA 的完整作品、照片和简介，一两分钟后自动刷新。</div>`
+      : `<div class="bd">${fol ? "完整资料还没整理好。" : "追 TA 以后，会补齐完整作品表（含剧集、新作）、照片、中文简介和获奖记录。"}</div>${fol || gh.token() ? `<button onclick="requestPerson('${nm}')">现在整理</button>` : ""}`}</div>` : ""}
+    ${upcoming.length ? `<div class="sec"><div class="sec-h"><h2>新作 <small>${upcoming.length}</small></h2></div><div class="scroller">${upcoming.map(w => workCard(w, true)).join("")}</div></div>` : ""}
+    ${photos.length ? `<div class="sec"><div class="sec-h"><h2>照片 <small>${photos.length}</small></h2></div><div class="photos">${photos.map((u, i) => `<button onclick="lightbox(${i})"><img loading="lazy" src="${esc(u)}" onload="this.classList.add('ok')" onerror="this.parentNode.remove()"></button>`).join("")}</div></div>` : ""}
+    ${bio ? `<div class="blk"><h3>简介${!D?.bio ? ` <span class="muted" style="font-size:12px;font-weight:400">英文</span>` : ""}</h3><div class="intro clip" id="intro">${esc(bio)}</div><button class="more" id="more" onclick="$('#intro').classList.remove('clip');this.remove()">展开</button>
+      ${D?.family ? `<div class="small" style="margin-top:8px">家人：${esc(D.family)}</div>` : ""}</div>` : ""}
+    ${awardsWon.length || awardsNom.length ? `<div class="blk"><h3>获奖与提名${D?.awardsTotal ? ` <span class="muted" style="font-size:12.5px;font-weight:400">共 ${D.awardsTotal} 项</span>` : ""}</h3>
+      <div class="awards">${awardsWon.concat(awardsNom).map(a => `<div class="aw ${a.won ? "won" : ""}"><i>${a.won ? "🏆" : "🎖"}</i><div><b>${esc(a.ceremony)}</b><span>${esc(a.cat)}${a.work ? ` ·《${esc(a.work)}》` : ""}</span></div><em>${a.won ? "获奖" : "提名"}</em></div>`).join("")}</div></div>` : ""}
+    <div class="sec"><div class="sec-h"><h2>作品 <small>${works.filter(w => !w.upcoming).length}</small></h2><button onclick="pUnseen=!pUnseen;render()">${pUnseen ? "✓ " : ""}只看没看过</button></div>
+      <div class="seg" style="margin-bottom:6px">${tabs.map(([k, l]) => `<button class="${pTab === k ? "on" : ""}" onclick="pTab='${k}';render()">${l}</button>`).join("")}</div>
+      <div class="tl">${byYear.map(([y, ws]) => `<div class="ty"><div class="yy">${y}</div><div class="ws">${ws.map(w => workRow(w)).join("")}</div></div>`).join("")
+        || `<div class="empty">${pUnseen ? "这一类全都看过了 🎉" : "暂无"}</div>`}</div></div>
+    ${partners.length ? `<div class="sec"><div class="sec-h"><h2>常和 TA 同框</h2><span class="muted" style="font-size:12px">在你看过的片子里</span></div><div class="people">${partners.map(personChip).join("")}</div></div>` : ""}
+    <div style="height:24px"></div>`;
+  window.__photos = photos;
+  const intr = $("#intro"); if (intr && intr.scrollHeight <= intr.clientHeight + 2) $("#more")?.remove();
   hydratePosters($("#page"));
+}
+function lightMeta(w){   // 离线片库里没有的作品（比如刚官宣的），用影人资料里的信息先顶上
+  if (!S.meta[w.id] && !S.byId.has(w.id)) S.meta[w.id] = {id: w.id, title: w.n, cn: w.cn || "", year: w.y, ey: w.ey, type: w.ty, poster: w.img || "",
+    genres: w.g || [], imdb: w.r ? {v: w.r, c: w.v} : null, at: {}, light: true};
+}
+function workPoster(w, wpx){
+  lightMeta(w);
+  const v = vm(w.id);
+  if (!v.poster && !v.posterKey && w.img) v.posterKey = w.img;
+  return posterHTML(v, wpx);
+}
+function workName(w){ const v = vm(w.id); return v.m?.cn || v.x?.cn || w.cn || w.n || v.name; }
+function workCard(w){
+  const k = mark(w.id);
+  return `<a class="shelf-item" href="#/t/${w.id}">${workPoster(w, 220)}<div class="nm">${esc(workName(w))}</div>
+    <div class="mt">${w.y || "待定"}${w.series ? " · 剧集" : ""}${k ? ` · ${STATUS[k.s]}` : ""}</div></a>`;
+}
+function workRow(w){
+  const k = mark(w.id), v = vm(w.id);
+  const role = w.role_cn || w.role;
+  const bits = [w.dir && w.act ? "导演 / 主演" : w.dir ? "导演" : "", role ? `饰 ${role}` : "", w.series && w.eps ? `${w.eps} 集` : "", w.guest ? "客串" : ""].filter(Boolean).join(" · ");
+  const name = workName(w), sub = name !== (w.n || v.name) ? w.n : "";
+  const right = k ? (k.s === "done" ? `<span class="seen">${IC.check}</span>` : `<span class="pill ${k.s}">${STATUS[k.s]}</span>`)
+    : `<button class="pill add" onclick="event.preventDefault();event.stopPropagation();quickWish('${w.id}',this)">+ 想看</button>`;
+  const sc = v.douban?.v ? `<span class="sc"><i class="db">豆</i>${v.douban.v.toFixed(1)}</span>` : (w.r || v.imdb?.v) ? `<span class="sc"><i class="im">IMDb</i>${(+(w.r || v.imdb.v)).toFixed(1)}</span>` : w.upcoming ? `<span class="sc none">待上映</span>` : "";
+  return `<a class="wrow ${k?.s === "done" ? "done" : ""}" href="#/t/${w.id}">${workPoster(w, 120)}<div class="bd"><div class="t">${esc(name)}${w.series ? ` <em>剧</em>` : ""}</div>
+    ${sub ? `<div class="o">${esc(sub)}</div>` : ""}${bits ? `<div class="m">${esc(bits)}</div>` : ""}<div class="rs">${sc}</div></div><div class="side">${right}</div></a>`;
+}
+function lightbox(i){
+  const ph = window.__photos || []; if (!ph.length) return;
+  const el = document.createElement("div"); el.className = "lbox";
+  el.innerHTML = `<div class="lbs">${ph.map(u => `<div><img src="${esc(u)}"></div>`).join("")}</div><div class="lbn"><span>${i + 1}</span> / ${ph.length}</div>`;
+  document.body.appendChild(el);
+  const sc = el.querySelector(".lbs");
+  requestAnimationFrame(() => { sc.scrollLeft = i * sc.clientWidth; el.classList.add("on"); });
+  sc.addEventListener("scroll", () => { el.querySelector(".lbn span").textContent = Math.round(sc.scrollLeft / sc.clientWidth) + 1; }, {passive: true});
+  el.onclick = () => { el.classList.remove("on"); setTimeout(() => el.remove(), 250); };
+}
+
+/* 首页：我追的人 */
+function followSection(){
+  const list = followList(); if (!list.length) return "";
+  const thisYear = new Date().getFullYear();
+  const cards = [], news = [];
+  for (const nm of list) {
+    const P = S.persons[nm];
+    const name = S.people[nm]?.cn || P?.db?.cn || P?.n || S.follows[nm].n || findPersonName(nm);
+    let frac = 0, seen = 0, tot = 0, hasNew = false;
+    if (P) {
+      const ws = P.credits.filter(c => !c.cats.includes("self")).map(c => ({...c, series: ["tvSeries", "tvMiniSeries"].includes(c.ty),
+        guest: c.ty === "tvSeries" && c.eps && c.eps <= 2, upcoming: (c.y && c.y > thisYear) || (!c.v && (!c.y || c.y >= thisYear))}));
+      const pr = progressOf(ws); seen = pr.seen.length; tot = pr.main.length; frac = tot ? seen / tot : 0;
+      for (const w of ws.filter(w => w.upcoming && !w.guest)) { hasNew = true; news.push({...w, who: name}); }
+    }
+    const photo = S.people[nm]?.dimg || P?.db?.cover || imdbImg(P?.img, 200);
+    cards.push(`<a class="fcard" href="#/p/${nm}"><div class="fav-av">${ringSVG(frac, 78, 3)}<div class="av">${photo ? `<img loading="lazy" src="${esc(photo)}" onerror="this.remove()">` : esc(name.slice(0, 1))}</div>${hasNew ? `<span class="newb">新作</span>` : ""}</div>
+      <div class="nm">${esc(name)}</div><div class="mt">${tot ? `${seen} / ${tot}` : "整理中"}</div></a>`);
+  }
+  const seenIds = new Set(); const uniq = news.filter(w => !seenIds.has(w.id) && seenIds.add(w.id)).sort((a, b) => (a.y || 9999) - (b.y || 9999));
+  return `<div class="sec fsec"><div class="sec-h"><h2>我追的人</h2><span class="muted" style="font-size:12px">圈是看过的比例</span></div>
+    <div class="people">${cards.join("")}</div>
+    ${uniq.length ? `<div class="sec-h" style="margin-top:14px"><h2 style="font-size:15px">TA 们的新作</h2></div><div class="scroller">${uniq.slice(0, 16).map(w =>
+      `<a class="shelf-item" href="#/t/${w.id}">${workPoster(w, 220)}<div class="nm">${esc(workName(w))}</div><div class="mt rosey-t">♥ ${esc(w.who)}</div></a>`).join("")}</div>` : ""}</div>`;
 }
 
 /* ================================================================ 快速标记 */
@@ -1231,9 +1518,12 @@ async function saveRemote(){
   saving = true;
   try {
     const before = S.marks;
-    const merged = await writeJSON("marks.json", d => ({v: 1, items: mergeMarks((d && d.items) || {}, before)}), "更新标记");
+    const fb = S.follows;
+    const merged = await writeJSON("marks.json", d => ({v: 1, items: mergeMarks((d && d.items) || {}, before),
+      follows: mergeMarks((d && d.follows) || {}, fb)}), "更新标记");
     S.marks = mergeMarks(merged.items, S.marks);
-    kv.set("marks", S.marks);
+    S.follows = mergeMarks(merged.follows || {}, S.follows);
+    kv.set("marks", S.marks); kv.set("follows", S.follows);
     S.dirty = false; setPref("dirty", false);
     const need = [...S.pending].filter(id => mark(id));
     if (need.length) await addRequest({ids: need});
@@ -1247,6 +1537,7 @@ async function addRequest(req){
     if (req.ids) d.ids = [...new Set([...(d.ids || []), ...req.ids])];
     if (req.q) d.q = req.q;
     if (req.fix) d.fix = {...(d.fix || {}), ...req.fix};
+    if (req.people) d.people = [...new Set([...(d.people || []), ...req.people])];
     return d;
   }, req.q ? "在线搜索" : "补全详情");
   const r = await gh.site("POST", "/actions/workflows/sync.yml/dispatches", {ref: "main"});
@@ -1302,22 +1593,24 @@ async function watchPending(){
 }
 let metaSig = "";
 async function pullMeta(){
-  const [m, p] = await Promise.all([readJSON("meta.json"), readJSON("people.json")]);
-  const sig = (m.text || "").length + ":" + (p.text || "").length + ":" + (m.text || "").slice(-200);
+  const [m, p, ps] = await Promise.all([readJSON("meta.json"), readJSON("people.json"), readJSON("persons.json")]);
+  const sig = (m.text || "").length + ":" + (p.text || "").length + ":" + (ps.text || "").length + ":" + (m.text || "").slice(-200);
   if (sig === metaSig) return false;    // 没变就不重画
   metaSig = sig; bump();
   if (m.data) { const light = Object.fromEntries(Object.entries(S.meta).filter(([id, x]) => x.light && !m.data[id])); S.meta = {...m.data, ...light}; kv.set("meta", m.data); }
   if (p.data) { S.people = p.data; kv.set("people", p.data); }
+  if (ps.data) { S.persons = ps.data; kv.set("persons", ps.data); }
   return true;
 }
 async function pullAll(){
   if (!gh.token() || IS_PREVIEW) return;
   try {
     const [mk, st] = await Promise.all([readJSON("marks.json"), readJSON("status.json")]);
-    const remote = (mk.data && mk.data.items) || {};
-    const merged = mergeMarks(remote, S.marks);
-    const changedLocal = Object.keys(merged).some(id => merged[id] !== remote[id]);
-    const changedRemote = Object.keys(remote).some(id => S.marks[id]?.t !== remote[id]?.t);
+    const remote = (mk.data && mk.data.items) || {}, rf = (mk.data && mk.data.follows) || {};
+    const merged = mergeMarks(remote, S.marks), mf = mergeMarks(rf, S.follows);
+    const changedLocal = Object.keys(merged).some(id => merged[id] !== remote[id]) || Object.keys(mf).some(id => mf[id] !== rf[id]);
+    const changedRemote = Object.keys(remote).some(id => S.marks[id]?.t !== remote[id]?.t) || Object.keys(rf).some(id => S.follows[id]?.t !== rf[id]?.t);
+    S.follows = mf; kv.set("follows", mf);
     if (changedRemote) bump();
     S.marks = merged; kv.set("marks", S.marks);
     S.status = st.data; setPref("status", S.status);
@@ -1381,12 +1674,12 @@ function renderSettings(){
   const ul = $("#unlink"); if (ul) ul.onclick = () => { setPref("ghToken", ""); render(); };
   $("#saverepo").onclick = () => { setPref("ghRepo", $("#repo").value.trim()); setPref("ghDataRepo", $("#drepo").value.trim()); toast("已保存"); render(); };
   $("#exp").onclick = () => {
-    const blob = new Blob([JSON.stringify({exported: new Date().toISOString(), items: S.marks}, null, 1)], {type: "application/json"});
+    const blob = new Blob([JSON.stringify({exported: new Date().toISOString(), items: S.marks, follows: S.follows}, null, 1)], {type: "application/json"});
     const a = document.createElement("a"); a.href = URL.createObjectURL(blob); a.download = `影库备份-${today()}.json`; a.click();
   };
   $("#imp").onchange = async e => {
     try { const j = JSON.parse(await e.target.files[0].text()); const n = Object.keys(j.items || {}).length; if (!n) throw 0;
-      S.marks = mergeMarks(S.marks, j.items); Object.keys(j.items).forEach(id => { if (!S.meta[id]) S.pending.add(id); }); persistLocal(); scheduleSave(); toast(`已恢复 ${n} 条标记`); }
+      S.marks = mergeMarks(S.marks, j.items); S.follows = mergeMarks(S.follows, j.follows || {}); kv.set("follows", S.follows); Object.keys(j.items).forEach(id => { if (!S.meta[id]) S.pending.add(id); }); persistLocal(); scheduleSave(); toast(`已恢复 ${n} 条标记`); }
     catch { toast("这个文件不是影库的备份"); }
   };
 }
@@ -1395,10 +1688,10 @@ function renderSettings(){
 (async function boot(){
   if (window.__PREVIEW__) {
     const P = window.__PREVIEW__;
-    S.marks = P.marks; S.meta = P.meta; S.people = P.people; S.status = P.status;
+    S.marks = P.marks; S.meta = P.meta; S.people = P.people; S.status = P.status; S.follows = P.follows || {}; S.persons = P.persons || {};
   } else {
-    const [mk, mt, pp] = await Promise.all([kv.get("marks"), kv.get("meta"), kv.get("people")]);
-    S.marks = mk || {}; S.meta = mt || {}; S.people = pp || {}; S.status = getPref("status", null);
+    const [mk, mt, pp, fo, ps] = await Promise.all([kv.get("marks"), kv.get("meta"), kv.get("people"), kv.get("follows"), kv.get("persons")]);
+    S.marks = mk || {}; S.meta = mt || {}; S.people = pp || {}; S.follows = fo || {}; S.persons = ps || {}; S.status = getPref("status", null);
   }
   render();
   loadIndex();

@@ -72,6 +72,8 @@ class Sync:
         self.marks = load(self.dir / "marks.json", {}).get("items", {})
         self.meta = load(self.dir / "meta.json", {})
         self.people = load(self.dir / "people.json", {})
+        self.persons = load(self.dir / "persons.json", {})
+        self.follows = load(self.dir / "marks.json", {}).get("follows", {})
         self.reqs = load(self.dir / "requests.json", {})
         self.status = load(self.dir / "status.json", {"sources": {}})
         self.idx_cn = load_index_cn(idx) if idx else {}
@@ -262,6 +264,45 @@ class Sync:
         self.changed = True
         return True
 
+    # ------------------------------------------------------------ 影人（追的人：完整作品表、照片、简介、获奖）
+    def refresh_person(self, nm):
+        try:
+            x = self.imdb.person(nm)
+            self.ok("imdb")
+        except SourceError as e:
+            self.fail("imdb", e)
+            return
+        if not x:
+            return
+        old = self.persons.get(nm) or {}
+        x["at"] = now()
+        d = None
+        try:
+            pid = old.get("db", {}).get("pid")
+            d = self.db.personage(pid) if pid else self.db.find_person(x["n"], nm)
+            self.ok("douban")
+        except SourceError as e:
+            self.fail("douban", e)
+            d = old.get("db")
+        if d:
+            x["db"] = d
+            rec = self.people.setdefault(nm, {})
+            if d.get("cn"):
+                rec["cn"] = d["cn"]
+            if d.get("cover") and "default" not in d["cover"]:
+                rec["dimg"] = d["cover"]
+        # 作品配上中文片名：离线索引 / 已补全的详情 / 豆瓣作品表
+        dw = {norm(w["cn"]): w for w in (d or {}).get("works") or []}
+        for c in x["credits"]:
+            cn = (self.meta.get(c["id"]) or {}).get("cn") or (self.idx_cn.get(c["id"]) or [""])[0]
+            if cn:
+                c["cn"] = cn
+                w = dw.get(norm(cn))
+                if w and w.get("role"):
+                    c["role_cn"] = w["role"]
+        self.persons[nm] = x
+        self.changed = True
+
     # ------------------------------------------------------------ 在线搜索
     def lookup(self, q):
         q = (q or "").strip()
@@ -317,6 +358,12 @@ class Sync:
 
         if query:
             self.lookup(query)
+        # 影人：网页点名要的先做，追的人每周刷新一次（看有没有新作官宣）
+        want = [n for n in (self.reqs.get("people") or []) if re.fullmatch(r"nm\d+", n)]
+        follows = [n for n, f in self.follows.items() if not f.get("del")]
+        stale = [n for n in follows if n not in want and now() - (self.persons.get(n) or {}).get("at", 0) > 7 * DAY]
+        for nm in list(dict.fromkeys(want + stale))[:len(want) + 6]:
+            self.refresh_person(nm)
         self.refresh_base(priority, force=True)
         self.refresh_base(ids)
         self.resolve_ids(ids)
@@ -342,6 +389,11 @@ class Sync:
 
         save(self.dir / "meta.json", self.meta)
         save(self.dir / "people.json", self.people)
+        keep_p = set(follows) | set(want)
+        for nm in list(self.persons):
+            if nm not in keep_p and now() - self.persons[nm].get("at", 0) > 60 * DAY:
+                del self.persons[nm]
+        save(self.dir / "persons.json", self.persons)
         self.status["updated"] = iso()
         save(self.dir / "status.json", self.status)
         if self.reqs:
