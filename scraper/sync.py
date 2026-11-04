@@ -52,6 +52,23 @@ def cn_season(n):
     return CN_NUM[n // 10] + "十" + (CN_NUM[n % 10] if n % 10 else "")
 
 
+def role_intro(intro, cn_name, role, en_name=""):
+    """从豆瓣简介里挑出写到 TA 的句子；挑不到就给作品简介的第一句。"""
+    intro = re.sub(r"\s+", " ", intro.replace("\u3000", " ")).strip()
+    if not intro:
+        return "", ""
+    # "（凯尔·钱德勒 Kyle Chandler 饰）" 里的英文名去掉，读起来短一点
+    intro = re.sub(r"[（(]([^（）()]*?[\u4e00-\u9fff·]+)\s+[A-Za-z][^（）()]*?饰[）)]", r"（\1 饰）", intro)
+    sents = [x.strip() for x in re.findall(r"[^。！？!?]+[。！？!?]?", intro) if x.strip()]
+    role_cjk = "".join(re.findall(r"[\u4e00-\u9fff·]+", role or "")).strip("·")
+    keys = [k for k in [cn_name, cn_name.split("·")[-1] if "·" in cn_name else "", en_name, role_cjk] if k and len(k) >= 2]
+    hit = [x for x in sents if any(k in x for k in keys)]
+    if hit:
+        out = hit[0] if len(hit[0]) >= 40 or len(hit) == 1 else hit[0] + hit[1]
+        return out[:180], ""
+    return "", (sents[0] if sents else "")[:120]
+
+
 def load_index_cn(idx_dir):
     """从离线索引里拿中文译名，豆瓣按名字找条目时用。"""
     cn = {}
@@ -303,17 +320,78 @@ class Sync:
                 rec["cn"] = d["cn"]
             if d.get("cover") and "default" not in d["cover"]:
                 rec["dimg"] = d["cover"]
+        # 之前补过的角色信息（中文片名、中文角色名、角色介绍）原样带过来
+        oldc = {c["id"]: c for c in old.get("credits") or []}
+        for c in x["credits"]:
+            for k in ("cn", "role_cn", "rintro", "wintro", "dbid", "rat"):
+                if k in oldc.get(c["id"], {}) and k not in c:
+                    c[k] = oldc[c["id"]][k]
+        if old.get("wdat"):
+            x["wdat"] = old["wdat"]
         # 作品配上中文片名：离线索引 / 已补全的详情 / 豆瓣作品表
         dw = {norm(w["cn"]): w for w in (d or {}).get("works") or []}
         for c in x["credits"]:
-            cn = (self.meta.get(c["id"]) or {}).get("cn") or (self.idx_cn.get(c["id"]) or [""])[0]
+            cn = c.get("cn") or (self.meta.get(c["id"]) or {}).get("cn") or (self.idx_cn.get(c["id"]) or [""])[0]
             if cn:
                 c["cn"] = cn
                 w = dw.get(norm(cn))
-                if w and w.get("role"):
+                if w and w.get("role") and not c.get("role_cn"):
                     c["role_cn"] = w["role"]
         self.persons[nm] = x
         self.changed = True
+
+    # ------------------------------------------------------------ 追的人：每个角色的中文名和介绍
+    def enrich_roles(self, nm, limit):
+        """按作品去豆瓣找：中文片名、TA 演的角色中文名、简介里写到这个角色的那一两句。
+        每次只做几部（豆瓣不能访问太快），重要的作品先做，几轮之后就齐了。"""
+        P = self.persons.get(nm)
+        if not P:
+            return 0
+        cs = [c for c in P.get("credits") or [] if c.get("cats") != ["self"]]
+        # 豆瓣编号：已补全的详情里有就用，没有就批量问 Wikidata（30 天内问过的不再问）
+        for c in cs:
+            if "dbid" not in c and (self.meta.get(c["id"]) or {}).get("dbid"):
+                c["dbid"] = self.meta[c["id"]]["dbid"]
+        need = [c["id"] for c in cs if "dbid" not in c]
+        if need and now() - P.get("wdat", 0) > 30 * DAY:
+            try:
+                got = self.wd.by_imdb(need)
+                self.ok("wikidata")
+                for c in cs:
+                    if c["id"] in need:
+                        c["dbid"] = (got.get(c["id"]) or {}).get("douban", "")
+                P["wdat"] = now()
+                self.changed = True
+            except SourceError as e:
+                self.fail("wikidata", e)
+        known = set(P.get("known") or [])
+        todo = [c for c in cs if c.get("dbid") and now() - c.get("rat", 0) > 120 * DAY]
+        todo.sort(key=lambda c: (c["id"] not in known, bool(c.get("eps") and c["eps"] <= 2), -(c.get("v") or 0)))
+        cn_name = ((P.get("db") or {}).get("cn") or self.people.get(nm, {}).get("cn") or "").strip()
+        done = 0
+        for c in todo[:limit]:
+            try:
+                x = self.db.subject(c["dbid"])
+                self.ok("douban")
+            except SourceError as e:
+                self.fail("douban", e)
+                if "限流" in str(e):
+                    break
+                c["rat"] = now()
+                continue
+            done += 1
+            series = c.get("ty") in ("tvSeries", "tvMiniSeries")
+            if x.get("title"):
+                c["cn"] = SEASON_RE.sub("", x["title"]) if series else x["title"]
+            me = next((p for p in x.get("people") or [] if norm(p.get("en")) == norm(P.get("n"))
+                       or (cn_name and p.get("cn") == cn_name)), None)
+            role = (me or {}).get("role") or ""
+            if role and role not in ("导演", "演员", "编剧"):
+                c["role_cn"] = role
+            c["rintro"], c["wintro"] = role_intro(x.get("intro") or "", cn_name, c.get("role_cn") or "", P.get("n") or "")
+            c["rat"] = now()
+            self.changed = True
+        return done
 
     # ------------------------------------------------------------ 在线搜索
     def lookup(self, q):
@@ -373,9 +451,16 @@ class Sync:
         # 影人：网页点名要的先做，追的人每周刷新一次（看有没有新作官宣）
         want = [n for n in (self.reqs.get("people") or []) if re.fullmatch(r"nm\d+", n)]
         follows = [n for n, f in self.follows.items() if not f.get("del")]
-        stale = [n for n in follows if n not in want and now() - (self.persons.get(n) or {}).get("at", 0) > 7 * DAY]
+        stale = [n for n in follows if n not in want and (now() - (self.persons.get(n) or {}).get("at", 0) > 7 * DAY
+                                                          or "imgs" not in (self.persons.get(n) or {}))]
         for nm in list(dict.fromkeys(want + stale))[:len(want) + 6]:
             self.refresh_person(nm)
+        # 角色中文名和介绍：点名要的人先多做一些，其余追的人每轮做几部
+        left = 36
+        for nm in list(dict.fromkeys([n for n in want if n in follows] + follows)):
+            if left <= 0:
+                break
+            left -= self.enrich_roles(nm, min(left, 18 if nm in want else 10))
         self.refresh_base(priority, force=True)
         self.refresh_base(ids)
         self.resolve_ids(ids)

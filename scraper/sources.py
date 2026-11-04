@@ -142,7 +142,7 @@ class IMDb:
 
     PERSON = """query($id:ID!){ name(id:$id){ id nameText{text} birthDate{dateComponents{year month day}}
       birthLocation{text} deathDate{dateComponents{year month day}} bio{text{plainText}} primaryImage{url}
-      images(first:16){edges{node{url width height}}}
+      images(first:250){edges{node{url width height type titles{id} names{id}}}}
       knownFor(first:6){edges{node{title{id}}}}
       credits(first:250, filter:{categories:["actor","actress","director","self"]}){ edges{node{ category{id}
         title{id titleText{text} originalTitleText{text} releaseYear{year endYear} titleType{id} primaryImage{url}
@@ -190,7 +190,13 @@ class IMDb:
             "bio": (((n.get("bio") or {}).get("text") or {}).get("plainText") or "").strip(),
             "img": img_key((n.get("primaryImage") or {}).get("url")),
             "photos": [img_key((e.get("node") or {}).get("url")) for e in ((n.get("images") or {}).get("edges") or [])
-                       if img_key((e.get("node") or {}).get("url"))],
+                       if img_key((e.get("node") or {}).get("url"))][:16],
+            # 全部图片：[图片编号, 宽, 高, 类型(p 写真 / e 活动 / s 剧照 / o 其他), 关联作品, 图里有几个人]
+            "imgs": [[img_key(x.get("url")), x.get("width") or 0, x.get("height") or 0,
+                      {"publicity": "p", "event": "e", "still_frame": "s"}.get(x.get("type"), "o"),
+                      ((x.get("titles") or [{}])[0] or {}).get("id", ""), len(x.get("names") or [])]
+                     for x in ((e.get("node") or {}) for e in ((n.get("images") or {}).get("edges") or []))
+                     if img_key(x.get("url"))],
             "known": [e["node"]["title"]["id"] for e in ((n.get("knownFor") or {}).get("edges") or []) if e.get("node")],
             "credits": list(credits.values()),
         }
@@ -391,7 +397,8 @@ class Douban:
             cel = self._json(f"https://m.douban.com/rexxar/api/v2/{kind}/{did}/celebrities",
                              {"ck": "", "for_mobile": 1}) or {}
             out["people"] = [{"cn": c.get("name", ""), "en": c.get("latin_name", ""),
-                              "img": ((c.get("avatar") or {}).get("normal") or "")}
+                              "img": ((c.get("avatar") or {}).get("normal") or ""),
+                              "role": re.sub(r"^饰\s*", "", (c.get("character") or "").strip())}
                              for k in ("directors", "actors") for c in (cel.get(k) or [])]
         except SourceError:
             out["people"] = []
