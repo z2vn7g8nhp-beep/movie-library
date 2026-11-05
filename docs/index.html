@@ -2948,12 +2948,12 @@ function charStills(c){
   const score = x => (x.t === "P" ? 0 : x.t === "s" ? 2 : 3) - (x.h > x.w ? 1 : 0) + (x.w > x.h * 1.8 ? 2 : 0);
   return out.sort((a, b) => score(a) - score(b));
 }
-/* 自动挑卡面：有漫画原型的英雄只用角色海报（穿着战衣的那种），普通剧照多半是没穿战衣的演员，宁可先用漫画；
-   没有漫画的角色（小辣椒、雷普利……）用最好的一张剧照。自己在档案里选过的永远优先。any=true 时不挑类型（档案里翻面用）。 */
+/* 卡面：有漫画原型的角色一律用漫画；没有漫画的（小辣椒、雷普利……）用最好的一张剧照。
+   自己在档案里选过的剧照永远优先。any=true 时也给有漫画的角色挑一张剧照（档案里翻面用）。 */
 const charPick = (c) => (getPref("cimg", {}) || {})[c.u + ":" + c.k];
 function charReal(c, w = 400, any){
   const pick = charPick(c), st = charStills(c);
-  const auto = any || !c.cm ? st.find(x => x.w <= x.h * 1.8) || st[0] : st.find(x => x.t === "P");
+  const auto = any || !c.cm ? st.find(x => x.w <= x.h * 1.8) || st[0] : null;
   const one = (pick && st.find(x => x.k === pick)) || auto;
   return one ? {src: imdbImg(one.k, w), pos: one.h > one.w ? "50% 18%" : "50% 30%", still: true} : null;
 }
@@ -3196,7 +3196,7 @@ function charPoster(c, w = 600){   // 剧照还没抓到时，“电影”那一
 function charSheet(uid, ck){
   const u = uniMap.get(uid), c = u?.ck.get(ck); if (!c) return;
   const lit = charLit(c), real = lit ? charReal(c, 600) : null;
-  if (!CS || CS.c !== c) CS = {u, c, side: real || !c.cm || charPick(c) ? "real" : "comic"};
+  if (!CS || CS.c !== c) CS = {u, c, side: !c.cm || charPick(c) ? "real" : "comic"};
   drawCharSheet();
 }
 function drawCharSheet(){

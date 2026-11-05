@@ -216,6 +216,48 @@ MCU_CHARS = [
     ("galactus", "行星吞噬者", "Galactus", "银河吞噬者", ["Ralph Ineson"], "ff", "#5D4C8E"),
     ("silversurfer", "银影侠", "Silver Surfer", "沙拉·芭尔", ["Julia Garner"], "ff", "#9CA8BC"),
     ("doctordoom", "毁灭博士", "Doctor Doom", "维克多·冯·杜姆", ["Robert Downey Jr."], "doom sw", "#4C6B4B"),
+    # 反派、配角、多元宇宙来客
+    ("namor", "纳摩", "Namor", "塔洛肯之王", ["Tenoch Huerta"], "bp2 doom", "#2E8A86"),
+    ("mysterio", "神秘客", "Mysterio", "昆汀·贝克", ["Jake Gyllenhaal"], "ffh", "#5E8E6E"),
+    ("vulture", "秃鹫", "Vulture", "阿德里安·图姆斯", ["Michael Keaton"], "sh", "#4A5A6A"),
+    ("redskull", "红骷髅", "Red Skull", "约翰·施密特", ["Hugo Weaving", "Ross Marquand"], "cap1 iw eg", "#B02A2A"),
+    ("ego", "伊戈", "Ego", "活体星球", ["Kurt Russell"], "gotg2", "#6A8AC0"),
+    ("yondu", "勇度", "Yondu", "掠夺者首领", ["Michael Rooker"], "gotg1 gotg2", "#3E6E9A"),
+    ("ronan", "罗南", "Ronan", "指控者", ["Lee Pace"], "gotg1 cm", "#3A3A6A"),
+    ("zemo", "泽莫男爵", "Baron Zemo", "赫尔穆特·泽莫", ["Daniel Brühl"], "cw faws", "#6A3A5A"),
+    ("adam", "亚当·术士", "Adam Warlock", "茧中诞生", ["Will Poulter"], "gotg3", "#C9A040"),
+    ("highevo", "至高进化", "High Evolutionary", "火箭的“创造者”", ["Chukwudi Iwuji"], "gotg3", "#8A3A3A"),
+    ("gorr", "弑神者格尔", "Gorr", "手握弑神剑", ["Christian Bale"], "thor4", "#5A5A5A"),
+    ("talos", "塔罗斯", "Talos", "斯克鲁人将军", ["Ben Mendelsohn"], "cm ffh si", "#4E8A4E"),
+    ("hank", "汉克·皮姆", "Hank Pym", "初代蚁人", ["Michael Douglas"], "ant1 ant2 eg ant3", "#8A3A3A"),
+    ("janet", "珍妮特", "Janet van Dyne", "初代黄蜂女", ["Michelle Pfeiffer"], "ant2 eg ant3", "#C79A2A"),
+    ("happy", "哈皮", "Happy Hogan", "托尼的保镖兼司机", ["Jon Favreau"], "im1 im2 im3 sh eg ffh nwh", "#6A6A7A"),
+    ("ned", "内德", "Ned Leeds", "彼得的好兄弟", ["Jacob Batalon"], "sh iw ffh nwh", "#C08A3A"),
+    ("goblin", "绿魔", "Green Goblin", "诺曼·奥斯本", ["Willem Dafoe"], "nwh", "#4E8A3A"),
+    ("ock", "章鱼博士", "Doctor Octopus", "奥托·奥克塔维斯", ["Alfred Molina"], "nwh", "#8A6A3A"),
+    ("electro", "电光人", "Electro", "马克斯·狄龙", ["Jamie Foxx"], "nwh", "#3A8AC9"),
+    ("sandman", "沙人", "Sandman", "弗林特·马可", ["Thomas Haden Church"], "nwh", "#B89A6A"),
+    ("lizard", "蜥蜴博士", "The Lizard", "柯特·康纳斯", ["Rhys Ifans"], "nwh", "#4E7A3A"),
+    ("spidey_t", "蜘蛛侠", "Spider-Man", "托比版 · 彼得·帕克", ["Tobey Maguire"], "nwh", "#C23A3A"),
+    ("spidey_a", "蜘蛛侠", "Spider-Man", "加菲尔德版 · 彼得·帕克", ["Andrew Garfield"], "nwh", "#B8323C"),
+    ("wenwu", "文武", "Wenwu", "十环之主", ["Tony Leung Chiu-wai"], "shang", "#B88A2E"),
+    ("sylvie", "希尔薇", "Sylvie", "洛基的变体", ["Sophia Di Martino"], "loki", "#6A8A3A"),
+    ("mobius", "莫比乌斯", "Mobius", "时间变异管理局探员", ["Owen Wilson"], "loki", "#8A7A5A"),
+    ("sersi", "瑟茜", "Sersi", "永恒族", ["Gemma Chan"], "eter", "#C08AAA"),
+    ("ikaris", "伊卡里斯", "Ikaris", "永恒族", ["Richard Madden"], "eter", "#C9A04A"),
+    ("america", "美国小姐", "America Chavez", "穿梭多元宇宙的少女", ["Xochitl Gomez"], "ds2", "#3E6EB5"),
+    ("taskmaster", "模仿大师", "Taskmaster", "安东尼娅", ["Olga Kurylenko"], "bw tbolts", "#6A6A7A"),
+    ("val", "瓦伦蒂娜", "Valentina", "神秘的“瓦尔”", ["Julia Louis-Dreyfus"], "faws bw tbolts", "#4A4A5A"),
+    ("abomination", "憎恶", "Abomination", "埃米尔·布朗斯基", ["Tim Roth"], "hulk shang shehulk", "#5A7A4A"),
+    ("ross", "罗斯 / 红浩克", "Red Hulk", "萨迪厄斯·罗斯", ["William Hurt", "Harrison Ford"], "hulk cw iw eg bw cap4", "#B8323C"),
+    ("leader", "领袖", "The Leader", "塞缪尔·斯特恩斯", ["Tim Blake Nelson"], "hulk cap4", "#6A9A4A"),
+    ("x23", "X-23", "X-23", "劳拉", ["Dafne Keen"], "dw", "#5A5A6A"),
+    ("elektra", "艾丽卡", "Elektra", "女刺客", ["Jennifer Garner"], "dw", "#A3263A"),
+    ("blade", "刀锋战士", "Blade", "吸血鬼猎人", ["Wesley Snipes"], "dw", "#3A3A3A"),
+    ("gambit", "牌皇", "Gambit", "雷米·勒博", ["Channing Tatum"], "dw doom", "#8A3A6A"),
+    ("cassandra", "卡珊德拉·诺娃", "Cassandra Nova", "X 教授的双胞胎妹妹", ["Emma Corrin"], "dw", "#5A4A6A"),
+    ("xavier", "X 教授", "Professor X", "查尔斯·泽维尔", ["Patrick Stewart"], "doom", "#4A5A8A"),
+    ("magneto", "万磁王", "Magneto", "埃里克·兰谢尔", ["Ian McKellen"], "doom", "#8A2A4A"),
 ]
 
 DC_CHARS = [
@@ -258,6 +300,26 @@ DC_CHARS = [
     ("penguin", "企鹅人", "The Penguin", "奥兹·科布", ["Colin Farrell"], "batman penguin", "#4E5A48"),
     ("joker_p", "小丑", "Joker", "《小丑》· 华金·菲尼克斯", ["Joaquin Phoenix"], "joker joker2", "#B5463A"),
     ("lee", "哈莉·奎茵", "Lee Quinzel", "《小丑2》· Lady Gaga", ["Lady Gaga"], "joker2", "#B9476F"),
+    ("steppenwolf", "荒原狼", "Steppenwolf", "达克赛德的先锋", ["Ciarán Hinds"], "jl zsjl", "#6A6A7A"),
+    ("darkseid", "达克赛德", "Darkseid", "天启星之主", ["Ray Porter"], "zsjl", "#4A4A5A"),
+    ("doomsday", "毁灭日", "Doomsday", "氪星怪物", [], "bvs", "#5A4A3A"),
+    ("manta", "黑蝠鲼", "Black Manta", "大卫·凯恩", ["Yahya Abdul-Mateen II"], "aqua1 aqua2", "#3A3A4A"),
+    ("cheetah", "豹女", "Cheetah", "芭芭拉·米内尔瓦", ["Kristen Wiig"], "ww84", "#C9A04A"),
+    ("trevor", "史蒂夫·特雷弗", "Steve Trevor", "神奇女侠的爱人", ["Chris Pine"], "ww1 ww84", "#3E6EB5"),
+    ("ares", "阿瑞斯", "Ares", "战神", ["David Thewlis"], "ww1", "#6A3A3A"),
+    ("kingshark", "鲨鱼王", "King Shark", "纳奈欧", ["Sylvester Stallone"], "tss", "#3E7A9A"),
+    ("ratcatcher", "捕鼠者二代", "Ratcatcher 2", "克莱奥", ["Daniela Melchior"], "tss", "#6A5A4A"),
+    ("hawkman", "鹰侠", "Hawkman", "卡特·霍尔", ["Aldis Hodge"], "ba", "#A06A3A"),
+    ("fate", "命运博士", "Doctor Fate", "肯特·纳尔逊", ["Pierce Brosnan"], "ba", "#C9A040"),
+    ("metamorpho", "变形人", "Metamorpho", "雷克斯·梅森", ["Anthony Carrigan"], "superman", "#8A6A4A"),
+    ("lobo", "罗伯", "Lobo", "宇宙赏金猎人", ["Jason Momoa"], "supergirl", "#5A6A7A"),
+    ("twoface", "双面人", "Two-Face", "哈维·登特", ["Aaron Eckhart"], "tdk", "#6A6A6A"),
+    ("scarecrow", "稻草人", "Scarecrow", "乔纳森·克莱恩", ["Cillian Murphy"], "bb05 tdk tdkr", "#8A7A4A"),
+    ("ras", "拉斯·艾尔·古尔", "Ra's al Ghul", "影武者联盟首领", ["Liam Neeson"], "bb05 tdkr", "#4A5A4A"),
+    ("alfred_n", "阿尔弗雷德", "Alfred", "诺兰版 · 迈克尔·凯恩", ["Michael Caine"], "bb05 tdk tdkr", "#5A4A3A"),
+    ("gordon_n", "戈登", "Jim Gordon", "诺兰版 · 加里·奥德曼", ["Gary Oldman"], "bb05 tdk tdkr", "#4A5A6A"),
+    ("riddler", "谜语人", "The Riddler", "《新蝙蝠侠》· 保罗·达诺", ["Paul Dano"], "batman", "#3E8A4E"),
+    ("sofia", "索菲亚·法尔科内", "Sofia Falcone", "法尔科内家族", ["Cristin Milioti"], "penguin", "#6A4A5A"),
 ]
 
 ALIEN_CHARS = [
@@ -288,6 +350,8 @@ ALIEN_CHARS = [
     ("wendy", "温蒂", "Wendy", "第一个混合体", ["Sydney Chandler"], "earth", "#9A7AA8"),
     ("kirsh", "柯什", "Kirsh", "合成人", ["Timothy Olyphant"], "earth", "#B0B4BA"),
     ("predator", "铁血战士", "Predator", "猎人", [], "avp avpr", "#6A6A3A"),
+    ("burke", "伯克", "Carter Burke", "公司代表", ["Paul Reiser"], "a2", "#6A6A5A"),
+    ("weyland", "彼得·维兰德", "Peter Weyland", "维兰德公司创始人", ["Guy Pearce"], "prom cov", "#8A8A7A"),
 ]
 
 # ---------------------------------------------------------------- 套牌：集齐一组角色解锁
@@ -302,6 +366,12 @@ MCU_DECKS = [
     ("ff", "神奇四侠", "Fantastic Four", "reed sue johnny ben", "④"),
     ("street", "街头英雄", "Street Level", "daredevil kingpin echo kate", "🌃"),
     ("villains", "宿敌", "Big Bads", "thanos ultron hela killmonger kang", "💀"),
+    ("spiders", "三代蜘蛛侠", "Spider-Men", "spidey spidey_t spidey_a", "🕷"),
+    ("sinister", "反派五人组", "The Sinister Five", "goblin ock electro sandman lizard", "🦎"),
+    ("void", "虚空抵抗军", "The Void Resistance", "deadpool wolverine x23 elektra blade gambit", "🌀"),
+    ("gamma", "伽马家族", "Gamma Family", "hulk jen abomination ross leader", "☢"),
+    ("dads", "星爵的两个爸爸", "Star-Lord's Dads", "ego yondu starlord", "👨"),
+    ("quantum", "皮姆一家", "The Pyms & Langs", "antman wasp hank janet", "🐜"),
 ]
 DC_DECKS = [
     ("jl", "正义联盟", "Justice League", "superman_c batman_a ww aquaman flash cyborg", "⭐"),
@@ -312,13 +382,19 @@ DC_DECKS = [
     ("bats", "三代蝙蝠侠", "Three Batmen", "batman_b batman_a batman_p", "🦇"),
     ("jokers", "三代小丑", "Three Jokers", "joker_h joker_l joker_p", "🃏"),
     ("cats", "猫女", "Catwomen", "catwoman_h catwoman_k", "🐈‍⬛"),
+    ("gotham", "哥谭罪恶录", "Rogues of Gotham", "joker_h twoface scarecrow ras bane riddler penguin", "🃏"),
+    ("apokolips", "天启星入侵", "Apokolips", "steppenwolf darkseid", "🔥"),
+    ("atlantis", "海王的世界", "Atlantis", "aquaman mera manta", "🔱"),
+    ("themyscira", "天堂岛与人间", "Themyscira", "ww trevor ares cheetah", "🛡"),
+    ("jsa", "黑亚当与正义协会", "Justice Society", "blackadam hawkman fate", "🪬"),
 ]
 ALIEN_DECKS = [
     ("nostromo", "诺斯特罗莫号船员", "Crew of the Nostromo", "ripley dallas kane ash lambert parker jones", "🚀"),
     ("marines", "殖民海军陆战队", "Colonial Marines", "hicks hudson vasquez bishop newt", "🪖"),
     ("life", "异形生命周期", "Life Cycle", "facehugger chestburster xeno queen", "🥚"),
     ("synth", "合成人", "Synthetics", "ash bishop call david andy kirsh", "🤖"),
-    ("makers", "造物者", "The Makers", "engineer david shaw vickers", "🧬"),
+    ("makers", "造物者", "The Makers", "engineer david shaw vickers weyland", "🧬"),
+    ("company", "维兰德-汤谷公司", "Weyland-Yutani", "weyland vickers burke ash bishop", "🏢"),
 ]
 
 UNIVERSES = [
@@ -474,7 +550,111 @@ INTRO = {
     "wendy": "第一个被移植进合成躯体的孩子意识，“混合体”们的领头人。",
     "kirsh": "负责照看“混合体”的合成人科学家，立场暧昧。",
     "predator": "来自外星的猎人，以猎杀强大的猎物为荣，隐形、热成像和肩炮是它的标志。",
+    # 新加的角色
+    "namor": "海底王国塔洛肯的国王，长着脚踝上的小翅膀，为了保护子民不惜向地上世界开战。",
+    "mysterio": "前斯塔克工业的员工，用无人机和全息投影制造“英雄”，是个顶级的骗术大师。",
+    "vulture": "被斯塔克抢了生意的打捞商人，用外星科技做成飞行翼装，倒卖武器为生。",
+    "redskull": "九头蛇首领，被超级士兵血清扭曲成红色骷髅脸，痴迷宇宙魔方的力量。",
+    "ego": "以人形现身的“活体星球”，自称星爵的亲生父亲，魅力背后藏着可怕的计划。",
+    "yondu": "蓝皮肤的掠夺者首领，用口哨控制飞箭。把星爵从地球掳走，也把他养大。",
+    "ronan": "克里人里的极端分子，替灭霸寻找无限宝石，手持巨锤。",
+    "zemo": "失去家人的索科维亚上校，用一个计划让复仇者从内部分裂。",
+    "adam": "金色宗主们创造的“完美生命”，力量强大，心智却像个孩子。",
+    "highevo": "执迷于创造完美世界的科学狂人，火箭痛苦的过去全拜他所赐。",
+    "gorr": "失去女儿后对神明彻底绝望的男人，拿起弑神剑，誓要杀光所有神。",
+    "talos": "斯克鲁人将军，能变成任何人的模样，和尼克·弗瑞有着几十年的交情。",
+    "hank": "初代蚁人、皮姆粒子的发明者，脾气古怪，对自己的技术看得比命还重。",
+    "janet": "初代黄蜂女，在量子领域困了三十年，那里的秘密只有她知道。",
+    "happy": "托尼的保镖兼司机，后来成了彼得的“监护人”，嘴上嫌弃，心里最护短。",
+    "ned": "彼得最好的兄弟，乐高迷、话痨，第一个知道彼得秘密的人。",
+    "goblin": "另一个宇宙的诺曼·奥斯本，心里住着疯狂的绿魔，笑声能让人做噩梦。",
+    "ock": "另一个宇宙的天才科学家，四条机械臂和他的身体融为了一体。",
+    "electro": "另一个宇宙的电工马克斯，一次事故让他变成了能吸收和释放电能的电光人。",
+    "sandman": "另一个宇宙的逃犯，身体可以化成沙子，心里只想回到女儿身边。",
+    "lizard": "另一个宇宙的科学家，想用蜥蜴的再生能力治好自己的断臂，却变成了怪物。",
+    "spidey_t": "另一个宇宙里的第一代蜘蛛侠，温和、真诚，经历过太多失去。",
+    "spidey_a": "另一个宇宙的蜘蛛侠，嘴贫心善，一直没能放下对自己的责备。",
+    "wenwu": "活了上千年的十环之主，尚气的父亲。失去爱人后，被执念一点点吞没。",
+    "sylvie": "洛基的女性变体，从小在时间变异管理局的追捕中长大，比洛基更狠也更孤独。",
+    "mobius": "时间变异管理局的探员，爱吃沙拉，喜欢摩托艇，是洛基难得的朋友。",
+    "sersi": "永恒族成员，能改变物质的形态，在地球生活了七千年，深爱着人类。",
+    "ikaris": "永恒族里最强的战士，能飞行、眼射光束，对使命的忠诚压过了一切。",
+    "america": "能在多元宇宙之间开出星形传送门的少女，却控制不住自己的能力。",
+    "taskmaster": "能完美模仿任何人战斗动作的神秘杀手，面具下的身份令人意外。",
+    "val": "神秘的政府官员，四处招揽各路“特工”，没人知道她真正的打算。",
+    "abomination": "为了打败绿巨人，主动注射血清变成怪物的军人。后来居然改邪归正，还去了格斗俱乐部。",
+    "ross": "一辈子都在追捕绿巨人的将军，后来做了美国总统，自己也成了红浩克。",
+    "leader": "研究绿巨人血液时意外变异的科学家，头脑大幅进化，成了“领袖”。",
+    "x23": "金刚狼的克隆“女儿”劳拉，同样有自愈能力和爪子，沉默又凶猛。",
+    "elektra": "身手绝顶的女刺客，被丢进了“虚空”，从没放弃战斗。",
+    "blade": "半人半吸血鬼的吸血鬼猎人，在“虚空”里依然冷酷帅气。",
+    "gambit": "卡津口音、能给扑克牌充能爆炸的变种人，终于在大银幕上出场了。",
+    "cassandra": "X 教授的双胞胎妹妹，统治着“虚空”，拥有强大又扭曲的心灵能力。",
+    "xavier": "X 战警的创始人，世界上最强的心灵感应者，梦想变种人和人类和平共处。",
+    "magneto": "能操控一切金属的变种人，X 教授的老朋友，也是他最大的对手。",
+    "steppenwolf": "达克赛德的先锋，为了收集母盒来到地球，想赎回自己犯下的错。",
+    "darkseid": "天启星的暴君，追寻反生命方程式，宇宙中最可怕的存在之一。",
+    "doomsday": "用氪星技术和佐德将军的尸体造出来的怪物，力量足以与超人同归于尽。",
+    "manta": "海盗大卫·凯恩，认定海王害死了父亲，穿上亚特兰蒂斯战甲誓要复仇。",
+    "cheetah": "原本自卑的宝石学家芭芭拉，许愿要成为戴安娜那样的人，一步步变成了豹女。",
+    "trevor": "一战时坠落天堂岛的美国飞行员，把戴安娜带进了人类世界。",
+    "ares": "希腊神话里的战神，相信人类天生就会自相残杀。",
+    "kingshark": "能吃人的鲨鱼人，单纯又可爱，最想要的是交到朋友。",
+    "ratcatcher": "能用父亲留下的装置指挥老鼠的女孩，X 特遣队里最温柔的一个。",
+    "hawkman": "正义协会的领袖，戴着鹰形头盔、挥着钉锤，从天而降。",
+    "fate": "能看到未来的命运博士，戴上纳布头盔就拥有强大的魔法。",
+    "metamorpho": "能把身体变成任何化学元素的人，被莱克斯·卢瑟抓来当工具。",
+    "lobo": "宇宙赏金猎人，粗暴、嗜酒、几乎杀不死，是超级少女的意外拍档。",
+    "twoface": "哥谭的“光明骑士”检察官哈维·登特，悲剧之后用一枚硬币决定别人的生死。",
+    "scarecrow": "用恐惧毒气控制人心的精神科医生，在诺兰三部曲里每部都有出场。",
+    "ras": "影武者联盟的首领、布鲁斯的导师，想用极端的手段“净化”哥谭。",
+    "alfred_n": "韦恩家的管家，看着布鲁斯长大，是蝙蝠侠背后最温暖的支撑。",
+    "gordon_n": "哥谭警局里少有的好警察，和蝙蝠侠之间有着无需多言的信任。",
+    "riddler": "在网上召集追随者的连环杀手，用一道道谜题揭开哥谭的腐败。",
+    "sofia": "哥谭黑帮家族的女儿，从阿卡姆出来后，要夺回属于自己的一切。",
+    "burke": "维兰德-汤谷公司的代表，表面热心，满脑子只有公司的利益。",
+    "weyland": "维兰德公司的创始人，晚年痴迷于寻找延长生命的办法。",
 }
+
+# ---------------------------------------------------------------- 漫画原型（SuperHero API 的编号）
+COMIC_ID = {
+    "mcu": {"ironman": 346, "cap": 149, "thor": 659, "hulk": 332, "widow": 107, "hawkeye": 313, "loki": 414, "fury": 489,
+            "spidey": 620, "spidey_t": 620, "spidey_a": 620, "strange": 226, "tchalla": 106, "starlord": 630, "gamora": 275,
+            "rocket": 566, "groot": 303, "drax": 234, "nebula": 487, "mantis": 431, "antman": 31, "carol": 157, "wanda": 579,
+            "vision": 697, "sam": 251, "bucky": 714, "rhodey": 703, "thanos": 655, "ultron": 680, "hela": 321, "kang": 379,
+            "shangchi": 587, "moonknight": 470, "jen": 589, "sentry": 583, "kate": 314, "daredevil": 201, "kingpin": 391,
+            "deadpool": 213, "wolverine": 717, "wonderman": 719, "reed": 456, "sue": 344, "johnny": 333, "ben": 658,
+            "galactus": 273, "silversurfer": 598, "doctordoom": 222, "namor": 481, "mysterio": 479, "vulture": 701,
+            "redskull": 550, "ego": 235, "hank": 30, "janet": 708, "goblin": 299, "ock": 225, "electro": 237, "sandman": 572,
+            "lizard": 412, "taskmaster": 653, "abomination": 4, "ross": 547, "leader": 401, "x23": 723, "elektra": 238,
+            "blade": 112, "gambit": 274, "xavier": 527, "magneto": 423},
+    "dc": {"superman_c": 644, "superman_d": 644, "batman_a": 70, "batman_b": 70, "batman_p": 70, "ww": 720, "aquaman": 38,
+           "flash": 265, "cyborg": 194, "mera": 444, "zod": 278, "lex_e": 405, "lex_h": 405, "harley": 309, "lee": 309,
+           "joker_l": 370, "joker_h": 370, "joker_p": 370, "deadshot": 214, "shazam": 156, "blackadam": 95, "bluebeetle": 126,
+           "krypto": 396, "supergirl": 643, "guy": 305, "hawkgirl": 315, "hal": 306, "flag": 557, "bane": 60,
+           "catwoman_h": 165, "catwoman_k": 165, "penguin": 514, "steppenwolf": 637, "darkseid": 204, "doomsday": 230,
+           "manta": 105, "cheetah": 174, "kingshark": 390, "fate": 224, "lobo": 413, "twoface": 678, "scarecrow": 576,
+           "ras": 538, "alfred_n": 17, "riddler": 558},
+}
+
+
+def extract_comics(all_json):
+    """从 SuperHero API 的 all.json 抽出用得到的：图、六维数值、真名、首次登场、身高体重……"""
+    d = {h["id"]: h for h in json.loads(Path(all_json).read_text(encoding="utf-8"))}
+    clean = lambda x: "" if (not x or x in ("-", "null", "No alter egos found.", "0 cm", "0 kg")) else x
+    out = {}
+    for u, m in COMIC_ID.items():
+        for k, i in m.items():
+            h = d[i]
+            b, a, ps = h["biography"], h["appearance"], h["powerstats"]
+            out[f"{u}:{k}"] = {"s": h["slug"], "n": h["name"],
+                               "ps": [ps[x] for x in ("intelligence", "strength", "speed", "durability", "power", "combat")],
+                               "fn": clean(b.get("fullName")), "fa": clean(b.get("firstAppearance")), "al": clean(b.get("alignment")),
+                               "race": clean(a.get("race")), "h": clean((a.get("height") or ["", ""])[1]),
+                               "wt": clean((a.get("weight") or ["", ""])[1])}
+    Path(__file__).with_name("universes_comics.json").write_text(json.dumps(out, ensure_ascii=False, indent=0), encoding="utf-8")
+    print(f"漫画原型 {len(out)} 位")
+
 
 # ---------------------------------------------------------------- 对照离线片库
 def norm(s):
@@ -615,5 +795,8 @@ if __name__ == "__main__":
     ap = argparse.ArgumentParser()
     ap.add_argument("--idx", required=True)
     ap.add_argument("--out", default="docs/universes.json")
+    ap.add_argument("--comics", help="SuperHero API 的 all.json，给了就重新抽取漫画原型")
     a = ap.parse_args()
+    if a.comics:
+        extract_comics(a.comics)
     build(Path(a.idx), a.out)
