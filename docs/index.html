@@ -2260,7 +2260,7 @@ function idolCard(nm, o = {}){
   return `<div class="ic${o.cls ? " " + o.cls : ""}" data-r="${t.r}" data-nm="${nm}"${o.click ? ` onclick="${o.click}"` : ""}>
     <span class="crest"></span>${t.full ? `<span class="crown">👑</span>` : ""}
     <div class="in"><div class="ini">${esc(name.slice(0, 1))}</div>
-      ${f.src ? `<img decoding="async" src="${esc(f.src)}" style="object-position:${f.pos}"${f.alt ? ` data-alt="${esc(f.alt)}"` : ""} onerror="faceErr(this)">` : ""}
+      ${f.src ? `<img decoding="async" src="${esc(f.src)}"${f.comic ? ' referrerpolicy="no-referrer"' : ""} style="object-position:${f.pos}"${f.alt ? ` data-alt="${esc(f.alt)}"` : ""} onerror="faceErr(this)">` : ""}
       <div class="holo"></div><div class="sheen"></div>
       <i class="orn tl"></i><i class="orn tr"></i><i class="orn bl"></i><i class="orn br"></i>
       <div class="rar"><b>${t.r}</b><span>${"★".repeat(t.i + 2)}</span></div>
@@ -2897,7 +2897,7 @@ function prepUni(u){
   u.ck = new Map(u.chars.map(c => [c.k, c]));
   // 稀有度按出场次数在这个宇宙里的排名：前 15% UR，前 40% SSR，前 70% SR，其余 R
   const ns = u.chars.map(c => c.w.length).sort((a, b) => b - a), at = f => ns[Math.min(ns.length - 1, Math.floor(ns.length * f))];
-  const urMin = Math.max(3, at(.15) + 1), ssrMin = Math.max(3, at(.4)), srMin = Math.max(2, at(.7));
+  const maxN = ns[0] || 1, urMin = Math.min(maxN, Math.max(3, at(.15) + 1)), ssrMin = Math.min(urMin, Math.max(2, at(.4))), srMin = Math.min(ssrMin, Math.max(2, at(.7)));
   for (const c of u.chars) {
     c.u = u.id; c.apps = c.w.map(k => u.wk.get(k)).filter(Boolean).sort((a, b) => u.works.indexOf(a) - u.works.indexOf(b));
     const n = c.apps.length;
@@ -2957,7 +2957,7 @@ function charReal(c, w = 400, any){
   const one = (pick && st.find(x => x.k === pick)) || auto;
   return one ? {src: imdbImg(one.k, w), pos: one.h > one.w ? "50% 18%" : "50% 30%", still: true} : null;
 }
-function charComic(c, w = 400){ return c.cm?.s ? {src: COMIC(c.cm.s, w), pos: "50% 20%", comic: true} : null; }
+function charComic(c, w = 400){ return c.cm?.img ? {src: c.cm.img, pos: "50% 18%", comic: true} : c.cm?.s ? {src: COMIC(c.cm.s, w), pos: "50% 20%", comic: true} : null; }
 function charFace(c, w = 400){
   const r = charReal(c, w) || charComic(c, w); if (r) return r;
   const deb = c.apps.find(wSeen) || c.apps[0];
@@ -2972,7 +2972,7 @@ function charCard(c, o = {}){
   return `<div class="ic chc${lit ? "" : " lock"}${o.cls ? " " + o.cls : ""}" data-r="${c.rar}" style="--hc:${c.c}"${o.click !== false ? ` onclick="charSheet('${c.u}','${c.k}')"` : ""}>
     <span class="crest"></span>${full && tot > 1 ? `<span class="crown">👑</span>` : ""}
     <div class="in"><div class="ini">${lit ? esc(c.cn.slice(0, 1)) : "?"}</div>
-      ${f ? `<img decoding="async" ${o.eager ? "" : 'loading="lazy" '}class="${f.poster ? "pst" : ""}" src="${esc(f.src)}" style="object-position:${f.pos}" onerror="this.remove()">` : ""}
+      ${f ? `<img decoding="async" ${o.eager ? "" : 'loading="lazy" '}class="${f.poster ? "pst" : ""}" src="${esc(f.src)}"${f.comic ? ' referrerpolicy="no-referrer"' : ""} style="object-position:${f.pos}" onerror="this.remove()">` : ""}
       <div class="tint"></div><div class="holo"></div><div class="sheen"></div>
       <i class="orn tl"></i><i class="orn tr"></i><i class="orn bl"></i><i class="orn br"></i>
       <div class="rar"><b>${c.rar}</b></div>
@@ -2997,19 +2997,58 @@ function allSeries(){
     const items = (d.items || []).filter(([tt]) => (S.byId.has(tt) || S.meta[tt] || mark(tt)) && !seenId.has(tt) && seenId.add(tt))
       .map(([tt, o, y]) => ({id: tt, o: +o || 0, y: y || vm(tt).year || 0}));
     if (items.length < 2 || items.length > 60) continue;
-    const inUni = items.filter(it => uniOfTitle.has(it.id)).length;
+    const inUni = items.filter(it => (uniOfTitle.get(it.id) || []).some(w => !uniMap.get(w.u)?.auto)).length;
     if (inUni / items.length >= .5) continue;   // 大半都在手写专题里（比如「钢铁侠三部曲」），不重复
     const sig = items.map(i => i.id).sort().join(",");
     if (sigs.has(sig)) continue; sigs.add(sig);
     items.sort((a, b) => (a.o && b.o ? a.o - b.o : 0) || (a.y || 9999) - (b.y || 9999));
-    autoAll.push({q, n: d.zh || d.en || q, en: d.en && d.en !== d.zh ? d.en : "", items});
+    const first = vm(items[0].id), fcn = first.m?.cn || first.x?.cn || "";
+    const zh = d.zh || (fcn ? fcn.replace(/[\s:：]*(第?[一二三四五六七八九十\d]+部?|[ⅠⅡⅢ]+)$/, "") + "系列" : "");
+    autoAll.push({q, n: zh || d.en || q, en: d.en && d.en !== zh ? d.en : "", items});
   }
   const seenN = s => s.items.filter(it => ["done", "doing"].includes(mark(it.id)?.s)).length;
+  buildAutoUnis();
   autoList = autoAll.filter(s => seenN(s) > 0)
     .sort((a, b) => seenN(b) / b.items.length - seenN(a) / a.items.length || seenN(b) - seenN(a));
   return autoAll;
 }
 function autoSeries(){ allSeries(); return autoList; }
+/* 有角色表的系列（后台从 Wikidata 整理），转成和手写宇宙一样的结构：路线、角色、套牌、成就都能用 */
+const AUTO_THEMES = [["#8E7BEA", "#EAD8B2", "#231B38"], ["#C0703A", "#F0D9A8", "#26170E"], ["#3E7AB5", "#CFE0F5", "#0F1A2C"],
+  ["#3E8A6A", "#D8EAD0", "#0E1C16"], ["#B8405A", "#F5D0D8", "#26101A"], ["#6A6AA0", "#E0E0F0", "#15152A"], ["#A08A3A", "#F2E6B8", "#1E1A0C"]];
+const hashOf = str => { let h = 0; for (const ch of str) h = (h * 31 + ch.charCodeAt(0)) >>> 0; return h; };
+let autoUniKey = "";
+function buildAutoUnis(){
+  const key = (S.series ? Object.keys(S.series.s || {}).length + ":" + JSON.stringify(S.series.s || {}).length : "0") + ":" + S.idxReady + ":" + UNI.length;
+  if (key === autoUniKey) return; autoUniKey = key;
+  for (const [id, u] of [...uniMap]) if (u.auto) uniMap.delete(id);
+  for (const [tt, ws] of [...uniOfTitle]) { const keep = ws.filter(w => !uniMap.get(w.u)?.auto && uniMap.has(w.u)); keep.length ? uniOfTitle.set(tt, keep) : uniOfTitle.delete(tt); }
+  for (const s of autoAll) {
+    const raw = S.series?.s?.[s.q]?.c || [];
+    if (raw.length < 3) continue;
+    const ids = new Set(s.items.map(it => it.id));
+    const chars = raw.map(c => ({c, w: c.w.filter(t => ids.has(t))})).filter(x => x.w.length).map(({c, w}) => {
+      const name = c.zh || c.db || c.en;
+      const t2 = hashOf(c.k) % 360;
+      return {k: c.k, cn: name.replace(/\s*[（(][^）)]*[）)]\s*$/, ""), en: c.en && c.en !== name ? c.en : "", sub: c.a[0] ? (S.people[c.a[0][0]]?.cn || c.a[0][1]) : "",
+        a: c.a, w, c: `hsl(${t2} 38% 42%)`, i: c.i || ""};
+    });
+    if (chars.length < 3) continue;
+    // 稀有度：出场次数多、演职员表排得靠前的更稀有（前 10% UR、再 20% SSR、再 30% SR）
+    const order = raw.filter(c => chars.some(x => x.k === c.k)).sort((a, b) => b.w.length - a.w.length || (a.o || 999) - (b.o || 999)).map(c => c.k);
+    for (const c of chars) { const f = order.indexOf(c.k) / chars.length; c.r = f < .1 ? "UR" : f < .3 ? "SSR" : f < .6 ? "SR" : "R"; }
+    const en = s.en || s.n, short = en.length <= 9 ? en.toUpperCase() : en.split(/\s+/).map(x => x[0]).join("").toUpperCase().slice(0, 5);
+    const works = s.items.map(it => ({k: it.id, id: it.id, en: "", y: it.y, cn: "", sec: "all"}));
+    const decks = [];
+    for (const w of works) {   // 每部片子出场最多的几位，算一组“这部的主角团”
+      const m = chars.filter(c => c.w.includes(w.k)).slice(0, 5);
+      if (m.length >= 3) decks.push({k: "d" + w.k, n: `《${vm(w.id).name}》主角团`, en: String(w.y || ""), m: m.map(c => c.k), ic: "🎬"});
+    }
+    const u = {id: s.q, auto: true, n: s.n, en, short, tag: `系列专题 · ${works.length} 部 · 角色来自 Wikidata`,
+      theme: AUTO_THEMES[hashOf(s.q) % AUTO_THEMES.length], wd: [], secs: [{k: "all", n: "全部作品", en: "All Films"}], works, chars: chars.slice(0, 60), decks: decks.slice(0, 12)};
+    prepUni(u);
+  }
+}
 function autoStat(s){
   const out = s.items.filter(it => it.y && it.y <= THIS_YEAR && (it.y < THIS_YEAR || S.byId.get(it.id)?.v || mark(it.id)));
   return {main: out, seen: out.filter(it => mark(it.id)?.s === "done")};
@@ -3027,7 +3066,7 @@ function packHTML(u, big){
     <div class="pk-bd"><div class="pk-en">${esc(u.en)}</div><b>${esc(u.n)}</b>
       <div class="pk-bar"><i style="width:${Math.max(frac * 100, st.seen.length ? 3 : 0)}%"></i></div>
       <div class="pk-st"><span><em>${st.seen.length}</em>/${tot} 部</span><span>角色 <em>${st.lit.length}</em>/${u.chars.length}</span>${big ? `<span>套牌 <em>${st.decks.length}</em>/${u.decks.length}</span>` : ""}</div>
-      ${faces.length ? `<div class="pk-faces">${faces.map(c => { const f = charFace(c, 120); return `<i style="--hc:${c.c}">${f ? `<img loading="lazy" src="${esc(f.src)}" style="object-position:${f.pos}" onerror="this.remove()">` : esc(c.cn.slice(0, 1))}</i>`; }).join("")}${st.lit.length > 5 ? `<small>+${st.lit.length - 5}</small>` : ""}</div>`
+      ${faces.length ? `<div class="pk-faces">${faces.map(c => { const f = charFace(c, 120); return `<i style="--hc:${c.c}">${f ? `<img loading="lazy" src="${esc(f.src)}"${f.comic ? ' referrerpolicy="no-referrer"' : ""} style="object-position:${f.pos}" onerror="this.remove()">` : esc(c.cn.slice(0, 1))}</i>`; }).join("")}${st.lit.length > 5 ? `<small>+${st.lit.length - 5}</small>` : ""}</div>`
         : `<div class="pk-hint">看完第一部，点亮第一位角色</div>`}
     </div></a>`;
 }
@@ -3043,7 +3082,7 @@ function uniHomeSec(){   // 看过（或在看）其中一部，这个宇宙 / �
   const us = UNI.filter(u => u.works.some(wSeen)), auto = autoSeries();
   if (!us.length && !auto.length) return "";
   return `<div class="sec"><div class="sec-h"><h2>宇宙与系列</h2><a href="#/uni">全部 ${us.length + auto.length}</a></div>
-    <div class="scroller packs">${us.map(u => packHTML(u)).join("")}${auto.slice(0, 8).map(seriesTile).join("")}</div></div>`;
+    <div class="scroller packs">${us.map(u => packHTML(u)).join("")}${auto.slice(0, 8).map(s => uniMap.get(s.q) ? packHTML(uniMap.get(s.q)) : seriesTile(s)).join("")}</div></div>`;
 }
 function renderUniHub(){
   const auto = autoSeries();
@@ -3059,7 +3098,7 @@ function renderUniHub(){
 /* ---------- 单个宇宙页 ---------- */
 let uTab = {}, uTl = {}, uFilter = "all";
 function renderUni(id){
-  if (/^Q\d+$/.test(id)) return renderSeries(id);
+  if (/^Q\d+$/.test(id)) { allSeries(); if (!uniMap.get(id)) return renderSeries(id); }
   const u = uniMap.get(id);
   if (!u) { $("#page").innerHTML = `<div class="bar" id="bar"><button class="icon-btn" onclick="back()">${IC.back}</button><div class="tt"></div><span style="width:36px"></span></div><div class="empty-s">正在加载专题…</div>`; return; }
   const st = uniStat(u), tab = uTab[id] || getPref("utab", "route"), tot = st.main.length;
@@ -3095,7 +3134,7 @@ function uniRoute(u){
       <a href="#/t/${w.id}" class="rn-ps">${posterHTML(v, 120)}</a>
       <a href="#/t/${w.id}" class="rn-bd"><b>${esc(uniName(w))}</b><small>${tl && w.tl ? `故事 ${Math.floor(w.tl)} 年 · ` : ""}${w.y}${w.ty && ["s", "ms"].includes(w.ty) ? " · 剧集" : w.ty === "sp" || w.ty === "tm" ? " · 特别篇" : ""}${w.x ? " · 外传" : ""}${!out ? " · 待映" : ""}${k && !done ? ` · ${STATUS[k.s]}` : ""}</small>
         ${cs.length ? `<div class="rn-cs">${cs.map(c => { const lit = charLit(c); const f = lit ? charFace(c, 80) : null;
-          return `<i class="${lit ? "on" : ""}" style="--hc:${c.c}" title="${esc(c.cn)}">${f ? `<img loading="lazy" src="${esc(f.src)}" style="object-position:${f.pos}" onerror="this.remove()">` : esc(lit ? c.cn.slice(0, 1) : "?")}</i>`; }).join("")}${w.chars.length > 6 ? `<small>+${w.chars.length - 6}</small>` : ""}</div>` : ""}</a>
+          return `<i class="${lit ? "on" : ""}" style="--hc:${c.c}" title="${esc(c.cn)}">${f ? `<img loading="lazy" src="${esc(f.src)}"${f.comic ? ' referrerpolicy="no-referrer"' : ""} style="object-position:${f.pos}" onerror="this.remove()">` : esc(lit ? c.cn.slice(0, 1) : "?")}</i>`; }).join("")}${w.chars.length > 6 ? `<small>+${w.chars.length - 6}</small>` : ""}</div>` : ""}</a>
       ${done ? `<span class="rn-seal">已看</span>` : out ? `<button class="rn-ck" onclick="uniStamp(event,'${w.id}')" aria-label="看过了"></button>` : `<span class="rn-soon">待映</span>`}</div>`;
   };
   if (tl) return html + `<div class="route">${uniOrder(u, true).map(node).join("")}</div>`;
@@ -3218,8 +3257,8 @@ function drawCharSheet(){
     <div class="csh-hd"><div class="sign">${esc(c.en)}</div><b>${esc(c.cn)}</b><small>${esc(c.sub)}</small>
       <div class="csh-meta"><span class="rk" data-r="${c.rar}">${c.rar}</span>${c.a.length ? `演员 ${c.a.map(a => a[0] ? `<a href="#/p/${a[0]}" onclick="closeSheet()">${esc(actorName(a))}</a>` : esc(a[1])).join(" / ")}` : "生物"}</div></div>
     ${c.i ? `<div class="csh-intro">${esc(c.i)}</div>` : ""}
-    <div class="csh-st">${lit ? `已看 <b>${seen}</b> / ${tot} 次出场${seen >= tot ? " · 👑 全部看完" : ""}` : `还没点亮 · 看完${nx ? `《${esc(uniName(nx))}》` : "TA 的任何一部"}就能点亮${cm ? "，解锁漫画原型和设定数值" : ""}`}</div>
-    ${cm ? lit ? `<div class="lab">漫画设定数值</div><div class="csh-stats paper">${radarSVG(cm.ps, c.c)}
+    <div class="csh-st">${lit ? `已看 <b>${seen}</b> / ${tot} 次出场${seen >= tot ? " · 👑 全部看完" : ""}` : `还没点亮 · 看完${nx ? `《${esc(uniName(nx))}》` : "TA 的任何一部"}就能点亮${cm?.ps ? "，解锁漫画原型和设定数值" : cm ? "，解锁漫画原型" : ""}`}</div>
+    ${cm?.ps ? lit ? `<div class="lab">漫画设定数值</div><div class="csh-stats paper">${radarSVG(cm.ps, c.c)}
         ${facts.length ? `<dl class="csh-facts">${facts.map(([k, v]) => `<div><dt>${k}</dt><dd>${esc(v)}</dd></div>`).join("")}</dl>` : ""}
         <div class="csh-src">漫画版设定 · 数值 0–100 · 来源 SuperHero API</div></div>`
       : `<div class="csh-lock paper"><span>🔒</span>点亮后解锁漫画原型和六维设定数值</div>` : ""}
@@ -3308,16 +3347,18 @@ function uniStamp(ev, id, inSheet){
 
 /* ---------- 条目页：属于哪个宇宙 / 系列 ---------- */
 function uniBanner(id){
+  allSeries();
   let html = "";
   for (const w of uniOfTitle.get(id) || []) {
     const u = uniMap.get(w.u), sec = u.secMap.get(w.sec), i = secWorks(u, w.sec).indexOf(w) + 1;
     html += `<a class="ubn" href="#/u/${u.id}" style="--ua:${u.theme[0]};--ub:${u.theme[1]};--uc:${u.theme[2]}">
       <div class="ubn-h"><span class="ubn-wm">${esc(u.short)}</span><div><b>${esc(u.n)}</b><small>${sec ? `${esc(sec.n)} · 第 ${i} 部` : ""}</small></div><span class="ubn-go">专题 ›</span></div>
-      ${w.chars.length ? `<div class="ubn-cs">${w.chars.map(c => { const lit = charLit(c), f = lit ? charFace(c, 100) : null;
-        return `<span class="${lit ? "on" : ""}" style="--hc:${c.c}" onclick="event.preventDefault();event.stopPropagation();charSheet('${u.id}','${c.k}')"><i>${f ? `<img loading="lazy" src="${esc(f.src)}" style="object-position:${f.pos}" onerror="this.remove()">` : lit ? esc(c.cn.slice(0, 1)) : "?"}</i>${esc(c.cn)}</span>`; }).join("")}</div>
+      ${w.chars.length ? `<div class="ubn-cs">${w.chars.slice(0, 16).map(c => { const lit = charLit(c), f = lit ? charFace(c, 100) : null;
+        return `<span class="${lit ? "on" : ""}" style="--hc:${c.c}" onclick="event.preventDefault();event.stopPropagation();charSheet('${u.id}','${c.k}')"><i>${f ? `<img loading="lazy" src="${esc(f.src)}"${f.comic ? ' referrerpolicy="no-referrer"' : ""} style="object-position:${f.pos}" onerror="this.remove()">` : lit ? esc(c.cn.slice(0, 1)) : "?"}</i>${esc(c.cn)}</span>`; }).join("")}</div>
         <div class="ubn-note">${wSeen(w) ? `这部里的 ${w.chars.length} 位角色已点亮` : `看完这部，点亮 ${w.chars.filter(c => !charLit(c)).length || w.chars.length} 位角色`}</div>` : ""}</a>`;
   }
   for (const s of seriesOf(id)) {
+    if (uniMap.get(s.q)) continue;   // 有角色表的系列上面已经画过了
     const st = autoStat(s);
     html += `<a class="ubn auto" href="#/u/${s.q}"><div class="ubn-h"><span class="ubn-wm">✦</span><div><b>${esc(s.n)}</b><small>系列 · 看过 ${st.seen.length} / ${st.main.length || s.items.length}</small></div><span class="ubn-go">专题 ›</span></div></a>`;
   }

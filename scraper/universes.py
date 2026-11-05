@@ -1066,6 +1066,11 @@ def build(idx, out):
     # 漫画原型：图和设定数值来自 SuperHero API（akabab/superhero-api），用 --comics all.json 重新抽取
     cpath = Path(__file__).with_name("universes_comics.json")
     comics = json.loads(cpath.read_text(encoding="utf-8")) if cpath.exists() else {}
+    # SuperHero API 里没有的（小辣椒、舒莉、露易丝……）：Marvel / DC 维基（fandom）的漫画图，只有图没有数值
+    fpath = Path(__file__).with_name("universes_fandom.json")
+    for k, v in (json.loads(fpath.read_text(encoding="utf-8")) if fpath.exists() else {}).items():
+        if k not in comics:
+            comics[k] = {"img": v["img"], "pg": v.get("pg", "")}
     for u in UNIVERSES:
         works, secs, key2id = [], [], {}
         for sk, sn, sen, items in u["sections"]:

@@ -31,6 +31,15 @@ def now():
     return time.time()
 
 
+try:
+    import opencc
+    _t2s = opencc.OpenCC("t2s")
+    t2s = _t2s.convert
+except Exception:      # 没装 opencc 也能跑，繁体就照原样
+    def t2s(x):
+        return x
+
+
 def iso():
     return datetime.now(CST).isoformat(timespec="seconds")
 
@@ -201,12 +210,51 @@ class Sync:
                     d["items"] = sorted(d["items"], key=lambda x: (x[2] or 9999, x[1]))[:120]
                     d["at"] = now()
                     ser[q] = d
+            # 系列的角色：Wikidata 里“谁演了哪个角色”，成员刷新时一起刷新
+            want = [q for q in used if q in ser and "c" not in ser[q] and 2 <= len(ser[q].get("items") or []) <= 60][:12]
+            for q in want:
+                ser[q]["c"] = self.series_chars([it[0] for it in ser[q]["items"]])
             for q in [q for q in ser if q not in used]:
                 del ser[q]
             if ask or stale:
                 self.ok("wikidata")
         except SourceError as e:
             self.fail("wikidata", e)
+
+    def series_chars(self, tts):
+        """整理成网页用的角色表：出场越多越靠前，最多 60 位。中文名先用 Wikidata，没有再用豆瓣演职员表里的角色名。"""
+        raw = self.wd.series_chars(tts)
+        out = []
+        for q, c in raw.items():
+            actors = sorted(c["a"].items(), key=lambda x: -x[1][1])
+            w = sorted(c["w"], key=lambda t: tts.index(t) if t in tts else 999)
+            if not (c["zh"] or c["tw"] or c["en"]):
+                continue
+            out.append({"k": q, "zh": c["zh"] or t2s(c["tw"]), "en": c["en"], "a": [[nm, n] for nm, (n, _) in actors[:3]],
+                        "w": w, "o": min(c["w"].values())})
+        out.sort(key=lambda c: (-len(c["w"]), c["o"]))
+        return out[:60]
+
+    def enrich_series_chars(self):
+        """没有中文名的角色，用豆瓣演职员表里的中文角色名；再从豆瓣简介里挑一句写到 TA 的话当介绍。"""
+        for d in (self.series.get("s") or {}).values():
+            for c in d.get("c") or []:
+                nms = {a[0] for a in c["a"]}
+                for tt in c["w"]:
+                    m = self.meta.get(tt) or {}
+                    hit = next((p for p in m.get("cast") or [] if p.get("id") in nms), None)
+                    if not hit:
+                        continue
+                    role = re.split(r"\s*[/／]\s*", hit.get("role_cn") or "")[0].strip()
+                    if role and not c.get("db"):
+                        c["db"] = role
+                    if not c.get("i") and m.get("intro"):
+                        who = (self.people.get(hit["id"]) or {}).get("cn", "")
+                        rintro, _ = role_intro(m["intro"], c.get("zh") or role, role, c.get("en") or "")
+                        if rintro and (c.get("zh") or role or "") and any(k and k in rintro for k in (c.get("zh"), role, who)):
+                            c["i"] = rintro
+                if c.get("i") and c.get("db"):
+                    continue
 
     # ------------------------------------------------------------ 宇宙专题：角色剧照
     def refresh_chars(self, limit=100):
@@ -226,6 +274,12 @@ class Sync:
                 for k in c["w"]:
                     if wk.get(k) and nms:
                         actors.setdefault(wk[k], set()).update(nms)
+        for d in (self.series.get("s") or {}).values():
+            for c in d.get("c") or []:
+                nms = {a[0] for a in c.get("a") or [] if a and a[0]}
+                for t in c.get("w") or []:
+                    if nms:
+                        actors.setdefault(t, set()).update(nms)
         mine = set(self.active())
         need = sorted([t for t in actors if now() - (T.get(t) or {}).get("at", 0) > 45 * DAY], key=lambda t: t not in mine)[:limit]
         if not need:
@@ -326,6 +380,8 @@ class Sync:
         for p in (m.get("directors") or []) + (m.get("cast") or []):
             hit = by.get(norm(p["n"]))
             if hit:
+                if hit.get("role") and p in (m.get("cast") or []):
+                    p["role_cn"] = hit["role"]       # 豆瓣的中文角色名（宇宙 / 系列的角色卡用）
                 rec = self.people.setdefault(p["id"], {})
                 if hit["cn"] and hit["cn"] != p["n"]:
                     rec["cn"] = hit["cn"]
@@ -559,6 +615,7 @@ class Sync:
         save(self.dir / "meta.json", self.meta)
         save(self.dir / "people.json", self.people)
         if self.series:
+            self.enrich_series_chars()
             save(self.dir / "series.json", self.series)
         if self.chars:
             save(self.dir / "chars.json", self.chars)

@@ -1,0 +1,776 @@
+{
+"mcu:pepper": {
+"img": "https://static.wikia.nocookie.net/marveldatabase/images/4/42/2020_Rescue_Vol_1_1_Textless.jpg/revision/latest/scale-to-width-down/339?cb=20210906003543",
+"pg": "Virginia Potts (Earth-616)",
+"w": 339,
+"h": 480
+},
+"mcu:peggy": {
+"img": "https://static.wikia.nocookie.net/marveldatabase/images/6/63/Margaret_Carter_%28Earth-616%29_from_Captain_America_Sentinel_of_Liberty_Vol_2_8_001.jpg/revision/latest/scale-to-width-down/242?cb=20240807122944",
+"pg": "Margaret Carter (Earth-616)",
+"w": 242,
+"h": 480
+},
+"mcu:jane": {
+"img": "https://static.wikia.nocookie.net/marveldatabase/images/d/dc/Valkyrie_Jane_Foster_Vol_1_1_Textless.jpg/revision/latest/scale-to-width-down/314?cb=20190418233232",
+"pg": "Jane Foster (Earth-616)",
+"w": 314,
+"h": 480
+},
+"mcu:mj": {
+"img": "https://static.wikia.nocookie.net/marveldatabase/images/8/83/Friendly_Neighborhood_Mary_Jane_Vol_1_1_Virgin_Variant.jpg/revision/latest/scale-to-width-down/312?cb=20261101024337",
+"pg": "Mary Jane Watson (Earth-616)",
+"w": 312,
+"h": 480
+},
+"mcu:wong": {
+"img": "https://static.wikia.nocookie.net/marveldatabase/images/b/b8/Strange_Academy_Vol_1_15_Character_Spotlight_Variant_Textless.jpg/revision/latest/scale-to-width-down/316?cb=20221006161810",
+"pg": "Wong (Earth-616)",
+"w": 316,
+"h": 480
+},
+"mcu:shuri": {
+"img": "https://static.wikia.nocookie.net/marveldatabase/images/9/98/Wakanda_Vol_1_1_Textless.jpg/revision/latest/scale-to-width-down/332?cb=20220729225619",
+"pg": "Shuri (Earth-616)",
+"w": 332,
+"h": 480
+},
+"mcu:okoye": {
+"img": "https://static.wikia.nocookie.net/marveldatabase/images/f/f7/Wakanda_Vol_1_5_Textless.jpg/revision/latest/scale-to-width-down/316?cb=20221128041130",
+"pg": "Okoye (Earth-616)",
+"w": 316,
+"h": 480
+},
+"mcu:killmonger": {
+"img": "https://static.wikia.nocookie.net/marveldatabase/images/f/f0/Wakanda_Vol_1_3_Textless.jpg/revision/latest/scale-to-width-down/316?cb=20221025164728",
+"pg": "Erik Killmonger (Earth-616)",
+"w": 316,
+"h": 480
+},
+"mcu:valkyrie": {
+"img": "https://static.wikia.nocookie.net/marveldatabase/images/b/bc/Brunnhilde_%28Earth-616%29_from_Asgardians_of_the_Galaxy_Vol_1_8_cover_001.jpg/revision/latest/scale-to-width-down/304?cb=20200201034107",
+"pg": "Brunnhilde (Earth-616)",
+"w": 304,
+"h": 480
+},
+"mcu:kamala": {
+"img": "https://static.wikia.nocookie.net/marveldatabase/images/3/3f/NYX_Vol_2_3_Ms._Marvel_Virgin_Variant.jpg/revision/latest/scale-to-width-down/312?cb=20240926194350",
+"pg": "Kamala Khan (Earth-616)",
+"w": 312,
+"h": 480
+},
+"mcu:monica": {
+"img": "https://static.wikia.nocookie.net/marveldatabase/images/3/35/Monica_Rambeau_Photon_Vol_1_1_Textless.jpg/revision/latest/scale-to-width-down/335?cb=20220928214953",
+"pg": "Monica Rambeau (Earth-616)",
+"w": 335,
+"h": 480
+},
+"mcu:agatha": {
+"img": "https://static.wikia.nocookie.net/marveldatabase/images/0/02/Agatha_Harkness_%28Earth-616%29_from_Sorcerer_Supreme_Vol_1_1_001.jpg/revision/latest/scale-to-width-down/375?cb=20251231121737",
+"pg": "Agatha Harkness (Earth-616)",
+"w": 375,
+"h": 480
+},
+"mcu:yelena": {
+"img": "https://static.wikia.nocookie.net/marveldatabase/images/4/4f/White_Widow_Vol_1_1_Artgerm_Virgin_Variant.jpg/revision/latest/scale-to-width-down/316?cb=20240808165820",
+"pg": "Yelena Belova (Earth-616)",
+"w": 316,
+"h": 480
+},
+"mcu:redguardian": {
+"img": "https://static.wikia.nocookie.net/marveldatabase/images/8/82/Alexei_Shostakov_%28Earth-616%29_from_Thunderbolts_Vol_6_1_0001.jpg/revision/latest/scale-to-width-down/347?cb=20250610131224",
+"pg": "Alexei Shostakov (Earth-616)",
+"w": 347,
+"h": 480
+},
+"mcu:usagent": {
+"img": "https://static.wikia.nocookie.net/marveldatabase/images/1/14/Jonathan_Walker_%28Earth-616%29_from_Devil%27s_Reign_Villains_for_Hire_Vol_1_2_cover_001.jpg/revision/latest/scale-to-width-down/396?cb=20220208204759",
+"pg": "Jonathan Walker (Earth-616)",
+"w": 396,
+"h": 480
+},
+"mcu:ghost": {
+"img": "https://static.wikia.nocookie.net/marveldatabase/images/2/21/Ghost_%28Earth-616%29_from_Amazing_Spider-Man_Vol_3_16_001.jpg/revision/latest/scale-to-width-down/312?cb=20150312234729",
+"pg": "Ghost (Earth-616)",
+"w": 312,
+"h": 480
+},
+"mcu:echo": {
+"img": "https://static.wikia.nocookie.net/marveldatabase/images/c/cb/Women_of_Marvel_Vol_5_1_Bazaldua_Variant_Textless.jpg/revision/latest/scale-to-width-down/312?cb=20240503015450",
+"pg": "Maya Lopez (Earth-616)",
+"w": 312,
+"h": 480
+},
+"mcu:riri": {
+"img": "https://static.wikia.nocookie.net/marveldatabase/images/6/69/Invincible_Iron_Man_Vol_5_7_Ironheart_Virgin_Variant.jpg/revision/latest/scale-to-width-down/312?cb=20240707203726",
+"pg": "Riri Williams (Earth-616)",
+"w": 312,
+"h": 480
+},
+"mcu:yondu": {
+"img": "https://static.wikia.nocookie.net/marveldatabase/images/6/6d/All-New_Guardians_of_the_Galaxy_Annual_Vol_1_1_Mora_Variant_Textless.jpg/revision/latest/scale-to-width-down/316?cb=20170623090214",
+"pg": "Yondu Udonta (Earth-616)",
+"w": 316,
+"h": 480
+},
+"mcu:ronan": {
+"img": "https://static.wikia.nocookie.net/marveldatabase/images/5/53/Ronan_%28Earth-616%29_from_Legendary_Star-Lord_Vol_1_12_001.jpg/revision/latest/scale-to-width-down/340?cb=20210718222107",
+"pg": "Ronan (Earth-616)",
+"w": 340,
+"h": 480
+},
+"mcu:zemo": {
+"img": "https://static.wikia.nocookie.net/marveldatabase/images/a/a7/Secret_Empire_Vol_1_4_Villain_Variant_Textless.jpg/revision/latest/scale-to-width-down/316?cb=20170303225651",
+"pg": "Helmut Zemo (Earth-616)",
+"w": 316,
+"h": 480
+},
+"mcu:adam": {
+"img": "https://static.wikia.nocookie.net/marveldatabase/images/f/f0/Adam_Warlock_%28Earth-616%29_from_Infinity_Wars_Infinity_Vol_1_1_001.jpg/revision/latest/scale-to-width-down/312?cb=20190302234015",
+"pg": "Adam Warlock (Earth-616)",
+"w": 312,
+"h": 480
+},
+"mcu:highevo": {
+"img": "https://static.wikia.nocookie.net/marveldatabase/images/5/5a/Avengers_Vol_7_673_Textless.jpg/revision/latest/scale-to-width-down/319?cb=20170822214529",
+"pg": "Herbert Wyndham (Earth-616)",
+"w": 319,
+"h": 480
+},
+"mcu:gorr": {
+"img": "https://static.wikia.nocookie.net/marveldatabase/images/4/4d/Gorr_%28Earth-616%29_from_King_Thor_Vol_1_1_001.jpg/revision/latest/scale-to-width-down/312?cb=20210702214444",
+"pg": "Gorr (Earth-616)",
+"w": 312,
+"h": 480
+},
+"mcu:talos": {
+"img": "https://static.wikia.nocookie.net/marveldatabase/images/5/5c/Talos_%28Earth-616%29_from_Howard_the_Duck_Vol_5_4_001.jpg/revision/latest/scale-to-width-down/322?cb=20160907004949",
+"pg": "Talos (Earth-616)",
+"w": 322,
+"h": 480
+},
+"mcu:happy": {
+"img": "https://static.wikia.nocookie.net/marveldatabase/images/3/3e/Iron_Man_Vol_7_4_Villain_Variant_Textless.jpg/revision/latest/scale-to-width-down/312?cb=20260912014701",
+"pg": "Harold Hogan (Earth-616)",
+"w": 312,
+"h": 480
+},
+"mcu:ned": {
+"img": "https://static.wikia.nocookie.net/marveldatabase/images/d/d5/Edward_Leeds_%28Earth-616%29_from_Amazing_Spider-Man_Vol_6_11_001.jpg/revision/latest/scale-to-width-down/316?cb=20230706013547",
+"pg": "Edward Leeds (Earth-616)",
+"w": 316,
+"h": 480
+},
+"mcu:sylvie": {
+"img": "https://static.wikia.nocookie.net/marveldatabase/images/2/2d/Sylvie_Lushton_%28Earth-616%29_from_Illuminati_Vol_1_5_001.jpg/revision/latest/scale-to-width-down/311?cb=20210526202147",
+"pg": "Sylvie Lushton (Earth-616)",
+"w": 311,
+"h": 480
+},
+"mcu:sersi": {
+"img": "https://static.wikia.nocookie.net/marveldatabase/images/a/a7/Eternals_Vol_5_1_Campbell_Virgin_Variant.jpg/revision/latest/scale-to-width-down/311?cb=20240711150643",
+"pg": "Sersi (Earth-616)",
+"w": 311,
+"h": 480
+},
+"mcu:ikaris": {
+"img": "https://static.wikia.nocookie.net/marveldatabase/images/d/dc/Eternals_Vol_5_1_Ross_Variant_Textless.jpg/revision/latest/scale-to-width-down/310?cb=20260924203323",
+"pg": "Ikaris (Earth-616)",
+"w": 310,
+"h": 480
+},
+"mcu:america": {
+"img": "https://static.wikia.nocookie.net/marveldatabase/images/b/b6/Thunderbolts_Vol_5_2_Pride_Variant_Textless.jpg/revision/latest/scale-to-width-down/338?cb=20220622115323",
+"pg": "America Chavez (Earth-616)",
+"w": 338,
+"h": 480
+},
+"mcu:val": {
+"img": "https://static.wikia.nocookie.net/marveldatabase/images/4/46/Valentina_Allegra_de_Fontaine_%28Earth-616%29_from_Thunderbolts_Doomstrike_Vol_1_3_001.jpg/revision/latest/scale-to-width-down/312?cb=20260330180435",
+"pg": "Valentina Allegra de Fontaine (Earth-616)",
+"w": 312,
+"h": 480
+},
+"mcu:cassandra": {
+"img": "https://static.wikia.nocookie.net/marveldatabase/images/6/68/X-Men_Vol_7_14_Cassandra_Nova_Virgin_Variant.jpg/revision/latest/scale-to-width-down/312?cb=20250404195404",
+"pg": "Cassandra Nova Xavier (Earth-616)",
+"w": 312,
+"h": 480
+},
+"mcu:frigga": {
+"img": "https://static.wikia.nocookie.net/marveldatabase/images/6/61/Freyja_Freyrdottir_%28Earth-616%29_from_Thor_Vol_6_16_001.jpg/revision/latest/scale-to-width-down/312?cb=20241227002530",
+"pg": "Freyja Freyrdottir (Earth-616)",
+"w": 312,
+"h": 480
+},
+"mcu:heimdall": {
+"img": "https://static.wikia.nocookie.net/marveldatabase/images/6/68/Heimdall_%28Earth-616%29_from_Mighty_Thor_Vol_2_2_001.jpg/revision/latest/scale-to-width-down/324?cb=20180929211420",
+"pg": "Heimdall (Earth-616)",
+"w": 324,
+"h": 480
+},
+"mcu:korg": {
+"img": "https://static.wikia.nocookie.net/marveldatabase/images/e/ea/World_War_Hulk_Aftersmash_Warbound_Vol_1_2_Textless.jpg/revision/latest/scale-to-width-down/318?cb=20210622060437",
+"pg": "Korg (Earth-616)",
+"w": 318,
+"h": 480
+},
+"mcu:grandmaster": {
+"img": "https://static.wikia.nocookie.net/marveldatabase/images/0/07/Avengers_Vol_7_689_Textless.jpg/revision/latest/scale-to-width-down/320?cb=20180123211112",
+"pg": "En Dwi Gast (Earth-616)",
+"w": 320,
+"h": 480
+},
+"mcu:malekith": {
+"img": "https://static.wikia.nocookie.net/marveldatabase/images/1/14/War_of_the_Realms_Vol_1_6_Hugo_Variant_Textless.jpg/revision/latest/scale-to-width-down/320?cb=20190623200918",
+"pg": "Malekith (Earth-616)",
+"w": 320,
+"h": 480
+},
+"mcu:mariahill": {
+"img": "https://static.wikia.nocookie.net/marveldatabase/images/4/4b/Maria_Hill_%28Earth-616%29_from_Avengers_World_Vol_1_14_001.png/revision/latest/scale-to-width-down/284?cb=20150220062849",
+"pg": "Maria Hill (Earth-616)",
+"w": 284,
+"h": 480
+},
+"mcu:coulson": {
+"img": "https://static.wikia.nocookie.net/marveldatabase/images/d/d7/Infinity_Watch_Vol_1_4_Phil_Coulson_Virgin_Variant.jpg/revision/latest/scale-to-width-down/312?cb=20250428043602",
+"pg": "Phillip Coulson (Earth-616)",
+"w": 312,
+"h": 480
+},
+"mcu:sharon": {
+"img": "https://static.wikia.nocookie.net/marveldatabase/images/6/6c/Sharon_Carter_%28Earth-616%29_from_Captain_America_Sentinel_of_Liberty_Vol_2_11_001.jpg/revision/latest/scale-to-width-down/312?cb=20230415234335",
+"pg": "Sharon Carter (Earth-616)",
+"w": 312,
+"h": 480
+},
+"mcu:pierce": {
+"img": "https://static.wikia.nocookie.net/marveldatabase/images/a/a2/Alexander_Pierce_%28Earth-616%29_from_Secret_Warriors_Vol_1_12.jpg/revision/latest/scale-to-width-down/480?cb=20200927201324",
+"pg": "Alexander Pierce (Earth-616)",
+"w": 480,
+"h": 358
+},
+"mcu:crossbones": {
+"img": "https://static.wikia.nocookie.net/marveldatabase/images/0/06/Captain_America_and_Crossbones_Vol_1_1_Textless.jpg/revision/latest/scale-to-width-down/315?cb=20160323181133",
+"pg": "Brock Rumlow (Earth-616)",
+"w": 315,
+"h": 480
+},
+"mcu:howard": {
+"img": "https://static.wikia.nocookie.net/marveldatabase/images/8/81/Howard_Stark_%28Earth-616%29_from_S.H.I.E.L.D._Vol_1_1_001.jpg/revision/latest/scale-to-width-down/312?cb=20240602040120",
+"pg": "Howard Stark (Earth-616)",
+"w": 312,
+"h": 480
+},
+"mcu:whiplash": {
+"img": "https://static.wikia.nocookie.net/marveldatabase/images/6/60/Anton_Vanko_%28Whiplash%29_%28Earth-616%29_from_Iron_Man_Vol_7_7_001.jpg/revision/latest/scale-to-width-down/301?cb=20260807190057",
+"pg": "Anton Vanko (Whiplash) (Earth-616)",
+"w": 301,
+"h": 480
+},
+"mcu:hammer": {
+"img": "https://static.wikia.nocookie.net/marveldatabase/images/0/0d/Justin_Hammer_%28Earth-616%29_from_Venom_Lethal_Protector_Vol_2_5_001.jpg/revision/latest/scale-to-width-down/223?cb=20230406222346",
+"pg": "Justin Hammer (Earth-616)",
+"w": 223,
+"h": 480
+},
+"mcu:killian": {
+"img": "https://static.wikia.nocookie.net/marveldatabase/images/5/50/Aldrich_Killian_%28Earth-616%29_from_Invincible_Iron_Man_Vol_1_Vol_1_1_001.jpg/revision/latest/scale-to-width-down/316?cb=20251230015432",
+"pg": "Aldrich Killian (Earth-616)",
+"w": 316,
+"h": 480
+},
+"mcu:mordo": {
+"img": "https://static.wikia.nocookie.net/marveldatabase/images/4/44/Secret_Empire_Vol_1_7_Villain_Variant_Textless.jpg/revision/latest/scale-to-width-down/316?cb=20170418160718",
+"pg": "Karl Mordo (Earth-616)",
+"w": 316,
+"h": 480
+},
+"mcu:ancientone": {
+"img": "https://static.wikia.nocookie.net/marveldatabase/images/d/de/Yao_%28Earth-616%29_from_New_Avengers_Vol_2_3_001.jpg/revision/latest/scale-to-width-down/312?cb=20260612054236",
+"pg": "Yao (Earth-616)",
+"w": 312,
+"h": 480
+},
+"mcu:kaecilius": {
+"img": "https://static.wikia.nocookie.net/marveldatabase/images/a/af/Kaecilius_%28Earth-616%29_from_Death_of_Doctor_Strange_Vol_1_4_0001.jpeg/revision/latest/scale-to-width-down/390?cb=20220203114027",
+"pg": "Kaecilius (Earth-616)",
+"w": 390,
+"h": 480
+},
+"mcu:clea": {
+"img": "https://static.wikia.nocookie.net/marveldatabase/images/5/5f/Sorcerer_Supreme_Vol_1_5_Fanyang_Variant_Textless.jpg/revision/latest/scale-to-width-down/316?cb=20260427073207",
+"pg": "Clea (Earth-616)",
+"w": 316,
+"h": 480
+},
+"mcu:mbaku": {
+"img": "https://static.wikia.nocookie.net/marveldatabase/images/9/95/Black_Panther_Long_Live_The_King_Vol_1_4_Textless.jpg/revision/latest/scale-to-width-down/316?cb=20200414101922",
+"pg": "M'Baku (Earth-616)",
+"w": 316,
+"h": 480
+},
+"mcu:nakia": {
+"img": "https://static.wikia.nocookie.net/marveldatabase/images/1/11/Nakia_Bahadir_%28Earth-616%29_from_Ms._Marvel_Vol_4_1.jpg/revision/latest/scale-to-width-down/368?cb=20170204025927",
+"pg": "Nakia Bahadir (Earth-616)",
+"w": 368,
+"h": 480
+},
+"mcu:ramonda": {
+"img": "https://static.wikia.nocookie.net/marveldatabase/images/5/54/Ramonda_%28Earth-616%29_from_Black_Panther_Vol_6_1_001.png/revision/latest/scale-to-width-down/294?cb=20160408231032",
+"pg": "Ramonda (Earth-616)",
+"w": 294,
+"h": 480
+},
+"mcu:collector": {
+"img": "https://static.wikia.nocookie.net/marveldatabase/images/1/10/Taneleer_Tivan_%28Earth-616%29_from_Legendary_Star-Lord_Vol_1_12_001.jpg/revision/latest/scale-to-width-down/312?cb=20210718232412",
+"pg": "Taneleer Tivan (Earth-616)",
+"w": 312,
+"h": 480
+},
+"mcu:ebony": {
+"img": "https://static.wikia.nocookie.net/marveldatabase/images/8/86/Black_Order_Vol_1_5_Textless.jpg/revision/latest/scale-to-width-down/316?cb=20181218214739",
+"pg": "Ebony Maw (Earth-616)",
+"w": 316,
+"h": 480
+},
+"mcu:ayesha": {
+"img": "https://static.wikia.nocookie.net/marveldatabase/images/d/da/Ayesha_%28Earth-616%29_from_Fantastic_Four_Vol_3_11_cover_001.jpg/revision/latest/scale-to-width-down/302?cb=20230127165813",
+"pg": "Ayesha (Earth-616)",
+"w": 302,
+"h": 480
+},
+"mcu:kraglin": {
+"img": "https://static.wikia.nocookie.net/marveldatabase/images/a/a0/Kraglin_%28Earth-616%29_from_All-New_Guardians_of_the_Galaxy_Annual_Vol_1_1_001.png/revision/latest/scale-to-width-down/450?cb=20170628163551",
+"pg": "Kraglin (Earth-616)",
+"w": 450,
+"h": 480
+},
+"mcu:cosmo": {
+"img": "https://static.wikia.nocookie.net/marveldatabase/images/a/ad/Cosmo_%28Earth-616%29_from_Symbiote_Spider-Man_King_in_Black_Vol_1_4_001.jpg/revision/latest/scale-to-width-down/312?cb=20221015192457",
+"pg": "Cosmo (Earth-616)",
+"w": 312,
+"h": 480
+},
+"mcu:yonrogg": {
+"img": "https://static.wikia.nocookie.net/marveldatabase/images/9/93/Yon-Rogg_%28Earth-616%29_from_Captain_Marvel_Vol_7_14_001.jpg/revision/latest/scale-to-width-down/350?cb=20190315163821",
+"pg": "Yon-Rogg (Earth-616)",
+"w": 350,
+"h": 480
+},
+"mcu:darben": {
+"img": "https://static.wikia.nocookie.net/marveldatabase/images/3/33/Dar-Benn_%28Earth-616%29_from_Avengers_Vol_1_346_001.jpg/revision/latest/scale-to-width-down/237?cb=20211028173212",
+"pg": "Dar-Benn (Earth-616)",
+"w": 237,
+"h": 480
+},
+"mcu:kingo": {
+"img": "https://static.wikia.nocookie.net/marveldatabase/images/a/a2/Eternals_Vol_5_1_Lee_Variant_Textless.jpg/revision/latest/scale-to-width-down/316?cb=20211023190212",
+"pg": "Kingo Sunen (Earth-616)",
+"w": 316,
+"h": 480
+},
+"mcu:thena": {
+"img": "https://static.wikia.nocookie.net/marveldatabase/images/2/24/Eternals_Vol_5_1_Cho_Variant_Textless.jpg/revision/latest/scale-to-width-down/312?cb=20210504065948",
+"pg": "Thena (Earth-616)",
+"w": 312,
+"h": 480
+},
+"mcu:ajak": {
+"img": "https://static.wikia.nocookie.net/marveldatabase/images/5/5b/Ajak_%28Earth-616%29_from_A.X.E._Judgment_Day_Omega_Vol_1_1_001.jpg/revision/latest/scale-to-width-down/324?cb=20221109185607",
+"pg": "Ajak (Earth-616)",
+"w": 324,
+"h": 480
+},
+"mcu:gilgamesh": {
+"img": "https://static.wikia.nocookie.net/marveldatabase/images/7/7b/Eternals_Vol_5_5_Parel_Variant_Textless.jpg/revision/latest/scale-to-width-down/316?cb=20211130005649",
+"pg": "Gilgamesh (Earth-616)",
+"w": 316,
+"h": 480
+},
+"mcu:harrow": {
+"img": "https://static.wikia.nocookie.net/marveldatabase/images/c/cb/Arthur_Harrow_%28Earth-616%29_from_Moon_Knight_Vol_2_2_001.png/revision/latest/scale-to-width-down/304?cb=20220331155101",
+"pg": "Arthur Harrow (Earth-616)",
+"w": 304,
+"h": 480
+},
+"mcu:layla": {
+"img": "https://static.wikia.nocookie.net/marveldatabase/images/4/4e/Moon_Knight_City_of_the_Dead_Vol_1_4_Aka_Variant_Textless.jpg/revision/latest/scale-to-width-down/311?cb=20240302104806",
+"pg": "Layla El-Faouly (Earth-616)",
+"w": 311,
+"h": 480
+},
+"mcu:kidloki": {
+"img": "https://static.wikia.nocookie.net/marveldatabase/images/f/fc/Loki_Laufeyson_%28Kid_Loki%29_%28Earth-616%29_from_Marvel_War_of_Heroes_001.jpg/revision/latest/scale-to-width-down/277?cb=20151023000947",
+"pg": "Loki Laufeyson (Kid Loki) (Earth-616)",
+"w": 277,
+"h": 480
+},
+"mcu:jackrussell": {
+"img": "https://static.wikia.nocookie.net/marveldatabase/images/8/8d/Werewolf_by_Night_Red_Band_Vol_1_9_Textless.jpg/revision/latest/scale-to-width-down/320?cb=20250413002325",
+"pg": "Jack Russell (Earth-616)",
+"w": 320,
+"h": 480
+},
+"mcu:elsa": {
+"img": "https://static.wikia.nocookie.net/marveldatabase/images/2/22/Death_of_Doctor_Strange_Bloodstone_Vol_1_1_Unknown_Comic_Books_Exclusive_Second_Printing_Virgin_Variant.jpg/revision/latest/scale-to-width-down/310?cb=20211007143108",
+"pg": "Elsa Bloodstone (Earth-616)",
+"w": 310,
+"h": 480
+},
+"mcu:titania": {
+"img": "https://static.wikia.nocookie.net/marveldatabase/images/1/10/Mary_MacPherran_%28Earth-616%29_from_She-Hulk_Vol_5_1_001.jpg/revision/latest/scale-to-width-down/306?cb=20220119140634",
+"pg": "Mary MacPherran (Earth-616)",
+"w": 306,
+"h": 480
+},
+"mcu:teen": {
+"img": "https://static.wikia.nocookie.net/marveldatabase/images/f/f4/Wiccan_Witches%27_Road_Vol_1_1_Textless.jpg/revision/latest/scale-to-width-down/310?cb=20250821084524",
+"pg": "William Kaplan (Earth-616)",
+"w": 310,
+"h": 480
+},
+"mcu:giah": {
+"img": "https://static.wikia.nocookie.net/marveldatabase/images/a/ad/G%27iah_%28Earth-616%29_from_Meet_the_Skrulls_Vol_1_3_001.jpg/revision/latest/scale-to-width-down/291?cb=20200422043633",
+"pg": "G'iah (Earth-616)",
+"w": 291,
+"h": 480
+},
+"mcu:hood": {
+"img": "https://static.wikia.nocookie.net/marveldatabase/images/2/28/Dark_Reign_The_Hood_Vol_1_1_Textless.jpg/revision/latest/scale-to-width-down/316?cb=20090926091514",
+"pg": "Parker Robbins (Earth-616)",
+"w": 316,
+"h": 480
+},
+"mcu:karen": {
+"img": "https://static.wikia.nocookie.net/marveldatabase/images/b/b7/Karen_Page_%28Earth-616%29_from_Official_Handbook_of_the_Marvel_Universe_A_to_Z_Vol_1_8_0001.png/revision/latest/scale-to-width-down/250?cb=20250520152343",
+"pg": "Karen Page (Earth-616)",
+"w": 250,
+"h": 480
+},
+"mcu:foggy": {
+"img": "https://static.wikia.nocookie.net/marveldatabase/images/3/35/Franklin_Nelson_%28Earth-616%29_from_Daredevil_Vol_5_605_001.jpg/revision/latest/scale-to-width-down/332?cb=20180712171255",
+"pg": "Franklin Nelson (Earth-616)",
+"w": 332,
+"h": 480
+},
+"mcu:torres": {
+"img": "https://static.wikia.nocookie.net/marveldatabase/images/3/32/Joaqu%C3%ADn_Torres_%28Earth-616%29_from_Captain_America_Sam_Wilson_Vol_1_17_001.jpg/revision/latest/scale-to-width-down/312?cb=20170110014026",
+"pg": "Joaquín Torres (Earth-616)",
+"w": 312,
+"h": 480
+},
+"mcu:moleman": {
+"img": "https://static.wikia.nocookie.net/marveldatabase/images/4/4f/Harvey_Elder_%28Earth-616%29_from_Fantastic_Four_Vol_7_27_cover_001.jpg/revision/latest/scale-to-width-down/312?cb=20241220190707",
+"pg": "Harvey Elder (Earth-616)",
+"w": 312,
+"h": 480
+},
+"mcu:herbie": {
+"img": "https://static.wikia.nocookie.net/marveldatabase/images/5/5f/Fantastic_Four_Vol_6_10_Sienkiewicz_Variant_Textless.jpg/revision/latest/scale-to-width-down/315?cb=20200818132828",
+"pg": "Highly Engineered Robot Built for Interdimensional Exploration (Earth-616)",
+"w": 315,
+"h": 480
+},
+"mcu:lucky": {
+"img": "https://static.wikia.nocookie.net/marveldatabase/images/7/7e/Lucky_from_America_Vol_1_5_cover_001.jpg/revision/latest/scale-to-width-down/480?cb=20211110210852",
+"pg": "Lucky (Earth-616)",
+"w": 480,
+"h": 402
+},
+"mcu:yukio": {
+"img": "https://static.wikia.nocookie.net/marveldatabase/images/d/de/Yukio_%28Earth-616%29_from_Exceptional_X-Men_Vol_1_5_001.jpg/revision/latest/scale-to-width-down/312?cb=20250115200506",
+"pg": "Yukio (Earth-616)",
+"w": 312,
+"h": 480
+},
+"mcu:vanessa": {
+"img": "https://static.wikia.nocookie.net/marveldatabase/images/6/68/Vanessa_Carlysle_%28Earth-616%29_from_Deadpool_Vol_4_27_001.jpg/revision/latest/scale-to-width-down/312?cb=20240529013719",
+"pg": "Vanessa Carlysle (Earth-616)",
+"w": 312,
+"h": 480
+},
+"mcu:blindal": {
+"img": "https://static.wikia.nocookie.net/marveldatabase/images/b/b3/Althea_Sanderson_%28Earth-616%29_from_Deadpool_Corps_Rank_and_Foul_Vol_1_1_0001.jpg/revision/latest/scale-to-width-down/235?cb=20170126093540",
+"pg": "Althea Sanderson (Earth-616)",
+"w": 235,
+"h": 480
+},
+"mcu:ladypool": {
+"img": "https://static.wikia.nocookie.net/marveldatabase/images/5/5b/Deadpool_Merc_with_a_Mouth_Vol_1_7_Second_Printing_Variant_Textless.jpg/revision/latest/scale-to-width-down/316?cb=20110926050952",
+"pg": "Wanda Wilson (Earth-3010)",
+"w": 316,
+"h": 480
+},
+"mcu:wenwu": {
+"img": "https://static.wikia.nocookie.net/marveldatabase/images/d/d8/Zheng_Zu_%28Earth-616%29_from_Shang-Chi_Vol_1_2_001.jpg/revision/latest/scale-to-width-down/296?cb=20210201001910",
+"pg": "Zheng Zu (Earth-616)",
+"w": 296,
+"h": 480
+},
+"mcu:alioth": {
+"img": "https://static.wikia.nocookie.net/marveldatabase/images/4/45/Alioth_%28Temporal_Limbo%29_from_Avengers_The_Terminatrix_Objective_Vol_1_3_0001.jpg/revision/latest/scale-to-width-down/381?cb=20210307042737",
+"pg": "Alioth (Temporal Limbo)",
+"w": 381,
+"h": 480
+},
+"mcu:classicloki": {
+"img": "https://static.wikia.nocookie.net/marveldatabase/images/a/a2/Loki_Laufeyson_%28Earth-616%29_from_Thor_Vol_3_12_0001.jpg/revision/latest/scale-to-width-down/316?cb=20201011071529",
+"pg": "Loki Laufeyson (Earth-616)",
+"w": 316,
+"h": 480
+},
+"dc:waller": {
+"img": "https://static.wikia.nocookie.net/marvel_dc/images/5/5f/Suicide_Squad_Vol_5_11_Textless_Variant.jpg/revision/latest/scale-to-width-down/315?cb=20170210191730",
+"pg": "Amanda Waller (Prime Earth)",
+"w": 315,
+"h": 480
+},
+"dc:bloodsport": {
+"img": "https://static.wikia.nocookie.net/marvel_dc/images/4/4a/Robert_DuBois_Prime_Earth_002.jpg/revision/latest/scale-to-width-down/380?cb=20210706231200",
+"pg": "Robert DuBois (Prime Earth)",
+"w": 380,
+"h": 480
+},
+"dc:peacemaker": {
+"img": "https://static.wikia.nocookie.net/marvel_dc/images/6/62/Peacemaker_Tries_Hard%21_Vol_1_3_Joe_Quinones_Variant_Textless.jpg/revision/latest/scale-to-width-down/316?cb=20231201155703",
+"pg": "Christopher Smith (Prime Earth)",
+"w": 316,
+"h": 480
+},
+"dc:lois": {
+"img": "https://static.wikia.nocookie.net/marvel_dc/images/c/ca/Lois_Lane_Vol_2_7_Variant_Textless.jpg/revision/latest/scale-to-width-down/316?cb=20200110172538",
+"pg": "Lois Lane (Prime Earth)",
+"w": 316,
+"h": 480
+},
+"dc:terrific": {
+"img": "https://static.wikia.nocookie.net/marvel_dc/images/9/93/Justice_League_Unlimited_Vol_2_4_Textless_Benjamin_Variant.jpg/revision/latest/scale-to-width-down/316?cb=20250301231754",
+"pg": "Michael Holt (Prime Earth)",
+"w": 316,
+"h": 480
+},
+"dc:john": {
+"img": "https://static.wikia.nocookie.net/marvel_dc/images/3/37/Green_Lantern_The_Lost_Army_Vol_1_3_Variant_B.jpg/revision/latest/scale-to-width-down/317?cb=20150820004846",
+"pg": "John Stewart (Prime Earth)",
+"w": 317,
+"h": 480
+},
+"dc:clayface": {
+"img": "https://static.wikia.nocookie.net/marvel_dc/images/4/49/Clayface_Celebrity_Dirt_Vol_1_2_Textless.jpg/revision/latest/scale-to-width-down/316?cb=20260812125955",
+"pg": "Basil Karlo (Prime Earth)",
+"w": 316,
+"h": 480
+},
+"dc:trevor": {
+"img": "https://static.wikia.nocookie.net/marvel_dc/images/8/8f/Steve_Trevor_0005.png/revision/latest/scale-to-width-down/300?cb=20231231175904",
+"pg": "Steven Trevor (Prime Earth)",
+"w": 300,
+"h": 480
+},
+"dc:ares": {
+"img": "https://static.wikia.nocookie.net/marvel_dc/images/9/95/Wonder_Woman_Vol_5_59_Textless.jpg/revision/latest/scale-to-width-down/317?cb=20181129171911",
+"pg": "Ares (Prime Earth)",
+"w": 317,
+"h": 480
+},
+"dc:hawkman": {
+"img": "https://static.wikia.nocookie.net/marvel_dc/images/2/25/Hawkman_Vol_5_1_Textless.jpg/revision/latest/scale-to-width-down/303?cb=20180613183242",
+"pg": "Carter Hall (Prime Earth)",
+"w": 303,
+"h": 480
+},
+"dc:metamorpho": {
+"img": "https://static.wikia.nocookie.net/marvel_dc/images/b/bd/Metamorpho_The_Element_Man_Vol_1_6_Textless_Variant.jpg/revision/latest/scale-to-width-down/316?cb=20250528160818",
+"pg": "Rex Mason (Prime Earth)",
+"w": 316,
+"h": 480
+},
+"dc:gordon_n": {
+"img": "https://static.wikia.nocookie.net/marvel_dc/images/d/de/Detective_Comics_Vol_2_25_Textless.jpg/revision/latest/scale-to-width-down/316?cb=20131021172041",
+"pg": "James Gordon (Prime Earth)",
+"w": 316,
+"h": 480
+},
+"dc:gordon_p": {
+"img": "https://static.wikia.nocookie.net/marvel_dc/images/d/de/Detective_Comics_Vol_2_25_Textless.jpg/revision/latest/scale-to-width-down/316?cb=20131021172041",
+"pg": "James Gordon (Prime Earth)",
+"w": 316,
+"h": 480
+},
+"dc:sofia": {
+"img": "https://static.wikia.nocookie.net/marvel_dc/images/2/2f/Sofia_Gigante_0002.jpg/revision/latest/scale-to-width-down/480?cb=20160417045100",
+"pg": "Sofia Falcone (New Earth)",
+"w": 480,
+"h": 422
+},
+"dc:jonathan": {
+"img": "https://static.wikia.nocookie.net/marvel_dc/images/a/ae/The_Man_of_Steel_Vol_2_2_Textless.jpg/revision/latest/scale-to-width-down/304?cb=20180606144444",
+"pg": "Jonathan Kent (Prime Earth)",
+"w": 304,
+"h": 480
+},
+"dc:martha": {
+"img": "https://static.wikia.nocookie.net/marvel_dc/images/4/4d/Martha_Kent_0001.jpg/revision/latest?cb=20100103204236",
+"pg": "Martha Clark (New Earth)",
+"w": 468,
+"h": 480
+},
+"dc:jorel": {
+"img": "https://static.wikia.nocookie.net/marvel_dc/images/c/cc/Jor-El_0011.jpg/revision/latest/scale-to-width-down/480?cb=20091023020443",
+"pg": "Jor-El (New Earth)",
+"w": 480,
+"h": 433
+},
+"dc:boomerang": {
+"img": "https://static.wikia.nocookie.net/marvel_dc/images/8/85/The_Flash_Vol_5_18_Textless_Variant.jpg/revision/latest/scale-to-width-down/316?cb=20170307100443",
+"pg": "George Harkness (Prime Earth)",
+"w": 316,
+"h": 480
+},
+"dc:diablo": {
+"img": "https://static.wikia.nocookie.net/marvel_dc/images/a/a1/Suicide_Squad_Most_Wanted_El_Diablo_and_Boomerang_Vol_1_1_El_Diablo_Textless.jpg/revision/latest/scale-to-width-down/316?cb=20160812024736",
+"pg": "Chato Santana (Prime Earth)",
+"w": 316,
+"h": 480
+},
+"dc:katana": {
+"img": "https://static.wikia.nocookie.net/marvel_dc/images/3/30/Katana_0002.jpg/revision/latest/scale-to-width-down/312?cb=20131114161450",
+"pg": "Tatsu Yamashiro (New Earth)",
+"w": 312,
+"h": 480
+},
+"dc:blackmask": {
+"img": "https://static.wikia.nocookie.net/marvel_dc/images/0/0f/Roman_Sionis_Prime_Earth_0003.png/revision/latest/scale-to-width-down/300?cb=20231219024405",
+"pg": "Roman Sionis (Prime Earth)",
+"w": 300,
+"h": 480
+},
+"dc:montoya": {
+"img": "https://static.wikia.nocookie.net/marvel_dc/images/e/e8/Renee_Montoya_Prime_Earth_0003.jpg/revision/latest/scale-to-width-down/312?cb=20230204173840",
+"pg": "Renee Montoya (Prime Earth)",
+"w": 312,
+"h": 480
+},
+"dc:orm": {
+"img": "https://static.wikia.nocookie.net/marvel_dc/images/0/0f/Ocean_Master_Year_of_the_Villain_Vol_1_1_Textless.jpg/revision/latest/scale-to-width-down/326?cb=20191214124634",
+"pg": "Orm Marius (Prime Earth)",
+"w": 326,
+"h": 480
+},
+"dc:atlanna": {
+"img": "https://static.wikia.nocookie.net/marvel_dc/images/7/70/Aquaman_Vol_7_39_Textless.jpg/revision/latest/scale-to-width-down/316?cb=20150225204512",
+"pg": "Atlanna (Prime Earth)",
+"w": 316,
+"h": 480
+},
+"dc:vulko": {
+"img": "https://static.wikia.nocookie.net/marvel_dc/images/b/b2/Vulko_012.jpg/revision/latest/scale-to-width-down/312?cb=20150117182319",
+"pg": "Nuidis Vulko (Prime Earth)",
+"w": 312,
+"h": 480
+},
+"dc:sivana": {
+"img": "https://static.wikia.nocookie.net/marvel_dc/images/5/52/Thaddeus_Sivana_Prime_Earth_0001.jpg/revision/latest/scale-to-width-down/337?cb=20150309201157",
+"pg": "Thaddeus Sivana (Prime Earth)",
+"w": 337,
+"h": 480
+},
+"dc:vigilante": {
+"img": "https://static.wikia.nocookie.net/marvel_dc/images/c/c9/Vigilante_01.jpg/revision/latest/scale-to-width-down/317?cb=20131227050312",
+"pg": "Adrian Chase (New Earth)",
+"w": 317,
+"h": 480
+},
+"dc:harcourt": {
+"img": "https://static.wikia.nocookie.net/marvel_dc/images/8/85/Emilia_Harcourt_Prime_Earth_004.jpg/revision/latest/scale-to-width-down/444?cb=20231024220316",
+"pg": "Emilia Harcourt (Prime Earth)",
+"w": 444,
+"h": 480
+},
+"dc:eagly": {
+"img": "https://static.wikia.nocookie.net/marvel_dc/images/d/d0/Eagly_Prime_Earth_002.jpg/revision/latest/scale-to-width-down/480?cb=20220913135629",
+"pg": "Eagly (Prime Earth)",
+"w": 480,
+"h": 357
+},
+"dc:bride": {
+"img": "https://static.wikia.nocookie.net/marvel_dc/images/a/a5/Bride_Prime_Earth_002.jpg/revision/latest/scale-to-width-down/424?cb=20191219034950",
+"pg": "Bride (Prime Earth)",
+"w": 424,
+"h": 480
+},
+"dc:frankenstein": {
+"img": "https://static.wikia.nocookie.net/marvel_dc/images/7/7c/Frankenstein_Agent_of_SHADE_Vol_1_9_Textless.jpg/revision/latest/scale-to-width-down/312?cb=20131227164256",
+"pg": "Frankenstein (Prime Earth)",
+"w": 312,
+"h": 480
+},
+"dc:weasel": {
+"img": "https://static.wikia.nocookie.net/marvel_dc/images/8/8a/Weasel_PE_01.jpg/revision/latest/scale-to-width-down/480?cb=20140326005406",
+"pg": "John Monroe (Prime Earth)",
+"w": 480,
+"h": 345
+},
+"dc:gi": {
+"img": "https://static.wikia.nocookie.net/marvel_dc/images/0/09/J.A.K.E._Prime_Earth_0002.png/revision/latest/scale-to-width-down/341?cb=20260301223255",
+"pg": "J.A.K.E. (Prime Earth)",
+"w": 341,
+"h": 480
+},
+"dc:jimmy": {
+"img": "https://static.wikia.nocookie.net/marvel_dc/images/9/9b/Superman%27s_Pal%2C_Jimmy_Olsen_Vol_2_12_Textless.jpg/revision/latest/scale-to-width-down/316?cb=20200714134441",
+"pg": "James Olsen (Prime Earth)",
+"w": 316,
+"h": 480
+},
+"dc:perry": {
+"img": "https://static.wikia.nocookie.net/marvel_dc/images/3/30/Perry_White_0003.jpg/revision/latest/scale-to-width-down/341?cb=20091018064655",
+"pg": "Perry White (New Earth)",
+"w": 341,
+"h": 480
+},
+"dc:eve": {
+"img": "https://static.wikia.nocookie.net/marvel_dc/images/2/2d/Eve_Tessmacher_Prime_Earth_001.png/revision/latest/scale-to-width-down/442?cb=20200629012045",
+"pg": "Eve Tessmacher (Prime Earth)",
+"w": 442,
+"h": 480
+},
+"dc:ruthye": {
+"img": "https://static.wikia.nocookie.net/marvel_dc/images/6/65/Ruthye_Marye_Knoll_%28Prime_Earth%29_002.jpg/revision/latest/scale-to-width-down/384?cb=20260619131605",
+"pg": "Ruthye Marye Knoll (Prime Earth)",
+"w": 384,
+"h": 480
+},
+"dc:krem": {
+"img": "https://static.wikia.nocookie.net/marvel_dc/images/e/e6/Krem_Prime_Earth_001.jpeg/revision/latest/scale-to-width-down/342?cb=20250730005802",
+"pg": "Krem (Prime Earth)",
+"w": 342,
+"h": 480
+},
+"dc:falcone": {
+"img": "https://static.wikia.nocookie.net/marvel_dc/images/1/10/Carmine_Falcone_Prime_Earth_0001.jpg/revision/latest/scale-to-width-down/480?cb=20160918175403",
+"pg": "Carmine Falcone (Prime Earth)",
+"w": 480,
+"h": 420
+},
+"dc:lucius": {
+"img": "https://static.wikia.nocookie.net/marvel_dc/images/b/b4/Lucius_Fox_Prime_Earth_0001.JPG/revision/latest/scale-to-width-down/480?cb=20160604144858",
+"pg": "Lucius Fox (Prime Earth)",
+"w": 480,
+"h": 214
+},
+"dc:talia": {
+"img": "https://static.wikia.nocookie.net/marvel_dc/images/c/cb/Talia_al_Ghul_0009.jpg/revision/latest/scale-to-width-down/316?cb=20110527020201",
+"pg": "Talia al Ghul (New Earth)",
+"w": 316,
+"h": 480
+},
+"dc:ratcatcher": {
+"img": "https://static.wikia.nocookie.net/marvel_dc/images/7/73/RatcatcherNew52.jpg/revision/latest/scale-to-width-down/309?cb=20140831060805",
+"pg": "Otis Flannegan (Prime Earth)",
+"w": 309,
+"h": 480
+}
+}

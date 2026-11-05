@@ -320,6 +320,41 @@ class Wikidata:
                 out.setdefault(q, {"zh": "", "en": "", "items": []})["items"].append(it)
         return out
 
+    def series_chars(self, imdb_ids):
+        """系列里每部片子的角色（演员 P161 + 角色限定 P453）：
+        {角色Q: {"zh", "en", "a": {演员nm: [英文名, 次数]}, "w": {tt: 排序}}}"""
+        out = {}
+        ids = [i for i in imdb_ids if re.fullmatch(r"tt\d+", i or "")]
+        for i in range(0, len(ids), 12):
+            values = " ".join(f'"{x}"' for x in ids[i:i + 12])
+            rows = self._q("""SELECT ?imdb ?ord ?anm ?an ?char ?zh ?tw ?en WHERE { VALUES ?imdb { %s } ?f wdt:P345 ?imdb .
+                ?f p:P161 ?st . ?st ps:P161 ?actor . ?st pq:P453 ?char . OPTIONAL { ?st pq:P1545 ?ord }
+                OPTIONAL { ?actor wdt:P345 ?anm } OPTIONAL { ?actor rdfs:label ?an FILTER(lang(?an) = "en") }
+                OPTIONAL { ?char rdfs:label ?zh FILTER(lang(?zh) IN ("zh-cn","zh-hans")) }
+                OPTIONAL { ?char rdfs:label ?tw FILTER(lang(?tw) IN ("zh","zh-tw","zh-hant","zh-hk")) }
+                OPTIONAL { ?char rdfs:label ?en FILTER(lang(?en) = "en") } }""" % values)
+            for r in rows:
+                q = r["char"]["value"].rsplit("/", 1)[-1]
+                if not re.fullmatch(r"Q\d+", q):
+                    continue
+                c = out.setdefault(q, {"zh": "", "tw": "", "en": "", "a": {}, "w": {}})
+                c["zh"] = c["zh"] or (r.get("zh") or {}).get("value", "")
+                c["tw"] = c["tw"] or (r.get("tw") or {}).get("value", "")
+                c["en"] = c["en"] or (r.get("en") or {}).get("value", "")
+                tt = r["imdb"]["value"]
+                try:
+                    o = int((r.get("ord") or {}).get("value") or 999)
+                except ValueError:
+                    o = 999
+                c["w"][tt] = min(o, c["w"].get(tt, 999))
+                nm = (r.get("anm") or {}).get("value", "")
+                if re.fullmatch(r"nm\d+", nm):
+                    a = c["a"].setdefault(nm, [(r.get("an") or {}).get("value", ""), set()])
+                    a[1].add(tt)
+        for c in out.values():
+            c["a"] = {nm: [n, len(ts)] for nm, (n, ts) in c["a"].items()}
+        return out
+
     def by_douban(self, did):
         rows = self._q('SELECT ?imdb WHERE { ?f wdt:P4529 "%s" . ?f wdt:P345 ?imdb }' % re.sub(r"\D", "", did))
         return rows[0]["imdb"]["value"] if rows else None
