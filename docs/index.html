@@ -3172,20 +3172,34 @@ const AUTO_THEMES = [["#8E7BEA", "#EAD8B2", "#231B38"], ["#C0703A", "#F0D9A8", "
   ["#3E8A6A", "#D8EAD0", "#0E1C16"], ["#B8405A", "#F5D0D8", "#26101A"], ["#6A6AA0", "#E0E0F0", "#15152A"], ["#A08A3A", "#F2E6B8", "#1E1A0C"]];
 const hashOf = str => { let h = 0; for (const ch of str) h = (h * 31 + ch.charCodeAt(0)) >>> 0; return h; };
 let autoUniKey = "";
+const HERO_ZH = {storm: "暴风女", nightwing: "夜翼", "poison-ivy": "毒藤女", venom: "毒液", deathstroke: "丧钟", "doc-samson": "参孙博士", "goblin-queen": "妖精女王",
+  shocker: "电击人", silk: "蛛丝", tinkerer: "修补匠", beyonder: "超越者", "jean-grey": "琴·葛蕾", rogue: "罗刹女", iceman: "冰人", gambit: "牌皇", psylocke: "灵蝶",
+  "emma-frost": "白皇后", cable: "电索", domino: "多米诺", colossus: "钢力士", juggernaut: "红坦克", sabretooth: "剑齿虎", nightcrawler: "夜行者", beast: "野兽",
+  cyclops: "镭射眼", wolverine: "金刚狼", magneto: "万磁王", mystique: "魔形女", "professor-x": "X 教授", apocalypse: "天启", jubilee: "朱比丽", shadowcat: "幻影猫",
+  "lady-deathstrike": "死亡女士", pyro: "火人", havok: "火山", banshee: "女妖", angel: "天使", archangel: "大天使", bishop: "主教", sunspot: "太阳黑子",
+  "spider-man": "蜘蛛侠", "green-goblin": "绿魔", "doctor-octopus": "章鱼博士", sandman: "沙人", "black-cat": "黑猫", vulture: "秃鹫", lizard: "蜥蜴博士", electro: "电光人",
+  rhino: "犀牛人", mysterio: "神秘客", "kraven-ii": "猎人克莱文", carnage: "屠杀", batman: "蝙蝠侠", catwoman: "猫女", joker: "小丑", "two-face": "双面人", penguin: "企鹅人",
+  riddler: "谜语人", bane: "贝恩", scarecrow: "稻草人", "harley-quinn": "哈莉·奎茵", robin: "罗宾", "mr-freeze": "急冻人", superman: "超人", "lex-luthor": "莱克斯·卢瑟",
+  "wonder-woman": "神奇女侠", aquaman: "海王", cyborg: "钢骨", "flash-ii": "闪电侠", supergirl: "超少女", "general-zod": "佐德将军", doomsday: "毁灭日", deadpool: "死侍"};
 function buildAutoUnis(){
-  const key = (S.series ? Object.keys(S.series.s || {}).length + ":" + JSON.stringify(S.series.s || {}).length : "0") + ":" + S.idxReady + ":" + UNI.length;
+  const key = (S.series ? Object.keys(S.series.s || {}).length + ":" + JSON.stringify(S.series.s || {}).length + ":" + Object.keys(S.series.cm || {}).length : "0") + ":" + S.idxReady + ":" + UNI.length;
   if (key === autoUniKey) return; autoUniKey = key;
   for (const [id, u] of [...uniMap]) if (u.auto) uniMap.delete(id);
   for (const [tt, ws] of [...uniOfTitle]) { const keep = ws.filter(w => !uniMap.get(w.u)?.auto && uniMap.has(w.u)); keep.length ? uniOfTitle.set(tt, keep) : uniOfTitle.delete(tt); }
+  // 漫画原型（后台按名字对 SuperHero API / 漫画维基）；手写专题里有同一个漫画角色的，用那边的中文名（金刚狼，不是“卢根”）
+  const cmap = S.series?.cm || {}, curName = new Map();
+  for (const u of UNI) for (const c of u.chars || []) { const id = c.cm?.s || c.cm?.pg; if (id && !curName.has(id)) curName.set(id, c.cn); }
   for (const s of autoAll) {
     const raw = S.series?.s?.[s.q]?.c || [];
     if (raw.length < 3) continue;
     const ids = new Set(s.items.map(it => it.id));
     const chars = raw.map(c => ({c, w: c.w.filter(t => ids.has(t))})).filter(x => x.w.length).map(({c, w}) => {
-      const name = c.zh || c.db || c.en;
+      const cm0 = cmap[c.k], cm = cm0 && (cm0.s || cm0.img) ? cm0 : null;
+      let name = (cm && curName.get(cm.s || cm.pg)) || c.zh || c.db || c.en;
+      if (cm?.s && !/[\u4e00-\u9fff]/.test(name) && HERO_ZH[cm.s.replace(/^\d+-/, "")]) name = HERO_ZH[cm.s.replace(/^\d+-/, "")];   // Wikidata 没中文名的英雄
       const t2 = hashOf(c.k) % 360;
-      return {k: c.k, cn: name.replace(/\s*[（(][^）)]*[）)]\s*$/, ""), en: c.en && c.en !== name ? c.en : "", sub: c.a[0] ? (S.people[c.a[0][0]]?.cn || c.a[0][1]) : "",
-        a: c.a, w, c: `hsl(${t2} 38% 42%)`, i: c.i || ""};
+      return {k: c.k, cn: name.replace(/\s*[（(][^）)]*[）)]\s*$/, "").replace(/^[“"]([^”"]+)[”"]/, "$1"), en: c.en && c.en !== name ? c.en : "", sub: c.a[0] ? (S.people[c.a[0][0]]?.cn || c.a[0][1]) : "",
+        a: c.a, w, c: `hsl(${t2} 38% 42%)`, i: c.i || "", ...(cm ? {cm} : {})};
     });
     if (chars.length < 3) continue;
     // 稀有度：出场次数多、演职员表排得靠前的更稀有（前 10% UR、再 20% SSR、再 30% SR）
@@ -3526,7 +3540,7 @@ function uniBanner(id){
 /* ================================================================ 设置 */
 function renderSettings(){
   const st = S.status?.sources || {};
-  const NAMES = {imdb: "IMDb", douban: "豆瓣", rt: "烂番茄", wikidata: "Wikidata（编号对照）", search: "在线搜索"};
+  const NAMES = {imdb: "IMDb", douban: "豆瓣", rt: "烂番茄", wikidata: "Wikidata（编号对照）", comics: "漫画原型（SuperHero API / 漫画维基）", search: "在线搜索"};
   $("#page").innerHTML = `<div class="bar solid"><button class="icon-btn" onclick="back()" aria-label="返回">${IC.back}</button><div class="tt">设置</div><span style="width:36px"></span></div>
     <div style="padding:0 var(--pad)">
     <div class="set-sec"><h4>GitHub 同步</h4><div class="set-card" style="padding:14px">

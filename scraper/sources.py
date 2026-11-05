@@ -559,3 +559,127 @@ class RottenTomatoes:
         cs, aus = d.get("criticsScore") or {}, d.get("audienceScore") or {}
         return {"critics": pct(cs), "cc": cs.get("reviewCount") or cs.get("ratingCount"),
                 "audience": pct(aus), "slug": slug}
+
+
+# ---------------------------------------------------------------- 漫画原型（自动系列用）
+class Comics:
+    """给后台自动找到的系列（X 战警、蜘蛛侠三部曲……）里的角色配漫画原型。
+    先按名字对 SuperHero API（图 + 六维数值），对不上的再去 Marvel / DC 维基（fandom）找主宇宙那一页的图。"""
+    ALL = ["https://akabab.github.io/superhero-api/api/all.json",
+           "https://cdn.jsdelivr.net/gh/akabab/superhero-api@0.3.0/api/all.json"]
+    # 不是漫威 / DC 的出版方（这些角色一律不要）；其余奇怪的出版方字段多半是漫威 / DC 角色的别名，算“不确定”
+    NOT_MD = {"Dark Horse Comics", "George Lucas", "NBC - Heroes", "Star Trek", "SyFy", "", None, "Icon Comics", "ABC Studios",
+              "IDW Publishing", "Shueisha", "Image Comics", "Sony Pictures", "Wildstorm", "South Park", "Universal Studios",
+              "J. K. Rowling", "Titan Books", "Rebellion", "Microsoft", "J. R. R. Tolkien"}
+    WIKI = {"M": ("https://marvel.fandom.com/api.php", ["Earth-616"]),
+            "D": ("https://dc.fandom.com/api.php", ["Prime Earth", "New Earth"])}
+
+    def __init__(self):
+        self.s = requests.Session()
+        self.s.headers.update({"User-Agent": "movie-library/1.0 (personal film log)"})
+        self.idx = None
+
+    @staticmethod
+    def nz(s):
+        import unicodedata
+        s = unicodedata.normalize("NFKD", s or "").encode("ascii", "ignore").decode().lower()
+        s = re.sub(r"\(.*?\)", " ", s).strip()
+        s = re.sub(r"^(dr|doctor|professor|prof|mr|mrs|ms|miss)\.?\s+", "", s)   # 只去称呼；Captain / Lady 是名字的一部分
+        return re.sub(r"[^a-z0-9]+", "", s)
+
+    def load(self):
+        if self.idx is not None:
+            return
+        data = None
+        for u in self.ALL:
+            try:
+                r = self.s.get(u, timeout=40)
+                if r.status_code == 200:
+                    data = r.json()
+                    break
+            except (requests.RequestException, ValueError):
+                continue
+        if data is None:
+            raise SourceError("SuperHero API 连不上")
+        clean = lambda x: "" if (not x or x in ("-", "null", "No alter egos found.", "0 cm", "0 kg")) else x
+        self.idx = {}
+        for h in data:
+            b, a, ps = h["biography"], h["appearance"], h["powerstats"]
+            pub = b.get("publisher")
+            if pub in self.NOT_MD:
+                continue
+            g = "M" if pub == "Marvel Comics" else "D" if pub == "DC Comics" else "?"
+            cm = {"s": h["slug"], "n": h["name"],
+                  "ps": [ps[x] for x in ("intelligence", "strength", "speed", "durability", "power", "combat")],
+                  "fn": clean(b.get("fullName")), "fa": clean(b.get("firstAppearance")), "al": clean(b.get("alignment")),
+                  "race": clean(a.get("race")), "h": clean((a.get("height") or ["", ""])[1]), "wt": clean((a.get("weight") or ["", ""])[1])}
+            full = b.get("fullName") or ""
+            # 真名对上了、但这张是以 TA 命名的平行宇宙变体（Gwen Stacy → Spider-Gwen）：先去维基找本人
+            first = (full.split() or [""])[0].lower()
+            variant = bool(first) and len(first) >= 3 and first in h["name"].lower()
+            keys = [(0, h["name"]), (3 if variant else 1, full)]
+            fn = re.sub(r"\(.*?\)", "", full).split()
+            if len(fn) >= 2 and not re.search(r"['\"“”‘’]", full):   # Charles Francis Xavier → Charles Xavier；Jean Grey-Summers → Jean Grey
+                keys += [(3 if variant else 1.5, f"{fn[0]} {fn[-1]}"), (3 if variant else 1.5, f"{fn[0]} {fn[-1].split('-')[0]}")]
+            keys += [(2, x) for x in (b.get("aliases") or []) if x and " " not in x.strip()]   # 别名只认单个词（多词别名常是冒充过的人）
+            for pri, nm in keys:
+                k = self.nz(nm)
+                if len(k) >= 4:
+                    self.idx.setdefault(k, []).append((pri, h["id"], g, cm))
+
+    def cands(self, c):
+        out = []
+        for nm in (c.get("en"), c.get("db")):
+            k = self.nz(nm)
+            if len(k) >= 4:
+                out += self.idx.get(k, [])
+        numbered = lambda x: bool(re.search(r"\s(II|III|IV|V)$", x[3]["n"]))   # Batman II、Flash IV 往后放
+        return sorted(out, key=lambda x: (x[0], numbered(x), x[1]))
+
+    def wiki(self, g, names):
+        """维基上主宇宙那一页的配图（只认 “真名 (Earth-616)” 这种页，不搜，免得拿到电影版剧照）"""
+        api, earths = self.WIKI[g]
+        titles = [f"{n} ({e})" for n in names for e in earths if n and re.fullmatch(r"[A-Za-z][A-Za-z .'\-]+", n)]
+        if not titles:
+            return None
+        try:
+            r = self.s.get(api, params={"action": "query", "titles": "|".join(titles[:6]), "prop": "pageimages", "piprop": "thumbnail",
+                                        "pithumbsize": 480, "redirects": 1, "format": "json"}, timeout=25)
+            qd = r.json().get("query") or {}
+        except (requests.RequestException, ValueError) as e:
+            raise SourceError(f"漫画维基连不上：{e.__class__.__name__}")
+        pages = qd.get("pages") or {}
+        by = {p.get("title"): p for p in pages.values()}
+        hop = {x["from"]: x["to"] for x in (qd.get("normalized") or []) + (qd.get("redirects") or [])}   # Betty Brant → Elizabeth Brant
+        for t in titles:
+            u = t
+            for _ in range(3):
+                u = hop.get(u, u)
+            p = by.get(u)
+            if p and (p.get("thumbnail") or {}).get("source"):
+                th = p["thumbnail"]
+                return {"img": th["source"], "pg": p["title"], "w": th.get("width"), "h": th.get("height")}
+        return None
+
+    def series(self, chars, only=None):
+        """一个系列的角色表 → {角色 Q 号: 漫画原型 or None}；不像漫威 / DC 系列的整组返回空。
+        only：只给这些角色查维基（别的已经查过了）"""
+        self.load()
+        picks = {c["k"]: self.cands(c) for c in chars}
+        firm = [p[0] for p in picks.values() if p and p[0][0] <= 1.5]
+        votes = {"M": 0, "D": 0}
+        for p in firm:
+            if p[2] in votes:
+                votes[p[2]] += 1
+        g = "M" if votes["M"] >= votes["D"] else "D"
+        n_hit = sum(1 for p in picks.values() if any(x[2] in (g, "?") for x in p))
+        if votes[g] < 2 or n_hit < 3 or n_hit < len(chars) * .2:
+            return {}
+        out = {}
+        for c in chars:
+            ok = [x for x in picks[c["k"]] if x[2] in (g, "?")]
+            out[c["k"]] = dict(ok[0][3]) if ok and ok[0][0] < 3 else None
+            if out[c["k"]] is None and (only is None or c["k"] in only):   # 对不上的：去维基按真名找（变体卡不拿来顶替本人）
+                out[c["k"]] = self.wiki(g, [c.get("en"), c.get("db")])
+                time.sleep(.3)
+        return out

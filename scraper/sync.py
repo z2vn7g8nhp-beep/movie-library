@@ -19,7 +19,7 @@ from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).parent))
-from sources import IMDb, Wikidata, Douban, RottenTomatoes, SourceError, norm  # noqa: E402
+from sources import IMDb, Wikidata, Douban, RottenTomatoes, Comics, SourceError, norm  # noqa: E402
 
 CST = timezone(timedelta(hours=8))
 DAY = 86400
@@ -108,7 +108,7 @@ class Sync:
         self.chars = load(self.dir / "chars.json", {})
         self.idx_cn = load_index_cn(idx) if idx else {}
         self.budget = budget          # 每次最多访问豆瓣 / 烂番茄多少部，别太频繁
-        self.imdb, self.wd, self.db, self.rt = IMDb(), Wikidata(), Douban(), RottenTomatoes()
+        self.imdb, self.wd, self.db, self.rt, self.comics = IMDb(), Wikidata(), Douban(), RottenTomatoes(), Comics()
         self.changed = False
 
     # ------------------------------------------------------------ 工具
@@ -255,6 +255,37 @@ class Sync:
                             c["i"] = rintro
                 if c.get("i") and c.get("db"):
                     continue
+
+    # ------------------------------------------------------------ 自动系列：漫画原型
+    def refresh_comics(self, limit=15):
+        """后台自动找到的系列（X 战警、蜘蛛侠三部曲……）给角色配漫画原型，存在 series.json 的 cm 里：
+        {角色 Q 号: 漫画原型}，{"at": 时间} 表示找过、没有。系列出了新人只查新人；没找到的 30 天后再试。"""
+        ser = self.series.get("s") or {}
+        cmap = self.series.setdefault("cm", {})
+        found = lambda v: v.get("s") or v.get("img")
+        todo = []
+        for q, d in ser.items():
+            cs = d.get("c") or []
+            if len(cs) < 3:
+                continue
+            new = {c["k"] for c in cs if c["k"] not in cmap or (not found(cmap[c["k"]]) and now() - cmap[c["k"]].get("at", 0) > 30 * DAY)}
+            if new:
+                todo.append((cs, new))
+        if not todo:
+            return
+        try:
+            for cs, new in todo[:limit]:
+                r = self.comics.series(cs, only=new)
+                for k in new:
+                    v = r.get(k) if r else None
+                    cmap[k] = {**v, "at": now()} if v else {"at": now()}
+            self.ok("comics", f"已配 {sum(1 for v in cmap.values() if found(v))} 位")
+        except SourceError as e:
+            self.fail("comics", e)
+        # 系列刷新后不再出现的角色，记录清掉
+        live = {c["k"] for d in ser.values() for c in d.get("c") or []}
+        for k in [k for k in cmap if k not in live]:
+            del cmap[k]
 
     # ------------------------------------------------------------ 宇宙专题：角色剧照
     def refresh_chars(self, limit=100):
@@ -591,6 +622,7 @@ class Sync:
         self.refresh_base(ids)
         self.resolve_ids(ids)
         self.refresh_series(priority)
+        self.refresh_comics()
         self.refresh_chars()
 
         budget = self.budget
