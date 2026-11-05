@@ -1259,6 +1259,510 @@
 "h": "188 cm",
 "wt": "86 kg"
 },
+"mcu:odin": {
+"s": "498-odin",
+"n": "Odin",
+"ps": [
+100,
+83,
+67,
+95,
+100,
+90
+],
+"fn": "Odin Borson",
+"fa": "Journey into Mystery #85",
+"al": "good",
+"race": "God / Eternal",
+"h": "206 cm",
+"wt": "293 kg"
+},
+"mcu:sif": {
+"s": "594-sif",
+"n": "Sif",
+"ps": [
+63,
+90,
+67,
+80,
+100,
+70
+],
+"fn": "Sif",
+"fa": "Journey into Mystery #102 (March, 1964)",
+"al": "good",
+"race": "Asgardian",
+"h": "188 cm",
+"wt": "191 kg"
+},
+"mcu:klaw": {
+"s": "392-klaw",
+"n": "Klaw",
+"ps": [
+63,
+38,
+33,
+100,
+62,
+60
+],
+"fn": "Ulysses Klaw",
+"fa": "Fantastic Four #53 (August, 1966)",
+"al": "bad",
+"race": "Human",
+"h": "188 cm",
+"wt": "97 kg"
+},
+"mcu:blackbolt": {
+"s": "96-black-bolt",
+"n": "Black Bolt",
+"ps": [
+75,
+67,
+100,
+84,
+100,
+56
+],
+"fn": "Blackagar Boltagon",
+"fa": "Fantastic Four #45 (December, 1965)",
+"al": "good",
+"race": "Inhuman",
+"h": "188 cm",
+"wt": "95 kg"
+},
+"mcu:modok": {
+"s": "463-modok",
+"n": "MODOK",
+"ps": [
+100,
+18,
+25,
+25,
+79,
+15
+],
+"fn": "George Tarleton",
+"fa": "Tales of Suspense #93",
+"al": "bad",
+"race": "Cyborg",
+"h": "366 cm",
+"wt": "338 kg"
+},
+"mcu:obadiah": {
+"s": "347-iron-monger",
+"n": "Iron Monger",
+"ps": [
+88,
+63,
+25,
+90,
+57,
+56
+],
+"fn": "Obadiah Stane",
+"fa": "",
+"al": "bad",
+"race": "",
+"h": "",
+"wt": "2 tons"
+},
+"mcu:watcher": {
+"s": "709-watcher",
+"n": "Watcher",
+"ps": [
+100,
+80,
+67,
+89,
+100,
+56
+],
+"fn": "Uatu",
+"fa": "Fantastic Four #13 (April, 1963)",
+"al": "good",
+"race": "",
+"h": "",
+"wt": ""
+},
+"mcu:manthing": {
+"s": "428-man-thing",
+"n": "Man-Thing",
+"ps": [
+50,
+32,
+8,
+100,
+100,
+40
+],
+"fn": "Dr. Theodore Sallis",
+"fa": "Savage Tales #1 (May, 1971)",
+"al": "good",
+"race": "",
+"h": "213 cm",
+"wt": "225 kg"
+},
+"mcu:colossus": {
+"s": "185-colossus",
+"n": "Colossus",
+"ps": [
+63,
+83,
+33,
+100,
+45,
+80
+],
+"fn": "Piotr Nikolaievitch Rasputin",
+"fa": "Giant-Size X-Men #1 (May, 1975)",
+"al": "good",
+"race": "Mutant",
+"h": "226 cm",
+"wt": "225 kg"
+},
+"mcu:negasonic": {
+"s": "488-negasonic-teenage-warhead",
+"n": "Negasonic Teenage Warhead",
+"ps": [
+50,
+7,
+8,
+10,
+45,
+35
+],
+"fn": "Ellie Phimister",
+"fa": "New X-Men #115",
+"al": "good",
+"race": "Mutant",
+"h": "",
+"wt": ""
+},
+"mcu:pyro": {
+"s": "532-pyro",
+"n": "Pyro",
+"ps": [
+38,
+10,
+12,
+14,
+54,
+28
+],
+"fn": "St. John Allerdyce",
+"fa": "",
+"al": "bad",
+"race": "",
+"h": "178 cm",
+"wt": "68 kg"
+},
+"mcu:sabretooth": {
+"s": "570-sabretooth",
+"n": "Sabretooth",
+"ps": [
+56,
+48,
+38,
+90,
+50,
+100
+],
+"fn": "Victor Creed",
+"fa": "Iron Fist #14 (August, 1977)",
+"al": "bad",
+"race": "Mutant",
+"h": "198 cm",
+"wt": "171 kg"
+},
+"mcu:juggernaut": {
+"s": "374-juggernaut",
+"n": "Juggernaut",
+"ps": [
+44,
+100,
+42,
+100,
+85,
+70
+],
+"fn": "Cain Marko",
+"fa": "X-Men #12 (July, 1965)",
+"al": "neutral",
+"race": "Human",
+"h": "287 cm",
+"wt": "855 kg"
+},
+"mcu:punisher": {
+"s": "530-punisher",
+"n": "Punisher",
+"ps": [
+69,
+16,
+21,
+45,
+42,
+100
+],
+"fn": "Frank Castle",
+"fa": "AMAZING SPIDER-MAN #129",
+"al": "good",
+"race": "Human",
+"h": "183 cm",
+"wt": "90 kg"
+},
+"mcu:bullseye": {
+"s": "141-bullseye",
+"n": "Bullseye",
+"ps": [
+50,
+11,
+25,
+70,
+20,
+70
+],
+"fn": "Lester",
+"fa": "Daredevil #131 (March, 1976)",
+"al": "bad",
+"race": "Human",
+"h": "183 cm",
+"wt": "90 kg"
+},
+"mcu:beast": {
+"s": "75-beast",
+"n": "Beast",
+"ps": [
+94,
+48,
+38,
+60,
+43,
+85
+],
+"fn": "Henry Philip McCoy",
+"fa": "X-MEN Vol. 1 #1, (in furry ape form) AMAZING ADVENTURES #11, (in current feline form) NEW X-MEN Vol. 1 #114",
+"al": "good",
+"race": "Mutant",
+"h": "180 cm",
+"wt": "181 kg"
+},
+"mcu:cyclops": {
+"s": "196-cyclops",
+"n": "Cyclops",
+"ps": [
+75,
+10,
+23,
+42,
+76,
+80
+],
+"fn": "Scott Summers",
+"fa": "X-Men #1 (September, 1963)",
+"al": "good",
+"race": "Mutant",
+"h": "191 cm",
+"wt": "88 kg"
+},
+"mcu:nightcrawler": {
+"s": "490-nightcrawler",
+"n": "Nightcrawler",
+"ps": [
+50,
+10,
+47,
+14,
+76,
+80
+],
+"fn": "Kurt Wagner",
+"fa": "GIANT-SIZE X-MEN #1",
+"al": "good",
+"race": "",
+"h": "175 cm",
+"wt": "88 kg"
+},
+"mcu:mystique": {
+"s": "480-mystique",
+"n": "Mystique",
+"ps": [
+75,
+12,
+23,
+64,
+64,
+74
+],
+"fn": "Raven Darkholme",
+"fa": "(as Raven Darkholme) MS. MARVEL #16, (as Mystique) MS. MARVEL #18",
+"al": "bad",
+"race": "Mutant",
+"h": "178 cm",
+"wt": "54 kg"
+},
+"mcu:scorpion": {
+"s": "581-scorpion",
+"n": "Scorpion",
+"ps": [
+50,
+52,
+60,
+85,
+49,
+80
+],
+"fn": "MacDonald Gargan",
+"fa": "Amazing Spider-Man #19 (1964)",
+"al": "bad",
+"race": "Human",
+"h": "211 cm",
+"wt": "310 kg"
+},
+"mcu:reed_k": {
+"s": "456-mister-fantastic",
+"n": "Mister Fantastic",
+"ps": [
+100,
+10,
+18,
+70,
+33,
+64
+],
+"fn": "Reed Richards",
+"fa": "FANTASTIC FOUR #1",
+"al": "good",
+"race": "Human / Radiation",
+"h": "185 cm",
+"wt": "81 kg"
+},
+"mcu:mariarambeau": {
+"s": "157-captain-marvel",
+"n": "Captain Marvel",
+"ps": [
+84,
+88,
+71,
+95,
+100,
+90
+],
+"fn": "Carol Danvers",
+"fa": "Ms. Marvel #1",
+"al": "good",
+"race": "Human-Kree",
+"h": "180 cm",
+"wt": "74 kg"
+},
+"mcu:johnny_e": {
+"s": "333-human-torch",
+"n": "Human Torch",
+"ps": [
+63,
+11,
+63,
+70,
+87,
+42
+],
+"fn": "Johnny Storm",
+"fa": "Fantastic Four #1 (1961)",
+"al": "good",
+"race": "Human / Radiation",
+"h": "178 cm",
+"wt": "77 kg"
+},
+"mcu:cavillrine": {
+"s": "717-wolverine",
+"n": "Wolverine",
+"ps": [
+63,
+32,
+50,
+100,
+89,
+100
+],
+"fn": "Logan",
+"fa": "Incredible Hulk Vol. 2 #180",
+"al": "good",
+"race": "Mutant",
+"h": "160 cm",
+"wt": "135 kg"
+},
+"mcu:nicepool": {
+"s": "213-deadpool",
+"n": "Deadpool",
+"ps": [
+69,
+32,
+50,
+100,
+100,
+100
+],
+"fn": "Wade Wilson",
+"fa": "New Mutants #98 (February, 1991)",
+"al": "neutral",
+"race": "Mutant",
+"h": "188 cm",
+"wt": "95 kg"
+},
+"mcu:kidpool": {
+"s": "213-deadpool",
+"n": "Deadpool",
+"ps": [
+69,
+32,
+50,
+100,
+100,
+100
+],
+"fn": "Wade Wilson",
+"fa": "New Mutants #98 (February, 1991)",
+"al": "neutral",
+"race": "Mutant",
+"h": "188 cm",
+"wt": "95 kg"
+},
+"mcu:cowboypool": {
+"s": "213-deadpool",
+"n": "Deadpool",
+"ps": [
+69,
+32,
+50,
+100,
+100,
+100
+],
+"fn": "Wade Wilson",
+"fa": "New Mutants #98 (February, 1991)",
+"al": "neutral",
+"race": "Mutant",
+"h": "188 cm",
+"wt": "95 kg"
+},
+"mcu:headpool": {
+"s": "213-deadpool",
+"n": "Deadpool",
+"ps": [
+69,
+32,
+50,
+100,
+100,
+100
+],
+"fn": "Wade Wilson",
+"fa": "New Mutants #98 (February, 1991)",
+"al": "neutral",
+"race": "Mutant",
+"h": "188 cm",
+"wt": "95 kg"
+},
 "dc:superman_c": {
 "s": "644-superman",
 "n": "Superman",
@@ -2051,6 +2555,24 @@
 "h": "178 cm",
 "wt": "72 kg"
 },
+"dc:alfred_p": {
+"s": "17-alfred-pennyworth",
+"n": "Alfred Pennyworth",
+"ps": [
+63,
+10,
+17,
+10,
+7,
+55
+],
+"fn": "Alfred Thaddeus Crane Pennyworth",
+"fa": "Batman #16 (April, 1943)",
+"al": "good",
+"race": "Human",
+"h": "178 cm",
+"wt": "72 kg"
+},
 "dc:riddler": {
 "s": "558-riddler",
 "n": "Riddler",
@@ -2068,5 +2590,221 @@
 "race": "",
 "h": "",
 "wt": ""
+},
+"dc:martian": {
+"s": "432-martian-manhunter",
+"n": "Martian Manhunter",
+"ps": [
+100,
+95,
+92,
+100,
+100,
+85
+],
+"fn": "J'onn J'onzz",
+"fa": "Detective Comics #225 (1955)",
+"al": "good",
+"race": "Martian",
+"h": "201 cm",
+"wt": "135 kg"
+},
+"dc:enchantress": {
+"s": "242-enchantress",
+"n": "Enchantress",
+"ps": [
+63,
+14,
+25,
+60,
+100,
+40
+],
+"fn": "June Moone",
+"fa": "Strange Adventures #187",
+"al": "good",
+"race": "Human",
+"h": "168 cm",
+"wt": "57 kg"
+},
+"dc:croc": {
+"s": "386-killer-croc",
+"n": "Killer Croc",
+"ps": [
+19,
+53,
+35,
+90,
+53,
+60
+],
+"fn": "Waylon Jones",
+"fa": "Batman #357 (March, 1983)",
+"al": "bad",
+"race": "Metahuman",
+"h": "244 cm",
+"wt": "356 kg"
+},
+"dc:flag_jr": {
+"s": "557-rick-flag",
+"n": "Rick Flag",
+"ps": [
+88,
+11,
+23,
+28,
+19,
+95
+],
+"fn": "Richard Rogers Flag",
+"fa": "Brave and the Bold #25 (September 1959)",
+"al": "bad",
+"race": "",
+"h": "185 cm",
+"wt": "85 kg"
+},
+"dc:huntress": {
+"s": "334-huntress",
+"n": "Huntress",
+"ps": [
+69,
+10,
+23,
+28,
+34,
+95
+],
+"fn": "Helena Rosa Bertinelli",
+"fa": "Huntress #1 (April 1989)",
+"al": "good",
+"race": "",
+"h": "180 cm",
+"wt": "59 kg"
+},
+"dc:canary": {
+"s": "98-black-canary",
+"n": "Black Canary",
+"ps": [
+63,
+8,
+33,
+15,
+45,
+80
+],
+"fn": "Dinah Drake Lance",
+"fa": "Flash Comics #86 (August, 1947)",
+"al": "good",
+"race": "Human",
+"h": "165 cm",
+"wt": "58 kg"
+},
+"dc:sinestro": {
+"s": "601-sinestro",
+"n": "Sinestro",
+"ps": [
+75,
+85,
+53,
+64,
+100,
+55
+],
+"fn": "Thaal Sinestro",
+"fa": "Green Lantern Vol 2 #7",
+"al": "neutral",
+"race": "Korugaran",
+"h": "201 cm",
+"wt": "92 kg"
+},
+"dc:faora": {
+"s": "253-faora",
+"n": "Faora",
+"ps": [
+88,
+95,
+75,
+100,
+98,
+90
+],
+"fn": "Faora Hu-Ul",
+"fa": "Action Comics #471 (May, 1977)",
+"al": "bad",
+"race": "Kryptonian",
+"h": "",
+"wt": ""
+},
+"dc:batman_k": {
+"s": "70-batman",
+"n": "Batman",
+"ps": [
+100,
+26,
+27,
+50,
+47,
+100
+],
+"fn": "Bruce Wayne",
+"fa": "Detective Comics #27",
+"al": "good",
+"race": "Human",
+"h": "188 cm",
+"wt": "95 kg"
+},
+"dc:supergirl_f": {
+"s": "643-supergirl",
+"n": "Supergirl",
+"ps": [
+94,
+100,
+100,
+100,
+100,
+75
+],
+"fn": "Kara Zor-El",
+"fa": "Superman/Batman #8 (May, 2004)",
+"al": "good",
+"race": "Kryptonian",
+"h": "165 cm",
+"wt": "54 kg"
+},
+"alien:xeno": {
+"s": "18-alien",
+"n": "Alien",
+"ps": [
+50,
+28,
+42,
+90,
+57,
+60
+],
+"fn": "Xenomorph",
+"fa": "Alien (1979)",
+"al": "bad",
+"race": "Xenomorph XX121",
+"h": "244 cm",
+"wt": "169 kg"
+},
+"alien:predator": {
+"s": "526-predator",
+"n": "Predator",
+"ps": [
+63,
+30,
+25,
+85,
+100,
+90
+],
+"fn": "Yautja",
+"fa": "Predator (1987)",
+"al": "bad",
+"race": "Yautja",
+"h": "213 cm",
+"wt": "234 kg"
 }
 }

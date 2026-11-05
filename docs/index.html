@@ -2983,19 +2983,18 @@ function charCard(c, o = {}){
 }
 
 /* ---------- 后台自动找的系列 ---------- */
-let autoVer = -1, autoList = [];
-function autoSeries(){
-  if (autoVer === S.ver) return autoList;
-  autoVer = S.ver; autoList = [];
-  const by = S.series?.by || {}, ser = S.series?.s || {};
-  const qs = new Set();
-  for (const [tt, k] of active()) if (k.s === "done" || k.s === "doing") for (const q of by[tt]?.s || []) qs.add(q);
+let autoVer = -1, autoAll = [], autoList = [];
+/* 后台查到的全部系列（不管看没看过）：条目页用；看过其中一部的才进首页和总览 */
+function allSeries(){
+  if (autoVer === S.ver) return autoAll;
+  autoVer = S.ver; autoAll = []; autoList = [];
+  const ser = S.series?.s || {};
   const curatedQ = new Set(UNI.flatMap(u => u.wd || []));
   const sigs = new Set();
-  for (const q of qs) {
-    const d = ser[q]; if (!d || curatedQ.has(q)) continue;
+  for (const [q, d] of Object.entries(ser)) {
+    if (!d || curatedQ.has(q)) continue;
     const seenId = new Set();
-    const items = d.items.filter(([tt]) => (S.byId.has(tt) || S.meta[tt]) && !seenId.has(tt) && seenId.add(tt))
+    const items = (d.items || []).filter(([tt]) => (S.byId.has(tt) || S.meta[tt] || mark(tt)) && !seenId.has(tt) && seenId.add(tt))
       .map(([tt, o, y]) => ({id: tt, o: +o || 0, y: y || vm(tt).year || 0}));
     if (items.length < 2 || items.length > 60) continue;
     const inUni = items.filter(it => uniOfTitle.has(it.id)).length;
@@ -3003,17 +3002,19 @@ function autoSeries(){
     const sig = items.map(i => i.id).sort().join(",");
     if (sigs.has(sig)) continue; sigs.add(sig);
     items.sort((a, b) => (a.o && b.o ? a.o - b.o : 0) || (a.y || 9999) - (b.y || 9999));
-    autoList.push({q, n: d.zh || d.en || q, en: d.en && d.en !== d.zh ? d.en : "", items});
+    autoAll.push({q, n: d.zh || d.en || q, en: d.en && d.en !== d.zh ? d.en : "", items});
   }
-  const seenN = s => s.items.filter(it => mark(it.id)?.s === "done").length;
-  autoList.sort((a, b) => seenN(b) / b.items.length - seenN(a) / a.items.length || seenN(b) - seenN(a));
-  return autoList;
+  const seenN = s => s.items.filter(it => ["done", "doing"].includes(mark(it.id)?.s)).length;
+  autoList = autoAll.filter(s => seenN(s) > 0)
+    .sort((a, b) => seenN(b) / b.items.length - seenN(a) / a.items.length || seenN(b) - seenN(a));
+  return autoAll;
 }
+function autoSeries(){ allSeries(); return autoList; }
 function autoStat(s){
   const out = s.items.filter(it => it.y && it.y <= THIS_YEAR && (it.y < THIS_YEAR || S.byId.get(it.id)?.v || mark(it.id)));
   return {main: out, seen: out.filter(it => mark(it.id)?.s === "done")};
 }
-function seriesOf(id){ return autoSeries().filter(s => s.items.some(it => it.id === id)); }
+function seriesOf(id){ return allSeries().filter(s => s.items.some(it => it.id === id)); }
 
 /* ---------- 卡包（首页、总览页的入口） ---------- */
 function packHTML(u, big){
@@ -3037,11 +3038,12 @@ function seriesTile(s){
   return `<a class="stile${full ? " full" : ""}" href="#/u/${s.q}"><div class="st-fan">${pics.map((id, i) => `<div class="fp" style="--i:${i}">${posterHTML(vm(id), 160)}</div>`).join("")}</div>
     <b>${esc(s.n)}</b><small>${full ? "👑 全部看完" : `看过 ${st.seen.length} / ${tot}`}</small><span class="st-bar"><i style="width:${tot ? st.seen.length / tot * 100 : 0}%"></i></span></a>`;
 }
-function uniHomeSec(){
+function uniHomeSec(){   // 看过（或在看）其中一部，这个宇宙 / 系列才出现在首页
   if (!UNI.length) return "";
-  const auto = autoSeries();
-  return `<div class="sec"><div class="sec-h"><h2>宇宙与系列</h2><a href="#/uni">全部${auto.length ? ` ${UNI.length + auto.length}` : ""}</a></div>
-    <div class="scroller packs">${UNI.map(u => packHTML(u)).join("")}${auto.slice(0, 6).map(seriesTile).join("")}</div></div>`;
+  const us = UNI.filter(u => u.works.some(wSeen)), auto = autoSeries();
+  if (!us.length && !auto.length) return "";
+  return `<div class="sec"><div class="sec-h"><h2>宇宙与系列</h2><a href="#/uni">全部 ${us.length + auto.length}</a></div>
+    <div class="scroller packs">${us.map(u => packHTML(u)).join("")}${auto.slice(0, 8).map(seriesTile).join("")}</div></div>`;
 }
 function renderUniHub(){
   const auto = autoSeries();
@@ -3148,7 +3150,7 @@ function uniAch(u){
 
 /* ---------- 后台系列的专题页 ---------- */
 function renderSeries(q){
-  const s = autoSeries().find(x => x.q === q) || (() => { const d = S.series?.s?.[q]; if (!d) return null;
+  const s = allSeries().find(x => x.q === q) || (() => { const d = S.series?.s?.[q]; if (!d) return null;
     return {q, n: d.zh || d.en, en: d.en !== d.zh ? d.en : "", items: d.items.filter(([tt]) => S.byId.has(tt) || S.meta[tt]).map(([tt, o, y]) => ({id: tt, o: +o || 0, y: y || 0}))}; })();
   if (!s) { $("#page").innerHTML = `<div class="bar" id="bar"><button class="icon-btn" onclick="back()">${IC.back}</button><div class="tt"></div><span style="width:36px"></span></div><div class="empty-s">这个系列的资料还没准备好。</div>`; return; }
   const st = autoStat(s), tot = st.main.length, seen = st.seen.length;
