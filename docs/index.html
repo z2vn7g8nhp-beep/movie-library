@@ -2944,7 +2944,7 @@ function charStills(c){
   const T = S.chars?.t || {}, nms = new Set(c.a.map(a => a[0]).filter(Boolean)), out = [], seen = new Set();
   const apps = [...c.apps].sort((a, b) => wSeen(b) - wSeen(a));   // 看过的片子里的图排前面
   for (const w of apps) for (const [k, wd, ht, ty, nm] of T[w.id]?.i || [])
-    if (nms.has(nm) && !seen.has(k)) { seen.add(k); out.push({k, w: wd, h: ht, t: ty, tt: w.id}); }
+    if (nms.has(nm) && (ty === "P" || ty === "s") && !seen.has(k)) { seen.add(k); out.push({k, w: wd, h: ht, t: ty, tt: w.id}); }   // 只要角色海报和剧照，不要活动照、写真
   const score = x => (x.t === "P" ? 0 : x.t === "s" ? 2 : 3) - (x.h > x.w ? 1 : 0) + (x.w > x.h * 1.8 ? 2 : 0);
   return out.sort((a, b) => score(a) - score(b));
 }
@@ -2956,6 +2956,12 @@ function charReal(c, w = 400, any){
   const auto = any || !c.cm ? st.find(x => x.w <= x.h * 1.8) || st[0] : null;
   const one = (pick && st.find(x => x.k === pick)) || auto;
   return one ? {src: imdbImg(one.k, w), pos: one.h > one.w ? "50% 18%" : "50% 30%", still: true} : null;
+}
+/* 漫画图第一次从 akabab.github.io 拿，失败就换 jsDelivr 的镜像；看过一次就存在手机里（sw.js） */
+function comicErr(img){
+  const u = img.getAttribute("src") || "";
+  if (u.includes("akabab.github.io/superhero-api/api/")) { img.src = u.replace("https://akabab.github.io/superhero-api/api/", "https://cdn.jsdelivr.net/gh/akabab/superhero-api@0.3.0/api/"); return; }
+  dropImg(u); img.remove();
 }
 function charComic(c, w = 400){ return c.cm?.img ? {src: c.cm.img, pos: "50% 18%", comic: true} : c.cm?.s ? {src: COMIC(c.cm.s, w), pos: "50% 20%", comic: true} : null; }
 function charFace(c, w = 400){
@@ -2972,7 +2978,7 @@ function charCard(c, o = {}){
   return `<div class="ic chc${lit ? "" : " lock"}${o.cls ? " " + o.cls : ""}" data-r="${c.rar}" style="--hc:${c.c}"${o.click !== false ? ` onclick="charSheet('${c.u}','${c.k}')"` : ""}>
     <span class="crest"></span>${full && tot > 1 ? `<span class="crown">👑</span>` : ""}
     <div class="in"><div class="ini">${lit ? esc(c.cn.slice(0, 1)) : "?"}</div>
-      ${f ? `<img decoding="async" ${o.eager ? "" : 'loading="lazy" '}class="${f.poster ? "pst" : ""}" src="${esc(f.src)}"${f.comic ? ' referrerpolicy="no-referrer"' : ""} style="object-position:${f.pos}" onerror="this.remove()">` : ""}
+      ${f ? `<img decoding="async" ${o.eager ? "" : 'loading="lazy" '}class="${f.poster ? "pst" : ""}" src="${esc(f.src)}"${f.comic ? ' referrerpolicy="no-referrer"' : ""} style="object-position:${f.pos}" onerror="comicErr(this)">` : ""}
       <div class="tint"></div><div class="holo"></div><div class="sheen"></div>
       <i class="orn tl"></i><i class="orn tr"></i><i class="orn bl"></i><i class="orn br"></i>
       <div class="rar"><b>${c.rar}</b></div>
@@ -3066,7 +3072,7 @@ function packHTML(u, big){
     <div class="pk-bd"><div class="pk-en">${esc(u.en)}</div><b>${esc(u.n)}</b>
       <div class="pk-bar"><i style="width:${Math.max(frac * 100, st.seen.length ? 3 : 0)}%"></i></div>
       <div class="pk-st"><span><em>${st.seen.length}</em>/${tot} 部</span><span>角色 <em>${st.lit.length}</em>/${u.chars.length}</span>${big ? `<span>套牌 <em>${st.decks.length}</em>/${u.decks.length}</span>` : ""}</div>
-      ${faces.length ? `<div class="pk-faces">${faces.map(c => { const f = charFace(c, 120); return `<i style="--hc:${c.c}">${f ? `<img loading="lazy" src="${esc(f.src)}"${f.comic ? ' referrerpolicy="no-referrer"' : ""} style="object-position:${f.pos}" onerror="this.remove()">` : esc(c.cn.slice(0, 1))}</i>`; }).join("")}${st.lit.length > 5 ? `<small>+${st.lit.length - 5}</small>` : ""}</div>`
+      ${faces.length ? `<div class="pk-faces">${faces.map(c => { const f = charFace(c, 120); return `<i style="--hc:${c.c}">${f ? `<img loading="lazy" src="${esc(f.src)}"${f.comic ? ' referrerpolicy="no-referrer"' : ""} style="object-position:${f.pos}" onerror="comicErr(this)">` : esc(c.cn.slice(0, 1))}</i>`; }).join("")}${st.lit.length > 5 ? `<small>+${st.lit.length - 5}</small>` : ""}</div>`
         : `<div class="pk-hint">看完第一部，点亮第一位角色</div>`}
     </div></a>`;
 }
@@ -3134,7 +3140,7 @@ function uniRoute(u){
       <a href="#/t/${w.id}" class="rn-ps">${posterHTML(v, 120)}</a>
       <a href="#/t/${w.id}" class="rn-bd"><b>${esc(uniName(w))}</b><small>${tl && w.tl ? `故事 ${Math.floor(w.tl)} 年 · ` : ""}${w.y}${w.ty && ["s", "ms"].includes(w.ty) ? " · 剧集" : w.ty === "sp" || w.ty === "tm" ? " · 特别篇" : ""}${w.x ? " · 外传" : ""}${!out ? " · 待映" : ""}${k && !done ? ` · ${STATUS[k.s]}` : ""}</small>
         ${cs.length ? `<div class="rn-cs">${cs.map(c => { const lit = charLit(c); const f = lit ? charFace(c, 80) : null;
-          return `<i class="${lit ? "on" : ""}" style="--hc:${c.c}" title="${esc(c.cn)}">${f ? `<img loading="lazy" src="${esc(f.src)}"${f.comic ? ' referrerpolicy="no-referrer"' : ""} style="object-position:${f.pos}" onerror="this.remove()">` : esc(lit ? c.cn.slice(0, 1) : "?")}</i>`; }).join("")}${w.chars.length > 6 ? `<small>+${w.chars.length - 6}</small>` : ""}</div>` : ""}</a>
+          return `<i class="${lit ? "on" : ""}" style="--hc:${c.c}" title="${esc(c.cn)}">${f ? `<img loading="lazy" src="${esc(f.src)}"${f.comic ? ' referrerpolicy="no-referrer"' : ""} style="object-position:${f.pos}" onerror="comicErr(this)">` : esc(lit ? c.cn.slice(0, 1) : "?")}</i>`; }).join("")}${w.chars.length > 6 ? `<small>+${w.chars.length - 6}</small>` : ""}</div>` : ""}</a>
       ${done ? `<span class="rn-seal">已看</span>` : out ? `<button class="rn-ck" onclick="uniStamp(event,'${w.id}')" aria-label="看过了"></button>` : `<span class="rn-soon">待映</span>`}</div>`;
   };
   if (tl) return html + `<div class="route">${uniOrder(u, true).map(node).join("")}</div>`;
@@ -3354,7 +3360,7 @@ function uniBanner(id){
     html += `<a class="ubn" href="#/u/${u.id}" style="--ua:${u.theme[0]};--ub:${u.theme[1]};--uc:${u.theme[2]}">
       <div class="ubn-h"><span class="ubn-wm">${esc(u.short)}</span><div><b>${esc(u.n)}</b><small>${sec ? `${esc(sec.n)} · 第 ${i} 部` : ""}</small></div><span class="ubn-go">专题 ›</span></div>
       ${w.chars.length ? `<div class="ubn-cs">${w.chars.slice(0, 16).map(c => { const lit = charLit(c), f = lit ? charFace(c, 100) : null;
-        return `<span class="${lit ? "on" : ""}" style="--hc:${c.c}" onclick="event.preventDefault();event.stopPropagation();charSheet('${u.id}','${c.k}')"><i>${f ? `<img loading="lazy" src="${esc(f.src)}"${f.comic ? ' referrerpolicy="no-referrer"' : ""} style="object-position:${f.pos}" onerror="this.remove()">` : lit ? esc(c.cn.slice(0, 1)) : "?"}</i>${esc(c.cn)}</span>`; }).join("")}</div>
+        return `<span class="${lit ? "on" : ""}" style="--hc:${c.c}" onclick="event.preventDefault();event.stopPropagation();charSheet('${u.id}','${c.k}')"><i>${f ? `<img loading="lazy" src="${esc(f.src)}"${f.comic ? ' referrerpolicy="no-referrer"' : ""} style="object-position:${f.pos}" onerror="comicErr(this)">` : lit ? esc(c.cn.slice(0, 1)) : "?"}</i>${esc(c.cn)}</span>`; }).join("")}</div>
         <div class="ubn-note">${wSeen(w) ? `这部里的 ${w.chars.length} 位角色已点亮` : `看完这部，点亮 ${w.chars.filter(c => !charLit(c)).length || w.chars.length} 位角色`}</div>` : ""}</a>`;
   }
   for (const s of seriesOf(id)) {
