@@ -255,6 +255,54 @@ class Wikidata:
                     d.setdefault("douban", row["db"]["value"])
         return out
 
+    def series_of(self, imdb_ids):
+        """片子属于哪些系列（P179）：{tt: [Q...]}，问过但不属于任何系列的给空列表。"""
+        ids = [i for i in imdb_ids if re.fullmatch(r"tt\d+", i or "")]
+        out = {i: [] for i in ids}
+        for i in range(0, len(ids), 80):
+            values = " ".join(f'"{x}"' for x in ids[i:i + 80])
+            for row in self._q("SELECT DISTINCT ?imdb ?s WHERE { VALUES ?imdb { %s } ?f wdt:P345 ?imdb . ?f wdt:P179 ?s . "
+                               "FILTER NOT EXISTS { ?s wdt:P31 wd:Q13406463 } FILTER NOT EXISTS { ?s wdt:P31 wd:Q12139612 } }" % values):
+                q = row["s"]["value"].rsplit("/", 1)[-1]
+                lst = out.setdefault(row["imdb"]["value"], [])
+                if q not in lst:
+                    lst.append(q)
+        return out
+
+    def series_members(self, qids):
+        """系列的名字和成员：{Q: {"zh", "en", "items": [[tt, 序号, 年份], ...]}}"""
+        out = {}
+        qids = [q for q in qids if re.fullmatch(r"Q\d+", q)]
+        for i in range(0, len(qids), 20):
+            values = " ".join("wd:" + q for q in qids[i:i + 20])
+            for row in self._q("""SELECT ?s ?zh ?tw ?en WHERE { VALUES ?s { %s }
+                OPTIONAL { ?s rdfs:label ?zh FILTER(lang(?zh) IN ("zh-cn","zh-hans")) }
+                OPTIONAL { ?s rdfs:label ?tw FILTER(lang(?tw) IN ("zh","zh-tw","zh-hant")) }
+                OPTIONAL { ?s rdfs:label ?en FILTER(lang(?en) = "en") } }""" % values):
+                q = row["s"]["value"].rsplit("/", 1)[-1]
+                d = out.setdefault(q, {"zh": "", "en": "", "items": []})
+                d["zh"] = d["zh"] or (row.get("zh") or row.get("tw") or {}).get("value", "")
+                d["en"] = d["en"] or (row.get("en") or {}).get("value", "")
+            seen = {}
+            for row in self._q("""SELECT ?s ?imdb ?ord ?y WHERE { VALUES ?s { %s } ?m p:P179 ?st . ?st ps:P179 ?s .
+                ?m wdt:P345 ?imdb . FILTER(STRSTARTS(?imdb, "tt"))
+                OPTIONAL { ?st pq:P1545 ?ord } OPTIONAL { ?m wdt:P577 ?d BIND(YEAR(?d) AS ?y) } }""" % values):
+                q = row["s"]["value"].rsplit("/", 1)[-1]
+                tt = row["imdb"]["value"]
+                o = (row.get("ord") or {}).get("value", "")
+                y = int(float((row.get("y") or {}).get("value", 0) or 0))
+                k = (q, tt)
+                if k in seen:
+                    it = seen[k]
+                    if y and (not it[2] or y < it[2]):
+                        it[2] = y
+                    if o and not it[1]:
+                        it[1] = o
+                    continue
+                it = seen[k] = [tt, o, y]
+                out.setdefault(q, {"zh": "", "en": "", "items": []})["items"].append(it)
+        return out
+
     def by_douban(self, did):
         rows = self._q('SELECT ?imdb WHERE { ?f wdt:P4529 "%s" . ?f wdt:P345 ?imdb }' % re.sub(r"\D", "", did))
         return rows[0]["imdb"]["value"] if rows else None

@@ -6,6 +6,7 @@
   meta.json      每部片子的详情和评分（这里写）
   people.json    影人的中文名和头像（这里写）
   lookup.json    最近一次在线搜索的结果（这里写）
+  series.json    看过的片子属于哪些系列（Wikidata），网页用来自动生成系列专题（这里写）
   status.json    各数据源最近是否正常（这里写）
 """
 import argparse
@@ -93,6 +94,7 @@ class Sync:
         self.follows = load(self.dir / "marks.json", {}).get("follows", {})
         self.reqs = load(self.dir / "requests.json", {})
         self.status = load(self.dir / "status.json", {"sources": {}})
+        self.series = load(self.dir / "series.json", {})
         self.idx_cn = load_index_cn(idx) if idx else {}
         self.budget = budget          # 每次最多访问豆瓣 / 烂番茄多少部，别太频繁
         self.imdb, self.wd, self.db, self.rt = IMDb(), Wikidata(), Douban(), RottenTomatoes()
@@ -174,6 +176,35 @@ class Sync:
                 m["dbid"] = w["douban"]
             if "rtslug" not in m and w.get("rt"):
                 m["rtslug"] = w["rt"]
+
+    # ------------------------------------------------------------ 系列（Wikidata P179）
+    def refresh_series(self, priority=()):
+        """标记过的片子属于哪些系列；系列的成员两周刷新一次（新作官宣、续集上映）。"""
+        by = self.series.setdefault("by", {})      # tt -> {"s": [Q...], "at": 时间}
+        ser = self.series.setdefault("s", {})      # Q -> {"zh", "en", "items", "at"}
+        mine = set(self.active())
+        ask = [t for t in dict.fromkeys(list(priority) + sorted(mine))
+               if t in mine and now() - (by.get(t) or {}).get("at", 0) > 45 * DAY][:400]
+        try:
+            if ask:
+                got = self.wd.series_of(ask)
+                for t in ask:
+                    by[t] = {"s": got.get(t, []), "at": now()}
+            used = {q for t in mine for q in (by.get(t) or {}).get("s", [])}
+            stale = [q for q in used if now() - (ser.get(q) or {}).get("at", 0) > 14 * DAY][:60]
+            if stale:
+                got = self.wd.series_members(stale)
+                for q in stale:
+                    d = got.get(q) or {"zh": "", "en": "", "items": []}
+                    d["items"] = sorted(d["items"], key=lambda x: (x[2] or 9999, x[1]))[:120]
+                    d["at"] = now()
+                    ser[q] = d
+            for q in [q for q in ser if q not in used]:
+                del ser[q]
+            if ask or stale:
+                self.ok("wikidata")
+        except SourceError as e:
+            self.fail("wikidata", e)
 
     # ------------------------------------------------------------ 豆瓣
     def refresh_douban(self, tid, force=False):
@@ -464,6 +495,7 @@ class Sync:
         self.refresh_base(priority, force=True)
         self.refresh_base(ids)
         self.resolve_ids(ids)
+        self.refresh_series(priority)
 
         budget = self.budget
         for tid in priority + [i for i in ids if i not in priority]:
@@ -486,6 +518,8 @@ class Sync:
 
         save(self.dir / "meta.json", self.meta)
         save(self.dir / "people.json", self.people)
+        if self.series:
+            save(self.dir / "series.json", self.series)
         keep_p = set(follows) | set(want)
         for nm in list(self.persons):
             if nm not in keep_p and now() - self.persons[nm].get("at", 0) > 60 * DAY:

@@ -897,6 +897,278 @@ body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;ba
 .cere .evo{width:170px;margin:0 auto 6px}
 .cere .evo .ic{animation:evo .9s cubic-bezier(.3,1.4,.5,1)}
 @keyframes evo{0%{transform:rotateY(90deg) scale(.7)}100%{transform:none}}
+
+/* ================================================================
+   宇宙与系列：卡包、观影路线、角色图鉴、套牌、成就
+   每个宇宙有自己的三色（--ua 主色、--ub 金属色、--uc 夜色），其余沿用星屑卡面的样式。
+   ================================================================ */
+.packs{gap:12px;padding-bottom:12px}
+.pack{position:relative;flex:none;width:272px;height:156px;border-radius:20px;overflow:hidden;color:#fff;isolation:isolate;
+  background:radial-gradient(120% 90% at 0% 0%,color-mix(in srgb,var(--ua) 85%,#fff 0%) 0%,rgba(0,0,0,0) 62%),radial-gradient(90% 90% at 100% 100%,color-mix(in srgb,var(--ub) 45%,transparent) 0%,rgba(0,0,0,0) 60%),var(--uc);
+  box-shadow:0 0 0 1px color-mix(in srgb,var(--ub) 45%,transparent) inset,0 16px 30px -18px color-mix(in srgb,var(--uc) 80%,transparent)}
+.pack::after{content:"";position:absolute;inset:5px;border-radius:16px;box-shadow:0 0 0 .5px color-mix(in srgb,var(--ub) 60%,transparent) inset;pointer-events:none;z-index:3}
+.pack.big{width:auto;height:176px;margin:0 var(--pad) 14px;display:block}
+.pk-bg{position:absolute;right:-6px;top:16px;width:150px;height:140px;z-index:0}
+.fp{position:absolute}
+.fp .ps{border-radius:7px;box-shadow:0 10px 20px -8px rgba(0,0,0,.6),0 0 0 1.5px rgba(255,255,255,.6)}
+.fp .ps .ph{display:none}
+.fp .ps::after{display:none}
+.pk-bg .fp{right:calc(var(--i) * 24px + 10px);top:calc(var(--i) * 6px);width:58px;transform:rotate(calc((var(--i) - 1) * -7deg + 6deg));opacity:.94}
+.pack.big .pk-bg{width:190px;top:20px}
+.pack.big .pk-bg .fp{width:84px;right:calc(var(--i) * 40px + 14px)}
+.pk-wm{position:absolute;left:12px;bottom:-14px;z-index:1;font-family:var(--latin);font-style:italic;font-weight:600;font-size:70px;line-height:1;letter-spacing:.02em;color:var(--ub);opacity:.14;pointer-events:none;white-space:nowrap}
+.pk-bd{position:relative;z-index:2;height:100%;padding:15px 16px 13px;max-width:64%;display:flex;flex-direction:column}
+.pk-en{font-family:var(--latin);font-style:italic;font-weight:600;font-size:13px;color:var(--ub);letter-spacing:.02em;white-space:nowrap}
+.pk-bd > b{font-family:var(--serif);font-weight:900;font-size:19px;letter-spacing:.08em;line-height:1.3;margin-top:1px;text-shadow:0 2px 10px rgba(0,0,0,.4)}
+.pk-bar{height:5px;border-radius:3px;background:rgba(255,255,255,.16);margin-top:auto;overflow:hidden}
+.pk-bar i{display:block;height:100%;border-radius:3px;background:linear-gradient(90deg,var(--ub),#fff)}
+.pk-st{display:flex;gap:10px;margin-top:6px;font-size:11px;color:rgba(255,255,255,.72);white-space:nowrap}
+.pk-st em{font-style:normal;font-family:var(--num);font-weight:600;font-size:16px;color:#fff}
+.pk-faces{display:flex;align-items:center;margin-top:7px;height:24px}
+.pk-faces i{width:24px;height:24px;border-radius:50%;overflow:hidden;margin-right:-6px;display:grid;place-items:center;font-style:normal;font-family:var(--serif);font-weight:900;font-size:11px;
+  background:var(--hc);box-shadow:0 0 0 1.5px var(--ub)}
+.pk-faces i img{width:100%;height:100%;object-fit:cover}
+.pk-faces small{margin-left:12px;font-family:var(--num);font-size:13px;font-weight:600;color:var(--ub)}
+.pk-hint{margin-top:7px;font-size:11px;color:rgba(255,255,255,.6);height:24px;line-height:24px}
+.stile{flex:none;width:124px;display:block;padding:10px 10px 11px;border-radius:16px;background:var(--paper);box-shadow:var(--line),var(--shadow)}
+.stile.full{box-shadow:0 0 0 1.5px var(--gold) inset,var(--shadow)}
+.st-fan{position:relative;height:84px;margin-bottom:8px}
+.st-fan .fp{left:calc(50% - 26px + (var(--i) - 1) * 24px);top:6px;width:52px;transform:rotate(calc((var(--i) - 1) * 9deg))}
+.st-fan .fp .ps{box-shadow:0 6px 12px -6px rgba(60,40,90,.5),0 0 0 1.5px #fff}
+.st-fan .fp:nth-child(2){z-index:2;top:0}
+.stile b{display:block;font-family:var(--serif);font-weight:900;font-size:13.5px;line-height:1.3;letter-spacing:.04em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.stile small{display:block;font-size:11px;color:var(--dim);margin-top:1px}
+.st-bar{display:block;height:4px;border-radius:2px;background:#EEE8F6;margin-top:6px;overflow:hidden}
+.st-bar i{display:block;height:100%;background:linear-gradient(90deg,#E2BE7A,#C9A46C)}
+.sgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(104px,1fr));gap:12px;padding:0 var(--pad)}
+.sgrid .stile{width:auto}
+.uhub-h{padding:4px var(--pad) 14px}
+.uhub-h h2{margin:0;font-family:var(--serif);font-weight:900;font-size:24px;letter-spacing:.1em}
+.uhub-h p{margin:4px 0 0;font-size:13px;color:var(--ink-2);line-height:1.6}
+.empty-s{margin:0 var(--pad);padding:18px;border-radius:16px;background:var(--paper);box-shadow:var(--line);font-size:13px;color:var(--ink-2);line-height:1.7;text-align:center}
+
+/* 宇宙页 */
+.uni{min-height:100%}
+.uni .bar.dark:not(.solid) .icon-btn{background:rgba(255,255,255,.14);color:#fff;box-shadow:0 0 0 1px rgba(255,255,255,.25) inset}
+.uhero{position:relative;margin:calc(-1 * (var(--st) + 54px)) 0 0;padding:calc(var(--st) + 66px) var(--pad) 22px;color:#fff;overflow:hidden;isolation:isolate;
+  background:radial-gradient(110% 70% at 10% 0%,color-mix(in srgb,var(--ua) 90%,transparent) 0%,rgba(0,0,0,0) 60%),radial-gradient(80% 60% at 100% 30%,color-mix(in srgb,var(--ub) 35%,transparent) 0%,rgba(0,0,0,0) 65%),var(--uc);
+  border-radius:0 0 28px 28px;box-shadow:0 18px 40px -26px var(--uc)}
+.uh-wm{position:absolute;right:-8px;bottom:-26px;z-index:-1;font-family:var(--latin);font-style:italic;font-weight:600;font-size:118px;line-height:1;color:var(--ub);opacity:.13;white-space:nowrap}
+.uh-stars{position:absolute;inset:0;z-index:-1;opacity:.55;background:radial-gradient(1.2px 1.2px at 12% 30%,#fff 50%,transparent 51%),radial-gradient(1px 1px at 72% 18%,#fff 50%,transparent 51%),
+  radial-gradient(1.4px 1.4px at 86% 62%,#fff 50%,transparent 51%),radial-gradient(1px 1px at 34% 74%,#fff 50%,transparent 51%),radial-gradient(1px 1px at 55% 44%,#fff 50%,transparent 51%),radial-gradient(1.3px 1.3px at 22% 88%,#fff 50%,transparent 51%)}
+.uh-en{font-family:var(--latin);font-style:italic;font-weight:600;font-size:15px;color:var(--ub);letter-spacing:.03em}
+.uhero h2{margin:2px 0 0;font-family:var(--serif);font-weight:900;font-size:30px;letter-spacing:.12em;line-height:1.25;text-shadow:0 2px 14px rgba(0,0,0,.4)}
+.uhero p{margin:6px 0 0;font-size:13px;color:rgba(255,255,255,.72);letter-spacing:.04em}
+.uh-nums{display:flex;margin-top:18px}
+.uh-nums div{flex:1;display:flex;flex-wrap:wrap;align-items:baseline;justify-content:center;border-left:1px solid color-mix(in srgb,var(--ub) 35%,transparent)}
+.uh-nums div:first-child{border:0}
+.uh-nums b{font-family:var(--num);font-weight:600;font-size:30px;line-height:1}
+.uh-nums i{font-style:normal;font-family:var(--num);font-weight:600;font-size:15px;color:rgba(255,255,255,.55)}
+.uh-nums span{width:100%;text-align:center;font-size:11px;color:rgba(255,255,255,.65);margin-top:3px;letter-spacing:.1em}
+.uh-bar{height:6px;border-radius:3px;background:rgba(255,255,255,.14);margin-top:16px;overflow:hidden;box-shadow:0 0 0 .5px color-mix(in srgb,var(--ub) 50%,transparent) inset}
+.uh-bar i{display:block;height:100%;border-radius:3px;background:linear-gradient(90deg,var(--ub),#fff);box-shadow:0 0 12px var(--ub)}
+.uh-ext{margin-top:8px;font-size:11.5px;color:rgba(255,255,255,.55);text-align:right}
+.uh-fan{position:absolute;right:14px;top:calc(var(--st) + 56px);width:150px;height:120px;z-index:-1;opacity:.5}
+.uh-fan .fp{right:calc(var(--i) * 30px);top:calc(var(--i) * 4px);width:70px;transform:rotate(calc(var(--i) * -6deg + 8deg))}
+.useg{margin:16px var(--pad) 0}
+.ubody{padding:16px var(--pad) 0}
+.ubody .badges{margin-top:0}
+
+/* 路线 */
+.unext{position:relative;display:flex;align-items:center;gap:12px;padding:12px 12px 12px 14px;margin-bottom:18px;overflow:hidden}
+.unext::before{content:"";position:absolute;inset:0;background:linear-gradient(100deg,color-mix(in srgb,var(--ua) 10%,transparent),transparent 60%);pointer-events:none}
+.unext em{position:absolute;left:0;top:0;font-style:normal;font-size:10.5px;font-weight:800;letter-spacing:.12em;color:#fff;background:var(--ua);padding:3px 10px 3px 12px;border-radius:0 0 10px 0;z-index:2}
+.unext .ps{width:58px;flex:none;border-radius:7px;margin-top:10px}
+.ux-bd{flex:1;min-width:0;padding-top:10px}
+.ux-bd b{display:block;font-family:var(--serif);font-weight:900;font-size:16px;letter-spacing:.04em;line-height:1.35}
+.ux-bd small{font-size:12px;color:var(--dim)}
+.ux-deb{margin-top:6px;font-size:11.5px;color:var(--ink-2);display:flex;flex-wrap:wrap;gap:4px;align-items:center}
+.ux-deb span{padding:1px 7px;border-radius:9px;background:color-mix(in srgb,var(--hc) 14%,#fff);color:color-mix(in srgb,var(--hc) 80%,#000);font-weight:700;font-size:11px;box-shadow:0 0 0 1px color-mix(in srgb,var(--hc) 30%,transparent) inset}
+.ux-go{flex:none;height:34px;padding:0 13px;border-radius:17px;font-size:13px;font-weight:700;color:#fff;background:var(--ua);box-shadow:0 6px 14px -8px var(--ua);margin-top:10px}
+.unext.done{justify-content:flex-start}
+.unext.done em{position:static;background:none;font-size:30px;padding:0}
+.rsec{position:relative;margin:22px 0 10px}
+.rsec:first-of-type{margin-top:4px}
+.rs-h{display:flex;align-items:flex-end;justify-content:space-between}
+.rs-h b{font-family:var(--serif);font-weight:900;font-size:17px;letter-spacing:.1em}
+.rs-h small{display:block;font-family:var(--latin);font-style:italic;font-weight:600;font-size:13px;color:var(--gold-ink)}
+.rs-n{font-family:var(--num);font-weight:600;font-size:24px;line-height:1;color:var(--ink)}
+.rs-n i{font-style:normal;font-size:14px;color:var(--dim)}
+.rs-bar{height:8px;border-radius:4px;background:#EEE8F6;margin-top:8px;overflow:hidden;box-shadow:0 0 0 1px rgba(201,164,108,.25) inset}
+.rs-bar i{display:block;height:100%;border-radius:4px;background:linear-gradient(90deg,color-mix(in srgb,var(--ua) 55%,#fff),var(--ua));transition:width .6s}
+.rsec.full .rs-bar i{background:linear-gradient(90deg,#F6E7C6,#C9A46C 40%,#FFF6E0 60%,#C9A46C)}
+.rs-stamp{position:absolute;right:56px;top:-6px;font-family:var(--serif);font-weight:900;font-size:13px;letter-spacing:.2em;color:#C24D4D;border:2px solid #C24D4D;border-radius:6px;padding:1px 4px 1px 7px;transform:rotate(-12deg);opacity:.85}
+.route{position:relative;padding-left:16px}
+.route::before{content:"";position:absolute;left:5px;top:10px;bottom:10px;width:2px;border-radius:1px;background:linear-gradient(var(--gold-2),var(--faint))}
+.rn{position:relative;display:flex;align-items:center;gap:11px;padding:7px 0}
+.rn-dot{position:absolute;left:-15px;top:50%;width:10px;height:10px;margin-top:-5px;border-radius:50%;background:#fff;box-shadow:0 0 0 2px var(--faint)}
+.rn.got .rn-dot{background:var(--gold);box-shadow:0 0 0 2px #fff,0 0 0 3.5px var(--gold),0 0 10px var(--gold)}
+.rn.nx .rn-dot{background:var(--ua);box-shadow:0 0 0 2px #fff,0 0 0 3.5px var(--ua);animation:none}
+.rn-ps{width:46px;flex:none}
+.rn-ps .ps{border-radius:6px}
+.rn-ps .ps .ph{font-size:9px;padding:3px}
+.rn:not(.got) .rn-ps .ps img{filter:grayscale(.85) brightness(1.05);opacity:.55!important}
+.rn.nx .rn-ps .ps img{filter:none;opacity:1!important}
+.rn.soon{opacity:.6}
+.rn-bd{flex:1;min-width:0}
+.rn-bd b{display:block;font-weight:700;font-size:14px;line-height:1.35;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.rn:not(.got) .rn-bd b{color:var(--ink-2)}
+.rn-bd small{display:block;font-size:11.5px;color:var(--dim)}
+.rn-bd small.o{font-family:var(--latin);font-style:italic;font-size:12.5px}
+.rn-cs{display:flex;align-items:center;margin-top:4px}
+.rn-cs i{width:20px;height:20px;border-radius:50%;margin-right:-4px;overflow:hidden;display:grid;place-items:center;font-style:normal;font-size:9.5px;font-weight:800;color:#fff;
+  background:#CFC8DD;box-shadow:0 0 0 1.5px #fff}
+.rn-cs i.on{background:var(--hc)}
+.rn-cs i img{width:100%;height:100%;object-fit:cover}
+.rn-cs small{margin-left:8px;font-size:11px;color:var(--dim);font-family:var(--num);font-weight:600}
+.rn-ck{flex:none;width:30px;height:30px;border-radius:50%;box-shadow:0 0 0 1.5px var(--faint) inset;background:rgba(255,255,255,.7);position:relative}
+.rn-ck::after{content:"";position:absolute;left:10px;top:8px;width:9px;height:5px;border:solid var(--faint);border-width:0 0 2px 2px;transform:rotate(-45deg)}
+.rn-ck:active{transform:scale(.9)}
+.rn-seal{flex:none;font-family:var(--serif);font-weight:900;font-size:11px;letter-spacing:.1em;color:var(--gold-ink);border:1.5px solid var(--gold);border-radius:5px;padding:1px 4px 1px 6px;transform:rotate(-8deg)}
+.rn-soon{flex:none;font-size:11px;color:var(--dim);padding:2px 8px;border-radius:9px;background:var(--soft)}
+
+/* 角色卡 */
+.cgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px 10px}
+.ic.chc{border-radius:13px;padding:4px;cursor:pointer}
+.ic.chc::before{inset:1.5px;border-radius:12px}
+.ic.chc .in{border-radius:10px;background:radial-gradient(90% 70% at 50% 25%,color-mix(in srgb,var(--hc) 55%,#fff),color-mix(in srgb,var(--hc) 85%,#000))}
+.ic.chc .in::before{inset:6px}
+.ic.chc .in::after{inset:4px;border-radius:6px}
+.ic.chc .in > img.pst{filter:saturate(.8)}
+.ic.chc .tint{position:absolute;inset:0;z-index:2;pointer-events:none;background:linear-gradient(180deg,rgba(0,0,0,0) 40%,color-mix(in srgb,var(--hc) 70%,transparent) 100%);mix-blend-mode:multiply;opacity:.75}
+.ic.chc .ini{color:rgba(255,255,255,.55);font-size:clamp(28px,34cqw,90px)}
+.ic.chc .rar{left:7px;top:7px}
+.ic.chc .rar b{font-size:clamp(10px,10cqw,22px)}
+.ic.chc .cnt{right:6px;top:7px;font-size:clamp(10px,9cqw,18px);padding:2px 6px 3px;border-radius:8px}
+.ic.chc .cnt i{font-size:clamp(9px,7cqw,13px)}
+.ic.chc .orn{width:clamp(14px,15cqw,40px);height:clamp(14px,15cqw,40px)}
+.ic.chc .crest{width:11px;height:11px;margin-left:-5.5px}
+.ic.chc .crown{top:-17px;font-size:16px;margin-left:-11px;width:22px}
+.ic.chc .plate{padding:34% 4px 7cqw}
+.ic.chc .plate b{font-size:clamp(11px,11cqw,24px);letter-spacing:.08em}
+.ic.chc .plate .sign{font-size:clamp(12px,13cqw,34px);margin-bottom:1px}
+.ic.chc .plate small{display:block;font-size:clamp(8.5px,7.4cqw,14px);color:rgba(255,255,255,.82);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;letter-spacing:.02em}
+.ic.chc.lock{--rim:linear-gradient(145deg,#E4E1EA,#B9B4C4 30%,#F2F0F5 50%,#A9A3B6 75%,#DCD8E3)!important;--ornc:#B5AFC2!important;--gem:linear-gradient(180deg,#A8A2B6,#7C768C)!important;
+  box-shadow:0 0 0 1px rgba(255,255,255,.7) inset,0 10px 20px -14px rgba(70,40,110,.5)}
+.ic.chc.lock .in{background:radial-gradient(80% 60% at 50% 30%,color-mix(in srgb,var(--hc) 30%,#3A3448),#211D2A)}
+.ic.chc.lock .ini{font-family:var(--latin);font-style:italic;color:color-mix(in srgb,var(--hc) 40%,#8D86A0);font-size:clamp(30px,40cqw,110px);text-shadow:0 0 18px color-mix(in srgb,var(--hc) 60%,transparent)}
+.ic.chc.lock .holo,.ic.chc.lock .tint{display:none}
+.ic.chc.lock .plate{background:none}
+.ic.chc.lock .plate b{color:rgba(255,255,255,.62)}
+.ic.chc.lock .plate .sign{color:rgba(255,255,255,.3)}
+.ic.chc.lock .plate small{color:rgba(255,255,255,.5)}
+.ic.chc.lock .rar b{opacity:.75}
+.ic.chc.big{width:min(56vw,230px);margin:0 auto;border-radius:18px;padding:6px}
+.ic.chc.big .in{border-radius:13px}
+
+/* 角色档案 */
+.csh-card{padding:22px 0 8px;perspective:800px}
+.csh-card .ic{transition:transform .25s}
+.csh-hd{text-align:center;margin-top:8px}
+.csh-hd .sign{font-family:var(--sign);font-size:30px;line-height:1;color:color-mix(in srgb,var(--hc) 75%,#000);transform:rotate(-5deg)}
+.csh-hd b{display:block;font-family:var(--serif);font-weight:900;font-size:23px;letter-spacing:.14em;margin-top:4px}
+.csh-hd > small{display:block;font-size:12.5px;color:var(--dim);margin-top:1px}
+.csh-meta{display:flex;justify-content:center;align-items:center;gap:8px;margin-top:8px;font-size:12.5px;color:var(--ink-2);flex-wrap:wrap}
+.csh-meta a{color:var(--acc-ink);font-weight:600}
+.csh-st{margin:14px 0 6px;text-align:center;font-size:13px;color:var(--ink-2);padding:9px 12px;border-radius:12px;background:color-mix(in srgb,var(--hc) 8%,#fff);box-shadow:0 0 0 1px color-mix(in srgb,var(--hc) 20%,transparent) inset}
+.csh-st b{font-family:var(--num);font-size:18px}
+.csh-ws{margin-top:8px}
+.cw{display:flex;align-items:center;gap:10px;padding:6px 0;border-bottom:.5px solid var(--hair)}
+.cw:last-child{border:0}
+.cw a{flex:1;min-width:0;display:flex;align-items:center;gap:10px}
+.cw .ps{width:34px;flex:none;border-radius:5px}
+.cw .ps .ph{display:none}
+.cw:not(.got) .ps img{filter:grayscale(.9);opacity:.5!important}
+.cw span{min-width:0}
+.cw b{display:block;font-size:13.5px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.cw:not(.got) b{color:var(--ink-2)}
+.cw small{font-size:11.5px;color:var(--dim)}
+.cw-ok{font-style:normal;flex:none;width:26px;height:26px;border-radius:50%;display:grid;place-items:center;font-size:13px;font-weight:800;color:#fff;background:linear-gradient(180deg,#E2BE7A,#A97C3C)}
+.csh-dk{display:flex;flex-wrap:wrap;gap:6px}
+.csh-dk span{font-size:12px;padding:4px 10px;border-radius:12px;background:var(--soft);color:var(--ink-2)}
+.csh-dk span.on{background:linear-gradient(180deg,#FFF6E0,#F3DFB8);color:var(--gold-ink);box-shadow:0 0 0 1px var(--gold) inset}
+.csh-dk b{font-family:var(--num);font-size:13px}
+
+/* 套牌 */
+.udeck{padding:14px 14px 12px;margin-bottom:14px;overflow:hidden}
+.udeck.full{box-shadow:0 0 0 1.5px var(--gold) inset,0 0 0 4px rgba(234,216,178,.35),var(--shadow);background:linear-gradient(170deg,#FFFDF6,#FFF6E4)}
+.ud-h{display:flex;align-items:center;gap:10px}
+.ud-ic{width:36px;height:36px;border-radius:50%;display:grid;place-items:center;font-size:18px;background:#fff;box-shadow:0 0 0 1px rgba(201,164,108,.45) inset;flex:none}
+.ud-h div{flex:1;min-width:0}
+.ud-h b{display:block;font-family:var(--serif);font-weight:900;font-size:16px;letter-spacing:.08em}
+.ud-h small{font-family:var(--latin);font-style:italic;font-weight:600;font-size:13px;color:var(--gold-ink)}
+.ud-n{font-family:var(--num);font-weight:600;font-size:26px;line-height:1}
+.ud-n i{font-style:normal;font-size:15px;color:var(--dim)}
+.dfan{display:flex;justify-content:center;padding:16px 4px 6px;margin:0 -4px}
+.dfi{flex:0 1 82px;min-width:0;margin:0 calc(-1 * min(12px, 140px / var(--n)));transform:rotate(calc((var(--i) - (var(--n) - 1) / 2) * 4deg));transition:transform .2s}
+.dfi .ic{cursor:pointer}
+.ud-ok{text-align:center;font-family:var(--serif);font-weight:900;letter-spacing:.3em;color:var(--gold-ink);font-size:13px;margin-top:6px}
+.ud-hint{text-align:center;font-size:12px;color:var(--dim);margin-top:6px;line-height:1.5}
+
+/* 成就 */
+.ach-h{font-size:13px;color:var(--ink-2);margin-bottom:12px}
+.ach-h b{font-family:var(--num);font-size:20px;color:var(--ink)}
+.agrid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px 8px}
+.ach{text-align:center;color:var(--faint)}
+.ach .medal{position:relative;width:64px;height:64px;margin:0 auto 6px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#fff,#EEE9F4);box-shadow:0 0 0 1px var(--hair) inset}
+.ach .medal svg{position:absolute;inset:2px;width:60px;height:60px;color:var(--faint)}
+.ach .medal span{position:absolute;inset:0;display:grid;place-items:center;font-family:var(--latin);font-weight:600;font-size:22px;filter:grayscale(1);opacity:.45}
+.ach.on .medal{background:radial-gradient(circle at 35% 30%,#FFF8E6,#EBCB8B 70%,#C9A46C);box-shadow:0 0 0 2px #fff,0 0 0 3px var(--gold),0 8px 18px -8px rgba(169,124,60,.8)}
+.ach.on .medal svg{color:#fff}
+.ach.on .medal span{filter:none;opacity:1;color:#7A5626}
+.ach b{display:block;font-size:12.5px;font-weight:700;color:var(--ink-2);line-height:1.3}
+.ach.on b{color:var(--ink)}
+.ach small{display:block;font-size:10.5px;color:var(--dim);line-height:1.35;margin-top:2px}
+
+/* 条目页的宇宙条 */
+.ubns{margin:16px var(--pad) 0;display:flex;flex-direction:column;gap:10px}
+.ubn{position:relative;display:block;padding:12px 14px;border-radius:16px;color:#fff;overflow:hidden;isolation:isolate;
+  background:radial-gradient(120% 120% at 0% 0%,color-mix(in srgb,var(--ua) 85%,transparent),rgba(0,0,0,0) 65%),var(--uc);box-shadow:0 0 0 1px color-mix(in srgb,var(--ub) 40%,transparent) inset,0 12px 24px -18px var(--uc)}
+.ubn.auto{background:var(--paper);color:var(--ink);box-shadow:var(--line),var(--shadow)}
+.ubn-h{display:flex;align-items:center;gap:10px}
+.ubn-wm{font-family:var(--latin);font-style:italic;font-weight:600;font-size:16px;color:var(--ub);flex:none;min-width:34px}
+.ubn.auto .ubn-wm{color:var(--gold)}
+.ubn-h div{flex:1;min-width:0}
+.ubn-h b{display:block;font-family:var(--serif);font-weight:900;font-size:14.5px;letter-spacing:.08em}
+.ubn-h small{font-size:11.5px;opacity:.7}
+.ubn-go{font-size:12px;opacity:.75;flex:none}
+.ubn-cs{display:flex;gap:6px;overflow-x:auto;margin:10px -14px 0;padding:0 14px 2px;scrollbar-width:none}
+.ubn-cs::-webkit-scrollbar{display:none}
+.ubn-cs span{flex:none;display:flex;flex-direction:column;align-items:center;gap:4px;width:50px;font-size:10.5px;color:rgba(255,255,255,.5);text-align:center;line-height:1.2}
+.ubn-cs span.on{color:#fff}
+.ubn-cs i{width:40px;height:40px;border-radius:50%;overflow:hidden;display:grid;place-items:center;font-style:normal;font-family:var(--latin);font-weight:600;font-size:18px;
+  background:rgba(255,255,255,.08);box-shadow:0 0 0 1.5px rgba(255,255,255,.22) inset;color:rgba(255,255,255,.45)}
+.ubn-cs span.on i{background:var(--hc);box-shadow:0 0 0 2px var(--ub),0 0 12px color-mix(in srgb,var(--ub) 60%,transparent);color:#fff;font-family:var(--serif);font-weight:900;font-size:15px}
+.ubn-cs i img{width:100%;height:100%;object-fit:cover}
+.ubn-note{font-size:11.5px;color:rgba(255,255,255,.62);margin-top:6px}
+
+/* 点亮仪式：卡背翻到正面 */
+.ucere .cc{background:radial-gradient(120% 70% at 50% 0%,color-mix(in srgb,var(--ua) 80%,transparent),rgba(0,0,0,0) 70%),var(--uc);color:#fff;max-width:360px;padding:24px 18px 18px;
+  box-shadow:0 0 0 1px color-mix(in srgb,var(--ub) 50%,transparent) inset,0 30px 80px rgba(0,0,0,.5)}
+.uc-en{font-family:var(--latin);font-style:italic;font-weight:600;font-size:14px;color:var(--ub)}
+.ucere .ct{font-family:var(--serif);font-weight:900;font-size:22px;letter-spacing:.14em;margin-top:2px;color:#fff}
+.uc-cards{display:flex;justify-content:center;gap:8px;margin:18px 0 12px}
+.uc-flip{position:relative;width:32%;max-width:118px;aspect-ratio:5/7;animation:ucin .45s cubic-bezier(.3,1.4,.5,1) calc(var(--d) - .2s) both}
+.uc-cards.n1 .uc-flip{width:56%;max-width:190px}
+.uc-cards.n2 .uc-flip{width:42%;max-width:150px}
+.uc-back,.uc-front{position:absolute;inset:0}
+/* 翻牌：卡背横向收窄到 0，再换正面展开（不用 3D，iOS 上也稳） */
+.uc-back{border-radius:13px;display:grid;place-items:center;background:repeating-linear-gradient(45deg,color-mix(in srgb,var(--ua) 70%,#000) 0 6px,color-mix(in srgb,var(--ua) 55%,#000) 6px 12px);
+  box-shadow:0 0 0 3px var(--ub) inset,0 0 0 1px #fff;animation:ucb .3s ease-in calc(var(--d) + .35s) both}
+.uc-front{animation:ucf .42s cubic-bezier(.2,1.5,.5,1) calc(var(--d) + .65s) both}
+.uc-back span{font-family:var(--latin);font-style:italic;font-weight:600;font-size:20px;color:var(--ub)}
+@keyframes ucin{from{transform:translateY(30px) scale(.7);opacity:0}to{transform:none;opacity:1}}
+@keyframes ucb{from{transform:scaleX(1)}to{transform:scaleX(0)}}
+@keyframes ucf{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+@media (prefers-reduced-motion:reduce){.uc-flip,.uc-front{animation:none}.uc-back{display:none}}
+.uc-names{display:flex;flex-wrap:wrap;justify-content:center;gap:6px}
+.uc-names span{font-size:12px;font-weight:700;padding:3px 9px 3px 4px;border-radius:12px;background:rgba(255,255,255,.1);box-shadow:0 0 0 1px rgba(255,255,255,.18) inset}
+.uc-names em{font-style:italic;font-family:var(--latin);font-weight:600;font-size:11px;padding:0 5px;margin-right:4px;border-radius:7px;background:var(--hc);color:#fff}
+.uc-got{margin-top:10px;font-family:var(--serif);font-weight:900;letter-spacing:.1em;font-size:14px;color:var(--ub)}
+.uc-btns{display:flex;gap:10px;margin-top:18px}
+.uc-btns .btn{flex:1;height:40px;font-size:14px}
+.uc-btns .btn:not(.ghost){background:linear-gradient(180deg,color-mix(in srgb,var(--ub) 80%,#fff),var(--ub));color:var(--uc)}
+.uc-btns .btn.ghost{background:rgba(255,255,255,.1);color:#fff;box-shadow:0 0 0 1px rgba(255,255,255,.25) inset}
 </style>
 </head>
 <body>
@@ -1185,7 +1457,7 @@ function keepImages(root, ret){
 }
 /* 底部四个页面渲染在 #main 里，详情、影人页等在 #page 里。
    进详情时 #main 只是藏起来，返回时原样显示，不重画、滚动位置不变；数据变了（S.ver 变了）才重画。 */
-const PAGES = ["t", "p", "quick", "settings"];
+const PAGES = ["t", "p", "quick", "settings", "uni", "u"];
 let mainKey = "", mainVer = -1;
 const bump = () => { S.ver = (S.ver || 0) + 1; };
 function render(nav){
@@ -1198,7 +1470,7 @@ function render(nav){
     const entering = page.hidden;
     page.hidden = false;
     if (nav && entering) { page.classList.remove("out"); page.classList.remove("in"); void page.offsetWidth; page.classList.add("in"); }
-    const done = keepImages(page, () => ({t: renderTitle, p: renderPerson, quick: renderQuick, settings: renderSettings})[r.name](r.arg));
+    const done = keepImages(page, () => ({t: renderTitle, p: renderPerson, quick: renderQuick, settings: renderSettings, uni: renderUniHub, u: renderUni})[r.name](r.arg));
     if (nav) { page.scrollTop = scrollMem[key] || 0; done.then(() => { if (route().name + "/" + route().arg === key) page.scrollTop = scrollMem[key] || 0; }); }
   } else {
     if (!page.hidden) {   // 关掉详情层：列表一直在底下，没被隐藏过，图片和位置都还在
@@ -1235,7 +1507,7 @@ function renderHome(){
     $("#main").innerHTML = head + syncNote + `<div class="welcome"><h3>建一座自己的影库</h3>
       <p>电影、剧集、老片、流媒体都能标记。<br>评分来自豆瓣、IMDb 和烂番茄。</p>
       <div class="btns"><a class="btn" href="#/search">${IC.search} 搜一部片子</a><a class="btn ghost" href="#/quick">${IC.bolt} 快速标记</a></div></div>`
-      + followSection() + popularShelf();
+      + followSection() + uniHomeSec() + popularShelf();
     initDeck();
     return;
   }
@@ -1249,6 +1521,7 @@ function renderHome(){
       <div class="row2"><a href="#/lib" onclick="libFilter({s:'doing'})"><i style="background:var(--doing)"></i>在看 <b>${doing.length}</b></a>
         <a href="#/lib" onclick="libFilter({s:'wish'})"><i style="background:var(--wish)"></i>想看 <b>${wish.length}</b></a>
         <a href="#/quick">${"⚡"} 快速标记</a></div></div>
+    ${uniHomeSec()}
     ${doing.length ? shelfSec("在看", doing, "doing") : ""}
     ${done.length ? shelfSec("最近看过", done.slice(0, 20), "done", done.length) : ""}
     ${wish.length ? shelfSec("想看", wish.slice(0, 20), "wish", wish.length) : ""}
@@ -1579,6 +1852,7 @@ async function renderTitle(id){
         ${(k.tags || []).length ? `<div class="mtags">${k.tags.map(t => `<span># ${esc(t)}</span>`).join("")}</div>` : ""}
         <button class="edit" onclick="openMark('${id}','${k.s}')">修改${k.s === "done" ? "评分和短评" : ""}</button></div>` : ""}
     </div>
+    ${uniBanner(id)}
     ${v.series && nSeasons ? `<div class="blk" style="margin-bottom:-12px"><h3>分季 <span class="muted" style="font-size:12.5px;font-weight:400">点圆圈标记看完的季</span></h3></div>
       <div class="seasons">${Array.from({length: Math.min(nSeasons, 30)}, (_, i) => i + 1).map(n => {
         const s = seasonsDb.find(x => x.n === n);
@@ -1619,6 +1893,7 @@ function tint(v){
 
 /* ================================================================ 标记 */
 function setMark(id, patch){
+  const snap = uniSnap(id);
   const now = Date.now(); bump();
   if (patch === null) S.marks[id] = {del: true, t: now};
   else {
@@ -1629,6 +1904,7 @@ function setMark(id, patch){
   }
   persistLocal();
   scheduleSave();
+  if (snap) uniAfter(snap);
 }
 let markDraft = null;
 function openMark(id, s){
@@ -2525,13 +2801,14 @@ async function watchPending(){
 }
 let metaSig = "";
 async function pullMeta(){
-  const [m, p, ps] = await Promise.all([readJSON("meta.json"), readJSON("people.json"), readJSON("persons.json")]);
-  const sig = (m.text || "").length + ":" + (p.text || "").length + ":" + (ps.text || "").length + ":" + (m.text || "").slice(-200);
+  const [m, p, ps, se] = await Promise.all([readJSON("meta.json"), readJSON("people.json"), readJSON("persons.json"), readJSON("series.json").catch(() => ({}))]);
+  const sig = (m.text || "").length + ":" + (p.text || "").length + ":" + (ps.text || "").length + ":" + (se.text || "").length + ":" + (m.text || "").slice(-200);
   if (sig === metaSig) return false;    // 没变就不重画
   metaSig = sig; bump();
   if (m.data) { const light = Object.fromEntries(Object.entries(S.meta).filter(([id, x]) => x.light && !m.data[id])); S.meta = {...m.data, ...light}; kv.set("meta", m.data); }
   if (p.data) { S.people = p.data; kv.set("people", p.data); }
   if (ps.data) { S.persons = ps.data; kv.set("persons", ps.data); }
+  if (se.data) { S.series = se.data; kv.set("series", se.data); }
   return true;
 }
 async function pullAll(){
@@ -2566,6 +2843,388 @@ function syncBanner(){
   if (!gh.token()) return active().length ? `<div class="note" style="margin-top:4px"><div class="bd">标记只存在这台手机上。连接 GitHub 后可以同步、补全详情和评分。</div><button onclick="go('#/settings')">去连接</button></div>` : "";
   if (S.syncErr) return `<div class="note" style="margin-top:4px;background:#fdecea;color:#a3352a"><div class="bd">${esc(S.syncErr)}</div><button style="color:#a3352a" onclick="S.syncErr='';pullAll()">重试</button></div>`;
   return "";
+}
+
+/* ================================================================ 宇宙与系列专题
+   漫威 / DC / 异形是手写的专题（docs/universes.json：作品、阶段、角色、套牌）；
+   其他系列由后台查 Wikidata 自动生成（数据仓库 series.json），看过其中一部就会出现。
+   看完一部 → 里面的角色点亮；集齐一组角色 → 套牌；看完一个阶段 → 成就。 */
+let UNI = [], uniP = null;
+const uniMap = new Map(), uniOfTitle = new Map();
+function loadUni(){
+  return uniP || (uniP = fetch("universes.json", {cache: "no-cache"}).then(r => { if (!r.ok) throw 0; return r.json(); }).then(d => {
+    UNI = d.universes.map(prepUni); bump();
+    if (["home", "uni", "u", "t"].includes(route().name)) render();
+  }).catch(() => { uniP = null; }));
+}
+function prepUni(u){
+  uniMap.set(u.id, u);
+  u.wk = new Map(u.works.map(w => [w.k, w]));
+  u.ck = new Map(u.chars.map(c => [c.k, c]));
+  // 稀有度按出场次数在这个宇宙里的排名：前 15% UR，前 40% SSR，前 70% SR，其余 R
+  const ns = u.chars.map(c => c.w.length).sort((a, b) => b - a), at = f => ns[Math.min(ns.length - 1, Math.floor(ns.length * f))];
+  const urMin = Math.max(3, at(.15) + 1), ssrMin = Math.max(3, at(.4)), srMin = Math.max(2, at(.7));
+  for (const c of u.chars) {
+    c.u = u.id; c.apps = c.w.map(k => u.wk.get(k)).filter(Boolean).sort((a, b) => u.works.indexOf(a) - u.works.indexOf(b));
+    const n = c.apps.length;
+    c.rar = c.r || (n >= urMin ? "UR" : n >= ssrMin ? "SSR" : n >= srMin ? "SR" : "R");
+    c.decks = u.decks.filter(d => d.m.includes(c.k));
+  }
+  for (const w of u.works) {
+    w.u = u.id; w.chars = u.chars.filter(c => c.w.includes(w.k));
+    w.debuts = w.chars.filter(c => c.apps[0] === w);
+    if (w.id) { if (!uniOfTitle.has(w.id)) uniOfTitle.set(w.id, []); uniOfTitle.get(w.id).push(w); }
+  }
+  u.secMap = new Map(u.secs.map(s => [s.k, s]));
+  return u;
+}
+const THIS_YEAR = new Date().getFullYear();
+function wOut(w){   // 已经上映（今年的片子要有人打过分才算）
+  if (!w.id) return false;
+  if (w.y < THIS_YEAR) return true;
+  if (w.y > THIS_YEAR) return false;
+  return !!(S.meta[w.id]?.imdb?.c || S.byId.get(w.id)?.v || mark(w.id));
+}
+const wDone = w => !!w.id && mark(w.id)?.s === "done";
+const wSeen = w => !!w.id && ["done", "doing"].includes(mark(w.id)?.s);   // 在看的剧也算见过这个角色
+const charLit = c => c.apps.some(wSeen);
+const charSeenN = c => c.apps.filter(wSeen).length;
+const charTot = c => c.apps.filter(wOut).length || c.apps.length;
+const deckDone = (u, d) => d.m.every(k => charLit(u.ck.get(k)));
+const secWorks = (u, sk) => u.works.filter(w => w.sec === sk);
+function secDone(u, sk){ const ws = secWorks(u, sk).filter(wOut); return ws.length > 0 && ws.every(wDone); }
+function uniStat(u){
+  const main = u.works.filter(w => !w.x && wOut(w)), ext = u.works.filter(w => w.x && wOut(w));
+  return {main, seen: main.filter(wDone), ext, extSeen: ext.filter(wDone),
+    lit: u.chars.filter(charLit), decks: u.decks.filter(d => deckDone(u, d))};
+}
+function uniName(w){ return S.meta[w.id]?.cn || w.cn || vm(w.id).name; }
+function uniOrder(u, tl){ return [...u.works].sort((a, b) => tl ? (a.tl ?? a.y) - (b.tl ?? b.y) : 0); }
+function uniNext(u, tl){ return uniOrder(u, tl).find(w => !w.x && wOut(w) && !wDone(w)) || uniOrder(u, tl).find(w => wOut(w) && !wDone(w)) || null; }
+
+/* 角色卡面照片：追的人自己选的 > 后台抓的影人照 > 片子详情里的演员头像 > 豆瓣头像；生物用首次登场作品的海报 */
+let castImgVer = -1, castImgMap = new Map();
+function castImg(nm, name){
+  if (castImgVer !== S.ver) {
+    castImgVer = S.ver; castImgMap = new Map();
+    for (const m of Object.values(S.meta)) for (const p of (m.cast || []).concat(m.directors || [])) {
+      if (p.img && !castImgMap.has(p.id)) castImgMap.set(p.id, p.img);
+      if (p.img && p.n && !castImgMap.has("n:" + norm(p.n))) castImgMap.set("n:" + norm(p.n), p.img);
+    }
+  }
+  return castImgMap.get(nm) || castImgMap.get("n:" + norm(name)) || "";
+}
+function posterSrc(id, w = 300){ const v = vm(id); return dbSmall(v.poster, w) || imdbImg(v.posterKey || S.crew.get(id)?.poster, w); }
+function charFace(c, w = 400){
+  for (const [nm, name] of c.a) {
+    if (!nm && !name) continue;
+    if (nm && followed(nm) && S.follows[nm].ph?.k) { const f = faceOf(nm, w); if (f.src) return {src: f.src, pos: f.pos}; }
+    const k = (nm && S.persons[nm]?.img) || castImg(nm, name);
+    if (k) return {src: imdbImg(k, w), pos: "50% 18%"};
+    const d = nm && S.people[nm]?.dimg; if (d) return {src: d, pos: "50% 18%"};
+  }
+  const deb = c.apps.find(wSeen) || c.apps[0];
+  const p = deb && posterSrc(deb.id, w);
+  return p ? {src: p, pos: "50% 30%", poster: true} : null;
+}
+const actorName = ([nm, name]) => (nm && (S.people[nm]?.cn || S.persons[nm]?.db?.cn)) || name;
+function charCard(c, o = {}){
+  const lit = o.lit ?? charLit(c), seen = charSeenN(c), tot = charTot(c);
+  const f = lit ? charFace(c, o.w || 400) : null, full = lit && seen >= tot;
+  const deb = c.apps[0];
+  return `<div class="ic chc${lit ? "" : " lock"}${o.cls ? " " + o.cls : ""}" data-r="${c.rar}" style="--hc:${c.c}"${o.click !== false ? ` onclick="charSheet('${c.u}','${c.k}')"` : ""}>
+    <span class="crest"></span>${full && tot > 1 ? `<span class="crown">👑</span>` : ""}
+    <div class="in"><div class="ini">${lit ? esc(c.cn.slice(0, 1)) : "?"}</div>
+      ${f ? `<img decoding="async" loading="lazy" class="${f.poster ? "pst" : ""}" src="${esc(f.src)}" style="object-position:${f.pos}" onerror="this.remove()">` : ""}
+      <div class="tint"></div><div class="holo"></div><div class="sheen"></div>
+      <i class="orn tl"></i><i class="orn tr"></i><i class="orn bl"></i><i class="orn br"></i>
+      <div class="rar"><b>${c.rar}</b></div>
+      ${o.count !== false ? `<div class="cnt">${seen}<i>/${tot}</i></div>` : ""}
+      ${o.sticker ? `<span class="sticker">${esc(o.sticker)}</span>` : ""}
+      <div class="plate"><div class="sign">${esc(c.en)}</div><b>${esc(c.cn)}</b><small>${lit ? esc(c.sub || actorName(c.a[0] || ["", ""])) : deb ? `《${esc(uniName(deb))}》登场` : ""}</small></div>
+    </div></div>`;
+}
+
+/* ---------- 后台自动找的系列 ---------- */
+let autoVer = -1, autoList = [];
+function autoSeries(){
+  if (autoVer === S.ver) return autoList;
+  autoVer = S.ver; autoList = [];
+  const by = S.series?.by || {}, ser = S.series?.s || {};
+  const qs = new Set();
+  for (const [tt, k] of active()) if (k.s === "done" || k.s === "doing") for (const q of by[tt]?.s || []) qs.add(q);
+  const curatedQ = new Set(UNI.flatMap(u => u.wd || []));
+  const sigs = new Set();
+  for (const q of qs) {
+    const d = ser[q]; if (!d || curatedQ.has(q)) continue;
+    const seenId = new Set();
+    const items = d.items.filter(([tt]) => (S.byId.has(tt) || S.meta[tt]) && !seenId.has(tt) && seenId.add(tt))
+      .map(([tt, o, y]) => ({id: tt, o: +o || 0, y: y || vm(tt).year || 0}));
+    if (items.length < 2 || items.length > 60) continue;
+    const inUni = items.filter(it => uniOfTitle.has(it.id)).length;
+    if (inUni / items.length >= .5) continue;   // 大半都在手写专题里（比如「钢铁侠三部曲」），不重复
+    const sig = items.map(i => i.id).sort().join(",");
+    if (sigs.has(sig)) continue; sigs.add(sig);
+    items.sort((a, b) => (a.o && b.o ? a.o - b.o : 0) || (a.y || 9999) - (b.y || 9999));
+    autoList.push({q, n: d.zh || d.en || q, en: d.en && d.en !== d.zh ? d.en : "", items});
+  }
+  const seenN = s => s.items.filter(it => mark(it.id)?.s === "done").length;
+  autoList.sort((a, b) => seenN(b) / b.items.length - seenN(a) / a.items.length || seenN(b) - seenN(a));
+  return autoList;
+}
+function autoStat(s){
+  const out = s.items.filter(it => it.y && it.y <= THIS_YEAR && (it.y < THIS_YEAR || S.byId.get(it.id)?.v || mark(it.id)));
+  return {main: out, seen: out.filter(it => mark(it.id)?.s === "done")};
+}
+function seriesOf(id){ return autoSeries().filter(s => s.items.some(it => it.id === id)); }
+
+/* ---------- 卡包（首页、总览页的入口） ---------- */
+function packHTML(u, big){
+  const st = uniStat(u), tot = st.main.length, frac = tot ? st.seen.length / tot : 0;
+  const faces = st.lit.slice(-5).reverse();
+  const pics = (st.seen.length ? st.seen.slice(-3) : st.main.slice(0, 3)).map(w => w.id);
+  return `<a class="pack${big ? " big" : ""}" href="#/u/${u.id}" style="--ua:${u.theme[0]};--ub:${u.theme[1]};--uc:${u.theme[2]}">
+    <div class="pk-bg">${pics.map((id, i) => `<div class="fp" style="--i:${i}">${posterHTML(vm(id), 200)}</div>`).join("")}</div>
+    <div class="pk-wm">${esc(u.short)}</div>
+    <div class="pk-bd"><div class="pk-en">${esc(u.en)}</div><b>${esc(u.n)}</b>
+      <div class="pk-bar"><i style="width:${Math.max(frac * 100, st.seen.length ? 3 : 0)}%"></i></div>
+      <div class="pk-st"><span><em>${st.seen.length}</em>/${tot} 部</span><span>角色 <em>${st.lit.length}</em>/${u.chars.length}</span>${big ? `<span>套牌 <em>${st.decks.length}</em>/${u.decks.length}</span>` : ""}</div>
+      ${faces.length ? `<div class="pk-faces">${faces.map(c => { const f = charFace(c, 120); return `<i style="--hc:${c.c}">${f ? `<img loading="lazy" src="${esc(f.src)}" style="object-position:${f.pos}" onerror="this.remove()">` : esc(c.cn.slice(0, 1))}</i>`; }).join("")}${st.lit.length > 5 ? `<small>+${st.lit.length - 5}</small>` : ""}</div>`
+        : `<div class="pk-hint">看完第一部，点亮第一位角色</div>`}
+    </div></a>`;
+}
+function seriesTile(s){
+  const st = autoStat(s), tot = st.main.length || s.items.length;
+  const pics = s.items.slice(0, 3).map(it => it.id);
+  const full = st.main.length && st.seen.length >= st.main.length;
+  return `<a class="stile${full ? " full" : ""}" href="#/u/${s.q}"><div class="st-fan">${pics.map((id, i) => `<div class="fp" style="--i:${i}">${posterHTML(vm(id), 160)}</div>`).join("")}</div>
+    <b>${esc(s.n)}</b><small>${full ? "👑 全部看完" : `看过 ${st.seen.length} / ${tot}`}</small><span class="st-bar"><i style="width:${tot ? st.seen.length / tot * 100 : 0}%"></i></span></a>`;
+}
+function uniHomeSec(){
+  if (!UNI.length) return "";
+  const auto = autoSeries();
+  return `<div class="sec"><div class="sec-h"><h2>宇宙与系列</h2><a href="#/uni">全部${auto.length ? ` ${UNI.length + auto.length}` : ""}</a></div>
+    <div class="scroller packs">${UNI.map(u => packHTML(u)).join("")}${auto.slice(0, 6).map(seriesTile).join("")}</div></div>`;
+}
+function renderUniHub(){
+  const auto = autoSeries();
+  $("#page").innerHTML = `<div class="bar" id="bar"><button class="icon-btn" onclick="back()" aria-label="返回">${IC.back}</button><div class="tt">宇宙与系列</div><span style="width:36px"></span></div>
+    <div class="uhub-h"><h2>宇宙与系列</h2><p>每看完一部，里面的角色就会亮起来。集齐一组角色解锁套牌，看完一个阶段拿到成就。</p></div>
+    <div class="packs-col">${UNI.map(u => packHTML(u, true)).join("")}</div>
+    <div class="sec"><div class="sec-h"><h2>我的系列 <small>${auto.length}</small></h2></div>
+      ${auto.length ? `<div class="sgrid">${auto.map(seriesTile).join("")}</div>`
+        : `<div class="empty-s">${S.series ? "看过的片子里还没找到别的系列。看一部系列电影（比如《哈利·波特》《碟中谍》），这里会自动出现它的专题。" : gh.token() ? "后台正在查你看过的片子属于哪些系列，下一轮同步后出现。" : "连接 GitHub 后，后台会自动找出你看过的系列电影，在这里生成专题。"}</div>`}</div>
+    <div style="height:24px"></div>`;
+}
+
+/* ---------- 单个宇宙页 ---------- */
+let uTab = {}, uTl = {}, uFilter = "all";
+function renderUni(id){
+  if (/^Q\d+$/.test(id)) return renderSeries(id);
+  const u = uniMap.get(id);
+  if (!u) { $("#page").innerHTML = `<div class="bar" id="bar"><button class="icon-btn" onclick="back()">${IC.back}</button><div class="tt"></div><span style="width:36px"></span></div><div class="empty-s">正在加载专题…</div>`; return; }
+  const st = uniStat(u), tab = uTab[id] || getPref("utab", "route"), tot = st.main.length;
+  const tabs = [["route", "路线"], ["chars", "角色"], ["decks", "套牌"], ["ach", "成就"]];
+  $("#page").innerHTML = `<div class="uni" style="--ua:${u.theme[0]};--ub:${u.theme[1]};--uc:${u.theme[2]}">
+    <div class="bar dark" id="bar"><button class="icon-btn" onclick="back()" aria-label="返回">${IC.back}</button><div class="tt">${esc(u.n)}</div><span style="width:36px"></span></div>
+    <div class="uhero"><div class="uh-wm">${esc(u.short)}</div><div class="uh-stars"></div>
+      <div class="uh-en">${esc(u.en)}</div><h2>${esc(u.n)}</h2><p>${esc(u.tag)}</p>
+      <div class="uh-nums"><div><b>${st.seen.length}</b><i>/${tot}</i><span>作品</span></div><div><b>${st.lit.length}</b><i>/${u.chars.length}</i><span>角色点亮</span></div><div><b>${st.decks.length}</b><i>/${u.decks.length}</i><span>套牌</span></div></div>
+      <div class="uh-bar"><i style="width:${tot ? st.seen.length / tot * 100 : 0}%"></i></div>
+      ${st.ext.length ? `<div class="uh-ext">外传另计：${st.extSeen.length} / ${st.ext.length}</div>` : ""}
+    </div>
+    <div class="seg useg">${tabs.map(([k, l]) => `<button class="${tab === k ? "on" : ""}" onclick="uTab['${id}']='${k}';setPref('utab','${k}');render()">${l}</button>`).join("")}</div>
+    <div class="ubody">${eager(() => ({route: uniRoute, chars: uniChars, decks: uniDecks, ach: uniAch}[tab] || uniRoute)(u, st))}</div>
+  </div><div style="height:24px"></div>`;
+  hydratePosters($("#page"));
+}
+function uniRoute(u){
+  const tl = !!(u.timeline && uTl[u.id]);
+  const nx = uniNext(u, tl);
+  let html = u.timeline ? `<div class="chips" style="padding:0;margin:2px 0 14px"><button class="chip ${!tl ? "on" : ""}" onclick="uTl['${u.id}']=0;render()">上映顺序</button><button class="chip ${tl ? "on" : ""}" onclick="uTl['${u.id}']=1;render()">故事时间线</button></div>` : "";
+  if (nx) {
+    const deb = nx.debuts.filter(c => !charLit(c));
+    html += `<a class="unext paper" href="#/t/${nx.id}"><em>下一站</em>${posterHTML(vm(nx.id), 160)}<div class="ux-bd"><b>${esc(uniName(nx))}</b><small>${nx.y}${u.secMap.get(nx.sec) ? ` · ${esc(u.secMap.get(nx.sec).n)}` : ""}</small>
+      ${deb.length ? `<div class="ux-deb">看完点亮 ${deb.slice(0, 4).map(c => `<span style="--hc:${c.c}">${esc(c.cn)}</span>`).join("")}${deb.length > 4 ? `等 ${deb.length} 位` : ""}</div>`
+        : nx.chars.length ? `<div class="ux-deb">${nx.chars.slice(0, 4).map(c => esc(c.cn)).join("、")} 出场</div>` : ""}</div>
+      <button class="ux-go" onclick="uniStamp(event,'${nx.id}')">看过了</button></a>`;
+  } else if (uniStat(u).main.length) html += `<div class="unext paper done"><em>👑</em><div class="ux-bd"><b>全部看完了</b><small>上映的都看过，新作上映后会出现在这里</small></div></div>`;
+  const node = w => {
+    const k = mark(w.id), done = k?.s === "done", out = wOut(w), v = vm(w.id);
+    const cs = w.chars.slice(0, 6);
+    return `<div class="rn ${done ? "got" : out ? "" : "soon"}${nx === w ? " nx" : ""}"><i class="rn-dot"></i>
+      <a href="#/t/${w.id}" class="rn-ps">${posterHTML(v, 120)}</a>
+      <a href="#/t/${w.id}" class="rn-bd"><b>${esc(uniName(w))}</b><small>${tl && w.tl ? `故事 ${Math.floor(w.tl)} 年 · ` : ""}${w.y}${w.ty && ["s", "ms"].includes(w.ty) ? " · 剧集" : w.ty === "sp" || w.ty === "tm" ? " · 特别篇" : ""}${w.x ? " · 外传" : ""}${!out ? " · 待映" : ""}${k && !done ? ` · ${STATUS[k.s]}` : ""}</small>
+        ${cs.length ? `<div class="rn-cs">${cs.map(c => { const lit = charLit(c); const f = lit ? charFace(c, 80) : null;
+          return `<i class="${lit ? "on" : ""}" style="--hc:${c.c}" title="${esc(c.cn)}">${f ? `<img loading="lazy" src="${esc(f.src)}" style="object-position:${f.pos}" onerror="this.remove()">` : esc(lit ? c.cn.slice(0, 1) : "?")}</i>`; }).join("")}${w.chars.length > 6 ? `<small>+${w.chars.length - 6}</small>` : ""}</div>` : ""}</a>
+      ${done ? `<span class="rn-seal">已看</span>` : out ? `<button class="rn-ck" onclick="uniStamp(event,'${w.id}')" aria-label="看过了"></button>` : `<span class="rn-soon">待映</span>`}</div>`;
+  };
+  if (tl) return html + `<div class="route">${uniOrder(u, true).map(node).join("")}</div>`;
+  for (const s of u.secs) {
+    const ws = secWorks(u, s.k), out = ws.filter(wOut), seen = out.filter(wDone), full = secDone(u, s.k);
+    html += `<div class="rsec${full ? " full" : ""}"><div class="rs-h"><div><b>${esc(s.n)}</b><small>${esc(s.en)}</small></div><span class="rs-n">${seen.length}<i>/${out.length || ws.length}</i></span></div>
+      <div class="rs-bar"><i style="width:${out.length ? seen.length / out.length * 100 : 0}%"></i></div>${full ? `<div class="rs-stamp">制霸</div>` : ""}</div>
+      <div class="route">${ws.map(node).join("")}</div>`;
+  }
+  return html;
+}
+function uniChars(u){
+  const lit = u.chars.filter(charLit), n = {all: u.chars.length, on: lit.length, off: u.chars.length - lit.length};
+  const list = u.chars.filter(c => uFilter === "on" ? charLit(c) : uFilter === "off" ? !charLit(c) : true);
+  return `<div class="chips" style="padding:0;margin:2px 0 14px">${[["all", "全部"], ["on", "已点亮"], ["off", "未点亮"]].map(([k, l]) => `<button class="chip ${uFilter === k ? "on" : ""}" onclick="uFilter='${k}';render()">${l} <b>${n[k]}</b></button>`).join("")}</div>
+    <div class="cgrid">${list.map(c => charCard(c)).join("")}</div>
+    <p class="cap" style="text-align:center;margin-top:16px">稀有度按出场次数定，看完 TA 的全部出场作品戴上皇冠</p>`;
+}
+function deckFan(u, d, small){
+  return `<div class="dfan${small ? " sm" : ""}">${d.m.map((k, i) => { const c = u.ck.get(k); return `<div class="dfi" style="--i:${i};--n:${d.m.length}">${charCard(c, {count: false, w: 240})}</div>`; }).join("")}</div>`;
+}
+function uniDecks(u){
+  return u.decks.map(d => {
+    const got = d.m.filter(k => charLit(u.ck.get(k))).length, full = got === d.m.length;
+    const miss = d.m.map(k => u.ck.get(k)).filter(c => !charLit(c));
+    const hint = miss.length ? (() => { const w = miss[0].apps.find(w => wOut(w) && !wDone(w)) || miss[0].apps[0]; return w ? `还差 ${miss.map(c => esc(c.cn)).join("、")} · 去看《${esc(uniName(w))}》` : ""; })() : "";
+    return `<div class="udeck paper${full ? " full" : ""}"><div class="ud-h"><span class="ud-ic">${d.ic}</span><div><b>${esc(d.n)}</b><small>${esc(d.en)}</small></div><span class="ud-n">${got}<i>/${d.m.length}</i></span></div>
+      ${deckFan(u, d)}${full ? `<div class="ud-ok">✦ 已集齐 ✦</div>` : `<div class="ud-hint">${hint}</div>`}</div>`;
+  }).join("");
+}
+function uniAchList(u){
+  const st = uniStat(u), out = [];
+  u.secs.forEach((s, i) => { const ws = secWorks(u, s.k).filter(wOut); if (!ws.length) return;
+    out.push({ic: "ⅠⅡⅢⅣⅤⅥⅦⅧ"[i], n: `${s.n}制霸`, d: `看完${s.n}全部 ${ws.length} 部`, on: secDone(u, s.k), p: ws.filter(wDone).length / ws.length}); });
+  for (const g of u.sagas || []) { const ws = g.secs.flatMap(k => secWorks(u, k)).filter(wOut); if (!ws.length) continue;
+    out.push({ic: "∞", n: g.n, d: `${g.en} · 共 ${ws.length} 部`, on: ws.every(wDone), p: ws.filter(wDone).length / ws.length, big: 1}); }
+  const tot = st.main.length, seen = st.seen.length;
+  const goal = {first: [1, "看完第一部"], five: [5, "看完 5 部"], ten: [10, "看完 10 部"], quarter: [tot * .25, "看完四分之一"], half: [tot * .5, "看完一半"], most: [tot * .8, "看完 80%"], all: [tot, `正传 ${tot} 部全部看完`]};
+  for (const b of BADGES) { const [g, d] = goal[b.k]; out.push({ic: b.ic, n: b.n, d, on: b.t(seen, tot), p: tot ? Math.min(1, seen / Math.max(1, g)) : 0}); }
+  const ur = u.chars.filter(c => c.rar === "UR");
+  out.push({ic: "UR", n: "UR 全图鉴", d: `点亮全部 ${ur.length} 张 UR`, on: ur.every(charLit), p: ur.filter(charLit).length / ur.length});
+  out.push({ic: "✦", n: "全员点亮", d: `点亮全部 ${u.chars.length} 位角色`, on: st.lit.length === u.chars.length, p: st.lit.length / u.chars.length});
+  out.push({ic: "♛", n: "套牌大师", d: `集齐全部 ${u.decks.length} 组套牌`, on: st.decks.length === u.decks.length, p: st.decks.length / u.decks.length});
+  return out;
+}
+function uniAch(u){
+  const list = uniAchList(u), on = list.filter(a => a.on).length;
+  return `<div class="ach-h">已解锁 <b>${on}</b> / ${list.length}</div><div class="agrid">${list.map(a => `<div class="ach${a.on ? " on" : ""}${a.big ? " big" : ""}">
+    <div class="medal"><svg viewBox="0 0 60 60"><circle cx="30" cy="30" r="27" fill="none" stroke="currentColor" stroke-opacity=".15" stroke-width="3"/><circle cx="30" cy="30" r="27" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-dasharray="${(169.6 * (a.on ? 1 : a.p)).toFixed(1)} 170" transform="rotate(-90 30 30)"/></svg><span>${a.ic}</span></div>
+    <b>${esc(a.n)}</b><small>${esc(a.d)}</small></div>`).join("")}</div>`;
+}
+
+/* ---------- 后台系列的专题页 ---------- */
+function renderSeries(q){
+  const s = autoSeries().find(x => x.q === q) || (() => { const d = S.series?.s?.[q]; if (!d) return null;
+    return {q, n: d.zh || d.en, en: d.en !== d.zh ? d.en : "", items: d.items.filter(([tt]) => S.byId.has(tt) || S.meta[tt]).map(([tt, o, y]) => ({id: tt, o: +o || 0, y: y || 0}))}; })();
+  if (!s) { $("#page").innerHTML = `<div class="bar" id="bar"><button class="icon-btn" onclick="back()">${IC.back}</button><div class="tt"></div><span style="width:36px"></span></div><div class="empty-s">这个系列的资料还没准备好。</div>`; return; }
+  const st = autoStat(s), tot = st.main.length, seen = st.seen.length;
+  const nx = s.items.find(it => st.main.includes(it) && mark(it.id)?.s !== "done");
+  const pics = s.items.slice(0, 3).map(it => it.id);
+  $("#page").innerHTML = `<div class="uni auto" style="--ua:#8E7BEA;--ub:#EAD8B2;--uc:#2A2140">
+    <div class="bar dark" id="bar"><button class="icon-btn" onclick="back()" aria-label="返回">${IC.back}</button><div class="tt">${esc(s.n)}</div><span style="width:36px"></span></div>
+    <div class="uhero"><div class="uh-fan">${pics.map((id, i) => `<div class="fp" style="--i:${i}">${posterHTML(vm(id), 200)}</div>`).join("")}</div>
+      ${s.en ? `<div class="uh-en">${esc(s.en)}</div>` : ""}<h2>${esc(s.n)}</h2><p>系列专题 · 共 ${s.items.length} 部</p>
+      <div class="uh-nums"><div><b>${seen}</b><i>/${tot}</i><span>看过</span></div><div><b>${tot ? Math.round(seen / tot * 100) : 0}</b><i>%</i><span>进度</span></div><div><b>${earned(seen, tot).length}</b><i>/${BADGES.length}</i><span>徽章</span></div></div>
+      <div class="uh-bar"><i style="width:${tot ? seen / tot * 100 : 0}%"></i></div></div>
+    <div class="ubody">${badgeRow(seen, tot)}
+      ${nx ? `<a class="unext paper" href="#/t/${nx.id}" style="margin-top:14px"><em>下一部</em>${posterHTML(vm(nx.id), 160)}<div class="ux-bd"><b>${esc(vm(nx.id).name)}</b><small>${nx.y || ""}</small></div><button class="ux-go" onclick="uniStamp(event,'${nx.id}')">看过了</button></a>` : ""}
+      <div class="route" style="margin-top:16px">${eager(() => s.items.map(it => { const k = mark(it.id), done = k?.s === "done", out = st.main.includes(it), v = vm(it.id);
+        return `<div class="rn ${done ? "got" : out ? "" : "soon"}${nx === it ? " nx" : ""}"><i class="rn-dot"></i><a href="#/t/${it.id}" class="rn-ps">${posterHTML(v, 120)}</a>
+          <a href="#/t/${it.id}" class="rn-bd"><b>${esc(v.name)}</b><small>${it.y || ""}${v.series ? " · 剧集" : ""}${!out ? " · 待映" : ""}${k && !done ? ` · ${STATUS[k.s]}` : ""}</small>${v.sub ? `<small class="o">${esc(v.sub)}</small>` : ""}</a>
+          ${done ? `<span class="rn-seal">已看</span>` : out ? `<button class="rn-ck" onclick="uniStamp(event,'${it.id}')" aria-label="看过了"></button>` : `<span class="rn-soon">待映</span>`}</div>`; }).join(""))}</div>
+      <p class="cap" style="text-align:center;margin-top:16px">系列信息来自 Wikidata，两周更新一次</p>
+    </div></div><div style="height:24px"></div>`;
+  hydratePosters($("#page"));
+}
+
+/* ---------- 角色档案（底部弹层） ---------- */
+function charSheet(uid, ck){
+  const u = uniMap.get(uid), c = u?.ck.get(ck); if (!c) return;
+  const lit = charLit(c), seen = charSeenN(c), tot = charTot(c);
+  const nx = c.apps.find(w => wOut(w) && !wDone(w));
+  openSheet(`<div class="grab"></div><div class="csh" style="--hc:${c.c}">
+    <div class="csh-card">${charCard(c, {click: false, cls: "big", w: 600})}</div>
+    <div class="csh-hd"><div class="sign">${esc(c.en)}</div><b>${esc(c.cn)}</b><small>${esc(c.sub)}</small>
+      <div class="csh-meta"><span class="rk" data-r="${c.rar}">${c.rar}</span>${c.a.length ? `演员 ${c.a.map(a => a[0] ? `<a href="#/p/${a[0]}" onclick="closeSheet()">${esc(actorName(a))}</a>` : esc(a[1])).join(" / ")}` : "生物 · 没有演员"}</div></div>
+    <div class="csh-st">${lit ? `已看 <b>${seen}</b> / ${tot} 次出场${seen >= tot ? " · 👑 全部看完" : ""}` : `还没点亮 · 看完${nx ? `《${esc(uniName(nx))}》` : "TA 的任何一部"}就能点亮`}</div>
+    <div class="csh-ws">${c.apps.map(w => { const done = wDone(w), seenW = wSeen(w), out = wOut(w);
+      return `<div class="cw ${seenW ? "got" : ""}"><a href="#/t/${w.id}" onclick="closeSheet()">${posterHTML(vm(w.id), 100)}<span><b>${esc(uniName(w))}</b><small>${w.y}${c.apps[0] === w ? " · 首次登场" : ""}${!out ? " · 待映" : ""}</small></span></a>
+        ${done ? `<i class="cw-ok">✓</i>` : out ? `<button class="rn-ck" onclick="uniStamp(event,'${w.id}',true)" aria-label="看过了"></button>` : ""}</div>`; }).join("")}</div>
+    ${c.decks.length ? `<div class="lab">所在套牌</div><div class="csh-dk">${c.decks.map(d => { const g = d.m.filter(k => charLit(u.ck.get(k))).length;
+      return `<span class="${g === d.m.length ? "on" : ""}">${d.ic} ${esc(d.n)} <b>${g}/${d.m.length}</b></span>`; }).join("")}</div>` : ""}
+  </div>`);
+  hydratePosters($("#sheet"));
+  tiltable($("#sheet .csh-card .ic"));
+  flashCard($("#sheet .csh-card .ic"));
+}
+
+/* ---------- 标记 → 点亮角色、集齐套牌、阶段制霸 ---------- */
+function uniSnap(id){
+  const ws = uniOfTitle.get(id); if (!ws) return null;
+  return [...new Set(ws.map(w => w.u))].map(uid => { const u = uniMap.get(uid);
+    return {u, lit: new Set(u.chars.filter(charLit).map(c => c.k)), decks: new Set(u.decks.filter(d => deckDone(u, d)).map(d => d.k)),
+      secs: new Set(u.secs.filter(s => secDone(u, s.k)).map(s => s.k))}; });
+}
+let uniCere = null, uniCereT = 0;
+function uniAfter(snap){
+  for (const b of snap) {
+    const u = b.u, add = uniCere?.[u.id] || {chars: [], decks: [], secs: []};
+    for (const c of u.chars) if (charLit(c) && !b.lit.has(c.k) && !add.chars.includes(c)) add.chars.push(c);
+    for (const d of u.decks) if (deckDone(u, d) && !b.decks.has(d.k) && !add.decks.includes(d)) add.decks.push(d);
+    for (const s of u.secs) if (secDone(u, s.k) && !b.secs.has(s.k) && !add.secs.includes(s)) add.secs.push(s);
+    if (add.chars.length || add.decks.length || add.secs.length) { uniCere = uniCere || {}; uniCere[u.id] = add; }
+  }
+  if (uniCere) { clearTimeout(uniCereT); uniCereT = setTimeout(showUniCere, 900); }
+}
+function showUniCere(){
+  if (document.querySelector(".cere")) { uniCereT = setTimeout(showUniCere, 500); return; }   // 先让追星的解锁仪式演完
+  const all = uniCere; uniCere = null; if (!all) return;
+  const [uid, a] = Object.entries(all).sort((x, y) => y[1].chars.length - x[1].chars.length)[0];
+  const u = uniMap.get(uid);
+  // 已经撤销了的不再庆祝
+  a.chars = a.chars.filter(charLit); a.decks = a.decks.filter(d => deckDone(u, d)); a.secs = a.secs.filter(s => secDone(u, s.k));
+  if (!a.chars.length && !a.decks.length && !a.secs.length) return;
+  const show = [...a.chars].sort((x, y) => RANKS.indexOf(y.rar) - RANKS.indexOf(x.rar)).slice(0, 3);
+  const el = document.createElement("div"); el.className = "cere ucere";
+  el.innerHTML = `<div class="cc" style="--ua:${u.theme[0]};--ub:${u.theme[1]};--uc:${u.theme[2]}">
+    <div class="uc-en">${esc(u.en)}</div>
+    <div class="ct">${a.chars.length ? `点亮 ${a.chars.length} 位角色` : a.decks.length ? "集齐套牌" : "阶段制霸"}</div>
+    ${show.length ? `<div class="uc-cards n${show.length}">${show.map((c, i) => `<div class="uc-flip" style="--d:${.25 + i * .28}s"><div class="uc-back"><span>${esc(u.short)}</span></div><div class="uc-front">${charCard(c, {click: false, count: false, w: 400})}</div></div>`).join("")}</div>
+      <div class="uc-names">${a.chars.slice(0, 8).map(c => `<span style="--hc:${c.c}"><em>${c.rar}</em>${esc(c.cn)}</span>`).join("")}${a.chars.length > 8 ? `<span>等 ${a.chars.length} 位</span>` : ""}</div>` : ""}
+    ${a.decks.map(d => `<div class="uc-got">${d.ic} 集齐套牌「${esc(d.n)}」</div>`).join("")}
+    ${a.secs.map(s => `<div class="uc-got">✦ ${esc(s.n)}制霸</div>`).join("")}
+    <div class="uc-btns"><button class="btn ghost" data-x>收下</button><button class="btn" data-go>去看图鉴</button></div></div>`;
+  document.body.appendChild(el);
+  requestAnimationFrame(() => el.classList.add("on"));
+  setTimeout(() => el.querySelectorAll(".uc-front .ic").forEach(flashCard), 1500);
+  setTimeout(() => burst(el.querySelector(".ct"), 14), 350);
+  const close = () => { el.classList.remove("on"); setTimeout(() => el.remove(), 300); };
+  el.onclick = e => { if (e.target.closest("[data-go]")) { uTab[uid] = a.chars.length ? "chars" : a.decks.length ? "decks" : "ach"; close(); if (route().name === "u" && route().arg === uid) render(); else go(`#/u/${uid}`); } else close(); };
+}
+function uniStamp(ev, id, inSheet){
+  ev.preventDefault(); ev.stopPropagation();
+  const k = mark(id); if (k?.s === "done") return;
+  const v = vm(id);
+  const msgs = stampAndCelebrate(id, {s: "done", d: k?.d || "", ...(v.series && v.m?.seasons ? {ss: Array.from({length: v.m.seasons}, (_, i) => i + 1)} : {})});
+  burst(ev.currentTarget, 6);
+  if (inSheet) closeSheet();
+  render();
+  toast(msgs[0] ? `+1 ${msgs[0]}` : `已看《${uniOfTitle.get(id) ? uniName(uniOfTitle.get(id)[0]) : v.name}》`, "撤销", () => { setMark(id, k || null); render(); });
+}
+
+/* ---------- 条目页：属于哪个宇宙 / 系列 ---------- */
+function uniBanner(id){
+  let html = "";
+  for (const w of uniOfTitle.get(id) || []) {
+    const u = uniMap.get(w.u), sec = u.secMap.get(w.sec), i = secWorks(u, w.sec).indexOf(w) + 1;
+    html += `<a class="ubn" href="#/u/${u.id}" style="--ua:${u.theme[0]};--ub:${u.theme[1]};--uc:${u.theme[2]}">
+      <div class="ubn-h"><span class="ubn-wm">${esc(u.short)}</span><div><b>${esc(u.n)}</b><small>${sec ? `${esc(sec.n)} · 第 ${i} 部` : ""}</small></div><span class="ubn-go">专题 ›</span></div>
+      ${w.chars.length ? `<div class="ubn-cs">${w.chars.map(c => { const lit = charLit(c), f = lit ? charFace(c, 100) : null;
+        return `<span class="${lit ? "on" : ""}" style="--hc:${c.c}" onclick="event.preventDefault();event.stopPropagation();charSheet('${u.id}','${c.k}')"><i>${f ? `<img loading="lazy" src="${esc(f.src)}" style="object-position:${f.pos}" onerror="this.remove()">` : lit ? esc(c.cn.slice(0, 1)) : "?"}</i>${esc(c.cn)}</span>`; }).join("")}</div>
+        <div class="ubn-note">${wSeen(w) ? `这部里的 ${w.chars.length} 位角色已点亮` : `看完这部，点亮 ${w.chars.filter(c => !charLit(c)).length || w.chars.length} 位角色`}</div>` : ""}</a>`;
+  }
+  for (const s of seriesOf(id)) {
+    const st = autoStat(s);
+    html += `<a class="ubn auto" href="#/u/${s.q}"><div class="ubn-h"><span class="ubn-wm">✦</span><div><b>${esc(s.n)}</b><small>系列 · 看过 ${st.seen.length} / ${st.main.length || s.items.length}</small></div><span class="ubn-go">专题 ›</span></div></a>`;
+  }
+  return html ? `<div class="ubns">${html}</div>` : "";
 }
 
 /* ================================================================ 设置 */
@@ -2620,13 +3279,14 @@ function renderSettings(){
 (async function boot(){
   if (window.__PREVIEW__) {
     const P = window.__PREVIEW__;
-    S.marks = P.marks; S.meta = P.meta; S.people = P.people; S.status = P.status; S.follows = P.follows || {}; S.persons = P.persons || {};
+    S.marks = P.marks; S.meta = P.meta; S.people = P.people; S.status = P.status; S.follows = P.follows || {}; S.persons = P.persons || {}; S.series = P.series || null;
   } else {
-    const [mk, mt, pp, fo, ps] = await Promise.all([kv.get("marks"), kv.get("meta"), kv.get("people"), kv.get("follows"), kv.get("persons")]);
-    S.marks = mk || {}; S.meta = mt || {}; S.people = pp || {}; S.follows = fo || {}; S.persons = ps || {}; S.status = getPref("status", null);
+    const [mk, mt, pp, fo, ps, se] = await Promise.all([kv.get("marks"), kv.get("meta"), kv.get("people"), kv.get("follows"), kv.get("persons"), kv.get("series")]);
+    S.marks = mk || {}; S.meta = mt || {}; S.people = pp || {}; S.follows = fo || {}; S.persons = ps || {}; S.series = se || null; S.status = getPref("status", null);
   }
   render();
   loadIndex();
+  loadUni();
   pullAll();
   if (S.pending.size && gh.token()) watchPending();
   document.addEventListener("visibilitychange", () => { if (!document.hidden && Date.now() - (S.synced || 0) > 60000) pullAll(); });

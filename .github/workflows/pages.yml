@@ -83,6 +83,8 @@ jobs:
           cp -r docs/. site/
           rm -rf site/idx && mkdir -p site/idx && cp -r prev/. site/idx/
           rm -rf site/idx/.git
+          # 宇宙专题：用最新片库重新对一遍编号（新官宣的片子进了片库就能对上）
+          python3 scraper/universes.py --idx site/idx --out site/universes.json || cp docs/universes.json site/universes.json
           ls site site/idx | head -20
 
       - uses: actions/configure-pages@v5
