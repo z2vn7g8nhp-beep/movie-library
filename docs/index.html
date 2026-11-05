@@ -1198,6 +1198,8 @@ body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;ba
 .csh-pick button{flex:none;width:62px;aspect-ratio:3/4;border-radius:9px;overflow:hidden;box-shadow:0 0 0 1px var(--hair)}
 .csh-pick button.on{box-shadow:0 0 0 2px var(--gold),0 4px 10px -4px rgba(169,124,60,.6)}
 .csh-pick img{width:100%;height:100%;object-fit:cover;object-position:50% 20%}
+.csh-pick button{position:relative}
+.csh-pick button em{position:absolute;left:0;right:0;bottom:0;font-style:normal;font-size:10.5px;color:#fff;text-align:center;padding:3px 0 2px;background:linear-gradient(transparent,rgba(30,20,50,.75))}
 </style>
 </head>
 <body>
@@ -3243,7 +3245,8 @@ function charPoster(c, w = 600){   // 剧照还没抓到时，“电影”那一
 function charSheet(uid, ck){
   const u = uniMap.get(uid), c = u?.ck.get(ck); if (!c) return;
   const lit = charLit(c), real = lit ? charReal(c, 600) : null;
-  if (!CS || CS.c !== c) CS = {u, c, side: !c.cm || charPick(c) ? "real" : "comic"};
+  const pk = charPick(c);
+  if (!CS || CS.c !== c) CS = {u, c, side: !c.cm || (pk && pk !== "comic") ? "real" : "comic"};
   drawCharSheet();
 }
 function drawCharSheet(){
@@ -3259,7 +3262,7 @@ function drawCharSheet(){
     <div class="csh-card${both ? " can" : ""}" id="cshc">${charCard(c, {click: false, cls: "big", w: 600, face, eager: true})}</div>
     ${both ? `<div class="csh-side"><button class="${side === "real" ? "on" : ""}" data-side="real">${still ? "剧照" : "电影海报"}</button><button class="${side === "comic" ? "on" : ""}" data-side="comic">漫画原型</button></div>`
       : lit ? `<div class="csh-tip">${c.cm ? "" : "TA 没有漫画原型"}</div>` : `<div class="csh-tip">还没点亮</div>`}
-    ${both && !still ? `<div class="csh-tip">角色剧照后台还在抓，抓好后这一面会换成剧照</div>` : both ? `<div class="csh-tip">点卡片翻面</div>` : ""}
+    ${both && !still ? `<div class="csh-tip">角色剧照后台还在抓，抓好后这一面会换成剧照</div>` : both ? `<div class="csh-tip">点卡片翻面看看 · 真正的卡面在下面「选卡面」里定</div>` : ""}
     <div class="csh-hd"><div class="sign">${esc(c.en)}</div><b>${esc(c.cn)}</b><small>${esc(c.sub)}</small>
       <div class="csh-meta"><span class="rk" data-r="${c.rar}">${c.rar}</span>${c.a.length ? `演员 ${c.a.map(a => a[0] ? `<a href="#/p/${a[0]}" onclick="closeSheet()">${esc(actorName(a))}</a>` : esc(a[1])).join(" / ")}` : "生物"}</div></div>
     ${c.i ? `<div class="csh-intro">${esc(c.i)}</div>` : ""}
@@ -3268,8 +3271,11 @@ function drawCharSheet(){
         ${facts.length ? `<dl class="csh-facts">${facts.map(([k, v]) => `<div><dt>${k}</dt><dd>${esc(v)}</dd></div>`).join("")}</dl>` : ""}
         <div class="csh-src">漫画版设定 · 数值 0–100 · 来源 SuperHero API</div></div>`
       : `<div class="csh-lock paper"><span>🔒</span>点亮后解锁漫画原型和六维设定数值</div>` : ""}
-    ${stills.length > 1 ? `<div class="lab">换一张卡面 <span class="muted" style="font-size:11.5px">${stills.length} 张剧照</span></div>
-      <div class="csh-pick">${stills.slice(0, 24).map((x, i) => `<button class="${(pick ? pick === x.k : i === 0) ? "on" : ""}" data-k="${esc(x.k)}"><img loading="lazy" src="${esc(imdbImg(x.k, 200))}" onerror="this.parentNode.remove()"></button>`).join("")}</div>` : ""}
+    ${lit && (stills.length > 1 || (comic && stills.length)) ? (() => {
+        const useComic = comic && (!pick || pick === "comic" || !stills.some(x => x.k === pick));
+        const onK = useComic ? "comic" : stills.some(x => x.k === pick) ? pick : stills[0]?.k;
+        return `<div class="lab">选卡面 <span class="muted" style="font-size:11.5px">列表、点亮墙里都显示这张${comic ? "" : ` · ${stills.length} 张剧照`}</span></div>
+      <div class="csh-pick">${comic ? `<button class="cm${onK === "comic" ? " on" : ""}" data-k="comic"><img src="${esc(charComic(c, 200).src)}" referrerpolicy="no-referrer" onerror="comicErr(this)"><em>漫画</em></button>` : ""}${stills.slice(0, 24).map(x => `<button class="${onK === x.k ? "on" : ""}" data-k="${esc(x.k)}"><img loading="lazy" src="${esc(imdbImg(x.k, 200))}" onerror="this.parentNode.remove()"></button>`).join("")}</div>`; })() : ""}
     <div class="lab">出场作品</div>
     <div class="csh-ws">${c.apps.map(w => { const done = wDone(w), seenW = wSeen(w), out = wOut(w);
       return `<div class="cw ${seenW ? "got" : ""}"><a href="#/t/${w.id}" onclick="closeSheet()">${posterHTML(vm(w.id), 100)}<span><b>${esc(uniName(w))}</b><small>${w.y}${c.apps[0] === w ? " · 首次登场" : ""}${!out ? " · 待映" : ""}</small></span></a>
@@ -3292,8 +3298,8 @@ function drawCharSheet(){
   });
   $$("#sheet [data-side]").forEach(b => b.onclick = () => flip(b.dataset.side));
   $$("#sheet .csh-pick [data-k]").forEach(b => b.onclick = () => {
-    const m = getPref("cimg", {}) || {}; m[c.u + ":" + c.k] = b.dataset.k; setPref("cimg", m); bump();
-    CS.side = "real"; const keep = $("#sheet").scrollTop; drawCharSheet(); $("#sheet").scrollTop = keep; render();
+    const m = getPref("cimg", {}) || {}, k = b.dataset.k; m[c.u + ":" + c.k] = k; setPref("cimg", m); bump();
+    CS.side = k === "comic" ? "comic" : "real"; toast(k === "comic" ? "卡面换回漫画原型" : "卡面换成这张剧照"); const keep = $("#sheet").scrollTop; drawCharSheet(); $("#sheet").scrollTop = keep; render();
   });
 }
 
