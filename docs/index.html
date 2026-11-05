@@ -1169,6 +1169,35 @@ body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;ba
 .uc-btns .btn{flex:1;height:40px;font-size:14px}
 .uc-btns .btn:not(.ghost){background:linear-gradient(180deg,color-mix(in srgb,var(--ub) 80%,#fff),var(--ub));color:var(--uc)}
 .uc-btns .btn.ghost{background:rgba(255,255,255,.1);color:#fff;box-shadow:0 0 0 1px rgba(255,255,255,.25) inset}
+
+/* 角色档案：翻到漫画原型、设定数值 */
+.csh-card.can .ic{cursor:pointer}
+.csh-card.flip .ic{animation:cflipa .18s ease-in both}
+.csh-card.flip2 .ic{animation:cflipb .32s cubic-bezier(.2,1.5,.5,1) both}
+@keyframes cflipa{to{transform:scaleX(0) rotate(-2deg)}}
+@keyframes cflipb{from{transform:scaleX(0)}to{transform:none}}
+.csh-side{display:flex;justify-content:center;gap:0;margin:6px auto 0;width:max-content;padding:3px;border-radius:14px;background:rgba(255,255,255,.6);box-shadow:0 0 0 1px var(--hair) inset}
+.csh-side button{height:28px;padding:0 14px;border-radius:11px;font-size:12.5px;font-weight:700;color:var(--dim)}
+.csh-side button.on{background:#fff;color:color-mix(in srgb,var(--hc) 80%,#000);box-shadow:var(--line),0 2px 6px -3px rgba(90,60,140,.3)}
+.csh-tip{text-align:center;font-size:11.5px;color:var(--dim);margin-top:6px}
+.csh-intro{margin:14px 2px 0;font-size:14px;line-height:1.75;color:var(--ink-2);text-align:justify}
+.csh-stats{padding:10px 12px 12px}
+.radar{display:block;width:100%;max-width:300px;margin:0 auto}
+.radar text{font-size:11px}
+.radar .rl{fill:var(--ink-2);font-weight:600}
+.radar .rv{fill:var(--ink);font-family:var(--num);font-weight:600;font-size:13px}
+.csh-facts{display:grid;grid-template-columns:1fr 1fr;gap:8px 12px;margin:8px 0 0}
+.csh-facts div{min-width:0}
+.csh-facts dt{font-size:11px;color:var(--dim)}
+.csh-facts dd{margin:1px 0 0;font-size:13px;font-weight:600;color:var(--ink);line-height:1.35;word-break:break-word}
+.csh-src{font-size:10.5px;color:var(--faint);margin-top:10px;text-align:right}
+.csh-lock{padding:14px;text-align:center;font-size:13px;color:var(--ink-2);margin-top:12px}
+.csh-lock span{display:block;font-size:22px;margin-bottom:2px}
+.csh-pick{display:flex;gap:8px;overflow-x:auto;padding:2px 2px 6px;scrollbar-width:none}
+.csh-pick::-webkit-scrollbar{display:none}
+.csh-pick button{flex:none;width:62px;aspect-ratio:3/4;border-radius:9px;overflow:hidden;box-shadow:0 0 0 1px var(--hair)}
+.csh-pick button.on{box-shadow:0 0 0 2px var(--gold),0 4px 10px -4px rgba(169,124,60,.6)}
+.csh-pick img{width:100%;height:100%;object-fit:cover;object-position:50% 20%}
 </style>
 </head>
 <body>
@@ -2801,14 +2830,15 @@ async function watchPending(){
 }
 let metaSig = "";
 async function pullMeta(){
-  const [m, p, ps, se] = await Promise.all([readJSON("meta.json"), readJSON("people.json"), readJSON("persons.json"), readJSON("series.json").catch(() => ({}))]);
-  const sig = (m.text || "").length + ":" + (p.text || "").length + ":" + (ps.text || "").length + ":" + (se.text || "").length + ":" + (m.text || "").slice(-200);
+  const [m, p, ps, se, ch] = await Promise.all([readJSON("meta.json"), readJSON("people.json"), readJSON("persons.json"), readJSON("series.json").catch(() => ({})), readJSON("chars.json").catch(() => ({}))]);
+  const sig = (m.text || "").length + ":" + (p.text || "").length + ":" + (ps.text || "").length + ":" + (se.text || "").length + ":" + (ch.text || "").length + ":" + (m.text || "").slice(-200);
   if (sig === metaSig) return false;    // 没变就不重画
   metaSig = sig; bump();
   if (m.data) { const light = Object.fromEntries(Object.entries(S.meta).filter(([id, x]) => x.light && !m.data[id])); S.meta = {...m.data, ...light}; kv.set("meta", m.data); }
   if (p.data) { S.people = p.data; kv.set("people", p.data); }
   if (ps.data) { S.persons = ps.data; kv.set("persons", ps.data); }
   if (se.data) { S.series = se.data; kv.set("series", se.data); }
+  if (ch.data) { S.chars = ch.data; kv.set("chars", ch.data); }
   return true;
 }
 async function pullAll(){
@@ -2902,27 +2932,27 @@ function uniName(w){ return S.meta[w.id]?.cn || w.cn || vm(w.id).name; }
 function uniOrder(u, tl){ return [...u.works].sort((a, b) => tl ? (a.tl ?? a.y) - (b.tl ?? b.y) : 0); }
 function uniNext(u, tl){ return uniOrder(u, tl).find(w => !w.x && wOut(w) && !wDone(w)) || uniOrder(u, tl).find(w => wOut(w) && !wDone(w)) || null; }
 
-/* 角色卡面照片：追的人自己选的 > 后台抓的影人照 > 片子详情里的演员头像 > 豆瓣头像；生物用首次登场作品的海报 */
-let castImgVer = -1, castImgMap = new Map();
-function castImg(nm, name){
-  if (castImgVer !== S.ver) {
-    castImgVer = S.ver; castImgMap = new Map();
-    for (const m of Object.values(S.meta)) for (const p of (m.cast || []).concat(m.directors || [])) {
-      if (p.img && !castImgMap.has(p.id)) castImgMap.set(p.id, p.img);
-      if (p.img && p.n && !castImgMap.has("n:" + norm(p.n))) castImgMap.set("n:" + norm(p.n), p.img);
-    }
-  }
-  return castImgMap.get(nm) || castImgMap.get("n:" + norm(name)) || "";
-}
+/* 角色卡面：不用演员本人照，用这个角色的剧照 / 角色海报（后台从 IMDb 抓，chars.json）；
+   还没抓到就用漫画原型；都没有用首次登场那部的海报。 */
+const COMIC = (slug, w) => `https://akabab.github.io/superhero-api/api/images/${w <= 200 ? "sm" : "md"}/${slug}.jpg`;
 function posterSrc(id, w = 300){ const v = vm(id); return dbSmall(v.poster, w) || imdbImg(v.posterKey || S.crew.get(id)?.poster, w); }
+function charStills(c){
+  const T = S.chars?.t || {}, nms = new Set(c.a.map(a => a[0]).filter(Boolean)), out = [], seen = new Set();
+  const apps = [...c.apps].sort((a, b) => wSeen(b) - wSeen(a));   // 看过的片子里的图排前面
+  for (const w of apps) for (const [k, wd, ht, ty, nm] of T[w.id]?.i || [])
+    if (nms.has(nm) && !seen.has(k)) { seen.add(k); out.push({k, w: wd, h: ht, t: ty, tt: w.id}); }
+  const score = x => (x.t === "P" ? 0 : x.t === "s" ? 2 : 3) - (x.h > x.w ? 1 : 0);
+  return out.sort((a, b) => score(a) - score(b));
+}
+const charPick = (c) => (getPref("cimg", {}) || {})[c.u + ":" + c.k];
+function charReal(c, w = 400){
+  const pick = charPick(c), st = charStills(c);
+  const one = (pick && st.find(x => x.k === pick)) || st[0];
+  return one ? {src: imdbImg(one.k, w), pos: one.h > one.w ? "50% 18%" : "50% 30%", still: true} : null;
+}
+function charComic(c, w = 400){ return c.cm?.s ? {src: COMIC(c.cm.s, w), pos: "50% 20%", comic: true} : null; }
 function charFace(c, w = 400){
-  for (const [nm, name] of c.a) {
-    if (!nm && !name) continue;
-    if (nm && followed(nm) && S.follows[nm].ph?.k) { const f = faceOf(nm, w); if (f.src) return {src: f.src, pos: f.pos}; }
-    const k = (nm && S.persons[nm]?.img) || castImg(nm, name);
-    if (k) return {src: imdbImg(k, w), pos: "50% 18%"};
-    const d = nm && S.people[nm]?.dimg; if (d) return {src: d, pos: "50% 18%"};
-  }
+  const r = charReal(c, w) || charComic(c, w); if (r) return r;
   const deb = c.apps.find(wSeen) || c.apps[0];
   const p = deb && posterSrc(deb.id, w);
   return p ? {src: p, pos: "50% 30%", poster: true} : null;
@@ -2930,12 +2960,12 @@ function charFace(c, w = 400){
 const actorName = ([nm, name]) => (nm && (S.people[nm]?.cn || S.persons[nm]?.db?.cn)) || name;
 function charCard(c, o = {}){
   const lit = o.lit ?? charLit(c), seen = charSeenN(c), tot = charTot(c);
-  const f = lit ? charFace(c, o.w || 400) : null, full = lit && seen >= tot;
+  const f = lit ? (o.face !== undefined ? o.face : charFace(c, o.w || 400)) : null, full = lit && seen >= tot;
   const deb = c.apps[0];
   return `<div class="ic chc${lit ? "" : " lock"}${o.cls ? " " + o.cls : ""}" data-r="${c.rar}" style="--hc:${c.c}"${o.click !== false ? ` onclick="charSheet('${c.u}','${c.k}')"` : ""}>
     <span class="crest"></span>${full && tot > 1 ? `<span class="crown">👑</span>` : ""}
     <div class="in"><div class="ini">${lit ? esc(c.cn.slice(0, 1)) : "?"}</div>
-      ${f ? `<img decoding="async" loading="lazy" class="${f.poster ? "pst" : ""}" src="${esc(f.src)}" style="object-position:${f.pos}" onerror="this.remove()">` : ""}
+      ${f ? `<img decoding="async" ${o.eager ? "" : 'loading="lazy" '}class="${f.poster ? "pst" : ""}" src="${esc(f.src)}" style="object-position:${f.pos}" onerror="this.remove()">` : ""}
       <div class="tint"></div><div class="holo"></div><div class="sheen"></div>
       <i class="orn tl"></i><i class="orn tr"></i><i class="orn bl"></i><i class="orn br"></i>
       <div class="rar"><b>${c.rar}</b></div>
@@ -3135,15 +3165,52 @@ function renderSeries(q){
 }
 
 /* ---------- 角色档案（底部弹层） ---------- */
+const RACE_ZH = {Human: "人类", Mutant: "变种人", Asgardian: "阿斯加德人", Kryptonian: "氪星人", Android: "仿生人", Eternal: "永恒族", Cyborg: "半机械人",
+  Atlantean: "亚特兰蒂斯人", Amazon: "亚马逊人", Alien: "外星人", Animal: "动物", "Human / Radiation": "人类（辐射变异）", "Human / Altered": "人类（改造）",
+  "Cosmic Entity": "宇宙实体", "Flora Colossus": "植物巨人", "Zen-Whoberian": "泽恩-霍贝里人", Luphomoid: "卢福莫伊德人", "Human-Kree": "人类 / 克里人混血",
+  "Human-Spartoi": "人类 / 斯巴托伊人混血", "Human-Vuldarian": "人类 / 伍达利安人混血"};
+const AL_ZH = {good: "正派", bad: "反派", neutral: "中立"};
+const PS_ZH = ["智力", "力量", "速度", "耐力", "能量", "格斗"];
+function radarSVG(ps, color){
+  const R = 70, cx = 110, cy = 92, pt = (i, r) => { const a = -Math.PI / 2 + i * Math.PI / 3; return [cx + Math.cos(a) * r, cy + Math.sin(a) * r]; };
+  const ring = f => Array.from({length: 6}, (_, i) => pt(i, R * f).map(n => n.toFixed(1)).join(",")).join(" ");
+  const poly = ps.map((v, i) => pt(i, R * Math.max(.04, (+v || 0) / 100)).map(n => n.toFixed(1)).join(",")).join(" ");
+  return `<svg class="radar" viewBox="0 0 220 190">${[1, .66, .33].map(f => `<polygon points="${ring(f)}" fill="${f === 1 ? "rgba(255,255,255,.7)" : "none"}" stroke="rgba(120,100,150,.18)"/>`).join("")}
+    ${Array.from({length: 6}, (_, i) => { const [x, y] = pt(i, R); return `<line x1="${cx}" y1="${cy}" x2="${x.toFixed(1)}" y2="${y.toFixed(1)}" stroke="rgba(120,100,150,.15)"/>`; }).join("")}
+    <polygon class="rp" points="${poly}" fill="${color}" fill-opacity=".28" stroke="${color}" stroke-width="2" stroke-linejoin="round"/>
+    ${ps.map((v, i) => { const [x, y] = pt(i, R * Math.max(.04, (+v || 0) / 100)); return `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="3" fill="#fff" stroke="${color}" stroke-width="2"/>`; }).join("")}
+    ${ps.map((v, i) => { const [x, y] = pt(i, R + 17); return `<text x="${x.toFixed(1)}" y="${(y + 4).toFixed(1)}" text-anchor="middle"><tspan class="rl">${PS_ZH[i]}</tspan><tspan class="rv" dx="3">${v ?? "–"}</tspan></text>`; }).join("")}</svg>`;
+}
+let CS = null;   // 当前打开的角色：{u, c, side: "real" | "comic"}
 function charSheet(uid, ck){
   const u = uniMap.get(uid), c = u?.ck.get(ck); if (!c) return;
-  const lit = charLit(c), seen = charSeenN(c), tot = charTot(c);
-  const nx = c.apps.find(w => wOut(w) && !wDone(w));
+  const lit = charLit(c), real = lit ? charReal(c, 600) : null, comic = lit ? charComic(c, 600) : null;
+  if (!CS || CS.c !== c) CS = {u, c, side: real ? "real" : "comic"};
+  drawCharSheet();
+}
+function drawCharSheet(){
+  const {u, c} = CS, lit = charLit(c), seen = charSeenN(c), tot = charTot(c);
+  const real = lit ? charReal(c, 600) : null, comic = lit ? charComic(c, 600) : null, both = !!(real && comic);
+  const nx = c.apps.find(w => wOut(w) && !wDone(w)), cm = c.cm, stills = lit ? charStills(c) : [];
+  const side = both ? CS.side : real ? "real" : "comic";
+  const face = side === "comic" ? comic : real || comic || undefined;
+  const pick = charPick(c);
+  const facts = cm ? [["真名", cm.fn], ["漫画首次登场", cm.fa], ["种族", RACE_ZH[cm.race]], ["身高", cm.h], ["体重", cm.wt], ["阵营", AL_ZH[cm.al]]].filter(x => x[1]) : [];
   openSheet(`<div class="grab"></div><div class="csh" style="--hc:${c.c}">
-    <div class="csh-card">${charCard(c, {click: false, cls: "big", w: 600})}</div>
+    <div class="csh-card${both ? " can" : ""}" id="cshc">${charCard(c, {click: false, cls: "big", w: 600, face, eager: true})}</div>
+    ${both ? `<div class="csh-side"><button class="${side === "real" ? "on" : ""}" data-side="real">剧照</button><button class="${side === "comic" ? "on" : ""}" data-side="comic">漫画原型</button></div>`
+      : lit && comic && !real ? `<div class="csh-tip">剧照还在整理，先看漫画原型</div>` : ""}
     <div class="csh-hd"><div class="sign">${esc(c.en)}</div><b>${esc(c.cn)}</b><small>${esc(c.sub)}</small>
-      <div class="csh-meta"><span class="rk" data-r="${c.rar}">${c.rar}</span>${c.a.length ? `演员 ${c.a.map(a => a[0] ? `<a href="#/p/${a[0]}" onclick="closeSheet()">${esc(actorName(a))}</a>` : esc(a[1])).join(" / ")}` : "生物 · 没有演员"}</div></div>
-    <div class="csh-st">${lit ? `已看 <b>${seen}</b> / ${tot} 次出场${seen >= tot ? " · 👑 全部看完" : ""}` : `还没点亮 · 看完${nx ? `《${esc(uniName(nx))}》` : "TA 的任何一部"}就能点亮`}</div>
+      <div class="csh-meta"><span class="rk" data-r="${c.rar}">${c.rar}</span>${c.a.length ? `演员 ${c.a.map(a => a[0] ? `<a href="#/p/${a[0]}" onclick="closeSheet()">${esc(actorName(a))}</a>` : esc(a[1])).join(" / ")}` : "生物"}</div></div>
+    ${c.i ? `<div class="csh-intro">${esc(c.i)}</div>` : ""}
+    <div class="csh-st">${lit ? `已看 <b>${seen}</b> / ${tot} 次出场${seen >= tot ? " · 👑 全部看完" : ""}` : `还没点亮 · 看完${nx ? `《${esc(uniName(nx))}》` : "TA 的任何一部"}就能点亮${cm ? "，解锁漫画原型和设定数值" : ""}`}</div>
+    ${cm ? lit ? `<div class="lab">漫画设定数值</div><div class="csh-stats paper">${radarSVG(cm.ps, c.c)}
+        ${facts.length ? `<dl class="csh-facts">${facts.map(([k, v]) => `<div><dt>${k}</dt><dd>${esc(v)}</dd></div>`).join("")}</dl>` : ""}
+        <div class="csh-src">漫画版设定 · 数值 0–100 · 来源 SuperHero API</div></div>`
+      : `<div class="csh-lock paper"><span>🔒</span>点亮后解锁漫画原型和六维设定数值</div>` : ""}
+    ${stills.length > 1 ? `<div class="lab">换一张卡面 <span class="muted" style="font-size:11.5px">${stills.length} 张剧照</span></div>
+      <div class="csh-pick">${stills.slice(0, 24).map((x, i) => `<button class="${(pick ? pick === x.k : i === 0) ? "on" : ""}" data-k="${esc(x.k)}"><img loading="lazy" src="${esc(imdbImg(x.k, 200))}" onerror="this.parentNode.remove()"></button>`).join("")}</div>` : ""}
+    <div class="lab">出场作品</div>
     <div class="csh-ws">${c.apps.map(w => { const done = wDone(w), seenW = wSeen(w), out = wOut(w);
       return `<div class="cw ${seenW ? "got" : ""}"><a href="#/t/${w.id}" onclick="closeSheet()">${posterHTML(vm(w.id), 100)}<span><b>${esc(uniName(w))}</b><small>${w.y}${c.apps[0] === w ? " · 首次登场" : ""}${!out ? " · 待映" : ""}</small></span></a>
         ${done ? `<i class="cw-ok">✓</i>` : out ? `<button class="rn-ck" onclick="uniStamp(event,'${w.id}',true)" aria-label="看过了"></button>` : ""}</div>`; }).join("")}</div>
@@ -3151,8 +3218,19 @@ function charSheet(uid, ck){
       return `<span class="${g === d.m.length ? "on" : ""}">${d.ic} ${esc(d.n)} <b>${g}/${d.m.length}</b></span>`; }).join("")}</div>` : ""}
   </div>`);
   hydratePosters($("#sheet"));
-  tiltable($("#sheet .csh-card .ic"));
-  flashCard($("#sheet .csh-card .ic"));
+  const card = $("#sheet .csh-card .ic");
+  tiltable(card); flashCard(card);
+  const flip = to => {
+    if (!both || to === CS.side) return;
+    const box = $("#cshc"); box.classList.remove("flip"); void box.offsetWidth; box.classList.add("flip");
+    setTimeout(() => { CS.side = to; const keep = $("#sheet").scrollTop; drawCharSheet(); $("#sheet").scrollTop = keep; const b = $("#cshc"); b.classList.add("flip2"); }, 180);
+  };
+  if (both) card.addEventListener("click", () => flip(CS.side === "real" ? "comic" : "real"));
+  $$("#sheet [data-side]").forEach(b => b.onclick = () => flip(b.dataset.side));
+  $$("#sheet .csh-pick [data-k]").forEach(b => b.onclick = () => {
+    const m = getPref("cimg", {}) || {}; m[c.u + ":" + c.k] = b.dataset.k; setPref("cimg", m); bump();
+    CS.side = "real"; const keep = $("#sheet").scrollTop; drawCharSheet(); $("#sheet").scrollTop = keep; render();
+  });
 }
 
 /* ---------- 标记 → 点亮角色、集齐套牌、阶段制霸 ---------- */
@@ -3279,10 +3357,10 @@ function renderSettings(){
 (async function boot(){
   if (window.__PREVIEW__) {
     const P = window.__PREVIEW__;
-    S.marks = P.marks; S.meta = P.meta; S.people = P.people; S.status = P.status; S.follows = P.follows || {}; S.persons = P.persons || {}; S.series = P.series || null;
+    S.marks = P.marks; S.meta = P.meta; S.people = P.people; S.status = P.status; S.follows = P.follows || {}; S.persons = P.persons || {}; S.series = P.series || null; S.chars = P.chars || null;
   } else {
-    const [mk, mt, pp, fo, ps, se] = await Promise.all([kv.get("marks"), kv.get("meta"), kv.get("people"), kv.get("follows"), kv.get("persons"), kv.get("series")]);
-    S.marks = mk || {}; S.meta = mt || {}; S.people = pp || {}; S.follows = fo || {}; S.persons = ps || {}; S.series = se || null; S.status = getPref("status", null);
+    const [mk, mt, pp, fo, ps, se, chs] = await Promise.all([kv.get("marks"), kv.get("meta"), kv.get("people"), kv.get("follows"), kv.get("persons"), kv.get("series"), kv.get("chars")]);
+    S.marks = mk || {}; S.meta = mt || {}; S.people = pp || {}; S.follows = fo || {}; S.persons = ps || {}; S.series = se || null; S.chars = chs || null; S.status = getPref("status", null);
   }
   render();
   loadIndex();

@@ -7,6 +7,7 @@
   people.json    影人的中文名和头像（这里写）
   lookup.json    最近一次在线搜索的结果（这里写）
   series.json    看过的片子属于哪些系列（Wikidata），网页用来自动生成系列专题（这里写）
+  chars.json     宇宙专题里每部片子的角色剧照（IMDb），网页拿来当角色卡面（这里写）
   status.json    各数据源最近是否正常（这里写）
 """
 import argparse
@@ -95,6 +96,7 @@ class Sync:
         self.reqs = load(self.dir / "requests.json", {})
         self.status = load(self.dir / "status.json", {"sources": {}})
         self.series = load(self.dir / "series.json", {})
+        self.chars = load(self.dir / "chars.json", {})
         self.idx_cn = load_index_cn(idx) if idx else {}
         self.budget = budget          # 每次最多访问豆瓣 / 烂番茄多少部，别太频繁
         self.imdb, self.wd, self.db, self.rt = IMDb(), Wikidata(), Douban(), RottenTomatoes()
@@ -205,6 +207,43 @@ class Sync:
                 self.ok("wikidata")
         except SourceError as e:
             self.fail("wikidata", e)
+
+    # ------------------------------------------------------------ 宇宙专题：角色剧照
+    def refresh_chars(self, limit=40):
+        """宇宙专题（docs/universes.json）里每部片子的图：只留单人、且是这部里某个角色演员的图
+        （角色海报、剧照），网页按角色挑一张当卡面。看过的片子先做，45 天刷新一次。"""
+        try:
+            U = json.loads((Path(__file__).resolve().parent.parent / "docs" / "universes.json")
+                           .read_text(encoding="utf-8"))["universes"]
+        except (OSError, ValueError, KeyError):
+            return
+        T = self.chars.setdefault("t", {})
+        actors = {}
+        for u in U:
+            wk = {w["k"]: w["id"] for w in u["works"] if w.get("id")}
+            for c in u["chars"]:
+                nms = {a[0] for a in c.get("a") or [] if a and a[0]}
+                for k in c["w"]:
+                    if wk.get(k) and nms:
+                        actors.setdefault(wk[k], set()).update(nms)
+        mine = set(self.active())
+        need = sorted([t for t in actors if now() - (T.get(t) or {}).get("at", 0) > 45 * DAY], key=lambda t: t not in mine)[:limit]
+        if not need:
+            return
+        try:
+            got = self.imdb.title_images(need)
+            self.ok("imdb")
+        except SourceError as e:
+            self.fail("imdb", e)
+            return
+        kind = {"poster": "P", "still_frame": "s", "publicity": "p"}
+        for t in need:
+            keep = []
+            for k, w, h, ty, names in got.get(t) or []:
+                if len(names) == 1 and names[0] in actors[t]:
+                    keep.append([k, w, h, kind.get(ty, "o"), names[0]])
+            T[t] = {"at": now(), "i": keep[:30]}
+        self.changed = True
 
     # ------------------------------------------------------------ 豆瓣
     def refresh_douban(self, tid, force=False):
@@ -496,6 +535,7 @@ class Sync:
         self.refresh_base(ids)
         self.resolve_ids(ids)
         self.refresh_series(priority)
+        self.refresh_chars()
 
         budget = self.budget
         for tid in priority + [i for i in ids if i not in priority]:
@@ -520,6 +560,8 @@ class Sync:
         save(self.dir / "people.json", self.people)
         if self.series:
             save(self.dir / "series.json", self.series)
+        if self.chars:
+            save(self.dir / "chars.json", self.chars)
         keep_p = set(follows) | set(want)
         for nm in list(self.persons):
             if nm not in keep_p and now() - self.persons[nm].get("at", 0) > 60 * DAY:

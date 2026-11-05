@@ -81,6 +81,23 @@ class IMDb:
             time.sleep(2 + attempt * 3)
         raise SourceError(err)
 
+    TIMG = """query($ids:[ID!]!){ titles(ids:$ids){ id
+      images(first:100){ edges{ node{ url width height type names{id} } } } } }"""
+
+    def title_images(self, ids):
+        """片子的图片：{tt: [[图片编号, 宽, 高, 类型, [图里的人]], ...]}（宇宙专题的角色剧照用）"""
+        out = {}
+        for i in range(0, len(ids), 8):
+            data = self._gql(self.TIMG, {"ids": ids[i:i + 8]})
+            for t in data.get("titles") or []:
+                if not t:
+                    continue
+                nodes = ((e or {}).get("node") or {} for e in ((t.get("images") or {}).get("edges") or []))
+                out[t["id"]] = [[img_key(n.get("url")), n.get("width") or 0, n.get("height") or 0, n.get("type") or "",
+                                 [x["id"] for x in (n.get("names") or []) if x and x.get("id")]]
+                                for n in nodes if img_key(n.get("url"))]
+        return out
+
     def details(self, ids):
         out = {}
         for i in range(0, len(ids), 25):
