@@ -531,7 +531,8 @@ textarea.field{min-height:84px;resize:none;line-height:1.6}
   --orn:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40' fill='none' stroke='%23000' stroke-width='1.3'%3E%3Cpath d='M3 37V13C3 7.5 7.5 3 13 3H37' stroke-width='1.6'/%3E%3Cpath d='M8 37V17C8 12 12 8 17 8H37' stroke-width='.8'/%3E%3Cpath d='M14 14c4-1.5 7 1.2 5.6 4.6-1.1 2.6-4.8 2-4.4-.8' stroke-width='1.1'/%3E%3Cpath d='M3 3l3 3' stroke-width='1.2'/%3E%3Cpath d='M22 8c0-2 1-3 3-3M8 22c-2 0-3 1-3 3' stroke-width='.8'/%3E%3C/svg%3E");
   --pad:20px;
 }
-html,body{background:var(--bg)}
+html{background:var(--bg)}
+body{background:transparent}   /* body 不能再铺底色，否则会盖住下面 body::before 的星屑底 */
 body{font-family:var(--sans);color:var(--ink);letter-spacing:.01em;font-feature-settings:"lnum"}
 /* 底：晨雾三色 + 很淡的星屑，静止不动 */
 :root{--sky:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cg fill='%23C9A46C' fill-opacity='.22'%3E%3Cpath d='M30 20c.4 3 1.4 4 4 4.4-2.6.4-3.6 1.4-4 4.4-.4-3-1.4-4-4-4.4 2.6-.4 3.6-1.4 4-4.4z'/%3E%3Cpath d='M140 96c.3 2 1 2.8 3 3-2 .3-2.7 1-3 3-.3-2-1-2.7-3-3 2-.2 2.7-1 3-3z'/%3E%3C/g%3E%3Cg fill='%23A58BEA' fill-opacity='.18'%3E%3Ccircle cx='96' cy='40' r='1.2'/%3E%3Ccircle cx='60' cy='140' r='1'/%3E%3Ccircle cx='160' cy='160' r='1.3'/%3E%3C/g%3E%3C/svg%3E"),
@@ -713,7 +714,7 @@ body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;ba
 .stage{width:min(60vw,250px);margin:0 auto;perspective:900px}
 .stage .ic{transform:rotate(-2deg);transition:transform .5s cubic-bezier(.2,.8,.2,1);touch-action:pan-y}
 .stage .ic.tilting{transition:none}
-.chface{position:absolute;right:-14px;bottom:18px;z-index:8;height:32px;padding:0 12px 0 10px;border-radius:16px;background:#fff;color:var(--ink);font-size:12.5px;font-weight:700;
+.chface{position:absolute;right:-16px;bottom:-16px;z-index:8;height:32px;padding:0 12px 0 10px;border-radius:16px;background:#fff;color:var(--ink);font-size:12.5px;font-weight:700;
   box-shadow:var(--line),0 8px 18px -10px rgba(70,40,110,.6);display:inline-flex;align-items:center;gap:4px}
 .chface::before{content:"";width:12px;height:12px;background:var(--gold);-webkit-mask:var(--spark) center/contain no-repeat;mask:var(--spark) center/contain no-repeat}
 .phero3 h2{font-family:var(--serif);font-weight:900;font-size:28px;letter-spacing:.14em;margin:22px 0 0;line-height:1.2}
@@ -902,7 +903,7 @@ body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;ba
    宇宙与系列：卡包、观影路线、角色图鉴、套牌、成就
    每个宇宙有自己的三色（--ua 主色、--ub 金属色、--uc 夜色），其余沿用星屑卡面的样式。
    ================================================================ */
-.packs{gap:12px;padding-bottom:12px}
+.packs{gap:12px;padding-bottom:30px;margin-bottom:-18px}   /* 留够阴影的位置，横向滚动会把阴影切出硬边 */
 .pack{position:relative;flex:none;width:272px;height:156px;border-radius:20px;overflow:hidden;color:#fff;isolation:isolate;
   background:radial-gradient(120% 90% at 0% 0%,color-mix(in srgb,var(--ua) 85%,#fff 0%) 0%,rgba(0,0,0,0) 62%),radial-gradient(90% 90% at 100% 100%,color-mix(in srgb,var(--ub) 45%,transparent) 0%,rgba(0,0,0,0) 60%),var(--uc);
   box-shadow:0 0 0 1px color-mix(in srgb,var(--ub) 45%,transparent) inset,0 16px 30px -18px color-mix(in srgb,var(--uc) 80%,transparent)}
@@ -1200,6 +1201,113 @@ body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;ba
 .csh-pick img{width:100%;height:100%;object-fit:cover;object-position:50% 20%}
 .csh-pick button{position:relative}
 .csh-pick button em{position:absolute;left:0;right:0;bottom:0;font-style:normal;font-size:10.5px;color:#fff;text-align:center;padding:3px 0 2px;background:linear-gradient(transparent,rgba(30,20,50,.75))}
+
+/* ================================================================
+   首页 v4：卡下的档案签、收藏册、在看大卡、影人稀有度圈、分隔花纹、页尾落款
+   ================================================================ */
+/* 档案签：跟上面的卡连成一体（顶上一条金线 + 小宝石） */
+.dinfo{margin-top:10px}
+.bond{position:relative;background:linear-gradient(180deg,rgba(255,255,255,.95),rgba(255,251,244,.88));padding:18px 16px 14px}
+.bond::before{content:"";position:absolute;left:22px;right:22px;top:0;height:1.5px;background:linear-gradient(90deg,rgba(201,164,108,0),var(--gold),rgba(201,164,108,0))}
+.bond::after{content:"";position:absolute;left:50%;top:-5px;width:9px;height:9px;margin-left:-4.5px;transform:rotate(45deg);border-radius:2px;background:linear-gradient(135deg,#F2DCAE,#C9A46C);box-shadow:0 0 0 2px #fff}
+.b-top{display:flex;align-items:flex-end;justify-content:space-between;gap:10px}
+.b-cnt{display:flex;align-items:baseline;gap:4px;flex-wrap:wrap}
+.b-cnt b{font-family:var(--num);font-weight:600;font-size:40px;line-height:.85;color:var(--ink)}
+.b-cnt i{font-style:normal;font-family:var(--num);font-weight:600;font-size:19px;color:var(--dim)}
+.b-cnt span{width:100%;font-size:11px;letter-spacing:.2em;color:var(--gold-ink);margin-top:6px}
+.b-tags{display:flex;flex-direction:column;align-items:flex-end;gap:5px}
+.b-tags span{font-size:11.5px;color:var(--ink-2);background:#fff;border-radius:10px;padding:2px 9px 3px;box-shadow:0 0 0 1px rgba(201,164,108,.35) inset;white-space:nowrap}
+.b-tags em{font-style:normal;font-family:var(--num);font-weight:600;font-size:15px;color:var(--ink)}
+.exp{margin-top:14px}
+.exp .tr{height:10px;border-radius:5px;background:#F1EBF7;box-shadow:0 0 0 1px rgba(201,164,108,.3) inset,0 1px 2px rgba(80,50,120,.08) inset}
+.exp .tr i{border-radius:5px;background:linear-gradient(90deg,#F9B8D0,#EC6F9C 70%,#F58FB5);box-shadow:0 0 10px rgba(236,111,156,.55)}
+.exp .tr i::after{content:"";position:absolute;right:1px;top:50%;width:6px;height:6px;margin-top:-3px;border-radius:50%;background:#fff;box-shadow:0 0 6px 2px rgba(255,210,228,.95)}
+.exp .tr[style*="--n"]::after{content:"";position:absolute;inset:0;pointer-events:none;
+  background:repeating-linear-gradient(90deg,transparent 0 calc(100% / var(--n) - 1.5px),rgba(255,255,255,.95) calc(100% / var(--n) - 1.5px) calc(100% / var(--n)))}
+/* 下一部：票根 */
+.tk{position:relative;display:flex;align-items:stretch;margin-top:13px;min-height:62px;border-radius:12px;color:var(--ink);
+  background:linear-gradient(100deg,#FFF9EF,#FFFFFF 55%,#FDF7FF);box-shadow:0 0 0 1px rgba(201,164,108,.45) inset;
+  -webkit-mask:radial-gradient(circle 6px at 64px 0,transparent 97%,#000) top/100% 51% no-repeat,radial-gradient(circle 6px at 64px 100%,transparent 97%,#000) bottom/100% 51% no-repeat;
+  mask:radial-gradient(circle 6px at 64px 0,transparent 97%,#000) top/100% 51% no-repeat,radial-gradient(circle 6px at 64px 100%,transparent 97%,#000) bottom/100% 51% no-repeat}
+.tk-l{width:64px;flex:none;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;border-right:1.5px dashed rgba(201,164,108,.65);
+  background:linear-gradient(180deg,#F8E9CB,#EDD3A0);color:#86612B;border-radius:12px 0 0 12px}
+.tk-l em{font-family:var(--latin);font-style:italic;font-weight:600;font-size:18px;line-height:1}
+.tk-l small{font-size:10px;letter-spacing:.18em;font-weight:600}
+.tk-m{flex:1;min-width:0;display:flex;align-items:center;gap:10px;padding:8px 4px 8px 12px}
+.tk .ps{width:34px;flex:none;border-radius:5px;box-shadow:0 4px 10px -5px rgba(60,40,90,.5)}
+.tk .ps .ph{display:none}
+.tk-t{min-width:0;display:flex;flex-direction:column}
+.tk-t b{font-weight:600;font-size:14px;line-height:1.3;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tk-t small{font-family:var(--num);font-weight:600;font-size:13.5px;color:var(--dim)}
+.tk-go{display:grid;place-items:center;padding:0 14px 0 6px;font-family:var(--latin);font-size:26px;color:var(--gold)}
+.tk:active{transform:scale(.985)}
+
+/* 收藏册 / 会员卡 */
+.hello.mc{position:relative;overflow:hidden;isolation:isolate;padding:16px 18px 16px;border-radius:20px;
+  background:linear-gradient(135deg,#FFFDF7 0%,#FBF1FA 48%,#EEF2FF 100%);box-shadow:0 0 0 1px rgba(201,164,108,.55) inset,var(--shadow)}
+.hello.mc::after{content:"";position:absolute;inset:5px;border-radius:16px;box-shadow:0 0 0 .5px rgba(201,164,108,.6) inset;pointer-events:none}
+.mc-holo{position:absolute;inset:0;z-index:-1;pointer-events:none;opacity:.55;
+  background:linear-gradient(115deg,rgba(255,255,255,0) 30%,rgba(255,214,234,.55) 42%,rgba(214,228,255,.5) 50%,rgba(255,244,210,.55) 58%,rgba(255,255,255,0) 70%),var(--sky-dots,none)}
+.mc-h{display:flex;align-items:baseline;justify-content:space-between}
+.mc-en{font-family:var(--sign);font-size:22px;line-height:1;color:var(--gold-ink)}
+.mc-no{font-family:var(--latin);font-style:italic;font-weight:600;font-size:13px;letter-spacing:.12em;color:var(--gold)}
+.hello.mc .ln{margin-top:6px;font-size:13px}
+.hello.mc .num b{font-size:38px;background:linear-gradient(180deg,#E0C083 0%,#A77F43 55%,#CFAE72 100%);-webkit-background-clip:text;background-clip:text;color:transparent;padding:0 2px}
+.hello.mc .num span{letter-spacing:.06em}
+.hello.mc .row2{gap:10px}
+.hello.mc .row2 a.rb{position:relative;height:30px;padding:0 20px 0 12px;border-radius:7px 0 0 7px;box-shadow:none;font-weight:600;font-size:12.5px;
+  clip-path:polygon(0 0,100% 0,calc(100% - 9px) 50%,100% 100%,0 100%)}
+.hello.mc .row2 a.rb::before{content:"";width:3px;height:14px;border-radius:2px;background:currentColor;opacity:.6}
+.hello.mc .row2 a.rb.doing{background:var(--doing-bg);color:#6F58C9}
+.hello.mc .row2 a.rb.wish{background:var(--wish-bg);color:#4E73CC}
+.hello.mc .row2 a.rb.quick{background:#FFF1D6;color:#9C7333}
+.hello.mc .row2 a.rb.quick::before{display:none}
+.hello.mc .row2 a.rb b{font-size:15px}
+
+/* 在看：横向大卡 */
+.dws{gap:12px;padding-bottom:28px;margin-bottom:-18px}
+.dw{position:relative;flex:none;width:300px;display:flex;gap:14px;padding:14px;border-radius:18px;overflow:hidden;isolation:isolate;cursor:pointer;color:#fff;
+  background:#3A2E52;box-shadow:0 0 0 1px rgba(201,164,108,.45) inset,0 16px 30px -18px rgba(50,30,80,.7)}
+.dws.one .dw{width:calc(100vw - var(--pad) * 2);max-width:520px}
+.dw-bg{position:absolute;inset:-20px;z-index:-1;background:center 30%/cover;filter:blur(18px) saturate(1.2) brightness(.62);transform:scale(1.1)}
+.dw::after{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(90deg,rgba(40,24,64,.55),rgba(40,24,64,.15))}
+.dw .ps{width:86px;flex:none;border-radius:9px;box-shadow:0 10px 20px -10px rgba(0,0,0,.7),0 0 0 1.5px rgba(255,255,255,.55)}
+.dw-b{flex:1;min-width:0;display:flex;flex-direction:column}
+.dw-b small{font-size:11px;letter-spacing:.14em;color:rgba(255,255,255,.7)}
+.dw-b b{font-family:var(--serif);font-weight:900;font-size:19px;letter-spacing:.06em;line-height:1.25;margin-top:2px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.dw-p{font-size:12.5px;color:rgba(255,255,255,.85);margin-top:6px}
+.dw-bar{height:5px;border-radius:3px;background:rgba(255,255,255,.2);margin-top:7px;overflow:hidden}
+.dw-bar i{display:block;height:100%;border-radius:3px;background:linear-gradient(90deg,#C9B8FF,#fff)}
+.dw-go{margin-top:auto;align-self:flex-start;height:32px;padding:0 14px;border-radius:16px;background:rgba(255,255,255,.95);color:var(--ink);font-size:12.5px;font-weight:700;box-shadow:0 6px 14px -8px rgba(0,0,0,.6)}
+.dw-go:active{transform:scale(.96)}
+
+/* 影人：稀有度圈 */
+.person{width:72px}
+.avw{position:relative;width:68px;height:68px;margin:0 auto;padding:3px;border-radius:50%;background:linear-gradient(145deg,#F7F8FC,#BFC5D4 35%,#FFFFFF 55%,#AEB5C8 80%)}
+.person[data-r=SR] .avw{background:linear-gradient(145deg,#F3EDFF,#A993EC 35%,#FFFFFF 55%,#B9A4F2 80%)}
+.person[data-r=SSR] .avw{background:linear-gradient(145deg,#FFF3D6,#D2AC66 35%,#FFF8E8 55%,#C49853 80%)}
+.avw .av,.person.fav .avw .av{width:62px;height:62px;box-shadow:0 0 0 2px #fff}
+.avw em{position:absolute;left:50%;bottom:-6px;transform:translateX(-50%);font-family:var(--latin);font-style:italic;font-weight:600;font-size:11px;line-height:1;padding:2px 6px 3px;border-radius:6px;color:#fff;
+  background:linear-gradient(180deg,#8D96AE,#5E6782);box-shadow:0 0 0 1.5px #fff}
+.person[data-r=SR] .avw em{background:linear-gradient(180deg,#A58BEA,#6E57C2)}
+.person[data-r=SSR] .avw em{background:linear-gradient(180deg,#E2BE7A,#A97C3C)}
+.person .nm{margin-top:9px}
+
+/* 区块之间的金色细花纹 */
+.home .sec{margin-top:14px}
+.home .sec::before{content:"";display:block;width:132px;height:9px;margin:0 auto 16px;opacity:.75;
+  background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='132' height='9'%3E%3Cdefs%3E%3ClinearGradient id='g'%3E%3Cstop offset='0' stop-color='%23C9A46C' stop-opacity='0'/%3E%3Cstop offset='.5' stop-color='%23C9A46C'/%3E%3Cstop offset='1' stop-color='%23C9A46C' stop-opacity='0'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect x='0' y='4' width='132' height='1' fill='url(%23g)'/%3E%3Cpath d='M66 0l4.5 4.5L66 9l-4.5-4.5z' fill='%23C9A46C'/%3E%3Ccircle cx='53' cy='4.5' r='1.3' fill='%23C9A46C'/%3E%3Ccircle cx='79' cy='4.5' r='1.3' fill='%23C9A46C'/%3E%3C/svg%3E") center/contain no-repeat}
+.home .deckwrap + .sec{margin-top:22px}
+.home .deckwrap + .sec::before{display:none}
+.home .hello{margin-top:24px}
+
+/* 页尾落款 */
+.fin{display:flex;flex-direction:column;align-items:center;gap:3px;margin:34px var(--pad) 18px;text-align:center;color:var(--dim)}
+.fin .orn-l{width:150px;height:14px;margin-bottom:8px;background:var(--gold);opacity:.7;-webkit-mask:var(--spark) center/14px no-repeat,linear-gradient(90deg,transparent,#000 30%,#000 70%,transparent) center/100% 1px no-repeat;
+  mask:var(--spark) center/14px no-repeat,linear-gradient(90deg,transparent,#000 30%,#000 70%,transparent) center/100% 1px no-repeat}
+.fin b{font-family:var(--serif);font-weight:900;font-size:15px;letter-spacing:.5em;padding-left:.5em;color:var(--ink-2)}
+.fin span{font-size:12px}
+.fin small{font-family:var(--latin);font-style:italic;font-weight:600;font-size:13px;color:var(--gold)}
 </style>
 </head>
 <body>
@@ -1532,6 +1640,8 @@ function renderHome(){
   const done = by("done"), doing = by("doing"), wish = all.filter(([, k]) => k.s === "wish").sort((a, b) => b[1].t - a[1].t).map(([id]) => id);
   const films = done.filter(id => !vm(id).series).length, shows = done.length - films;
   const year = String(new Date().getFullYear()), thisYear = done.filter(id => (S.marks[id].d || "").startsWith(year)).length;
+  const litN = UNI.reduce((n, u) => n + uniStat(u).lit.length, 0);
+  const since = all.map(([, k]) => k.at || "").filter(Boolean).sort()[0] || "";
   const head = `<div class="top"><h1>影库</h1><a class="icon-btn" href="#/search" aria-label="搜索">${IC.search}</a><a class="icon-btn" href="#/settings" aria-label="设置">${IC.gear}</a></div>`;
   const syncNote = syncBanner();
   if (!all.length) {
@@ -1545,24 +1655,48 @@ function renderHome(){
   const ppl = topPeople(done).slice(0, 12);
   const gs = countBy(done, id => vm(id).genres).slice(0, 14);
   const tags = countBy(all.map(([id]) => id), id => S.marks[id].tags || []);
-  $("#main").innerHTML = head + syncNote + followSection() + `
-    <div class="hello"><div class="wm">影</div>
-      <div class="ln">${greet()}，你的影库里已经看过</div>
-      <div class="num"><div><b>${films}</b><span>部电影</span></div><div><b>${shows}</b><span>部剧集</span></div><div><b>${thisYear}</b><span>今年看过</span></div></div>
-      <div class="row2"><a href="#/lib" onclick="libFilter({s:'doing'})"><i style="background:var(--doing)"></i>在看 <b>${doing.length}</b></a>
-        <a href="#/lib" onclick="libFilter({s:'wish'})"><i style="background:var(--wish)"></i>想看 <b>${wish.length}</b></a>
-        <a href="#/quick">${"⚡"} 快速标记</a></div></div>
+  $("#main").innerHTML = head + syncNote + `<div class="home">` + followSection() + `
+    <div class="hello mc"><div class="mc-holo"></div>
+      <div class="mc-h"><span class="mc-en">My Collection</span><span class="mc-no">No.${String(done.length).padStart(4, "0")}</span></div>
+      <div class="ln">${greet()}，影库里已经收藏了</div>
+      <div class="num"><div><b>${films}</b><span>部电影</span></div><div><b>${shows}</b><span>部剧集</span></div>${litN ? `<div><b>${litN}</b><span>位角色点亮</span></div>` : `<div><b>${thisYear}</b><span>今年看过</span></div>`}</div>
+      <div class="row2"><a class="rb doing" href="#/lib" onclick="libFilter({s:'doing'})">在看 <b>${doing.length}</b></a>
+        <a class="rb wish" href="#/lib" onclick="libFilter({s:'wish'})">想看 <b>${wish.length}</b></a>
+        <a class="rb quick" href="#/quick">⚡ 快速标记</a></div></div>
     ${uniHomeSec()}
-    ${doing.length ? shelfSec("在看", doing, "doing") : ""}
+    ${doing.length ? doingSec(doing) : ""}
     ${done.length ? shelfSec("最近看过", done.slice(0, 20), "done", done.length) : ""}
     ${wish.length ? shelfSec("想看", wish.slice(0, 20), "wish", wish.length) : ""}
     ${ppl.length ? `<div class="sec"><div class="sec-h"><h2>常看的影人</h2><a href="#/stats">更多</a></div><div class="people">${ppl.map(personChip).join("")}</div></div>` : ""}
     ${gs.length ? `<div class="sec"><div class="sec-h"><h2>类型</h2></div><div class="chips">${gs.map(([g, c]) => `<a class="chip" href="#/lib" onclick="libFilter({s:'done',genre:'${esc(g)}'})">${esc(g)} <b>${c}</b></a>`).join("")}</div></div>` : ""}
     ${tags.length ? `<div class="sec"><div class="sec-h"><h2>我的标签</h2></div><div class="chips">${tags.map(([g, c]) => `<a class="chip" href="#/lib" onclick="libFilter({s:'',tag:'${esc(g)}'})"># ${esc(g)} <b>${c}</b></a>`).join("")}</div></div>` : ""}
-    <div style="height:10px"></div>`;  initDeck();
+    <div class="fin"><i class="orn-l"></i><b>影库</b><span>已收藏 ${done.length} 部${litN ? ` · 点亮 ${litN} 位角色` : ""}${followList().length ? ` · 追了 ${followList().length} 个人` : ""}</span>${since ? `<small>since ${since.slice(0, 4)}.${since.slice(5, 7)}</small>` : ""}</div></div>`;  initDeck();
 }
 function greet(){ const h = new Date().getHours(); return h < 5 ? "夜深了" : h < 11 ? "早上好" : h < 14 ? "中午好" : h < 18 ? "下午好" : "晚上好"; }
 function eager(fn){ eagerImgs = true; try { return fn(); } finally { eagerImgs = false; } }
+/* 在看：横向大卡（剧照铺底 + 看到哪 + 一键记下一季） */
+function doingSec(ids){
+  const cards = ids.slice(0, 12).map(id => {
+    const v = vm(id), k = mark(id), src = dbSmall(v.poster, 300) || imdbImg(v.posterKey, 300);
+    const ss = k?.ss || [], tot = v.m?.seasons || 0, seen = ss.length;
+    let nxt = 0; if (v.series) { for (let n = 1; n <= (tot || Math.max(0, ...ss) + 1); n++) if (!ss.includes(n)) { nxt = n; break; } }
+    const where = v.series ? (seen ? `看到第 ${Math.max(...ss)} 季${tot ? ` · 共 ${tot} 季` : ""}` : tot ? `还没开始 · 共 ${tot} 季` : "刚开始看") : "正在看";
+    return `<div class="dw" role="link" tabindex="0" onclick="go('#/t/${id}')">${src ? `<div class="dw-bg" style="background-image:url('${esc(src)}')"></div>` : ""}
+      ${posterHTML(v, 220)}
+      <div class="dw-b"><small>${v.series ? "剧集" : "电影"}${v.year ? ` · ${v.year}` : ""}</small><b>${esc(v.name)}</b><span class="dw-p">${where}</span>
+        ${tot ? `<div class="dw-bar"><i style="width:${Math.min(100, seen / tot * 100)}%"></i></div>` : ""}
+        ${nxt || !v.series ? `<button class="dw-go" onclick="event.stopPropagation();doingTick('${id}',${nxt})">✓ ${nxt ? `第 ${nxt} 季看完了` : "看完了"}</button>` : ""}</div></div>`;
+  }).join("");
+  return `<div class="sec"><div class="sec-h"><h2>在看${ids.length > 1 ? `<small>${ids.length}</small>` : ""}</h2><a href="#/lib" onclick="libFilter({s:'doing'})">全部</a></div>
+    <div class="scroller dws${ids.length === 1 ? " one" : ""}">${cards}</div></div>`;
+}
+function doingTick(id, n){
+  const prev = {...mark(id)}, undo = () => { setMark(id, prev); render(); };
+  if (!n) { setMark(id, {s: "done", d: today()}); render(); toast("看完了，已标记为看过 🎉", "撤销", undo); return; }
+  const was = prev.s; toggleSeason(id, n);
+  if (mark(id)?.s === was) toast(`记下了：第 ${n} 季看完`, "撤销", undo);
+  else setTimeout(() => toast("全部看完，已标记为看过 🎉", "撤销", undo), 0);
+}
 function shelfSec(title, ids, s, total){
   return eager(() => `<div class="sec"><div class="sec-h"><h2>${title}${total > ids.length ? `<small>${total}</small>` : ""}</h2><a href="#/lib" onclick="libFilter({s:'${s}'})">全部</a></div>
     <div class="scroller">${ids.map(id => shelfItem(id)).join("")}</div></div>`);
@@ -1635,7 +1769,8 @@ function avatarErr(img){
   if (img.dataset.alt) { img.src = img.dataset.alt; delete img.dataset.alt; return; }
   const box = img.parentNode; img.remove(); if (box && box.dataset) box.textContent = box.dataset.i || "";
 }
-function personChip(p){ return `<a class="person ${followed(p.id) ? "fav" : ""}" href="#/p/${p.id}">${avatarHTML(p)}<div class="nm">${esc(pname(p))}</div><div class="mt">${p.c} 部</div></a>`; }
+function personChip(p){ const r = p.c >= 10 ? "SSR" : p.c >= 5 ? "SR" : "R";
+  return `<a class="person ${followed(p.id) ? "fav" : ""}" data-r="${r}" href="#/p/${p.id}"><div class="avw">${avatarHTML(p)}<em>${r}</em></div><div class="nm">${esc(pname(p))}</div><div class="mt">${p.c} 部</div></a>`; }
 
 /* ================================================================ 片库 */
 function libItems(){
@@ -2000,7 +2135,8 @@ function toggleSeason(id, n){
   ss.has(n) ? ss.delete(n) : ss.add(n);
   const list = [...ss].sort((a, b) => a - b);
   const all = v.m?.seasons && list.length >= v.m.seasons && v.m.ey;
-  setMark(id, {s: k?.s === "done" || all ? "done" : "doing", ss: list, ...(all && k?.s !== "done" ? {d: today()} : {})});
+  const unticked = !ss.has(n) && k?.s === "done" && (k.ss || []).length >= (v.m?.seasons || Infinity) && !all;   // 本来全看完了，取消了一季 → 回到在看
+  setMark(id, {s: unticked ? "doing" : k?.s === "done" || all ? "done" : "doing", ss: list, ...(all && k?.s !== "done" ? {d: today()} : {})});
   if (all && k?.s !== "done") toast("全部看完，已标记为看过 🎉");
   render();
 }
@@ -2451,11 +2587,13 @@ function followSection(){
       <div class="dbtn"><a class="btn rose" href="#/p/${nm}">进入档案</a></div></div></div>`); continue; }
     const t = tierOf(st.seen, st.tot), pick = nextPick(st.ws), eb = earned(st.seen, st.tot);
     const span = Math.max(1, t.to - t.from), frac = t.next ? Math.min(1, (st.seen - t.from) / span) : 1;
+    const pct = Math.round(st.seen / Math.max(1, st.tot) * 100), segs = span <= 20 ? span : 0;
     infos.push(`<div class="di"><div class="bond paper">
-      <div class="r1"><span class="nums">${st.seen}<i> / ${st.tot}</i></span><div class="nm"><b>${esc(name)}</b><small>已集 ${Math.round(st.seen / Math.max(1, st.tot) * 100)}% · ${eb.length} 枚徽章</small></div></div>
-      <div class="exp"><span class="rk" data-r="${t.r}">${t.r}</span><span class="tr"><i style="width:${Math.max(frac * 100, st.seen ? 4 : 0)}%"></i></span>${t.next && RANKS.includes(t.next.r) ? `<span class="rk" data-r="${t.next.r}">${t.next.r}</span>` : `<span>👑</span>`}</div>
+      <div class="b-top"><div class="b-cnt"><b>${st.seen}</b><i>/ ${st.tot}</i><span>已集作品</span></div>
+        <div class="b-tags"><span><em>${pct}</em>% 收集度</span><span>🏅 <em>${eb.length}</em> 枚徽章</span></div></div>
+      <div class="exp"><span class="rk" data-r="${t.r}">${t.r}</span><span class="tr"${segs > 1 ? ` style="--n:${segs}"` : ""}><i style="width:${Math.max(frac * 100, st.seen ? 4 : 0)}%"></i></span>${t.next && RANKS.includes(t.next.r) ? `<span class="rk" data-r="${t.next.r}">${t.next.r}</span>` : `<span>👑</span>`}</div>
       <div class="exp-note">${t.next ? `再集 <b>${t.next.left}</b> 部，卡面升级为 ${t.next.r === "全集" ? "全集皇冠" : t.next.r}` : "全部集齐，皇冠已戴上"}</div>
-      ${pick ? `<a class="nextw" href="#/t/${pick.id}"><em>下一部</em>${workPoster(pick, 80)}<span>${esc(workName(pick))}</span><small>${pick.y}</small></a>` : ""}
+      ${pick ? `<a class="tk" href="#/t/${pick.id}"><span class="tk-l"><em>Next</em><small>下一部</small></span><span class="tk-m">${workPoster(pick, 80)}<span class="tk-t"><b>${esc(workName(pick))}</b><small>${pick.y || "年份待定"}${pick.series ? " · 剧集" : ""}</small></span></span><span class="tk-go">›</span></a>` : ""}
       <div class="dbtn"><a class="btn rose" href="#/p/${nm}">进入档案</a><button class="btn ghost" onclick="pickFace('${nm}')">换卡面</button></div></div></div>`);
   }
   slides.push(`<div class="slide"><a class="add" href="#/search"><div><b>+</b>再追一个</div></a></div>`);
@@ -2474,9 +2612,11 @@ function initDeck(){
     $$(".dinfo .di").forEach((x, j) => x.classList.toggle("on", i === j));
     $$(".dots i").forEach((x, j) => x.classList.toggle("on", i === j));
     if (fx) flashCard(slides[i]?.querySelector(".ic"));
-    S.deckI = i;
+    S.deckI = i; S.deckNm = slides[i]?.querySelector(".ic")?.dataset.nm || "";
   };
-  const i0 = Math.min(S.deckI || 0, slides.length - 1);
+  // 标记之后卡组会按最近动态重新排序：停在原来那个人身上，而不是原来那个位置
+  const byNm = S.deckNm ? slides.findIndex(s => s.querySelector(".ic")?.dataset.nm === S.deckNm) : -1;
+  const i0 = byNm >= 0 ? byNm : Math.min(S.deckI || 0, slides.length - 1);
   setOn(i0, true);
   requestAnimationFrame(() => { const s = slides[i0]; if (s) d.scrollLeft = s.offsetLeft - (d.clientWidth - s.offsetWidth) / 2; });
   let t = 0;
@@ -2963,7 +3103,13 @@ function charReal(c, w = 400, any){
 function comicErr(img){
   const u = img.getAttribute("src") || "";
   if (u.includes("akabab.github.io/superhero-api/api/")) { img.src = u.replace("https://akabab.github.io/superhero-api/api/", "https://cdn.jsdelivr.net/gh/akabab/superhero-api@0.3.0/api/"); return; }
+  const fb = img.dataset.fb;   // 漫画 / 剧照 / 海报互为备用：一张拿不到就换另一张，不留空圈
+  if (fb && fb !== u) { img.removeAttribute("data-fb"); img.removeAttribute("referrerpolicy"); img.src = fb; return; }
   dropImg(u); img.remove();
+}
+function faceFb(c, f, w = 300){
+  const alt = f.comic ? (charReal(c, w, true) || charPoster(c, w)) : (charComic(c, w) || (f.poster ? null : charPoster(c, w)));
+  return alt && alt.src !== f.src ? ` data-fb="${esc(alt.src)}"` : "";
 }
 function charComic(c, w = 400){ return c.cm?.img ? {src: c.cm.img, pos: "50% 18%", comic: true} : c.cm?.s ? {src: COMIC(c.cm.s, w), pos: "50% 20%", comic: true} : null; }
 function charFace(c, w = 400){
@@ -2980,7 +3126,7 @@ function charCard(c, o = {}){
   return `<div class="ic chc${lit ? "" : " lock"}${o.cls ? " " + o.cls : ""}" data-r="${c.rar}" style="--hc:${c.c}"${o.click !== false ? ` onclick="charSheet('${c.u}','${c.k}')"` : ""}>
     <span class="crest"></span>${full && tot > 1 ? `<span class="crown">👑</span>` : ""}
     <div class="in"><div class="ini">${lit ? esc(c.cn.slice(0, 1)) : "?"}</div>
-      ${f ? `<img decoding="async" ${o.eager ? "" : 'loading="lazy" '}class="${f.poster ? "pst" : ""}" src="${esc(f.src)}"${f.comic ? ' referrerpolicy="no-referrer"' : ""} style="object-position:${f.pos}" onerror="comicErr(this)">` : ""}
+      ${f ? `<img decoding="async" ${o.eager ? "" : 'loading="lazy" '}class="${f.poster ? "pst" : ""}" src="${esc(f.src)}"${f.comic ? ' referrerpolicy="no-referrer"' : ""}${faceFb(c, f)} style="object-position:${f.pos}" onerror="comicErr(this)">` : ""}
       <div class="tint"></div><div class="holo"></div><div class="sheen"></div>
       <i class="orn tl"></i><i class="orn tr"></i><i class="orn bl"></i><i class="orn br"></i>
       <div class="rar"><b>${c.rar}</b></div>
@@ -3074,7 +3220,7 @@ function packHTML(u, big){
     <div class="pk-bd"><div class="pk-en">${esc(u.en)}</div><b>${esc(u.n)}</b>
       <div class="pk-bar"><i style="width:${Math.max(frac * 100, st.seen.length ? 3 : 0)}%"></i></div>
       <div class="pk-st"><span><em>${st.seen.length}</em>/${tot} 部</span><span>角色 <em>${st.lit.length}</em>/${u.chars.length}</span>${big ? `<span>套牌 <em>${st.decks.length}</em>/${u.decks.length}</span>` : ""}</div>
-      ${faces.length ? `<div class="pk-faces">${faces.map(c => { const f = charFace(c, 120); return `<i style="--hc:${c.c}">${f ? `<img loading="lazy" src="${esc(f.src)}"${f.comic ? ' referrerpolicy="no-referrer"' : ""} style="object-position:${f.pos}" onerror="comicErr(this)">` : esc(c.cn.slice(0, 1))}</i>`; }).join("")}${st.lit.length > 5 ? `<small>+${st.lit.length - 5}</small>` : ""}</div>`
+      ${faces.length ? `<div class="pk-faces">${faces.map(c => { const f = charFace(c, 120); return `<i style="--hc:${c.c}">${esc(c.cn.slice(0, 1))}${f ? `<img loading="lazy" src="${esc(f.src)}"${f.comic ? ' referrerpolicy="no-referrer"' : ""}${faceFb(c, f)} style="object-position:${f.pos}" onerror="comicErr(this)">` : ""}</i>`; }).join("")}${st.lit.length > 5 ? `<small>+${st.lit.length - 5}</small>` : ""}</div>`
         : `<div class="pk-hint">看完第一部，点亮第一位角色</div>`}
     </div></a>`;
 }
@@ -3142,7 +3288,7 @@ function uniRoute(u){
       <a href="#/t/${w.id}" class="rn-ps">${posterHTML(v, 120)}</a>
       <a href="#/t/${w.id}" class="rn-bd"><b>${esc(uniName(w))}</b><small>${tl && w.tl ? `故事 ${Math.floor(w.tl)} 年 · ` : ""}${w.y}${w.ty && ["s", "ms"].includes(w.ty) ? " · 剧集" : w.ty === "sp" || w.ty === "tm" ? " · 特别篇" : ""}${w.x ? " · 外传" : ""}${!out ? " · 待映" : ""}${k && !done ? ` · ${STATUS[k.s]}` : ""}</small>
         ${cs.length ? `<div class="rn-cs">${cs.map(c => { const lit = charLit(c); const f = lit ? charFace(c, 80) : null;
-          return `<i class="${lit ? "on" : ""}" style="--hc:${c.c}" title="${esc(c.cn)}">${f ? `<img loading="lazy" src="${esc(f.src)}"${f.comic ? ' referrerpolicy="no-referrer"' : ""} style="object-position:${f.pos}" onerror="comicErr(this)">` : esc(lit ? c.cn.slice(0, 1) : "?")}</i>`; }).join("")}${w.chars.length > 6 ? `<small>+${w.chars.length - 6}</small>` : ""}</div>` : ""}</a>
+          return `<i class="${lit ? "on" : ""}" style="--hc:${c.c}" title="${esc(c.cn)}">${esc(lit ? c.cn.slice(0, 1) : "?")}${f ? `<img loading="lazy" src="${esc(f.src)}"${f.comic ? ' referrerpolicy="no-referrer"' : ""}${faceFb(c, f)} style="object-position:${f.pos}" onerror="comicErr(this)">` : ""}</i>`; }).join("")}${w.chars.length > 6 ? `<small>+${w.chars.length - 6}</small>` : ""}</div>` : ""}</a>
       ${done ? `<span class="rn-seal">已看</span>` : out ? `<button class="rn-ck" onclick="uniStamp(event,'${w.id}')" aria-label="看过了"></button>` : `<span class="rn-soon">待映</span>`}</div>`;
   };
   if (tl) return html + `<div class="route">${uniOrder(u, true).map(node).join("")}</div>`;
@@ -3366,7 +3512,7 @@ function uniBanner(id){
     html += `<a class="ubn" href="#/u/${u.id}" style="--ua:${u.theme[0]};--ub:${u.theme[1]};--uc:${u.theme[2]}">
       <div class="ubn-h"><span class="ubn-wm">${esc(u.short)}</span><div><b>${esc(u.n)}</b><small>${sec ? `${esc(sec.n)} · 第 ${i} 部` : ""}</small></div><span class="ubn-go">专题 ›</span></div>
       ${w.chars.length ? `<div class="ubn-cs">${w.chars.slice(0, 16).map(c => { const lit = charLit(c), f = lit ? charFace(c, 100) : null;
-        return `<span class="${lit ? "on" : ""}" style="--hc:${c.c}" onclick="event.preventDefault();event.stopPropagation();charSheet('${u.id}','${c.k}')"><i>${f ? `<img loading="lazy" src="${esc(f.src)}"${f.comic ? ' referrerpolicy="no-referrer"' : ""} style="object-position:${f.pos}" onerror="comicErr(this)">` : lit ? esc(c.cn.slice(0, 1)) : "?"}</i>${esc(c.cn)}</span>`; }).join("")}</div>
+        return `<span class="${lit ? "on" : ""}" style="--hc:${c.c}" onclick="event.preventDefault();event.stopPropagation();charSheet('${u.id}','${c.k}')"><i>${lit ? esc(c.cn.slice(0, 1)) : "?"}${f ? `<img loading="lazy" src="${esc(f.src)}"${f.comic ? ' referrerpolicy="no-referrer"' : ""}${faceFb(c, f)} style="object-position:${f.pos}" onerror="comicErr(this)">` : ""}</i>${esc(c.cn)}</span>`; }).join("")}</div>
         <div class="ubn-note">${wSeen(w) ? `这部里的 ${w.chars.length} 位角色已点亮` : `看完这部，点亮 ${w.chars.filter(c => !charLit(c)).length || w.chars.length} 位角色`}</div>` : ""}</a>`;
   }
   for (const s of seriesOf(id)) {
