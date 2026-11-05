@@ -925,9 +925,9 @@ body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;ba
 .pk-st{display:flex;gap:10px;margin-top:6px;font-size:11px;color:rgba(255,255,255,.72);white-space:nowrap}
 .pk-st em{font-style:normal;font-family:var(--num);font-weight:600;font-size:16px;color:#fff}
 .pk-faces{display:flex;align-items:center;margin-top:7px;height:24px}
-.pk-faces i{width:24px;height:24px;border-radius:50%;overflow:hidden;margin-right:-6px;display:grid;place-items:center;font-style:normal;font-family:var(--serif);font-weight:900;font-size:11px;
+.pk-faces i{position:relative;width:24px;height:24px;border-radius:50%;overflow:hidden;margin-right:-6px;display:grid;place-items:center;font-style:normal;font-family:var(--serif);font-weight:900;font-size:11px;
   background:var(--hc);box-shadow:0 0 0 1.5px var(--ub)}
-.pk-faces i img{width:100%;height:100%;object-fit:cover}
+.pk-faces i img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 20%}
 .pk-faces small{margin-left:12px;font-family:var(--num);font-size:13px;font-weight:600;color:var(--ub)}
 .pk-hint{margin-top:7px;font-size:11px;color:rgba(255,255,255,.6);height:24px;line-height:24px}
 .stile{flex:none;width:124px;display:block;padding:10px 10px 11px;border-radius:16px;background:var(--paper);box-shadow:var(--line),var(--shadow)}
@@ -1016,10 +1016,10 @@ body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;ba
 .rn-bd small{display:block;font-size:11.5px;color:var(--dim)}
 .rn-bd small.o{font-family:var(--latin);font-style:italic;font-size:12.5px}
 .rn-cs{display:flex;align-items:center;margin-top:4px}
-.rn-cs i{width:20px;height:20px;border-radius:50%;margin-right:-4px;overflow:hidden;display:grid;place-items:center;font-style:normal;font-size:9.5px;font-weight:800;color:#fff;
+.rn-cs i{position:relative;width:20px;height:20px;border-radius:50%;margin-right:-4px;overflow:hidden;display:grid;place-items:center;font-style:normal;font-size:9.5px;font-weight:800;color:#fff;
   background:#CFC8DD;box-shadow:0 0 0 1.5px #fff}
 .rn-cs i.on{background:var(--hc)}
-.rn-cs i img{width:100%;height:100%;object-fit:cover}
+.rn-cs i img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 20%}
 .rn-cs small{margin-left:8px;font-size:11px;color:var(--dim);font-family:var(--num);font-weight:600}
 .rn-ck{flex:none;width:30px;height:30px;border-radius:50%;box-shadow:0 0 0 1.5px var(--faint) inset;background:rgba(255,255,255,.7);position:relative}
 .rn-ck::after{content:"";position:absolute;left:10px;top:8px;width:9px;height:5px;border:solid var(--faint);border-width:0 0 2px 2px;transform:rotate(-45deg)}
@@ -1136,10 +1136,10 @@ body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;ba
 .ubn-cs::-webkit-scrollbar{display:none}
 .ubn-cs span{flex:none;display:flex;flex-direction:column;align-items:center;gap:4px;width:50px;font-size:10.5px;color:rgba(255,255,255,.5);text-align:center;line-height:1.2}
 .ubn-cs span.on{color:#fff}
-.ubn-cs i{width:40px;height:40px;border-radius:50%;overflow:hidden;display:grid;place-items:center;font-style:normal;font-family:var(--latin);font-weight:600;font-size:18px;
+.ubn-cs i{position:relative;flex:none;width:40px;height:40px;border-radius:50%;overflow:hidden;display:grid;place-items:center;font-style:normal;font-family:var(--latin);font-weight:600;font-size:18px;
   background:rgba(255,255,255,.08);box-shadow:0 0 0 1.5px rgba(255,255,255,.22) inset;color:rgba(255,255,255,.45)}
 .ubn-cs span.on i{background:var(--hc);box-shadow:0 0 0 2px var(--ub),0 0 12px color-mix(in srgb,var(--ub) 60%,transparent);color:#fff;font-family:var(--serif);font-weight:900;font-size:15px}
-.ubn-cs i img{width:100%;height:100%;object-fit:cover}
+.ubn-cs i img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 20%}
 .ubn-note{font-size:11.5px;color:rgba(255,255,255,.62);margin-top:6px}
 
 /* 点亮仪式：卡背翻到正面 */
@@ -2945,13 +2945,16 @@ function charStills(c){
   const apps = [...c.apps].sort((a, b) => wSeen(b) - wSeen(a));   // 看过的片子里的图排前面
   for (const w of apps) for (const [k, wd, ht, ty, nm] of T[w.id]?.i || [])
     if (nms.has(nm) && !seen.has(k)) { seen.add(k); out.push({k, w: wd, h: ht, t: ty, tt: w.id}); }
-  const score = x => (x.t === "P" ? 0 : x.t === "s" ? 2 : 3) - (x.h > x.w ? 1 : 0);
+  const score = x => (x.t === "P" ? 0 : x.t === "s" ? 2 : 3) - (x.h > x.w ? 1 : 0) + (x.w > x.h * 1.8 ? 2 : 0);
   return out.sort((a, b) => score(a) - score(b));
 }
+/* 自动挑卡面：有漫画原型的英雄只用角色海报（穿着战衣的那种），普通剧照多半是没穿战衣的演员，宁可先用漫画；
+   没有漫画的角色（小辣椒、雷普利……）用最好的一张剧照。自己在档案里选过的永远优先。any=true 时不挑类型（档案里翻面用）。 */
 const charPick = (c) => (getPref("cimg", {}) || {})[c.u + ":" + c.k];
-function charReal(c, w = 400){
+function charReal(c, w = 400, any){
   const pick = charPick(c), st = charStills(c);
-  const one = (pick && st.find(x => x.k === pick)) || st[0];
+  const auto = any || !c.cm ? st.find(x => x.w <= x.h * 1.8) || st[0] : st.find(x => x.t === "P");
+  const one = (pick && st.find(x => x.k === pick)) || auto;
   return one ? {src: imdbImg(one.k, w), pos: one.h > one.w ? "50% 18%" : "50% 30%", still: true} : null;
 }
 function charComic(c, w = 400){ return c.cm?.s ? {src: COMIC(c.cm.s, w), pos: "50% 20%", comic: true} : null; }
@@ -3193,12 +3196,12 @@ function charPoster(c, w = 600){   // 剧照还没抓到时，“电影”那一
 function charSheet(uid, ck){
   const u = uniMap.get(uid), c = u?.ck.get(ck); if (!c) return;
   const lit = charLit(c), real = lit ? charReal(c, 600) : null;
-  if (!CS || CS.c !== c) CS = {u, c, side: real || !c.cm ? "real" : "comic"};
+  if (!CS || CS.c !== c) CS = {u, c, side: real || !c.cm || charPick(c) ? "real" : "comic"};
   drawCharSheet();
 }
 function drawCharSheet(){
   const {u, c} = CS, lit = charLit(c), seen = charSeenN(c), tot = charTot(c);
-  const still = lit ? charReal(c, 600) : null, comic = lit ? charComic(c, 600) : null;
+  const still = lit ? charReal(c, 600, true) : null, comic = lit ? charComic(c, 600) : null;
   const real = still || (lit && comic ? charPoster(c, 600) : null), both = !!(real && comic);
   const nx = c.apps.find(w => wOut(w) && !wDone(w)), cm = c.cm, stills = lit ? charStills(c) : [];
   const side = both ? CS.side : real ? "real" : "comic";
