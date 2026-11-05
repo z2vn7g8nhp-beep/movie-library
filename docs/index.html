@@ -2863,6 +2863,10 @@ async function pullAll(){
       setPref("askedAt", Date.now()); missing.forEach(id => S.pending.add(id)); await addRequest({ids: missing});
     }
     if (S.pending.size) watchPending();
+    // 角色剧照还没抓过：叫后台跑一轮（3 小时内最多一次）
+    if (!S.chars?.t && Date.now() - getPref("charsAsk", 0) > 3 * 3600e3) {
+      setPref("charsAsk", Date.now()); gh.site("POST", "/actions/workflows/sync.yml/dispatches", {ref: "main"}).catch(() => {});
+    }
     S.synced = Date.now();
     if (changedRemote || metaChanged || !S.firstSync || route().name === "settings") render();
     S.firstSync = true;
@@ -3182,15 +3186,20 @@ function radarSVG(ps, color){
     ${ps.map((v, i) => { const [x, y] = pt(i, R + 17); return `<text x="${x.toFixed(1)}" y="${(y + 4).toFixed(1)}" text-anchor="middle"><tspan class="rl">${PS_ZH[i]}</tspan><tspan class="rv" dx="3">${v ?? "–"}</tspan></text>`; }).join("")}</svg>`;
 }
 let CS = null;   // 当前打开的角色：{u, c, side: "real" | "comic"}
+function charPoster(c, w = 600){   // 剧照还没抓到时，“电影”那一面先用看过的最近一部的海报
+  const ws = c.apps.filter(wSeen), deb = ws[ws.length - 1] || c.apps[0], p = deb && posterSrc(deb.id, w);
+  return p ? {src: p, pos: "50% 30%", poster: true} : null;
+}
 function charSheet(uid, ck){
   const u = uniMap.get(uid), c = u?.ck.get(ck); if (!c) return;
-  const lit = charLit(c), real = lit ? charReal(c, 600) : null, comic = lit ? charComic(c, 600) : null;
-  if (!CS || CS.c !== c) CS = {u, c, side: real ? "real" : "comic"};
+  const lit = charLit(c), real = lit ? charReal(c, 600) : null;
+  if (!CS || CS.c !== c) CS = {u, c, side: real || !c.cm ? "real" : "comic"};
   drawCharSheet();
 }
 function drawCharSheet(){
   const {u, c} = CS, lit = charLit(c), seen = charSeenN(c), tot = charTot(c);
-  const real = lit ? charReal(c, 600) : null, comic = lit ? charComic(c, 600) : null, both = !!(real && comic);
+  const still = lit ? charReal(c, 600) : null, comic = lit ? charComic(c, 600) : null;
+  const real = still || (lit && comic ? charPoster(c, 600) : null), both = !!(real && comic);
   const nx = c.apps.find(w => wOut(w) && !wDone(w)), cm = c.cm, stills = lit ? charStills(c) : [];
   const side = both ? CS.side : real ? "real" : "comic";
   const face = side === "comic" ? comic : real || comic || undefined;
@@ -3198,8 +3207,9 @@ function drawCharSheet(){
   const facts = cm ? [["真名", cm.fn], ["漫画首次登场", cm.fa], ["种族", RACE_ZH[cm.race]], ["身高", cm.h], ["体重", cm.wt], ["阵营", AL_ZH[cm.al]]].filter(x => x[1]) : [];
   openSheet(`<div class="grab"></div><div class="csh" style="--hc:${c.c}">
     <div class="csh-card${both ? " can" : ""}" id="cshc">${charCard(c, {click: false, cls: "big", w: 600, face, eager: true})}</div>
-    ${both ? `<div class="csh-side"><button class="${side === "real" ? "on" : ""}" data-side="real">剧照</button><button class="${side === "comic" ? "on" : ""}" data-side="comic">漫画原型</button></div>`
-      : lit && comic && !real ? `<div class="csh-tip">剧照还在整理，先看漫画原型</div>` : ""}
+    ${both ? `<div class="csh-side"><button class="${side === "real" ? "on" : ""}" data-side="real">${still ? "剧照" : "电影海报"}</button><button class="${side === "comic" ? "on" : ""}" data-side="comic">漫画原型</button></div>`
+      : lit ? `<div class="csh-tip">${c.cm ? "" : "TA 没有漫画原型"}</div>` : `<div class="csh-tip">还没点亮</div>`}
+    ${both && !still ? `<div class="csh-tip">角色剧照后台还在抓，抓好后这一面会换成剧照</div>` : both ? `<div class="csh-tip">点卡片翻面</div>` : ""}
     <div class="csh-hd"><div class="sign">${esc(c.en)}</div><b>${esc(c.cn)}</b><small>${esc(c.sub)}</small>
       <div class="csh-meta"><span class="rk" data-r="${c.rar}">${c.rar}</span>${c.a.length ? `演员 ${c.a.map(a => a[0] ? `<a href="#/p/${a[0]}" onclick="closeSheet()">${esc(actorName(a))}</a>` : esc(a[1])).join(" / ")}` : "生物"}</div></div>
     ${c.i ? `<div class="csh-intro">${esc(c.i)}</div>` : ""}
@@ -3225,7 +3235,11 @@ function drawCharSheet(){
     const box = $("#cshc"); box.classList.remove("flip"); void box.offsetWidth; box.classList.add("flip");
     setTimeout(() => { CS.side = to; const keep = $("#sheet").scrollTop; drawCharSheet(); $("#sheet").scrollTop = keep; const b = $("#cshc"); b.classList.add("flip2"); }, 180);
   };
-  if (both) card.addEventListener("click", () => flip(CS.side === "real" ? "comic" : "real"));
+  card.addEventListener("click", () => {
+    if (both) return flip(CS.side === "real" ? "comic" : "real");
+    flashCard(card); card.animate?.([{transform: "rotate(-2deg)"}, {transform: "rotate(2deg)"}, {transform: "none"}], {duration: 260});
+    toast(!lit ? "还没点亮，看完 TA 的任意一部就能点亮" : "TA 没有漫画原型，只有电影里的样子");
+  });
   $$("#sheet [data-side]").forEach(b => b.onclick = () => flip(b.dataset.side));
   $$("#sheet .csh-pick [data-k]").forEach(b => b.onclick = () => {
     const m = getPref("cimg", {}) || {}; m[c.u + ":" + c.k] = b.dataset.k; setPref("cimg", m); bump();

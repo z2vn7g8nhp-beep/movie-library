@@ -209,7 +209,7 @@ class Sync:
             self.fail("wikidata", e)
 
     # ------------------------------------------------------------ 宇宙专题：角色剧照
-    def refresh_chars(self, limit=40):
+    def refresh_chars(self, limit=100):
         """宇宙专题（docs/universes.json）里每部片子的图：只留单人、且是这部里某个角色演员的图
         （角色海报、剧照），网页按角色挑一张当卡面。看过的片子先做，45 天刷新一次。"""
         try:
