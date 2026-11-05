@@ -262,10 +262,16 @@ class Wikidata:
         ids = [i for i in imdb_ids if re.fullmatch(r"tt\d+", i or "")]
         for i in range(0, len(ids), 100):
             values = " ".join(f'"{x}"' for x in ids[i:i + 100])
-            rows = self._q("SELECT ?imdb ?rt ?db WHERE { VALUES ?imdb { %s } ?f wdt:P345 ?imdb . "
-                           "OPTIONAL { ?f wdt:P1258 ?rt } OPTIONAL { ?f wdt:P4529 ?db } }" % values)
+            rows = self._q("SELECT ?imdb ?rt ?db ?zh ?tw WHERE { VALUES ?imdb { %s } ?f wdt:P345 ?imdb . "
+                           "OPTIONAL { ?f wdt:P1258 ?rt } OPTIONAL { ?f wdt:P4529 ?db } "
+                           'OPTIONAL { ?f rdfs:label ?zh FILTER(lang(?zh) IN ("zh-cn","zh-hans")) } '
+                           'OPTIONAL { ?f rdfs:label ?tw FILTER(lang(?tw) IN ("zh","zh-tw","zh-hant","zh-hk")) } }' % values)
             for row in rows:
                 d = out.setdefault(row["imdb"]["value"], {})
+                if "zh" in row:          # 中文片名：豆瓣找不到条目的老剧、冷门片，至少有个中文名
+                    d.setdefault("zh", row["zh"]["value"])
+                if "tw" in row:
+                    d.setdefault("tw", row["tw"]["value"])
                 if "rt" in row and re.match(r"(m|tv)/", row["rt"]["value"]):
                     d.setdefault("rt", row["rt"]["value"])
                 if "db" in row:
@@ -297,8 +303,9 @@ class Wikidata:
                 OPTIONAL { ?s rdfs:label ?tw FILTER(lang(?tw) IN ("zh","zh-tw","zh-hant")) }
                 OPTIONAL { ?s rdfs:label ?en FILTER(lang(?en) = "en") } }""" % values):
                 q = row["s"]["value"].rsplit("/", 1)[-1]
-                d = out.setdefault(q, {"zh": "", "en": "", "items": []})
-                d["zh"] = d["zh"] or (row.get("zh") or row.get("tw") or {}).get("value", "")
+                d = out.setdefault(q, {"zh": "", "tw": "", "en": "", "items": []})
+                d["zh"] = d["zh"] or (row.get("zh") or {}).get("value", "")      # 只放大陆简体名
+                d["tw"] = d["tw"] or (row.get("tw") or {}).get("value", "")      # 台港名另放，网页没有大陆名时再用
                 d["en"] = d["en"] or (row.get("en") or {}).get("value", "")
             seen = {}
             for row in self._q("""SELECT ?s ?imdb ?ord ?y WHERE { VALUES ?s { %s } ?m p:P179 ?st . ?st ps:P179 ?s .

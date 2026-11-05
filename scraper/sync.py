@@ -44,6 +44,10 @@ def iso():
     return datetime.now(CST).isoformat(timespec="seconds")
 
 
+def iso_days_ago(n):
+    return (datetime.now(CST) - timedelta(days=n)).isoformat(timespec="seconds")
+
+
 def load(p, default):
     try:
         return json.loads(Path(p).read_text(encoding="utf-8"))
@@ -172,7 +176,7 @@ class Sync:
     # ------------------------------------------------------------ 豆瓣 / 烂番茄编号
     def resolve_ids(self, ids):
         need = [i for i in ids if i in self.meta and not self.meta[i].get("missing")
-                and ("dbid" not in self.meta[i] or "rtslug" not in self.meta[i])]
+                and ("dbid" not in self.meta[i] or "rtslug" not in self.meta[i] or not self.meta[i].get("cn"))]
         if not need:
             return
         try:
@@ -187,6 +191,9 @@ class Sync:
                 m["dbid"] = w["douban"]
             if "rtslug" not in m and w.get("rt"):
                 m["rtslug"] = w["rt"]
+            if not m.get("cn") and (w.get("zh") or w.get("tw")):    # 豆瓣补全后会换成豆瓣的片名
+                m["cn"] = t2s(w.get("zh") or w["tw"])
+                self.changed = True
 
     # ------------------------------------------------------------ 系列（Wikidata P179）
     def refresh_series(self, priority=()):
@@ -201,12 +208,17 @@ class Sync:
                 got = self.wd.series_of(ask)
                 for t in ask:
                     by[t] = {"s": got.get(t, []), "at": now()}
+            for d in ser.values():      # 旧数据：中文名混着台湾译名，挪到 tw 里，网页优先用大陆片名推
+                if "tw" not in d:
+                    z = d.get("zh") or ""
+                    d["tw"], d["zh"] = (t2s(z), "") if t2s(z) != z else ("", z)
             used = {q for t in mine for q in (by.get(t) or {}).get("s", [])}
             stale = [q for q in used if now() - (ser.get(q) or {}).get("at", 0) > 14 * DAY][:60]
             if stale:
                 got = self.wd.series_members(stale)
                 for q in stale:
-                    d = got.get(q) or {"zh": "", "en": "", "items": []}
+                    d = got.get(q) or {"zh": "", "tw": "", "en": "", "items": []}
+                    d["tw"] = t2s(d.get("tw") or "")
                     d["items"] = sorted(d["items"], key=lambda x: (x[2] or 9999, x[1]))[:120]
                     d["at"] = now()
                     ser[q] = d
@@ -448,6 +460,67 @@ class Sync:
         except Exception:
             return True       # 网络问题不算图坏
 
+    # ------------------------------------------------------------ 推送（Bark，可选：仓库 Secrets 里加 BARK_KEY 才会推）
+    def push(self, key, title, body):
+        """同一件事只推一次（记在 status.json 的 pushed 里）。"""
+        import os
+        bark = (os.environ.get("BARK_KEY") or "").strip()
+        sent = self.status.setdefault("pushed", {})
+        if not bark or key in sent:
+            return
+        try:
+            import requests
+            from urllib.parse import quote
+            base = bark if bark.startswith("http") else f"https://api.day.app/{bark}"
+            r = requests.get(f"{base.rstrip('/')}/{quote(title, safe='')}/{quote(body, safe='')}",
+                             params={"group": "影库", "icon": "https://z2vn7g8nhp-beep.github.io/movie-library/icon-192.png"}, timeout=15)
+            if r.ok:
+                sent[key] = iso()
+        except Exception as e:      # 推送失败不影响补全
+            print("推送失败", e)
+        for k in [k for k, v in sent.items() if v < iso_days_ago(400)]:
+            del sent[k]
+
+    def push_birthdays(self, follows):
+        """追的人今天生日（北京时间 8 点以后的那一轮推）。"""
+        bj = datetime.now(timezone(timedelta(hours=8)))
+        if bj.hour < 8:
+            return
+        for nm in follows:
+            P = self.persons.get(nm) or {}
+            b = (P.get("birth") or "").split("-")
+            if len(b) == 3 and not P.get("death") and int(b[1]) == bj.month and int(b[2]) == bj.day:
+                name = (self.people.get(nm) or {}).get("cn") or P.get("n") or nm
+                age = bj.year - int(b[0]) if b[0].isdigit() else 0
+                self.push(f"bday:{nm}:{bj.year}", f"🎂 今天是{name}的生日", f"{name} {age} 岁啦，去影库重温一部 TA 的作品吧")
+
+    def dedupe_imgs(self, imgs, old_hash):
+        """IMDb 相册里常有同一张图传了好几次（海报、剧照），按缩略图的指纹去重。没装 Pillow 就原样返回。"""
+        try:
+            from io import BytesIO
+            from PIL import Image
+        except ImportError:
+            return imgs, old_hash
+        hashes, keep, out = {}, [], []
+        for it in imgs:
+            k = it[0]
+            hv = old_hash.get(k)
+            if hv is None:
+                try:
+                    r = self.db.s.get(f"https://m.media-amazon.com/images/M/{k}._V1_UX64_.jpg", timeout=12)
+                    im = Image.open(BytesIO(r.content)).convert("L").resize((9, 8))
+                    px = im.tobytes()
+                    hv = sum(1 << i for i in range(64) if px[i // 8 * 9 + i % 8] > px[i // 8 * 9 + i % 8 + 1])
+                except Exception:
+                    hv = -1
+            hashes[k] = hv
+            if hv >= 0 and any(bin(hv ^ o).count("1") <= 5 for o in keep):
+                continue          # 和前面某张几乎一样
+            if hv >= 0:
+                keep.append(hv)
+            out.append(it)
+        return out, hashes
+
     # ------------------------------------------------------------ 影人（追的人：完整作品表、照片、简介、获奖）
     def refresh_person(self, nm):
         try:
@@ -479,12 +552,21 @@ class Sync:
                 rec["dimg"] = d["cover"]
         # 之前补过的角色信息（中文片名、中文角色名、角色介绍）原样带过来
         oldc = {c["id"]: c for c in old.get("credits") or []}
+        if oldc and nm in {n for n, f in self.follows.items() if not f.get("del")}:     # 作品表里多出来的新片 = 新作官宣
+            year = datetime.now().year
+            name = (self.people.get(nm) or {}).get("cn") or x.get("n") or nm
+            for c in x["credits"]:
+                if c["id"] not in oldc and (not c.get("y") or c["y"] >= year) and c.get("ty") in ("movie", "tvSeries", "tvMiniSeries"):
+                    t = (self.meta.get(c["id"]) or {}).get("cn") or (self.idx_cn.get(c["id"]) or [""])[0] or c.get("n") or ""
+                    self.push(f"new:{nm}:{c['id']}", f"✨ {name} 有新作", f"《{t}》{c.get('y') or '待定'}" + (f" · 饰 {c['role']}" if c.get("role") else ""))
         for c in x["credits"]:
             for k in ("cn", "role_cn", "rintro", "wintro", "dbid", "rat"):
                 if k in oldc.get(c["id"], {}) and k not in c:
                     c[k] = oldc[c["id"]][k]
         if old.get("wdat"):
             x["wdat"] = old["wdat"]
+        if x.get("imgs"):
+            x["imgs"], x["ih"] = self.dedupe_imgs(x["imgs"], old.get("ih") or {})
         # 作品配上中文片名：离线索引 / 已补全的详情 / 豆瓣作品表
         dw = {norm(w["cn"]): w for w in (d or {}).get("works") or []}
         for c in x["credits"]:
@@ -612,6 +694,7 @@ class Sync:
                                                           or "imgs" not in (self.persons.get(n) or {}))]
         for nm in list(dict.fromkeys(want + stale))[:len(want) + 6]:
             self.refresh_person(nm)
+        self.push_birthdays(follows)
         # 角色中文名和介绍：点名要的人先多做一些，其余追的人每轮做几部
         left = 36
         for nm in list(dict.fromkeys([n for n in want if n in follows] + follows)):
@@ -659,7 +742,9 @@ class Sync:
         self.status["updated"] = iso()
         save(self.dir / "status.json", self.status)
         if self.reqs:
-            save(self.dir / "requests.json", {})
+            # 不在这里清空 requests.json：跑的这几分钟里网页可能又加了新请求，推送时会被覆盖掉。
+            # 记下这次处理了哪些，推送完数据后由 clear_requests.py 对着最新的 requests.json 只删这些
+            save(self.dir.parent / "processed_requests.json", self.reqs)
         print(f"库里 {len(self.active())} 部，详情 {len(self.meta)} 部，影人中文名 {len(self.people)} 位")
 
 

@@ -43,6 +43,8 @@ jobs:
           echo "DATA_URL=https://x-access-token:${DATA_TOKEN}@github.com/${repo}.git" >> "$GITHUB_ENV"
 
       - name: 补全
+        env:
+          BARK_KEY: ${{ secrets.BARK_KEY }}    # 可选：填了就推送追的人的生日和新作
         run: python scraper/sync.py --data data --idx idx
 
       - name: 保存
@@ -57,12 +59,26 @@ jobs:
           if ! git ls-remote --exit-code --heads origin >/dev/null 2>&1; then
             git push -q origin HEAD:main && exit 0    # 数据仓库还是空的，第一次推
           fi
+          ok=0
           for i in 1 2 3 4; do
-            # 网页可能刚好也在写 marks.json / requests.json，先合并再推
-            if git pull -q --rebase -X theirs origin HEAD && git push -q origin HEAD; then exit 0; fi
+            # 网页可能刚好也在写 marks.json / requests.json，先合并再推（这次提交不碰这两个文件，所以不会盖掉网页的改动）
+            if git pull -q --rebase -X theirs origin main && git push -q origin HEAD:main; then ok=1; break; fi
             sleep $((i * 3))
           done
-          echo "保存失败" && exit 1
+          [ "$ok" = 1 ] || { echo "保存失败"; exit 1; }
+
+      - name: 清掉处理过的请求（只删这次做过的，运行期间网页新加的留着）
+        run: |
+          [ -f processed_requests.json ] || exit 0
+          cd data
+          for i in 1 2 3 4; do
+            git fetch -q origin main && git reset -q --hard FETCH_HEAD
+            python ../scraper/clear_requests.py requests.json ../processed_requests.json
+            git add requests.json
+            git diff --cached --quiet && exit 0
+            git commit -q -m "清掉处理过的请求" && git push -q origin HEAD:main && exit 0
+            sleep $((i * 3))
+          done
 
       - name: 防止 GitHub 60 天无活动自动停用定时任务
         env:
