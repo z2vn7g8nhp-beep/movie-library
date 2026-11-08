@@ -1540,7 +1540,7 @@ body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;ba
 <div class="mask" id="mask"></div>
 <div class="sheet" id="sheet"></div>
 <div class="toast" id="toast"></div>
-
+<script src="chat.js"></script>
 <script>
 "use strict";
 /* ================================================================ 基础 */
@@ -1817,7 +1817,7 @@ function keepImages(root, ret){
 }
 /* 底部四个页面渲染在 #main 里，详情、影人页等在 #page 里。
    进详情时 #main 只是藏起来，返回时原样显示，不重画、滚动位置不变；数据变了（S.ver 变了）才重画。 */
-const PAGES = ["t", "p", "quick", "settings", "uni", "u", "recall", "lists", "l"];
+const PAGES = ["t", "p", "quick", "settings", "uni", "u", "recall", "lists", "l", "chat"];
 let mainKey = "", mainVer = -1;
 const bump = () => { S.ver = (S.ver || 0) + 1; };
 function render(nav){
@@ -1830,7 +1830,7 @@ function render(nav){
     const entering = page.hidden;
     page.hidden = false;
     if (nav && entering) { page.classList.remove("out"); page.classList.remove("in"); void page.offsetWidth; page.classList.add("in"); }
-    const done = keepImages(page, () => ({t: renderTitle, p: renderPerson, quick: renderQuick, settings: renderSettings, uni: renderUniHub, u: renderUni, recall: renderRecall, lists: renderLists, l: renderList})[r.name](r.arg));
+    const done = keepImages(page, () => ({t: renderTitle, p: renderPerson, quick: renderQuick, settings: renderSettings, uni: renderUniHub, u: renderUni, recall: renderRecall, lists: renderLists, l: renderList, chat: renderChat})[r.name](r.arg));
     if (nav) { page.scrollTop = scrollMem[key] || 0; done.then(() => { if (route().name + "/" + route().arg === key) page.scrollTop = scrollMem[key] || 0; }); }
   } else {
     if (!page.hidden) {   // 关掉详情层：列表一直在底下，没被隐藏过，图片和位置都还在
@@ -4103,6 +4103,7 @@ function drawCharSheet(){
     <div class="csh-hd"><div class="sign">${esc(c.en)}</div><b>${esc(c.cn)}</b><small>${esc(c.sub)}</small>
       <div class="csh-meta"><span class="rk" data-r="${c.rar}">${c.rar}</span>${c.a.length ? `${c.vo ? "配音" : "演员"} ${c.a.map(a => a[0] ? `<a href="#/p/${a[0]}" onclick="closeSheet()">${esc(actorName(a))}</a>` : esc(a[1])).join(" / ")}` : c.vo ? "" : "生物"}</div>
       ${c.f?.length ? `<div class="csh-tags">${c.f.map(t => `<span>${esc(t)}</span>`).join("")}</div>` : ""}</div>
+    ${chatEntryHTML(c)}
     ${c.i ? `<div class="csh-intro">${esc(c.i)}</div>` : ""}
     ${c.x?.length ? lit ? `<div class="lab">小档案</div><div class="csh-prof paper"><i class="orn tl"></i><i class="orn br"></i><dl>${c.x.map(([k, v]) => `<div class="${(k + v).length > 13 ? "w" : ""}"><dt>${esc(k)}</dt><dd>${esc(v)}</dd></div>`).join("")}</dl></div>`
       : `<div class="csh-lock paper"><span>🔒</span>点亮后解锁 TA 的小档案（${c.x.length} 条）</div>` : ""}
@@ -4237,6 +4238,7 @@ function renderSettings(){
         <input class="field" id="drepo" placeholder="数据仓库，如 name/movie-library-data" value="${esc(getPref("ghDataRepo", ""))}" style="margin-top:8px">
         <button class="pill add" id="saverepo" style="margin-top:8px">保存</button></details>
     </div></div>
+    ${aiSettingsHTML()}
     ${Object.keys(st).length ? `<div class="set-sec"><h4>数据源${S.status?.updated ? ` · 后台上次运行 ${esc(S.status.updated.slice(5, 16).replace("T", " "))}` : ""}</h4><div class="set-card">
       ${Object.entries(st).map(([k, s]) => `<div class="opt"><span class="dot ${s.ok ? "" : "bad"}"></span><span class="k">${NAMES[k] || k}</span><b style="max-width:55%;text-align:right;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${esc(s.msg)}</b></div>`).join("")}</div></div>` : ""}
     <div class="set-sec"><h4>离线片库</h4><div class="set-card"><div class="opt"><span class="k">收录</span><b>${S.idxInfo ? `${S.idxInfo.titles.toLocaleString()} 部` : S.idxReady < 0 ? "加载失败" : "加载中"}</b></div>
@@ -4245,6 +4247,7 @@ function renderSettings(){
     <div class="set-sec"><h4>备份</h4><div class="set-card"><div class="opt" id="exp"><span class="k">导出全部标记（JSON）</span>›</div>
       <label class="opt"><span class="k">从备份恢复</span>›<input type="file" id="imp" accept="application/json" class="hide"></label></div></div>
     <div class="small" style="margin:20px 0 30px;text-align:center">数据来自 IMDb、豆瓣、烂番茄，仅供个人使用。</div></div>`;
+  bindAiSettings();
   const link = $("#link");
   if (link) link.onclick = async () => {
     const t = $("#tok").value.trim(); if (!t) return;
