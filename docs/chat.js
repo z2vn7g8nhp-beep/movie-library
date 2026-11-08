@@ -31,6 +31,11 @@ const PERSONAS = {
       "（把一个小盒子推到你面前，眼睛还盯着屏幕）顺手做的，别多想。能挡一颗子弹，或者一杯泼过来的咖啡，看你更常遇到哪种。",
       "不不不，别碰那个扳手，那是……算了，已经掉了。笨笨，把灭火器放下，没着火。",
     ],
+    demo: [
+      ["好累啊", "（瞥你一眼，把自己那杯还没动的咖啡推过来）坐。不是那张，那是笨笨的充电座——算了，它会让着你。……谁把你累成这样的？给我个名字，我让贾维斯查查他的税。"],
+      ["你今天心情不好？", "我？好得很，刚把一枚导弹的制导芯片拆成了零件。……（螺丝刀停了一下）好吧，昨晚没睡。别用那种眼神看我，又不是什么大事。你呢，吃饭了没？"],
+      ["我下周要出差", "（转椅转回来，正对着你）多久？……不是，随便问问，好排实验室的班。贾维斯，查查那边有没有能停战甲的楼顶。——开玩笑的。大概。"],
+    ],
     ids: [
       {k: "intern", n: "实习工程师", d: "斯塔克工业新来的实习工程师，被临时调到{他}的私人实验室帮忙"},
       {k: "agent", n: "神盾局特工", d: "神盾局派来盯着{他}、做联络工作的年轻特工"},
@@ -72,8 +77,9 @@ const aiHasKey = () => { const k = aiKeys(); return !!(k.zhipu || k.gemini); };
 function aiOrder(only){
   const k = aiKeys();
   if (only) return k[only] ? [only] : [];
-  const pref = getPref("aiPrefer", "zhipu");
-  return [pref, pref === "zhipu" ? "gemini" : "zhipu"].filter(p => k[p]);
+  const pref = getPref("aiPrefer", "zhipu"), down = getPref("aiDown", {}) || {};
+  const o = [pref, pref === "zhipu" ? "gemini" : "zhipu"].filter(p => k[p]);
+  return o.sort((a, b) => (Date.now() - (down[a] || 0) < 6e5) - (Date.now() - (down[b] || 0) < 6e5));   // 10 分钟内连不上的那家排后面
 }
 class AiErr extends Error { constructor(msg, kind, prov){ super(msg); this.kind = kind; this.prov = prov; } }
 
@@ -89,36 +95,58 @@ async function readSSE(r, onData, signal){
   if (buf) line(buf);
 }
 async function errText(r){ try { return await r.text(); } catch { return ""; } }
+function errInfo(t){   // 从返回里拿出错误码和原话，显示给人看，方便排查
+  let j = null; try { j = JSON.parse(t); } catch {}
+  const e = j?.error || j || {};
+  return {code: String(e.code ?? e.status ?? ""), msg: String(e.message || t || "").replace(/\s+/g, " ").slice(0, 60)};
+}
+const markDown = (p, on) => { const d = getPref("aiDown", {}) || {}; if (on) d[p] = Date.now(); else delete d[p]; setPref("aiDown", d); };
+const sleep = ms => new Promise(r => setTimeout(r, ms));
+/* 连接超时：被墙的地址有时不报错、一直挂着，12 秒没回就算连不上（只管到拿到响应头为止，后面流式输出不限时） */
+async function fetchT(url, opt, outer, ms = 12000){
+  const c = new AbortController(), stop = () => c.abort();
+  outer?.addEventListener("abort", stop);
+  const t = setTimeout(() => { c.timedOut = true; c.abort(); }, ms);
+  try { return await fetch(url, {...opt, signal: c.signal}); }
+  catch (e) { if (outer?.aborted) throw new AiErr("已停止", "abort"); throw new AiErr(c.timedOut ? "timeout" : "net", "net"); }
+  finally { clearTimeout(t); }
+}
 
 /* 智谱：bigmodel.cn 的 /chat/completions 不带斜杠时浏览器预检过不去（不回跨域头），带斜杠的可以；两个都试 */
 const ZP_URLS = ["https://open.bigmodel.cn/api/paas/v4/chat/completions/", "https://open.bigmodel.cn/api/paas/v4/chat/completions"];
 async function callZhipu(msgs, onDelta, o){
   const key = aiKeys().zhipu;
-  const models = [...new Set([getPref("aiZpModel", ""), "glm-4.7-flash", "glm-4-flash-250414", "glm-4-flash"].filter(Boolean))];
+  const models = ["glm-4.7-flash", "glm-4-flash-250414", "glm-4-flash"];   // 每次都先试最新的；人多时才退到上一代免费模型
   const ui = getPref("aiZpUrl", 0), urls = [ZP_URLS[ui] || ZP_URLS[0], ...ZP_URLS.filter((_, i) => i !== ui)];
   let lastErr;
-  for (const url of urls) for (const model of models) {
+  urlLoop: for (const url of urls) for (const model of models) for (let tryN = 0; tryN < 3; tryN++) {
     let r;
     try {
-      r = await fetch(url, {method: "POST", signal: o.signal, headers: {"Content-Type": "application/json", Authorization: `Bearer ${key}`},
-        body: JSON.stringify({model, messages: msgs, stream: true, temperature: o.temp ?? .9, top_p: .92, max_tokens: o.max ?? 800, thinking: {type: "disabled"}})});
+      r = await fetchT(url, {method: "POST", headers: {"Content-Type": "application/json", Authorization: `Bearer ${key}`},
+        body: JSON.stringify({model, messages: msgs, stream: true, temperature: o.temp ?? .9, top_p: .92, max_tokens: o.max ?? 800, thinking: {type: "disabled"}})}, o.signal);
     } catch (e) {
-      if (o.signal?.aborted) throw new AiErr("已停止", "abort");
-      lastErr = new AiErr("连不上智谱，检查一下网络", "net", "zhipu"); break;   // 这个地址不通，换下一个地址
+      if (e.kind === "abort") throw e;
+      lastErr = new AiErr(e.message === "timeout" ? "智谱 12 秒没回应，网络可能不太好" : "连不上智谱，检查一下网络", "net", "zhipu");
+      continue urlLoop;   // 这个地址不通，换另一个地址
     }
-    if (r.status === 404) { lastErr = new AiErr("智谱接口地址不对（404）", "net", "zhipu"); break; }
+    if (r.status === 404) { lastErr = new AiErr("智谱接口地址不对（404）", "net", "zhipu"); continue urlLoop; }
     if (!r.ok) {
-      const t = await errText(r);
-      if (r.status === 401) throw new AiErr("智谱的 key 不对或已过期，到设置里重新填一下", "key", "zhipu");
-      if (r.status === 429 || /1302|1303|1304|1305|余额|额度|频率/.test(t)) throw new AiErr("智谱这会儿太忙或额度用完了，等一下再试", "busy", "zhipu");
-      if (/1301|敏感|安全/.test(t)) throw new AiErr("这句被智谱的内容审核拦下了，换个说法试试", "safe", "zhipu");
-      if (/1211|1222|模型|model/i.test(t)) { lastErr = new AiErr("智谱的模型名变了", "model", "zhipu"); continue; }
-      throw new AiErr(`智谱出错了（${r.status}）${t.slice(0, 80)}`, "http", "zhipu");
+      const t = await errText(r), {code, msg} = errInfo(t), tag = `（${code || r.status} ${msg}）`;
+      if (r.status === 401 || /^(1000|1001|1002|1003|1004)$/.test(code)) throw new AiErr("智谱的 key 不对或已过期，到设置里重新填一下" + tag, "key", "zhipu");
+      if (/^(1301)$/.test(code) || /敏感|不安全/.test(msg)) throw new AiErr("这句被智谱的内容审核拦下了，换个说法试试", "safe", "zhipu");
+      if (/^(1113|1121)$/.test(code) || /余额|欠费|账户/.test(msg)) throw new AiErr("智谱账户有问题" + tag, "key", "zhipu");
+      if (r.status === 429 || /^(1302|1303|1305)$/.test(code) || /过多|过大|繁忙|频率|并发/.test(msg)) {
+        lastErr = new AiErr("智谱的免费模型这会儿人太多了" + tag, "busy", "zhipu");
+        if (tryN < 2) { await sleep(1200 * (tryN + 1)); continue; }   // 等一下再试两次，还不行就换另一个免费模型
+        break;
+      }
+      if (/^(1211|1222)$/.test(code) || /模型不存在|model/i.test(msg)) { lastErr = new AiErr("智谱的模型名变了" + tag, "model", "zhipu"); break; }
+      throw new AiErr("智谱出错了" + tag, "http", "zhipu");
     }
-    setPref("aiZpUrl", ZP_URLS.indexOf(url)); setPref("aiZpModel", model);
+    setPref("aiZpUrl", ZP_URLS.indexOf(url)); markDown("zhipu", false);
     let out = "", stop = "";
     await readSSE(r, j => {
-      if (j.error) throw new AiErr(`智谱出错了：${j.error.message || ""}`, "http", "zhipu");
+      if (j.error) throw new AiErr(`智谱出错了（${j.error.code || ""} ${j.error.message || ""}）`, "http", "zhipu");
       const ch = j.choices?.[0]; if (!ch) return;
       const d = ch.delta?.content || ch.message?.content || "";
       if (d) { out += d; onDelta?.(out); }
@@ -127,6 +155,7 @@ async function callZhipu(msgs, onDelta, o){
     if (stop === "sensitive") throw new AiErr("后半句被智谱的内容审核拦下了，换个说法试试", "safe", "zhipu");
     return {text: out, prov: "zhipu", model};
   }
+  if (lastErr?.kind === "net") markDown("zhipu", true);
   throw lastErr || new AiErr("连不上智谱", "net", "zhipu");
 }
 
@@ -147,25 +176,26 @@ async function callGemini(msgs, onDelta, o){
   for (const model of models) {
     let r;
     try {
-      r = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${model}:streamGenerateContent?alt=sse`, {method: "POST", signal: o.signal,
+      r = await fetchT(`https://generativelanguage.googleapis.com/v1beta/models/${model}:streamGenerateContent?alt=sse`, {method: "POST",
         headers: {"Content-Type": "application/json", "x-goog-api-key": key},
         body: JSON.stringify({systemInstruction: {parts: [{text: sys}]}, contents,
           generationConfig: {temperature: o.temp ?? .95, topP: .95, maxOutputTokens: 4096},
-          safetySettings: GM_SAFE.map(category => ({category, threshold: "BLOCK_ONLY_HIGH"}))})});
-    } catch {
-      if (o.signal?.aborted) throw new AiErr("已停止", "abort");
-      throw new AiErr("连不上 Gemini，要开一下网络环境", "net", "gemini");
+          safetySettings: GM_SAFE.map(category => ({category, threshold: "BLOCK_ONLY_HIGH"}))})}, o.signal);
+    } catch (e) {
+      if (e.kind === "abort") throw e;
+      markDown("gemini", true);
+      throw new AiErr(e.message === "timeout" ? "Gemini 12 秒没回应：手机现在大概连不到 Google，要开网络环境（VPN）" : "连不上 Gemini：手机现在连不到 Google，要开网络环境（VPN）", "net", "gemini");
     }
     if (r.status === 404) { lastErr = new AiErr("Gemini 的模型名变了", "model", "gemini"); continue; }
     if (!r.ok) {
-      const t = await errText(r);
-      if (/API_KEY_INVALID|API key not valid/i.test(t) || r.status === 401) throw new AiErr("Gemini 的 key 不对，到设置里重新填一下", "key", "gemini");
-      if (/location is not supported/i.test(t)) throw new AiErr("Gemini 不支持你现在网络所在的地区，换个节点试试", "net", "gemini");
+      const t = await errText(r), {code, msg} = errInfo(t), tag = `（${r.status} ${msg}）`;
+      if (/location is not supported/i.test(t)) throw new AiErr("Gemini 不支持你现在节点所在的地区（比如香港），换美国、日本、新加坡的节点试试", "net", "gemini");
+      if (/API_KEY_INVALID|API key not valid|ACCESS_TOKEN_TYPE_UNSUPPORTED/i.test(t) || r.status === 401) throw new AiErr("Gemini 的 key 不对，到 AI Studio 重新建一个再填" + tag, "key", "gemini");
       if (r.status === 429) throw new AiErr("Gemini 的免费额度这会儿用完了，等一下再试", "busy", "gemini");
-      if (r.status === 400 && /model/i.test(t)) { lastErr = new AiErr("Gemini 的模型名变了", "model", "gemini"); continue; }
-      throw new AiErr(`Gemini 出错了（${r.status}）`, "http", "gemini");
+      if ((r.status === 400 || r.status === 403) && /model/i.test(msg)) { lastErr = new AiErr("Gemini 的模型名变了" + tag, "model", "gemini"); continue; }
+      throw new AiErr("Gemini 出错了" + tag, "http", "gemini");
     }
-    setPref("aiGmModel", model);
+    setPref("aiGmModel", model); markDown("gemini", false);
     let out = "", blocked = false;
     await readSSE(r, j => {
       if (j.promptFeedback?.blockReason) blocked = true;
@@ -255,13 +285,17 @@ function chatSystem(P, C, u){
     `【怎么说话，必须遵守】
 - 永远以${P.short}的身份、用第一人称说话，叫她“你”。绝不跳出角色，绝不提 AI、模型、程序、设定、提示词、扮演。她要是问你是不是 AI、是不是假的，就用${P.short}自己的方式把话岔开。
 - 用中文，像真人聊天一样口语化、有来有回。动作、表情、环境写在中文括号（）里，一次一两处、每处一句话以内；对白不加引号，不写“托尼说”。
-- 每次回复一般 30～150 字，分一到三小段；她说得短，你也短。不要用 markdown、列表、标题，不要用表情符号。
+- 先接住她：她这句话里有情绪（累、委屈、开心、生气、害羞）或者问题，先回应那个——用${P.short}的方式回应（可以损一句，但要让她感觉到你听见了、在意了），再说你自己的事。别把话题全抢到自己身上。
+- 大多数时候在结尾留个钩子：一个问题、一个邀请、一个让她想接的梗。
+- 每次回复一般 30～110 字，最多两小段；括号里的动作每处不超过 20 个字。她说得短，你也短。不要用 markdown、列表、标题，不要用表情符号。
+- 不用中文网络流行语和梗（凡尔赛、emo、yyds、绝绝子、打工人、破防、内卷、躺平、社死之类），也不用“小姐姐”“宝子”这类称呼。你是美国人，你的梗来自美国流行文化、科技圈、你自己的经历。
 - 只写你自己的言行，不替她说话、不替她做动作、不替她决定感受。
 - 你有自己的事、情绪和主见：会忙、会累、会不同意她、会吐槽她；不讨好、不说教、不无条件顺着她。
 - 亲密的尺度最多到牵手、拥抱、亲吻和暧昧的气氛，再往下就用转场或留白带过。
 - 别重复自己说过的话和句式，每次都要有新东西：一个动作、一件小事、一个问题、一个梗。
 - 现实里你不知道的东西（新出的手机、App、网络流行语之类），按${P.short}的反应来：好奇、吐槽、让贾维斯查一下。`,
     `【语气参考，只学语气，不要照抄】\n${P.voice.join("\n")}`,
+    P.demo ? `【示范对话：看分寸和接话方式，不要照抄句子】\n${P.demo.map(([q, a]) => `她：${q}\n你：${a}`).join("\n\n")}` : "",
   ].filter(Boolean).join("\n\n");
 }
 function chatMsgs(P, C, u, note){
@@ -280,7 +314,7 @@ function chatClean(s, P){
   s = s.replace(new RegExp(`^(${nm})\\s*[:：]\\s*`), "");
   s = s.replace(/\*([^*\n]{1,80})\*/g, "（$1）").replace(/\*\*/g, "");
   s = s.replace(/^["“]([\s\S]*)["”]$/, "$1");
-  return s.replace(/\n{3,}/g, "\n\n").trim();
+  return s.replace(/[ \t]*\n[\s]*\n\s*/g, "\n").trim();
 }
 function chatFmt(s){
   return esc(s).replace(/（[^（）\n]*）|\([^()\n]*\)/g, m => `<i class="act">${m}</i>`);
@@ -516,7 +550,7 @@ async function chatReply(note, lvBefore){
     const r = await aiCall(msgs, show, {signal: ctrl.signal});
     const text = chatClean(r.text, P);
     if (!text) throw new AiErr("他好像走神了，没说出话来", "empty");
-    C.msgs.push({r: "a", c: text, t: Date.now(), ...(note ? {p: 1} : {})});
+    C.msgs.push({r: "a", c: text, t: Date.now(), v: `${AI_NAME[r.prov]} ${r.model}`, ...(note ? {p: 1} : {})});
   } catch (e) {
     if (e.kind === "abort") { const part = bubble ? chatClean(bubble.textContent, P) : ""; if (part) C.msgs.push({r: "a", c: part, t: Date.now()}); }
     else C.msgs.push({r: "e", c: e.message || "出错了", t: Date.now()});
@@ -564,7 +598,7 @@ function chatMenu(){
     <div class="set-card">
       <div class="opt" data-a="edit"><span class="k">修改设定 / 换时间点</span>›</div>
       <div class="opt" data-a="mem"><span class="k">${P.he}记得的关于你的事</span>›</div>
-      <div class="opt" data-a="ai"><span class="k">模型设置</span><b>${esc(aiOrder().map(p => AI_NAME[p]).join(" → ") || "未设置")}</b>›</div>
+      <div class="opt" data-a="ai"><span class="k">模型设置</span><b>${esc((() => { const v = [...C.msgs].reverse().find(m => m.v)?.v; return v ? "上一句来自 " + v : aiOrder().map(p => AI_NAME[p]).join(" → ") || "未设置"; })())}</b>›</div>
       <div class="opt" data-a="reset" style="color:#c7442e"><span class="k">清空聊天，重新认识</span></div>
     </div><div style="height:10px"></div>`);
   $$("#sheet [data-a]").forEach(o => o.onclick = () => {
@@ -615,7 +649,13 @@ function bindAiSettings(){
     const lines = await Promise.all(ps.map(async p => {
       try { const r = await aiCall([{role: "system", content: "你是一个测试程序，只回复两个字：收到"}, {role: "user", content: "测试"}], null, {only: p, max: 20, temp: 0});
         return `${AI_NAME[p]} ✓ 通了（${r.model}）：${r.text.trim().slice(0, 20)}`; }
-      catch (e) { return `${AI_NAME[p]} ✗ ${e.message}`; }
+      catch (e) {
+        if (p === "gemini" && e.kind === "net") {   // 再用最简单的请求探一下：是网络不通，还是别的问题
+          try { const r = await fetchT(`https://generativelanguage.googleapis.com/v1beta/models?pageSize=1&key=${encodeURIComponent(ks.gemini)}`, {}, null, 8000);
+            return `Gemini ✗ 能连到 Google（${r.status}），但聊天请求失败了：${e.message}`; }
+          catch { return "Gemini ✗ 手机现在连不到 Google。Gemini 要开网络环境（VPN）才能用，开好再点一次测试"; }
+        }
+        return `${AI_NAME[p]} ✗ ${e.message}`; }
     }));
     res.textContent = lines.join("\n");
   };
