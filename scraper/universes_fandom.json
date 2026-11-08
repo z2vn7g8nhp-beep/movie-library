@@ -772,5 +772,557 @@
 "pg": "Otis Flannegan (Prime Earth)",
 "w": 309,
 "h": 480
+},
+"xmen:wraith": {
+"img": "https://static.wikia.nocookie.net/marveldatabase/images/0/0d/John_Wraith_%28Earth-616%29_from_Wolverine_Vol_4_1_002.jpg/revision/latest/scale-to-width-down/233?cb=20111220142153",
+"pg": "John Wraith (Earth-616)",
+"w": 233,
+"h": 480
+},
+"xmen:bolt": {
+"img": "https://static.wikia.nocookie.net/marveldatabase/images/3/39/Christopher_Bradley_%28Earth-616%29_from_X-Force_Vol_3_22.png/revision/latest/scale-to-width-down/461?cb=20141104191006",
+"pg": "Christopher Bradley (Earth-616)",
+"w": 461,
+"h": 480
+},
+"xmen:yukio": {
+"img": "https://static.wikia.nocookie.net/marveldatabase/images/d/de/Yukio_%28Earth-616%29_from_Exceptional_X-Men_Vol_1_5_001.jpg/revision/latest/scale-to-width-down/312?cb=20250115200506",
+"pg": "Yukio (Earth-616)",
+"w": 312,
+"h": 480
+},
+"xmen:yukio_k": {
+"img": "https://static.wikia.nocookie.net/marveldatabase/images/d/de/Yukio_%28Earth-616%29_from_Exceptional_X-Men_Vol_1_5_001.jpg/revision/latest/scale-to-width-down/312?cb=20250115200506",
+"pg": "Yukio (Earth-616)",
+"w": 312,
+"h": 480
+},
+"xmen:mariko": {
+"img": "https://static.wikia.nocookie.net/marveldatabase/images/8/89/Old_Man_Logan_Vol_2_31_Tolibao_Variant_Textless.jpg/revision/latest/scale-to-width-down/312?cb=20171104214412",
+"pg": "Mariko Yashida (Earth-616)",
+"w": 312,
+"h": 480
+},
+"xmen:viper": {
+"img": "https://static.wikia.nocookie.net/marveldatabase/images/f/f7/Ophelia_Sarkissian_%28Earth-616%29_from_Marvel_Legends_promotional_artwork_001.jpg/revision/latest/scale-to-width-down/312?cb=20220314224839",
+"pg": "Ophelia Sarkissian (Earth-616)",
+"w": 312,
+"h": 480
+},
+"xmen:shingen": {
+"img": "https://static.wikia.nocookie.net/marveldatabase/images/e/ea/Shingen_Harada_%28Earth-616%29_vs._James_Howlett_%28Earth-616%29_from_Ultra_X-Men_Wolverine_%28Trading_Cards%29_Textless.JPG/revision/latest/scale-to-width-down/343?cb=20200229081041",
+"pg": "Shingen Yashida (Earth-616)",
+"w": 343,
+"h": 480
+},
+"xmen:harada": {
+"img": "https://static.wikia.nocookie.net/marveldatabase/images/0/05/Kenuichio_Harada_%28Earth-616%29_from_Marvel_War_of_Heroes_001.jpg/revision/latest/scale-to-width-down/384?cb=20261008231837",
+"pg": "Kenuichio Harada (Earth-616)",
+"w": 384,
+"h": 480
+},
+"xmen:caliban": {
+"img": "https://static.wikia.nocookie.net/marveldatabase/images/5/5c/Caliban_%28Earth-616%29_from_NYX_Vol_2_3_001.jpg/revision/latest/scale-to-width-down/275?cb=20240925191733",
+"pg": "Caliban (Earth-616)",
+"w": 275,
+"h": 480
+},
+"xmen:pierce": {
+"img": "https://static.wikia.nocookie.net/marveldatabase/images/2/2e/Donald_Pierce_%28Earth-616%29_and_Kwannon_%28Earth-616%29_from_Psylocke_Vol_2_1_001.jpg/revision/latest/scale-to-width-down/311?cb=20241118003059",
+"pg": "Donald Pierce (Earth-616)",
+"w": 311,
+"h": 480
+},
+"xmen:leech": {
+"img": "https://static.wikia.nocookie.net/marveldatabase/images/3/30/Leech_%28Earth-616%29_from_X-Men_The_198_Vol_1_2_001.jpg/revision/latest/scale-to-width-down/374?cb=20220717023734",
+"pg": "Leech (Earth-616)",
+"w": 374,
+"h": 480
+},
+"xmen:riptide": {
+"img": "https://static.wikia.nocookie.net/marveldatabase/images/9/9d/Janos_Quested_%28Earth-616%29_from_X-Men_Battle_of_the_Atom_%28video_game%29_001.jpg/revision/latest/scale-to-width-down/423?cb=20141103231833",
+"pg": "Janos Quested (Earth-616)",
+"w": 423,
+"h": 480
+},
+"xmen:darwin": {
+"img": "https://static.wikia.nocookie.net/marveldatabase/images/5/54/Armando_Mu%C3%B1oz_%28Earth-616%29_from_X-Men_Vol_5_5_001.jpg/revision/latest/scale-to-width-down/257?cb=20200131035105",
+"pg": "Armando Muñoz (Earth-616)",
+"w": 257,
+"h": 480
+},
+"xmen:moira_b": {
+"img": "https://static.wikia.nocookie.net/marveldatabase/images/c/cb/Moira_MacTaggert_%28Earth-616%29_from_Rise_of_the_Powers_of_X_Vol_1_5_001.jpg/revision/latest/scale-to-width-down/312?cb=20240601172637",
+"pg": "Moira MacTaggert (Earth-616)",
+"w": 312,
+"h": 480
+},
+"xmen:moira_w": {
+"img": "https://static.wikia.nocookie.net/marveldatabase/images/c/cb/Moira_MacTaggert_%28Earth-616%29_from_Rise_of_the_Powers_of_X_Vol_1_5_001.jpg/revision/latest/scale-to-width-down/312?cb=20240601172637",
+"pg": "Moira MacTaggert (Earth-616)",
+"w": 312,
+"h": 480
+},
+"xmen:trask": {
+"img": "https://static.wikia.nocookie.net/marveldatabase/images/9/9e/Bolivar_Trask_%28Earth-616%29_from_X-Factor_Vol_3_204_001.jpg/revision/latest/scale-to-width-down/279?cb=20200502015915",
+"pg": "Bolivar Trask (Earth-616)",
+"w": 279,
+"h": 480
+},
+"xmen:sentinel": {
+"img": "https://static.wikia.nocookie.net/marveldatabase/images/0/0b/X-Men_Gold_Vol_2_6_Textless.jpg/revision/latest/scale-to-width-down/316?cb=20170321173008",
+"pg": "Sentinels",
+"w": 316,
+"h": 480
+},
+"xmen:stryker_c": {
+"img": "https://static.wikia.nocookie.net/marveldatabase/images/9/98/William_Stryker_%28Earth-616%29_from_Weapon_X_Vol_3_25_001.jpg/revision/latest/scale-to-width-down/312?cb=20200425165004",
+"pg": "William Stryker (Earth-616)",
+"w": 312,
+"h": 480
+},
+"xmen:stryker_d": {
+"img": "https://static.wikia.nocookie.net/marveldatabase/images/9/98/William_Stryker_%28Earth-616%29_from_Weapon_X_Vol_3_25_001.jpg/revision/latest/scale-to-width-down/312?cb=20200425165004",
+"pg": "William Stryker (Earth-616)",
+"w": 312,
+"h": 480
+},
+"xmen:stryker_j": {
+"img": "https://static.wikia.nocookie.net/marveldatabase/images/9/98/William_Stryker_%28Earth-616%29_from_Weapon_X_Vol_3_25_001.jpg/revision/latest/scale-to-width-down/312?cb=20200425165004",
+"pg": "William Stryker (Earth-616)",
+"w": 312,
+"h": 480
+},
+"xmen:kelly": {
+"img": "https://static.wikia.nocookie.net/marveldatabase/images/e/eb/Robert_Kelly_%28Earth-616%29_from_All-New_Official_Handbook_of_the_Marvel_Universe_Vol_1_6_0001.jpg/revision/latest/scale-to-width-down/244?cb=20130223105000",
+"pg": "Robert Kelly (Earth-616)",
+"w": 244,
+"h": 480
+},
+"xmen:firefist": {
+"img": "https://static.wikia.nocookie.net/marveldatabase/images/f/f1/Russell_Collins_%28Earth-616%29_from_X-Factor_Vol_5_1_001.jpg/revision/latest/scale-to-width-down/235?cb=20240814060237",
+"pg": "Russell Collins (Earth-616)",
+"w": 235,
+"h": 480
+},
+"xmen:blacktom": {
+"img": "https://static.wikia.nocookie.net/marveldatabase/images/5/59/X-Force_Vol_6_10_Textless.jpg/revision/latest/scale-to-width-down/315?cb=20200124020537",
+"pg": "Thomas Cassidy (Earth-616)",
+"w": 315,
+"h": 480
+},
+"xmen:bedlam": {
+"img": "https://static.wikia.nocookie.net/marveldatabase/images/8/8c/Jesse_Aaronson_%28Earth-616%29_from_X-Men_Vol_7_10_001.jpg/revision/latest/scale-to-width-down/312?cb=20250203014342",
+"pg": "Jesse Aaronson (Earth-616)",
+"w": 312,
+"h": 480
+},
+"xmen:zeitgeist": {
+"img": "https://static.wikia.nocookie.net/marveldatabase/images/a/af/Axel_Cluney_%28Earth-616%29_from_X-Cellent_Vol_2_5_001.png/revision/latest?cb=20240512084313",
+"pg": "Axel Cluney (Earth-616)",
+"w": 480,
+"h": 400
+},
+"xmen:cassandra": {
+"img": "https://static.wikia.nocookie.net/marveldatabase/images/6/68/X-Men_Vol_7_14_Cassandra_Nova_Virgin_Variant.jpg/revision/latest/scale-to-width-down/312?cb=20250404195404",
+"pg": "Cassandra Nova (Earth-616)",
+"w": 312,
+"h": 480
+},
+"xmen:ladypool": {
+"img": "https://static.wikia.nocookie.net/marveldatabase/images/5/5b/Deadpool_Merc_with_a_Mouth_Vol_1_7_Second_Printing_Variant_Textless.jpg/revision/latest/scale-to-width-down/316?cb=20110926050952",
+"pg": "Wanda Wilson (Earth-3010)",
+"w": 316,
+"h": 480
+},
+"xmen:dani": {
+"img": "https://static.wikia.nocookie.net/marveldatabase/images/8/81/Danielle_Moonstar_%28Earth-616%29_from_Marvel%27s_Voices_Indigenous_Voices_Vol_1_1_Richardson_Variant_cover.jpg/revision/latest/scale-to-width-down/311?cb=20201002185905",
+"pg": "Danielle Moonstar (Earth-616)",
+"w": 311,
+"h": 480
+},
+"xmen:magik": {
+"img": "https://static.wikia.nocookie.net/marveldatabase/images/5/54/X-Men_Vol_7_2_Magik_Virgin_Variant.jpg/revision/latest/scale-to-width-down/316?cb=20240811043500",
+"pg": "Illyana Rasputina (Earth-616)",
+"w": 316,
+"h": 480
+},
+"xmen:reyes": {
+"img": "https://static.wikia.nocookie.net/marveldatabase/images/4/47/X-Factor_Vol_5_4_Cecilia_Reyes_Virgin_Variant.jpg/revision/latest/scale-to-width-down/312?cb=20250104115512",
+"pg": "Cecilia Reyes (Earth-616)",
+"w": 312,
+"h": 480
+},
+"xmen:vanessa": {
+"img": "https://static.wikia.nocookie.net/marveldatabase/images/6/68/Vanessa_Carlysle_%28Earth-616%29_from_Deadpool_Vol_4_27_001.jpg/revision/latest/scale-to-width-down/312?cb=20240529013719",
+"pg": "Vanessa Carlysle (Earth-616)",
+"w": 312,
+"h": 480
+},
+"xmen:weasel": {
+"img": "https://static.wikia.nocookie.net/marveldatabase/images/f/fc/Jack_Hammer_%28Earth-616%29_from_Deadpool_Assassin_Vol_1_1_001.jpg/revision/latest/scale-to-width-down/300?cb=20180616034552",
+"pg": "Jack Hammer (Earth-616)",
+"w": 300,
+"h": 480
+},
+"xmen:rice": {
+"img": "https://static.wikia.nocookie.net/marveldatabase/images/a/a2/Zander_Rice_%28Earth-616%29_from_X-23_Vol_1_6_0001.jpg/revision/latest/scale-to-width-down/385?cb=20110617044138",
+"pg": "Zander Rice (Earth-616)",
+"w": 385,
+"h": 480
+},
+"spidey:miles": {
+"img": "https://static.wikia.nocookie.net/marveldatabase/images/3/39/Miles_Morales_Spider-Man_Vol_3_1_Textless.jpg/revision/latest/scale-to-width-down/316?cb=20260421170022",
+"pg": "Miles Morales (Earth-1610)",
+"w": 316,
+"h": 480
+},
+"spidey:noir_n": {
+"img": "https://static.wikia.nocookie.net/marveldatabase/images/e/e4/Spider-Man_Noir_Vol_2_2_Textless.jpg/revision/latest/scale-to-width-down/316?cb=20200124213038",
+"pg": "Peter Parker (Earth-90214)",
+"w": 316,
+"h": 480
+},
+"spidey:peni": {
+"img": "https://static.wikia.nocookie.net/marveldatabase/images/6/6a/Edge_of_Spider-Geddon_Vol_1_2_Textless.jpg/revision/latest/scale-to-width-down/316?cb=20181005044750",
+"pg": "Peni Parker (Earth-14512)",
+"w": 316,
+"h": 480
+},
+"spidey:ham": {
+"img": "https://static.wikia.nocookie.net/marveldatabase/images/f/f6/Spider-Ham_Vol_1_1_Textless.jpg/revision/latest/scale-to-width-down/316?cb=20190911100619",
+"pg": "Peter Porker (Earth-8311)",
+"w": 316,
+"h": 480
+},
+"spidey:prowler": {
+"img": "https://static.wikia.nocookie.net/marveldatabase/images/f/ff/Miles_Morales_Spider-Man_Vol_2_14_Textless.jpg/revision/latest/scale-to-width-down/316?cb=20230725041353",
+"pg": "Aaron Davis (Earth-1610)",
+"w": 316,
+"h": 480
+},
+"spidey:miguel": {
+"img": "https://static.wikia.nocookie.net/marveldatabase/images/4/49/Miguel_O%27Hara_%28Earth-928%29_from_Amazing_Spider-Man_Vol_5_36_001.png/revision/latest/scale-to-width-down/357?cb=20250607155214",
+"pg": "Miguel O'Hara (Earth-928)",
+"w": 357,
+"h": 480
+},
+"spidey:hobie": {
+"img": "https://static.wikia.nocookie.net/marveldatabase/images/0/03/Edge_of_Spider-Geddon_Vol_1_1_Textless.jpg/revision/latest/scale-to-width-down/316?cb=20180523051009",
+"pg": "Hobart Brown (Earth-138)",
+"w": 316,
+"h": 480
+},
+"spidey:pavitr": {
+"img": "https://static.wikia.nocookie.net/marveldatabase/images/d/d2/Pavitr_Prabhakar_%28Earth-50101%29_from_Spider-Man_India_Vol_2_5_New_Costume_Variant_001.jpg/revision/latest/scale-to-width-down/420?cb=20240220050600",
+"pg": "Pavitr Prabhakar (Earth-50101)",
+"w": 420,
+"h": 480
+},
+"spidey:jefferson": {
+"img": "https://static.wikia.nocookie.net/marveldatabase/images/3/3d/Jefferson_Morales_%28Earth-1610%29_from_Ultimate_Comics_Spider-Man_Vol_1_1_001.jpg/revision/latest/scale-to-width-down/351?cb=20120414053510",
+"pg": "Jefferson Davis (Earth-1610)",
+"w": 351,
+"h": 480
+},
+"spidey:rio": {
+"img": "https://static.wikia.nocookie.net/marveldatabase/images/6/66/Rio_Morales_%28Earth-1610%29_from_Defenders_Vol_5_3_001.jpg/revision/latest/scale-to-width-down/304?cb=20190814233011",
+"pg": "Rio Morales (Earth-1610)",
+"w": 304,
+"h": 480
+},
+"spidey:george": {
+"img": "https://static.wikia.nocookie.net/marveldatabase/images/d/d0/George_Stacy_%28Earth-65%29_from_Spider-Gwen_Vol_2_4_0001.jpg/revision/latest/scale-to-width-down/171?cb=20161001182653",
+"pg": "George Stacy (Earth-65)",
+"w": 171,
+"h": 480
+},
+"spidey:stacy": {
+"img": "https://static.wikia.nocookie.net/marveldatabase/images/c/c2/George_Stacy_%28Earth-616%29_from_Official_Handbook_of_the_Marvel_Universe_Book_of_the_Dead_2004_Vol_1_1_0001.png/revision/latest/scale-to-width-down/201?cb=20170409180645",
+"pg": "George Stacy (Earth-616)",
+"w": 201,
+"h": 480
+},
+"spidey:mj_k": {
+"img": "https://static.wikia.nocookie.net/marveldatabase/images/8/83/Friendly_Neighborhood_Mary_Jane_Vol_1_1_Virgin_Variant.jpg/revision/latest/scale-to-width-down/312?cb=20261107222300",
+"pg": "Mary Jane Watson (Earth-616)",
+"w": 312,
+"h": 480
+},
+"spidey:mj": {
+"img": "https://static.wikia.nocookie.net/marveldatabase/images/8/83/Friendly_Neighborhood_Mary_Jane_Vol_1_1_Virgin_Variant.jpg/revision/latest/scale-to-width-down/312?cb=20261107222300",
+"pg": "Mary Jane Watson (Earth-616)",
+"w": 312,
+"h": 480
+},
+"spidey:gwen_e": {
+"img": "https://static.wikia.nocookie.net/marveldatabase/images/e/e7/Symbiote_Spider-Man_Vol_1_1_Artgerm_Virgin_Variant.jpg/revision/latest/scale-to-width-down/316?cb=20190125221031",
+"pg": "Gwen Stacy (Earth-616)",
+"w": 316,
+"h": 480
+},
+"spidey:gwen_s": {
+"img": "https://static.wikia.nocookie.net/marveldatabase/images/e/e7/Symbiote_Spider-Man_Vol_1_1_Artgerm_Virgin_Variant.jpg/revision/latest/scale-to-width-down/316?cb=20190125221031",
+"pg": "Gwen Stacy (Earth-616)",
+"w": 316,
+"h": 480
+},
+"spidey:may_r": {
+"img": "https://static.wikia.nocookie.net/marveldatabase/images/7/70/Benjamin_Reilly_%28Earth-616%29_and_May_Parker_%28Earth-616%29_from_Spectacular_Spider-Man_Vol_1_254_001.jpg/revision/latest/scale-to-width-down/324?cb=20250421012809",
+"pg": "May Parker (Earth-616)",
+"w": 324,
+"h": 480
+},
+"spidey:may_s": {
+"img": "https://static.wikia.nocookie.net/marveldatabase/images/7/70/Benjamin_Reilly_%28Earth-616%29_and_May_Parker_%28Earth-616%29_from_Spectacular_Spider-Man_Vol_1_254_001.jpg/revision/latest/scale-to-width-down/324?cb=20250421012809",
+"pg": "May Parker (Earth-616)",
+"w": 324,
+"h": 480
+},
+"spidey:may_t": {
+"img": "https://static.wikia.nocookie.net/marveldatabase/images/7/70/Benjamin_Reilly_%28Earth-616%29_and_May_Parker_%28Earth-616%29_from_Spectacular_Spider-Man_Vol_1_254_001.jpg/revision/latest/scale-to-width-down/324?cb=20250421012809",
+"pg": "May Parker (Earth-616)",
+"w": 324,
+"h": 480
+},
+"spidey:ben_r": {
+"img": "https://static.wikia.nocookie.net/marveldatabase/images/e/e4/Benjamin_Parker_%28Earth-616%29_from_Official_Handbook_of_the_Marvel_Universe_Book_of_the_Dead_2004_Vol_1_1_0001.png/revision/latest/scale-to-width-down/210?cb=20170410023208",
+"pg": "Benjamin Parker (Earth-616)",
+"w": 210,
+"h": 480
+},
+"spidey:ben_s": {
+"img": "https://static.wikia.nocookie.net/marveldatabase/images/e/e4/Benjamin_Parker_%28Earth-616%29_from_Official_Handbook_of_the_Marvel_Universe_Book_of_the_Dead_2004_Vol_1_1_0001.png/revision/latest/scale-to-width-down/210?cb=20170410023208",
+"pg": "Benjamin Parker (Earth-616)",
+"w": 210,
+"h": 480
+},
+"spidey:ben_mw": {
+"img": "https://static.wikia.nocookie.net/marveldatabase/images/e/e4/Benjamin_Parker_%28Earth-616%29_from_Official_Handbook_of_the_Marvel_Universe_Book_of_the_Dead_2004_Vol_1_1_0001.png/revision/latest/scale-to-width-down/210?cb=20170410023208",
+"pg": "Benjamin Parker (Earth-616)",
+"w": 210,
+"h": 480
+},
+"spidey:jjj": {
+"img": "https://static.wikia.nocookie.net/marveldatabase/images/9/96/John_Jonah_Jameson_%28Earth-616%29_from_Marvel_Knights_Spider-Man_Vol_1_4_001.jpg/revision/latest/scale-to-width-down/316?cb=20161214062419",
+"pg": "John Jonah Jameson (Earth-616)",
+"w": 316,
+"h": 480
+},
+"spidey:betty_b": {
+"img": "https://static.wikia.nocookie.net/marveldatabase/images/7/74/Elizabeth_Brant_%28Earth-616%29_from_Friendly_Neighborhood_Spider-Man_Vol_1_15_001.jpg/revision/latest/scale-to-width-down/270?cb=20210925064711",
+"pg": "Elizabeth Brant (Earth-616)",
+"w": 270,
+"h": 480
+},
+"spidey:betty_r": {
+"img": "https://static.wikia.nocookie.net/marveldatabase/images/7/74/Elizabeth_Brant_%28Earth-616%29_from_Friendly_Neighborhood_Spider-Man_Vol_1_15_001.jpg/revision/latest/scale-to-width-down/270?cb=20210925064711",
+"pg": "Elizabeth Brant (Earth-616)",
+"w": 270,
+"h": 480
+},
+"spidey:robbie": {
+"img": "https://static.wikia.nocookie.net/marveldatabase/images/5/5e/Joseph_Robertson_%28Earth-616%29_from_Amazing_Spider-Man_Vol_5_64_001.jpg/revision/latest/scale-to-width-down/241?cb=20210421234837",
+"pg": "Joseph Robertson (Earth-616)",
+"w": 241,
+"h": 480
+},
+"spidey:robbie_n": {
+"img": "https://static.wikia.nocookie.net/marveldatabase/images/5/5e/Joseph_Robertson_%28Earth-616%29_from_Amazing_Spider-Man_Vol_5_64_001.jpg/revision/latest/scale-to-width-down/241?cb=20210421234837",
+"pg": "Joseph Robertson (Earth-616)",
+"w": 241,
+"h": 480
+},
+"spidey:connors_r": {
+"img": "https://static.wikia.nocookie.net/marveldatabase/images/7/7a/Curtis_Connors_%28Earth-616%29_from_Amazing_Spider-Man_Vol_5_25_002.jpg/revision/latest/scale-to-width-down/353?cb=20200816020802",
+"pg": "Curtis Connors (Earth-616)",
+"w": 353,
+"h": 480
+},
+"spidey:flash": {
+"img": "https://static.wikia.nocookie.net/marveldatabase/images/0/0c/Extreme_Carnage_Alpha_Vol_1_1_616_Comics_and_Jolzar_Collectibles_Exclusive_Variant_Textless.jpg/revision/latest/scale-to-width-down/316?cb=20210901232245",
+"pg": "Eugene Thompson (Earth-616)",
+"w": 316,
+"h": 480
+},
+"spidey:happy": {
+"img": "https://static.wikia.nocookie.net/marveldatabase/images/3/3e/Iron_Man_Vol_7_4_Villain_Variant_Textless.jpg/revision/latest/scale-to-width-down/312?cb=20260912014701",
+"pg": "Harold Hogan (Earth-616)",
+"w": 312,
+"h": 480
+},
+"spidey:richard": {
+"img": "https://static.wikia.nocookie.net/marveldatabase/images/5/52/Richard_Parker_%28Earth-616%29_from_Untold_Tales_of_Spider-Man_Vol_1_-1_0001.jpg/revision/latest/scale-to-width-down/229?cb=20200229055804",
+"pg": "Richard Parker (Earth-616)",
+"w": 229,
+"h": 480
+},
+"spidey:morbius": {
+"img": "https://static.wikia.nocookie.net/marveldatabase/images/6/6c/Morbius_Vol_1_1_Textless.jpg/revision/latest/scale-to-width-down/316?cb=20211102194828",
+"pg": "Michael Morbius (Earth-616)",
+"w": 316,
+"h": 480
+},
+"spidey:madameweb": {
+"img": "https://static.wikia.nocookie.net/marveldatabase/images/9/9e/Cassandra_Webb_%28Earth-616%29_from_Prowler_Vol_2_1_001.jpg/revision/latest/scale-to-width-down/312?cb=20220428150725",
+"pg": "Cassandra Webb (Earth-616)",
+"w": 312,
+"h": 480
+},
+"spidey:julia": {
+"img": "https://static.wikia.nocookie.net/marveldatabase/images/7/74/Julia_Carpenter_%28Earth-616%29_from_Prowler_Vol_2_2_001.jpg/revision/latest/scale-to-width-down/312?cb=20191006044458",
+"pg": "Julia Carpenter (Earth-616)",
+"w": 312,
+"h": 480
+},
+"spidey:anya": {
+"img": "https://static.wikia.nocookie.net/marveldatabase/images/e/e2/A%C3%B1a_Coraz%C3%B3n_%28Earth-616%29_from_Edge_of_Spider-Verse_Vol_2_1_001.jpg/revision/latest/scale-to-width-down/312?cb=20220804155915",
+"pg": "Anya Corazon (Earth-616)",
+"w": 312,
+"h": 480
+},
+"spidey:ezekiel": {
+"img": "https://static.wikia.nocookie.net/marveldatabase/images/3/39/Ezekiel_Sims_%28Earth-616%29_from_Amazing_Spider-Man_Vol_2_33_cover.jpg/revision/latest/scale-to-width-down/309?cb=20191219062701",
+"pg": "Ezekiel Sims (Earth-616)",
+"w": 309,
+"h": 480
+},
+"spidey:calypso": {
+"img": "https://static.wikia.nocookie.net/marveldatabase/images/4/4f/Amazing_Spider-Man_Vol_5_20_ComicXposure_Exclusive_Virgin_Variant.jpg/revision/latest/scale-to-width-down/305?cb=20190606174916",
+"pg": "Calypso Ezili (Earth-616)",
+"w": 305,
+"h": 480
+},
+"spidey:nikolai": {
+"img": "https://static.wikia.nocookie.net/marveldatabase/images/3/37/Nikolai_Kravinoff_%28Earth-616%29_from_Amazing_Spider-Man_Vol_1_294_001.jpg/revision/latest?cb=20230205143251",
+"pg": "Nikolai Kravinoff (Earth-616)",
+"w": 339,
+"h": 480
+},
+"spidey:knull": {
+"img": "https://static.wikia.nocookie.net/marveldatabase/images/3/3c/Knull_%28Earth-616%29_from_Queen_in_Black_Defenders_of_Light_and_Dark_Vol_1_3_001.jpg/revision/latest/scale-to-width-down/312?cb=20260917220129",
+"pg": "Knull (Earth-616)",
+"w": 312,
+"h": 480
+},
+"spidey:silvermane": {
+"img": "https://static.wikia.nocookie.net/marveldatabase/images/b/b2/Silvio_Manfredi_%28Earth-616%29_from_Silk_Vol_3_3_001.jpg/revision/latest/scale-to-width-down/312?cb=20250622044037",
+"pg": "Silvio Manfredi (Earth-616)",
+"w": 312,
+"h": 480
+},
+"spidey:foreigner": {
+"img": "https://static.wikia.nocookie.net/marveldatabase/images/2/2c/Amazing_Spider-Man_Vol_5_38_Textless.jpg/revision/latest/scale-to-width-down/310?cb=20191228082918",
+"pg": "Foreigner (Earth-616)",
+"w": 310,
+"h": 480
+},
+"dc:freeze": {
+"img": "https://static.wikia.nocookie.net/marvel_dc/images/8/8f/Mister_Freeze_Prime_Earth_0001.jpg/revision/latest/scale-to-width-down/312?cb=20130822212807",
+"pg": "Victor Fries (Prime Earth)",
+"w": 312,
+"h": 480
+},
+"dc:gordon_h": {
+"img": "https://static.wikia.nocookie.net/marvel_dc/images/d/de/Detective_Comics_Vol_2_25_Textless.jpg/revision/latest/scale-to-width-down/316?cb=20131021172041",
+"pg": "James Gordon (Prime Earth)",
+"w": 316,
+"h": 480
+},
+"dc:lois_k": {
+"img": "https://static.wikia.nocookie.net/marvel_dc/images/c/ca/Lois_Lane_Vol_2_7_Variant_Textless.jpg/revision/latest/scale-to-width-down/316?cb=20200110172538",
+"pg": "Lois Lane (Prime Earth)",
+"w": 316,
+"h": 480
+},
+"dc:lois_b": {
+"img": "https://static.wikia.nocookie.net/marvel_dc/images/c/ca/Lois_Lane_Vol_2_7_Variant_Textless.jpg/revision/latest/scale-to-width-down/316?cb=20200110172538",
+"pg": "Lois Lane (Prime Earth)",
+"w": 316,
+"h": 480
+},
+"dc:lois_a": {
+"img": "https://static.wikia.nocookie.net/marvel_dc/images/c/ca/Lois_Lane_Vol_2_7_Variant_Textless.jpg/revision/latest/scale-to-width-down/316?cb=20200110172538",
+"pg": "Lois Lane (Prime Earth)",
+"w": 316,
+"h": 480
+},
+"dc:jimmy_m": {
+"img": "https://static.wikia.nocookie.net/marvel_dc/images/9/9b/Superman%27s_Pal%2C_Jimmy_Olsen_Vol_2_12_Textless.jpg/revision/latest/scale-to-width-down/316?cb=20200714134441",
+"pg": "James Olsen (Prime Earth)",
+"w": 316,
+"h": 480
+},
+"dc:perry_c": {
+"img": "https://static.wikia.nocookie.net/marvel_dc/images/0/0e/Perry_White_%28Prime_Earth%29_02.png/revision/latest?cb=20131212073101",
+"pg": "Perry White (Prime Earth)",
+"w": 458,
+"h": 480
+},
+"dc:jorel_b": {
+"img": "https://static.wikia.nocookie.net/marvel_dc/images/b/be/Superman_Vol_4_19_Textless.jpg/revision/latest/scale-to-width-down/321?cb=20170314200852",
+"pg": "Jor-El (Prime Earth)",
+"w": 321,
+"h": 480
+},
+"dc:ursa": {
+"img": "https://static.wikia.nocookie.net/marvel_dc/images/e/e3/Ursa_1.JPG/revision/latest?cb=20230329191608",
+"pg": "Ursa (New Earth)",
+"w": 315,
+"h": 480
+},
+"dc:non": {
+"img": "https://static.wikia.nocookie.net/marvel_dc/images/0/0f/Non_1.JPG/revision/latest/scale-to-width-down/380?cb=20230329191346",
+"pg": "Non (New Earth)",
+"w": 380,
+"h": 480
+},
+"dc:carol": {
+"img": "https://static.wikia.nocookie.net/marvel_dc/images/6/61/Carol_Ferris_Prime_Earth_002.jpeg/revision/latest/scale-to-width-down/312?cb=20240612184336",
+"pg": "Carol Ferris (Prime Earth)",
+"w": 312,
+"h": 480
+},
+"dc:hammond": {
+"img": "https://static.wikia.nocookie.net/marvel_dc/images/d/d2/Superman_Vol_3_21_Textless.jpg/revision/latest/scale-to-width-down/312?cb=20130626200131",
+"pg": "Hector Hammond (Prime Earth)",
+"w": 312,
+"h": 480
+},
+"dc:tomar": {
+"img": "https://static.wikia.nocookie.net/marvel_dc/images/4/49/Tomar-Re_004.jpg/revision/latest/scale-to-width-down/480?cb=20171121163415",
+"pg": "Tomar-Re (New Earth)",
+"w": 480,
+"h": 263
+},
+"dc:chas": {
+"img": "https://static.wikia.nocookie.net/marvel_dc/images/8/86/Chas_Chandler_001.jpg/revision/latest/scale-to-width-down/480?cb=20141129143851",
+"pg": "Chas Chandler (New Earth)",
+"w": 480,
+"h": 467
+},
+"dc:midnite": {
+"img": "https://static.wikia.nocookie.net/marvel_dc/images/1/19/Papa_Midnite.JPG/revision/latest/scale-to-width-down/311?cb=20160824145623",
+"pg": "Papa Midnite (New Earth)",
+"w": 311,
+"h": 480
+},
+"dc:lucifer": {
+"img": "https://static.wikia.nocookie.net/marvel_dc/images/6/60/Lucifer16.jpg/revision/latest/scale-to-width-down/307?cb=20150316155839",
+"pg": "Lucifer Morningstar (New Earth)",
+"w": 307,
+"h": 480
+},
+"dc:gabriel": {
+"img": "https://static.wikia.nocookie.net/marvel_dc/images/7/75/Hellblazer_Vol_1_64_Textless.jpg/revision/latest/scale-to-width-down/299?cb=20130514042504",
+"pg": "Gabriel (New Earth)",
+"w": 299,
+"h": 480
+},
+"dc:catwoman_hb": {
+"img": "https://static.wikia.nocookie.net/marvel_dc/images/8/8b/Patience_Philips_Catwoman.jpg/revision/latest?cb=20090622173216",
+"pg": "Patience Phillips (Catwoman)",
+"w": 480,
+"h": 425
 }
 }

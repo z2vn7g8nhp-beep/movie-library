@@ -1,11 +1,12 @@
-"""影库的「宇宙」专题：漫威电影宇宙、DC 宇宙、异形宇宙。
+"""影库的「宇宙」专题：漫威电影宇宙、DC 宇宙、异形宇宙写在本文件里，其他系列（X 战警、魔法世界……）一个系列一份底稿，放在 scraper/unis/。
 
 这里是手写的底稿（片名 + 年份 + 中文名，角色 + 演员 + 出场作品），
 运行一次会对照离线片库查出 IMDb 编号，写成网页用的 docs/universes.json：
 
     python scraper/universes.py --idx 片库索引目录 --out docs/universes.json
 
-想加片子、加角色：改下面的 UNIVERSES，再跑一遍。
+想加片子、加角色：改下面的 UNIVERSES 或 unis/ 里的底稿，再跑一遍。
+新演员在片库名单里对不上时加 --fix-nm（去 IMDb 查编号），新漫画图加 --fandom。
 """
 import argparse
 import json
@@ -437,7 +438,7 @@ DC_CHARS = [
     ("atlanna", "亚特兰娜", "Atlanna", "亚特兰蒂斯女王", ["Nicole Kidman"], "aqua1 aqua2", "#3E8A86"),
     ("vulko", "维科", "Vulko", "亚特兰蒂斯谋士", ["Willem Dafoe"], "aqua1 zsjl", "#5E7A6A"),
     ("sivana", "希瓦纳博士", "Dr. Sivana", "七宗罪的宿主", ["Mark Strong"], "shazam1", "#5A4A6A"),
-    ("batman_k", "蝙蝠侠", "Batman", "《闪电侠》· 迈克尔·基顿", ["Michael Keaton"], "flash", "#2E3038"),
+    ("batman_k", "蝙蝠侠", "Batman", "伯顿版 · 迈克尔·基顿", ["Michael Keaton"], "flash", "#2E3038"),
     ("supergirl_f", "超级少女", "Supergirl", "《闪电侠》· 萨莎·卡莱", ["Sasha Calle"], "flash", "#C23A48"),
     ("vigilante", "义警", "Vigilante", "阿德里安·蔡斯", ["Freddie Stroma"], "pm", "#3E5E8A"),
     ("harcourt", "哈考特", "Emilia Harcourt", "和平使者的队友", ["Jennifer Holland"], "tss pm", "#4A4A5A"),
@@ -913,7 +914,7 @@ INTRO = {
     "atlanna": "亚特兰蒂斯女王，亚瑟的母亲，为了爱逃离过海底王国。",
     "vulko": "亚特兰蒂斯的谋士，从小秘密训练亚瑟。",
     "sivana": "从小被魔法师拒之门外的希瓦纳，长大后和七宗罪结下契约。",
-    "batman_k": "另一个宇宙里早已退隐的蝙蝠侠，一出场就让人想起 1989 年。",
+    "batman_k": "1989 年在蒂姆·伯顿的哥谭里，一句“我是蝙蝠侠”定义了一代人心里的黑暗骑士。三十多年后，他又在《闪电侠》的另一个宇宙里重新穿上了战衣。",
     "supergirl_f": "另一个时间线里被关在俄罗斯的超级少女卡拉。",
     "vigilante": "和平使者的头号粉丝，开心地杀人，开心地交朋友。",
     "harcourt": "沃勒手下的特工，嘴硬、能打，是和平使者最靠谱的队友。",
@@ -984,6 +985,136 @@ COMIC_ID = {
 }
 
 
+# ---------------------------------------------------------------- 其他系列的手写底稿（scraper/unis/*.py）
+# 每个文件一个专题：U（名字、主题色、Wikidata 编号……）、WORKS、CHARS、DECKS 三段文字，可选 COMIC / FANDOM / SAGAS。
+#   WORKS:  ## 段 key | 中文段名 | English          然后每行  key | 英文片名 | 年份 | 中文名 | ty=s x tl=1991
+#   CHARS:  key | 中文名 | English | 一句话身份 | 演员;演员 | 出场作品 | 主色 | 标签;标签 | 档案:值;档案:值 | 角色key:关系;…
+#           下一行以 > 开头的是角色介绍。主色写 - 就按名字自动配一个。
+#   DECKS:  key | 中文名 | English | 图标 | 成员 成员 …
+FIX_NM = False
+ACTOR_CTX = {}   # 演员名 → 出场作品的英文片名（查编号时用来排除重名）
+EXTRA = {}     # "宇宙:角色" → {"f": 标签, "x": 小档案, "rel": 羁绊}
+
+
+def _cells(line):
+    return [x.strip() for x in line.split("|")]
+
+
+def _auto_color(key, base):
+    import colorsys
+    h = (sum(ord(c) * (i + 7) for i, c in enumerate(key)) % 360) / 360
+    r, g, b = colorsys.hls_to_rgb(h, .42, .38)
+    return "#%02X%02X%02X" % (int(r * 255), int(g * 255), int(b * 255))
+
+
+def load_unis():
+    import importlib.util
+    out = []
+    d = Path(__file__).with_name("unis")
+    for f in sorted(d.glob("*.py")) if d.exists() else []:
+        spec = importlib.util.spec_from_file_location("uni_" + f.stem, f)
+        m = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(m)
+        u = dict(m.U)
+        secs, cur = [], None
+        for line in getattr(m, "WORKS", "").strip().splitlines():
+            line = line.strip()
+            if not line or line.startswith("#") and not line.startswith("##"):
+                continue
+            if line.startswith("##"):
+                k, n, en = _cells(line[2:])[:3]
+                cur = [k, n, en, []]
+                secs.append(cur)
+                continue
+            c = _cells(line)
+            key, title, year, cn = c[0], c[1], int(c[2]), c[3]
+            ex = {}
+            for o in (c[4].split() if len(c) > 4 else []):
+                a, _, b = o.partition("=")
+                ex[a] = True if not b else (float(b) if a == "tl" else b.replace("_", " "))
+            cur[3].append((key, title, year, cn, ex) if ex else (key, title, year, cn))
+        chars, last = [], None
+        for line in m.CHARS.strip().splitlines():
+            line = line.strip()
+            if not line or line.startswith("#"):
+                continue
+            if line.startswith(">"):
+                INTRO[f"{u['id']}:{last}"] = line[1:].strip()
+                continue
+            c = _cells(line) + [""] * 10
+            key, cn, en, sub, actors, ws, color, tags, facts, rel = c[:10]
+            last = key
+            vo = actors.startswith("vo:")
+            actors = actors[3:] if vo else actors
+            actors = [a.strip() for a in actors.split(";") if a.strip() and a.strip() != "-"]
+            if not color or color == "-":
+                color = _auto_color(u["id"] + key, "")
+            chars.append((key, cn, en, "" if sub == "-" else sub, actors, "" if ws == "-" else ws, color))
+            ex = {}
+            if tags and tags != "-":
+                ex["f"] = [t.strip() for t in tags.split(";") if t.strip()]
+            if facts and facts != "-":
+                ex["x"] = [[a.strip(), b.strip()] for a, _, b in (p.partition(":") for p in facts.split(";")) if b.strip()]
+            if rel and rel != "-":
+                ex["rel"] = [[a.strip(), b.strip()] for a, _, b in (p.partition(":") for p in rel.split(";")) if a.strip()]
+            if vo:
+                ex["vo"] = 1
+            if ex:
+                EXTRA[f"{u['id']}:{key}"] = ex
+        decks = []
+        for line in getattr(m, "DECKS", "").strip().splitlines():
+            if line.strip() and not line.strip().startswith("#"):
+                k, n, en, ic, mem = _cells(line)[:5]
+                decks.append((k, n, en, mem, ic))
+        for rk, keys in (getattr(m, "RARE", {}) or {}).items():   # 主角直接定稀有度（出场次数排不出来的）
+            for k in keys.split():
+                EXTRA.setdefault(f"{u['id']}:{k}", {})["r"] = rk
+        if u.get("extend"):   # 给已有专题（漫威 / DC / 异形）补作品、角色、套牌和档案
+            base = next(b for b in UNIVERSES if b["id"] == u["extend"])
+            have = {c[0] for c in base["chars"]}
+            for k in list(EXTRA):
+                if k.startswith(u["id"] + ":"):
+                    EXTRA[base["id"] + ":" + k.split(":", 1)[1]] = EXTRA.pop(k)
+            for k in list(INTRO):
+                if isinstance(k, str) and k.startswith(u["id"] + ":"):
+                    INTRO[base["id"] + ":" + k.split(":", 1)[1]] = INTRO.pop(k)
+            new_chars = [c for c in chars if c[0] not in have]
+            for c in chars:   # 已有角色：只追加出场作品（写在底稿里的作品比原来多时）
+                if c[0] in have and c[5]:
+                    i = next(j for j, b in enumerate(base["chars"]) if b[0] == c[0])
+                    b = base["chars"][i]
+                    extra_w = [w for w in c[5].split() if w not in b[5].split()]
+                    if extra_w or c[4]:
+                        base["chars"][i] = (b[0], b[1], b[2], b[3], b[4] + [a for a in c[4] if a not in b[4]], " ".join(b[5].split() + extra_w), b[6])
+            base["sections"] = list(base["sections"]) + [tuple(x) for x in secs]
+            base["chars"] = list(base["chars"]) + new_chars
+            dk = {d[0]: i for i, d in enumerate(base["decks"])}
+            base["decks"] = list(base["decks"])
+            for d in decks:
+                if d[0] in dk:   # 同名套牌：追加成员
+                    o = base["decks"][dk[d[0]]]
+                    keep = lambda a, b: a if a and a != "-" else b
+                    base["decks"][dk[d[0]]] = (o[0], keep(d[1], o[1]), keep(d[2], o[2]), " ".join(o[3].split() + [m for m in d[3].split() if m not in o[3].split()]), o[4])
+                else:
+                    base["decks"].append(d)
+            base["wd"] = list(base.get("wd", [])) + [q for q in u.get("wd", []) if q not in base.get("wd", [])]
+            COMIC_ID.setdefault(base["id"], {}).update(getattr(m, "COMIC", {}) or {})
+            base["_fandom"] = {**base.get("_fandom", {}), **(getattr(m, "FANDOM", {}) or {})}
+            continue
+        u.update({"sections": [tuple(x) for x in secs], "chars": chars, "decks": decks})
+        if getattr(m, "SAGAS", None):
+            u["sagas"] = m.SAGAS
+        COMIC_ID.setdefault(u["id"], {}).update(getattr(m, "COMIC", {}) or {})
+        u["_fandom"] = getattr(m, "FANDOM", {}) or {}
+        u["_order"] = getattr(m, "ORDER", 50)
+        out.append(u)
+    out.sort(key=lambda u: u["_order"])
+    return out
+
+
+UNIVERSES += load_unis()
+
+
 def extract_comics(all_json):
     """从 SuperHero API 的 all.json 抽出用得到的：图、六维数值、真名、首次登场、身高体重……"""
     d = {h["id"]: h for h in json.loads(Path(all_json).read_text(encoding="utf-8"))}
@@ -1049,6 +1180,72 @@ def crew_of(idx, tid, cache):
     return cache[i].get(tid, {})
 
 
+NM_FIX = {}   # 片库名单里没有的演员 → IMDb 编号（unis/_nm.json，用 --fix-nm 自动查）
+_nmp = Path(__file__).with_name("unis") / "_nm.json"
+if _nmp.exists():
+    NM_FIX.update(json.loads(_nmp.read_text(encoding="utf-8")))
+
+
+def fix_nm(names_missing):
+    """用 IMDb 的搜索联想查演员编号，存进 unis/_nm.json"""
+    import urllib.parse
+    import urllib.request
+    for a in names_missing:
+        if a in NM_FIX:
+            continue
+        try:
+            u = "https://v3.sg.media-imdb.com/suggestion/x/" + urllib.parse.quote(a.lower()) + ".json"
+            d = json.load(urllib.request.urlopen(u, timeout=15))
+            nms = [x for x in d.get("d", []) if x.get("id", "").startswith("nm")]
+            ctx = [norm(t) for t in ACTOR_CTX.get(a, [])]   # 优先选简介里提到这个系列片名的人（重名的演员很多）
+            hit = next((x for x in nms if ctx and any(t and t in norm(x.get("s") or "") for t in ctx)), None) \
+                or next((x for x in nms if norm(x.get("l")) == norm(a)), None)
+            if hit:
+                NM_FIX[a] = hit["id"]
+                print(f"  查到 {a} → {hit['id']}（{hit.get('s', '')}）", file=sys.stderr)
+            else:
+                print(f"  IMDb 也没查到 {a}", file=sys.stderr)
+        except Exception as e:
+            print(f"  查 {a} 出错：{e}", file=sys.stderr)
+    _nmp.write_text(json.dumps(dict(sorted(NM_FIX.items())), ensure_ascii=False, indent=0) + "\n", encoding="utf-8")
+
+
+def fetch_fandom():
+    """底稿里 FANDOM 写了页面名的角色（SuperHero API 里没有的），去 Marvel / DC 维基取漫画图，存进 universes_fandom.json"""
+    import urllib.parse
+    import urllib.request
+    fp = Path(__file__).with_name("universes_fandom.json")
+    have = json.loads(fp.read_text(encoding="utf-8")) if fp.exists() else {}
+    for u in UNIVERSES:
+        todo = {k: pg for k, pg in (u.get("_fandom") or {}).items() if f"{u['id']}:{k}" not in have}
+        if not todo:
+            continue
+        wiki = u.get("wiki") or ("dc" if u["id"] == "dc" else "marvel")
+        pages = sorted(set(todo.values()))
+        got = {}
+        for i in range(0, len(pages), 40):
+            q = {"action": "query", "format": "json", "prop": "pageimages", "piprop": "thumbnail|name", "pithumbsize": "480",
+                 "redirects": "1", "titles": "|".join(pages[i:i + 40])}
+            url = f"https://{wiki}.fandom.com/api.php?" + urllib.parse.urlencode(q)
+            req = urllib.request.Request(url, headers={"User-Agent": "movie-library/1.0 (personal)"})
+            d = json.load(urllib.request.urlopen(req, timeout=30))["query"]
+            alias = {x["from"]: x["to"] for x in d.get("normalized", []) + d.get("redirects", [])}
+            for pg in d.get("pages", {}).values():
+                if pg.get("thumbnail"):
+                    got[pg["title"]] = pg["thumbnail"]
+            for a, b in alias.items():
+                b = alias.get(b, b)
+                if b in got:
+                    got[a] = got[b]
+        for k, pg in todo.items():
+            t = got.get(pg)
+            if t:
+                have[f"{u['id']}:{k}"] = {"img": t["source"], "pg": pg, "w": t.get("width"), "h": t.get("height")}
+            else:
+                print(f"  维基没有图：{u['id']}:{k}（{pg}）", file=sys.stderr)
+    fp.write_text(json.dumps(have, ensure_ascii=False, indent=0) + "\n", encoding="utf-8")
+
+
 def build(idx, out):
     rows = load_index(idx)
     by_norm = {}
@@ -1086,6 +1283,8 @@ def build(idx, out):
                     w["x"] = 1
                 if "tl" in ex:
                     w["tl"] = ex["tl"]
+                if ex.get("tll"):
+                    w["tll"] = ex["tll"]
                 if ex.get("ty"):
                     w["ty"] = ex["ty"]
                 works.append(w)
@@ -1103,23 +1302,36 @@ def build(idx, out):
                 if key2id[k]:
                     crew.update(crew_of(idx, key2id[k], shard_cache))
             ids = []
+            titles = [w["en"] for w in works if w["k"] in wl]
             for a in actors:
+                ACTOR_CTX.setdefault(a, titles)
+                if "@" in a:   # 片库里对不上的演员，底稿里直接写 IMDb 编号：名字@nm…
+                    nmn, nid = a.split("@", 1)
+                    ids.append([nid.strip(), nmn.strip()])
+                    continue
                 cands = names.get(norm(a), []) + [(i, 0) for i, n in crew.items() if norm(n) == norm(a)]
                 hit = [c for c in cands if c[0] in crew]
-                pick = (hit or sorted(cands, key=lambda c: -c[1]) or [("", 0)])[0][0]
+                pick = (hit or sorted(cands, key=lambda c: -c[1]) or [("", 0)])[0][0] or NM_FIX.get(a, "")
                 if not pick:
                     misses.append(f"{u['id']}: 演员 {a}（{cn}）")
                 elif not hit:
                     print(f"  提示：{a} 不在 {ck} 出场作品的主演表里，按名字取了 {pick}", file=sys.stderr)
                 ids.append([pick, a])
             ch = {"k": ck, "cn": cn, "en": en, "sub": sub, "a": ids, "w": wl, "c": color}
-            if INTRO.get(ck):
-                ch["i"] = INTRO[ck]
+            intro = INTRO.get(f"{u['id']}:{ck}") or (INTRO.get(ck) if u["id"] in ("mcu", "dc", "alien") else "")
+            if intro:
+                ch["i"] = intro
             else:
                 print(f"  提示：{ck} 没有角色介绍", file=sys.stderr)
             if comics.get(f"{u['id']}:{ck}"):
                 ch["cm"] = comics[f"{u['id']}:{ck}"]
+            ch.update(EXTRA.get(f"{u['id']}:{ck}", {}))
             chars.append(ch)
+        ckeys = {c["k"] for c in chars}
+        for c in chars:
+            for rk, _ in c.get("rel", []):
+                if rk not in ckeys:
+                    raise SystemExit(f"{u['id']} 角色 {c['k']} 的羁绊 {rk} 不存在")
         decks = []
         for dk, dn, den, mem, ic in u["decks"]:
             ml = mem.split()
@@ -1138,6 +1350,11 @@ def build(idx, out):
                                     separators=(",", ":")) + "\n", encoding="utf-8")
     for m in misses:
         print("  没找到：" + m, file=sys.stderr)
+    if FIX_NM:
+        miss_names = [re.match(r".*?: 演员 (.+?)（", m).group(1) for m in misses if "演员" in m]
+        if miss_names:
+            fix_nm(miss_names)
+            return build(idx, out) if not getattr(build, "again", False) and setattr(build, "again", True) is None else None
     print(f"宇宙 {len(res)} 个，作品 {sum(len(u['works']) for u in res)} 部，角色 {sum(len(u['chars']) for u in res)} 位，"
           f"没对上 {len(misses)} 条")
 
@@ -1147,7 +1364,12 @@ if __name__ == "__main__":
     ap.add_argument("--idx", required=True)
     ap.add_argument("--out", default="docs/universes.json")
     ap.add_argument("--comics", help="SuperHero API 的 all.json，给了就重新抽取漫画原型")
+    ap.add_argument("--fandom", action="store_true", help="补抓底稿里 FANDOM 写了的漫画图")
+    ap.add_argument("--fix-nm", action="store_true", help="片库里对不上的演员，去 IMDb 查编号存进 unis/_nm.json")
     a = ap.parse_args()
+    FIX_NM = a.fix_nm
+    if a.fandom:
+        fetch_fandom()
     if a.comics:
         extract_comics(a.comics)
     build(Path(a.idx), a.out)

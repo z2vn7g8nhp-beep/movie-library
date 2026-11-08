@@ -1193,6 +1193,28 @@ body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;ba
 .csh-facts dt{font-size:11px;color:var(--dim)}
 .csh-facts dd{margin:1px 0 0;font-size:13px;font-weight:600;color:var(--ink);line-height:1.35;word-break:break-word}
 .csh-src{font-size:10.5px;color:var(--faint);margin-top:10px;text-align:right}
+.csh-tags{display:flex;flex-wrap:wrap;justify-content:center;gap:5px;margin-top:9px}
+.csh-tags span{font-size:11.5px;font-weight:600;padding:3px 9px;border-radius:10px;color:color-mix(in srgb,var(--hc) 78%,#000);background:color-mix(in srgb,var(--hc) 9%,#fff);box-shadow:0 0 0 1px color-mix(in srgb,var(--hc) 26%,transparent) inset}
+.csh-prof{position:relative;padding:12px 14px 13px;background:linear-gradient(170deg,#FFFDF8,color-mix(in srgb,var(--hc) 5%,#FFF8EC))}
+.csh-prof .orn{position:absolute;width:16px;height:16px;border:1.5px solid color-mix(in srgb,var(--hc) 45%,var(--gold));opacity:.7}
+.csh-prof .orn.tl{top:6px;left:6px;border-right:0;border-bottom:0;border-radius:6px 0 0 0}
+.csh-prof .orn.br{bottom:6px;right:6px;border-left:0;border-top:0;border-radius:0 0 6px 0}
+.csh-prof dl{display:grid;grid-template-columns:1fr 1fr;gap:9px 14px;margin:0}
+.csh-prof dl div{min-width:0}
+.csh-prof dl div.w{grid-column:1/-1}
+.csh-prof dt{font-size:11px;color:var(--dim);letter-spacing:.06em}
+.csh-prof dt::before{content:"✦ ";color:color-mix(in srgb,var(--hc) 60%,var(--gold));font-size:9px}
+.csh-prof dd{margin:1px 0 0;font-size:13.5px;font-weight:600;color:var(--ink);line-height:1.4;word-break:break-word}
+.csh-rel{display:flex;align-items:flex-start;gap:10px;overflow-x:auto;padding:6px 4px 8px;scrollbar-width:none}
+.csh-rel::-webkit-scrollbar{display:none}
+.csh-rel button{flex:none;width:66px;text-align:center;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;padding:0}
+.csh-rel i{position:relative;display:grid;place-items:center;flex:none;width:54px;height:54px;margin:0 auto;border-radius:50%;overflow:hidden;font-style:normal;font-weight:800;font-size:18px;color:#fff;
+  background:linear-gradient(160deg,#B9B3C6,#8D86A0);box-shadow:0 0 0 2px #fff,0 0 0 3.5px color-mix(in srgb,var(--hc) 30%,#ddd)}
+.csh-rel .on i{background:var(--hc);box-shadow:0 0 0 2px #fff,0 0 0 3.5px color-mix(in srgb,var(--hc) 70%,var(--gold))}
+.csh-rel i img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.csh-rel b{display:block;max-width:100%;margin-top:6px;font-size:12px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.csh-rel small{display:block;font-size:10.5px;color:var(--dim);line-height:1.25;margin-top:1px}
+.csh-rel button:not(.on) b{color:var(--ink-2)}
 .csh-lock{padding:14px;text-align:center;font-size:13px;color:var(--ink-2);margin-top:12px}
 .csh-lock span{display:block;font-size:22px;margin-bottom:2px}
 .csh-pick{display:flex;gap:8px;overflow-x:auto;padding:2px 2px 6px;scrollbar-width:none}
@@ -3598,7 +3620,7 @@ function syncBanner(){
 }
 
 /* ================================================================ 宇宙与系列专题
-   漫威 / DC / 异形是手写的专题（docs/universes.json：作品、阶段、角色、套牌）；
+   手写的专题（docs/universes.json：作品、阶段、角色、套牌、小档案、羁绊）有漫威 / DC / 异形和 X 战警、魔法世界等 25 个；
    其他系列由后台查 Wikidata 自动生成（数据仓库 series.json），看过其中一部就会出现。
    看完一部 → 里面的角色点亮；集齐一组角色 → 套牌；看完一个阶段 → 成就。 */
 let UNI = [], uniP = null;
@@ -3953,7 +3975,7 @@ function uniRoute(u){
     const cs = w.chars.slice(0, 6);
     return `<div class="rn ${done ? "got" : out ? "" : "soon"}${nx === w ? " nx" : ""}"><i class="rn-dot"></i>
       <a href="#/t/${w.id}" class="rn-ps">${posterHTML(v, 120)}</a>
-      <a href="#/t/${w.id}" class="rn-bd"><b>${esc(uniName(w))}</b>${u.works.some(o => o !== w && uniName(o) === uniName(w)) && v.sub ? `<small class="o">${esc(v.sub)}</small>` : ""}<small>${tl && w.tl ? `故事 ${Math.floor(w.tl)} 年 · ` : ""}${w.y}${w.ty && ["s", "ms"].includes(w.ty) ? " · 剧集" : w.ty === "sp" || w.ty === "tm" ? " · 特别篇" : ""}${w.x ? " · 外传" : ""}${!out ? " · 待映" : ""}${k && !done ? ` · ${STATUS[k.s]}` : ""}</small>
+      <a href="#/t/${w.id}" class="rn-bd"><b>${esc(uniName(w))}</b>${u.works.some(o => o !== w && uniName(o) === uniName(w)) && v.sub ? `<small class="o">${esc(v.sub)}</small>` : ""}<small>${tl && (w.tll || w.tl) ? `${w.tll ? esc(w.tll) : `故事 ${Math.floor(w.tl)} 年`} · ` : ""}${w.y}${w.ty && ["s", "ms"].includes(w.ty) ? " · 剧集" : w.ty === "sp" || w.ty === "tm" ? " · 特别篇" : ""}${w.x ? " · 外传" : ""}${!out ? " · 待映" : ""}${k && !done ? ` · ${STATUS[k.s]}` : ""}</small>
         ${cs.length ? `<div class="rn-cs">${cs.map(c => { const lit = charLit(c); const f = lit ? charFace(c, 80) : null;
           return `<i class="${lit ? "on" : ""}" style="--hc:${c.c}" title="${esc(c.cn)}">${esc(lit ? c.cn.slice(0, 1) : "?")}${f ? `<img loading="lazy" src="${esc(f.src)}"${f.comic ? ' referrerpolicy="no-referrer"' : ""}${faceFb(c, f)} style="object-position:${f.pos}" onerror="comicErr(this)">` : ""}</i>`; }).join("")}${w.chars.length > 6 ? `<small>+${w.chars.length - 6}</small>` : ""}</div>` : ""}</a>
       ${done ? `<span class="rn-ok" aria-label="看过"></span>` : out ? `<button class="rn-ck" onclick="uniStamp(event,'${w.id}')" aria-label="看过了"></button>` : `<span class="rn-soon">待映</span>`}</div>`;
@@ -4079,8 +4101,13 @@ function drawCharSheet(){
       : lit ? `<div class="csh-tip">${c.cm ? "" : "TA 没有漫画原型"}</div>` : `<div class="csh-tip">还没点亮</div>`}
     ${both && !still ? `<div class="csh-tip">角色剧照后台还在抓，抓好后这一面会换成剧照</div>` : both ? `<div class="csh-tip">点卡片翻面看看 · 真正的卡面在下面「选卡面」里定</div>` : ""}
     <div class="csh-hd"><div class="sign">${esc(c.en)}</div><b>${esc(c.cn)}</b><small>${esc(c.sub)}</small>
-      <div class="csh-meta"><span class="rk" data-r="${c.rar}">${c.rar}</span>${c.a.length ? `演员 ${c.a.map(a => a[0] ? `<a href="#/p/${a[0]}" onclick="closeSheet()">${esc(actorName(a))}</a>` : esc(a[1])).join(" / ")}` : "生物"}</div></div>
+      <div class="csh-meta"><span class="rk" data-r="${c.rar}">${c.rar}</span>${c.a.length ? `${c.vo ? "配音" : "演员"} ${c.a.map(a => a[0] ? `<a href="#/p/${a[0]}" onclick="closeSheet()">${esc(actorName(a))}</a>` : esc(a[1])).join(" / ")}` : c.vo ? "" : "生物"}</div>
+      ${c.f?.length ? `<div class="csh-tags">${c.f.map(t => `<span>${esc(t)}</span>`).join("")}</div>` : ""}</div>
     ${c.i ? `<div class="csh-intro">${esc(c.i)}</div>` : ""}
+    ${c.x?.length ? lit ? `<div class="lab">小档案</div><div class="csh-prof paper"><i class="orn tl"></i><i class="orn br"></i><dl>${c.x.map(([k, v]) => `<div class="${(k + v).length > 13 ? "w" : ""}"><dt>${esc(k)}</dt><dd>${esc(v)}</dd></div>`).join("")}</dl></div>`
+      : `<div class="csh-lock paper"><span>🔒</span>点亮后解锁 TA 的小档案（${c.x.length} 条）</div>` : ""}
+    ${c.rel?.length ? `<div class="lab">羁绊</div><div class="csh-rel">${c.rel.map(([k, l]) => { const o = u.ck.get(k); if (!o) return ""; const on = charLit(o), f = on ? charFace(o, 160) : null;
+      return `<button data-rel="${esc(k)}" style="--hc:${o.c}" class="${on ? "on" : ""}"><i>${esc(on ? o.cn.slice(0, 1) : "?")}${f ? `<img loading="lazy" src="${esc(f.src)}"${f.comic ? ' referrerpolicy="no-referrer"' : ""}${faceFb(o, f)} style="object-position:${f.pos}" onerror="comicErr(this)">` : ""}</i><b>${esc(o.cn)}</b><small>${esc(l)}</small></button>`; }).join("")}</div>` : ""}
     <div class="csh-st">${lit ? `已看 <b>${seen}</b> / ${tot} 次出场${seen >= tot ? " · 👑 全部看完" : ""}` : `还没点亮 · 看完${nx ? `《${esc(uniName(nx))}》` : "TA 的任何一部"}就能点亮${cm?.ps ? "，解锁漫画原型和设定数值" : cm ? "，解锁漫画原型" : ""}`}</div>
     ${cm?.ps ? lit ? `<div class="lab">漫画设定数值</div><div class="csh-stats paper">${radarSVG(cm.ps, c.c)}
         ${facts.length ? `<dl class="csh-facts">${facts.map(([k, v]) => `<div><dt>${k}</dt><dd>${esc(v)}</dd></div>`).join("")}</dl>` : ""}
@@ -4112,6 +4139,7 @@ function drawCharSheet(){
     toast(!lit ? "还没点亮，看完 TA 的任意一部就能点亮" : "TA 没有漫画原型，只有电影里的样子");
   });
   $$("#sheet [data-side]").forEach(b => b.onclick = () => flip(b.dataset.side));
+  $$("#sheet [data-rel]").forEach(b => b.onclick = () => { const o = u.ck.get(b.dataset.rel); if (!o) return; CS = null; charSheet(u.id, o.k); $("#sheet").scrollTop = 0; });
   $$("#sheet .csh-pick [data-k]").forEach(b => b.onclick = () => {
     const m = getPref("cimg", {}) || {}, k = b.dataset.k; m[c.u + ":" + c.k] = k; setPref("cimg", m); bump();
     CS.side = k === "comic" ? "comic" : "real"; toast(k === "comic" ? "卡面换回漫画原型" : "卡面换成这张剧照"); const keep = $("#sheet").scrollTop; drawCharSheet(); $("#sheet").scrollTop = keep; render();
