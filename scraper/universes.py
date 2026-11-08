@@ -1287,6 +1287,8 @@ def build(idx, out):
                     w["tll"] = ex["tll"]
                 if ex.get("ty"):
                     w["ty"] = ex["ty"]
+                if ex.get("ss"):   # 剧集按季拆开：标记了这一季才算看过这一季
+                    w["ss"] = int(ex["ss"])
                 works.append(w)
                 keys.append(key)
                 key2id[key] = w["id"]

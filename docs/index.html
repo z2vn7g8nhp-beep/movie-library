@@ -2725,9 +2725,16 @@ function roleOf(w){
 function rolesOf(nm, works){
   const P = S.persons[nm], known = new Set(P?.known || []);
   return works.filter(w => w.act && !w.self && (w.role || w.role_cn))
-    .sort((a, b) => known.has(b.id) - known.has(a.id) || !!b.rintro - !!a.rintro || (a.guest ? 1 : 0) - (b.guest ? 1 : 0) || (b.v || 0) - (a.v || 0))
+    .sort((a, b) => known.has(b.id) - known.has(a.id) || !!rIntro(nm, b) - !!rIntro(nm, a) || (a.guest ? 1 : 0) - (b.guest ? 1 : 0) || (b.v || 0) - (a.v || 0))
     .slice(0, 24);
 }
+/* 角色介绍：专题里手写过这个角色（比如 Homefront 的杰夫、漫威的托尼）就用手写的，没有再用后台从豆瓣简介里摘的 */
+function uniRoleIntro(nm, id){
+  if (!UNI.length) { loadUni(); return ""; }
+  for (const u of UNI) for (const c of u.chars) if (c.i && c.a.some(a => a[0] === nm) && c.apps.some(w => w.id === id)) return c.i;
+  return "";
+}
+const rIntro = (nm, w) => uniRoleIntro(nm, w.id) || w.rintro || "";
 function roleCard(nm, w){
   const r = roleOf(w), k = mark(w.id), st = stillsOf(nm, w.id)[0];
   const img = st ? imdbImg(st.k, 480) : (w.img || vm(w.id).posterKey) ? imdbImg(w.img || vm(w.id).posterKey, 300) : "";
@@ -2735,7 +2742,7 @@ function roleCard(nm, w){
   return `<button class="rc" onclick="roleSheet('${nm}','${w.id}')"><div class="rimg">${img ? `<img loading="lazy" decoding="async" src="${esc(img)}" onerror="this.remove()">` : ""}${tag}
     <div class="rname"><b${r.cn ? "" : ' class="lat"'}>${esc(r.cn || r.en || r.any)}</b>${r.cn && r.en ? `<small>${esc(r.en)}</small>` : ""}</div></div>
     <div class="rbd"><div class="rw">《${esc(workName(w))}》<span>${w.y || ""}</span>${w.guest ? `<em>客串</em>` : ""}</div>
-    ${w.rintro ? `<p>${esc(w.rintro)}</p>` : w.wintro ? `<p class="w">${esc(w.wintro)}</p>` : `<p class="w">${w.series ? `${w.eps ? w.eps + " 集" : "剧集"}` : "电影"}${w.r ? ` · IMDb ${(+w.r).toFixed(1)}` : ""}</p>`}</div></button>`;
+    ${rIntro(nm, w) ? `<p>${esc(rIntro(nm, w))}</p>` : w.wintro ? `<p class="w">${esc(w.wintro)}</p>` : `<p class="w">${w.series ? `${w.eps ? w.eps + " 集" : "剧集"}` : "电影"}${w.r ? ` · IMDb ${(+w.r).toFixed(1)}` : ""}</p>`}</div></button>`;
 }
 function roleSheet(nm, id){
   const P = S.persons[nm]; const w = (P?.credits || []).find(c => c.id === id); if (!w) return go(`#/t/${id}`);
@@ -2745,7 +2752,7 @@ function roleSheet(nm, id){
     ${st.length ? `<div class="rstills">${st.map(i => `<img loading="lazy" src="${esc(imdbImg(i.k, 900))}" onerror="this.remove()">`).join("")}</div>` : ""}
     <div class="rhead"><b${r.cn ? "" : ' class="lat"'}>${esc(r.cn || r.en || r.any || "角色")}</b>${r.cn && r.en ? `<div class="sign">${esc(r.en)}</div>` : ""}
       <small>${esc(pName(nm))} 饰 ·《${esc(workName(w))}》${w.y || ""}${ws.guest ? ` · 客串 ${w.eps || ""} 集` : ws.series && w.eps ? ` · ${w.eps} 集` : ""}</small></div>
-    ${w.rintro ? `<div class="rtext">${esc(w.rintro)}</div>` : w.wintro ? `<div class="rtext w">作品简介：${esc(w.wintro)}</div>` : `<div class="rtext w">角色介绍还在整理，后台每轮会补几部。</div>`}
+    ${rIntro(nm, w) ? `<div class="rtext">${esc(rIntro(nm, w))}</div>` : w.wintro ? `<div class="rtext w">作品简介：${esc(w.wintro)}</div>` : `<div class="rtext w">角色介绍还在整理，后台每轮会补几部。</div>`}
     <div class="foot"><a class="btn ghost" href="#/t/${id}">作品详情</a>${k?.s === "done" ? `<button class="btn ghost" disabled>♥ 已集</button>` : `<button class="btn rose" id="rstamp">插卡</button>`}</div>`);
   const b = $("#rstamp"); if (b) b.onclick = () => {
     const v = vm(id); lightMeta(w);
@@ -3030,7 +3037,7 @@ function spotlight(id, dirs, cast){
       <div class="sb"><small>♥ 你追的 ${esc(pName(nm))}</small>
         ${r.any ? `<b${r.cn ? "" : ' class="lat"'}>${esc(r.cn || r.en || r.any)}</b>${r.cn && r.en ? `<i>${esc(r.en)}</i>` : ""}` : `<b>${what}</b>`}
         <div class="sm">${r.any ? `<span>${what}</span>` : ""}${t ? `<span class="rk" data-r="${t.r}">${t.r}</span><span>已集 ${stat.seen}/${stat.tot}</span>` : ""}</div></div><span class="sgo">›</span></a>
-      ${c.rintro ? `<p>${esc(c.rintro)}</p>` : ""}
+      ${rIntro(nm, {...c, id}) ? `<p>${esc(rIntro(nm, {...c, id}))}</p>` : ""}
       ${st.length ? `<div class="sst">${st.map((s, j) => `<button onclick="spotBox('${nm}','${id}',${j})"><img loading="lazy" decoding="async" src="${esc(imdbImg(s.k, 360))}" onerror="this.parentNode.remove()"></button>`).join("")}</div>` : ""}</div>`);
   }
   return out.join("");
@@ -3628,7 +3635,7 @@ const uniMap = new Map(), uniOfTitle = new Map();
 function loadUni(){
   return uniP || (uniP = fetch("universes.json", {cache: "no-cache"}).then(r => { if (!r.ok) throw 0; return r.json(); }).then(d => {
     UNI = d.universes.map(prepUni); bump();
-    if (["home", "uni", "u", "t"].includes(route().name)) render();
+    if (["home", "uni", "u", "t", "p"].includes(route().name)) render();
   }).catch(() => { uniP = null; }));
 }
 function prepUni(u){
@@ -3659,8 +3666,12 @@ function wOut(w){   // 已经上映（今年的片子要有人打过分才算）
   if (w.y > THIS_YEAR) return false;
   return !!(S.meta[w.id]?.imdb?.c || S.byId.get(w.id)?.v || mark(w.id));
 }
-const wDone = w => !!w.id && mark(w.id)?.s === "done";
-const wSeen = w => !!w.id && ["done", "doing"].includes(mark(w.id)?.s);   // 在看的剧也算见过这个角色
+// 按季拆开的剧（w.ss = 第几季）：标记了那一季、或者整部看过才算这一季看过
+const wDone = w => { if (!w.id) return false; const k = mark(w.id); return k?.s === "done" || (!!w.ss && (k?.ss || []).includes(w.ss)); };
+const wSeen = w => { if (!w.id) return false; const k = mark(w.id); if (!k) return false;   // 在看的剧也算见过这个角色
+  if (!w.ss) return ["done", "doing"].includes(k.s);
+  if (wDone(w)) return true;
+  return k.s === "doing" && w.ss === Math.max(0, ...(k.ss || [])) + 1; };   // 正在看的那一季也算见过
 const charLit = c => c.apps.some(wSeen);
 const charSeenN = c => c.apps.filter(wSeen).length;
 const charTot = c => c.apps.filter(wOut).length || c.apps.length;
@@ -3672,7 +3683,8 @@ function uniStat(u){
   return {main, seen: main.filter(wDone), ext, extSeen: ext.filter(wDone),
     lit: u.chars.filter(charLit), decks: u.decks.filter(d => deckDone(u, d))};
 }
-function uniName(w){ return S.meta[w.id]?.cn || w.cn || vm(w.id).name; }
+const SEASON_CN = "一二三四五六七八九十";
+function uniName(w){ return (S.meta[w.id]?.cn || w.cn || vm(w.id).name) + (w.ss ? ` 第${SEASON_CN[w.ss - 1] || w.ss}季` : ""); }
 function uniOrder(u, tl){ return [...u.works].sort((a, b) => tl ? (a.tl ?? a.y) - (b.tl ?? b.y) : 0); }
 function uniNext(u, tl){ return uniOrder(u, tl).find(w => !w.x && wOut(w) && !wDone(w)) || uniOrder(u, tl).find(w => wOut(w) && !wDone(w)) || null; }
 
@@ -3968,17 +3980,17 @@ function uniRoute(u){
     html += `<a class="unext paper" href="#/t/${nx.id}"><em>下一站</em>${posterHTML(vm(nx.id), 160)}<div class="ux-bd"><b>${esc(uniName(nx))}</b><small>${nx.y}${u.secMap.get(nx.sec) ? ` · ${esc(u.secMap.get(nx.sec).n)}` : ""}</small>
       ${deb.length ? `<div class="ux-deb">看完点亮 ${deb.slice(0, 4).map(c => `<span style="--hc:${c.c}">${esc(c.cn)}</span>`).join("")}${deb.length > 4 ? `等 ${deb.length} 位` : ""}</div>`
         : nx.chars.length ? `<div class="ux-deb">${nx.chars.slice(0, 4).map(c => esc(c.cn)).join("、")} 出场</div>` : ""}</div>
-      <button class="ux-go" onclick="uniStamp(event,'${nx.id}')">看过了</button></a>`;
+      <button class="ux-go" onclick="uniStamp(event,'${nx.id}',0,${nx.ss || 0})">看过了</button></a>`;
   } else if (uniStat(u).main.length) html += `<div class="unext paper done"><em>👑</em><div class="ux-bd"><b>全部看完了</b><small>上映的都看过，新作上映后会出现在这里</small></div></div>`;
   const node = w => {
-    const k = mark(w.id), done = k?.s === "done", out = wOut(w), v = vm(w.id);
+    const k = mark(w.id), done = wDone(w), out = wOut(w), v = vm(w.id);
     const cs = w.chars.slice(0, 6);
     return `<div class="rn ${done ? "got" : out ? "" : "soon"}${nx === w ? " nx" : ""}"><i class="rn-dot"></i>
       <a href="#/t/${w.id}" class="rn-ps">${posterHTML(v, 120)}</a>
       <a href="#/t/${w.id}" class="rn-bd"><b>${esc(uniName(w))}</b>${u.works.some(o => o !== w && uniName(o) === uniName(w)) && v.sub ? `<small class="o">${esc(v.sub)}</small>` : ""}<small>${tl && (w.tll || w.tl) ? `${w.tll ? esc(w.tll) : `故事 ${Math.floor(w.tl)} 年`} · ` : ""}${w.y}${w.ty && ["s", "ms"].includes(w.ty) ? " · 剧集" : w.ty === "sp" || w.ty === "tm" ? " · 特别篇" : ""}${w.x ? " · 外传" : ""}${!out ? " · 待映" : ""}${k && !done ? ` · ${STATUS[k.s]}` : ""}</small>
         ${cs.length ? `<div class="rn-cs">${cs.map(c => { const lit = charLit(c); const f = lit ? charFace(c, 80) : null;
           return `<i class="${lit ? "on" : ""}" style="--hc:${c.c}" title="${esc(c.cn)}">${esc(lit ? c.cn.slice(0, 1) : "?")}${f ? `<img loading="lazy" src="${esc(f.src)}"${f.comic ? ' referrerpolicy="no-referrer"' : ""}${faceFb(c, f)} style="object-position:${f.pos}" onerror="comicErr(this)">` : ""}</i>`; }).join("")}${w.chars.length > 6 ? `<small>+${w.chars.length - 6}</small>` : ""}</div>` : ""}</a>
-      ${done ? `<span class="rn-ok" aria-label="看过"></span>` : out ? `<button class="rn-ck" onclick="uniStamp(event,'${w.id}')" aria-label="看过了"></button>` : `<span class="rn-soon">待映</span>`}</div>`;
+      ${done ? `<span class="rn-ok" aria-label="看过"></span>` : out ? `<button class="rn-ck" onclick="uniStamp(event,'${w.id}',0,${w.ss || 0})" aria-label="看过了"></button>` : `<span class="rn-soon">待映</span>`}</div>`;
   };
   if (tl) return html + `<div class="route">${uniOrder(u, true).map(node).join("")}</div>`;
   for (const s of u.secs) {
@@ -4122,7 +4134,7 @@ function drawCharSheet(){
     <div class="lab">出场作品</div>
     <div class="csh-ws">${c.apps.map(w => { const done = wDone(w), seenW = wSeen(w), out = wOut(w);
       return `<div class="cw ${seenW ? "got" : ""}"><a href="#/t/${w.id}" onclick="closeSheet()">${posterHTML(vm(w.id), 100)}<span><b>${esc(uniName(w))}</b><small>${w.y}${c.apps[0] === w ? " · 首次登场" : ""}${!out ? " · 待映" : ""}</small></span></a>
-        ${done ? `<i class="cw-ok">✓</i>` : out ? `<button class="rn-ck" onclick="uniStamp(event,'${w.id}',true)" aria-label="看过了"></button>` : ""}</div>`; }).join("")}</div>
+        ${done ? `<i class="cw-ok">✓</i>` : out ? `<button class="rn-ck" onclick="uniStamp(event,'${w.id}',true,${w.ss || 0})" aria-label="看过了"></button>` : ""}</div>`; }).join("")}</div>
     ${c.decks.length ? `<div class="lab">所在套牌</div><div class="csh-dk">${c.decks.map(d => { const g = d.m.filter(k => charLit(u.ck.get(k))).length;
       return `<span class="${g === d.m.length ? "on" : ""}">${d.ic} ${esc(d.n)} <b>${g}/${d.m.length}</b></span>`; }).join("")}</div>` : ""}
   </div>`);
@@ -4190,15 +4202,23 @@ function showUniCere(){
   const close = () => { el.classList.remove("on"); setTimeout(() => el.remove(), 300); };
   el.onclick = e => { if (e.target.closest("[data-go]")) { uTab[uid] = a.chars.length ? "chars" : a.decks.length ? "decks" : "ach"; close(); if (route().name === "u" && route().arg === uid) render(); else go(`#/u/${uid}`); } else close(); };
 }
-function uniStamp(ev, id, inSheet){
+function uniStamp(ev, id, inSheet, ss){
   ev.preventDefault(); ev.stopPropagation();
   const k = mark(id); if (k?.s === "done") return;
   const v = vm(id);
-  const msgs = stampAndCelebrate(id, {s: "done", d: k?.d || "", ...(v.series && v.m?.seasons ? {ss: Array.from({length: v.m.seasons}, (_, i) => i + 1)} : {})});
+  let patch;
+  if (ss) {   // 按季拆开的专题：只勾这一季，季数勾满了才算整部看过
+    if ((k?.ss || []).includes(ss)) return;
+    const list = [...new Set([...(k?.ss || []), ss])].sort((a, b) => a - b);
+    const all = v.m?.seasons && list.length >= v.m.seasons && v.m.ey;
+    patch = {s: all ? "done" : "doing", ss: list, ...(all ? {d: k?.d || today()} : {})};
+  } else patch = {s: "done", d: k?.d || "", ...(v.series && v.m?.seasons ? {ss: Array.from({length: v.m.seasons}, (_, i) => i + 1)} : {})};
+  const msgs = stampAndCelebrate(id, patch);
   burst(ev.currentTarget, 6);
   if (inSheet) closeSheet();
   render();
-  toast(msgs[0] ? `+1 ${msgs[0]}` : `已看《${uniOfTitle.get(id) ? uniName(uniOfTitle.get(id)[0]) : v.name}》`, "撤销", () => { setMark(id, k || null); render(); });
+  const uw = (uniOfTitle.get(id) || []).find(w => !ss || w.ss === ss);
+  toast(msgs[0] ? `+1 ${msgs[0]}` : `已看《${uw ? uniName(uw) : v.name}》`, "撤销", () => { setMark(id, k || null); render(); });
 }
 
 /* ---------- 条目页：属于哪个宇宙 / 系列 ---------- */
