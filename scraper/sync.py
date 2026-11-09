@@ -400,6 +400,31 @@ class Sync:
                 n = (self.persons.get(m.group(1)) or {}).get("n") or ""
                 if n:
                     out.append((k, [n, f"{n} photoshoot", f"young {n}", f"{n} actor"], (0, 0, 0), [n, "", ""]))
+        # 漫画原型的角色点了「找更多漫画图」：按漫画里的名字搜漫画图（cm:专题id:角色）
+        cm_force = [k for k in force if (k or "").startswith("cm:")]
+        if cm_force:
+            try:
+                U0 = json.loads((Path(__file__).resolve().parent.parent / "docs" / "universes.json").read_text(encoding="utf-8"))["universes"]
+            except (OSError, ValueError, KeyError):
+                U0 = []
+            hand = {f"{u['id']}:{c['k']}": c for u in U0 for c in u["chars"]}
+            auto = {f"{q}:{c['k']}": c for q, d in (self.series.get("s") or {}).items() for c in d.get("c") or []}
+            cmap0 = self.series.get("cm") or {}
+            for k in cm_force:
+                ck = k[3:]
+                c = hand.get(ck) or auto.get(ck)
+                if not c:
+                    continue
+                cm = c.get("cm") or cmap0.get(c["k"]) or {}
+                name = re.sub(r"\s*\(.*?\)", "", cm.get("n") or cm.get("pg") or c.get("en") or "").strip()
+                if not name:
+                    continue
+                pub = "DC" if ck.startswith("dc:") or "dc.fandom" in (cm.get("img") or "") else "Marvel"
+                qs = [f"{name} comic art", f"{name} {pub} comics", f"{name} comic book panel"]
+                fn = (cm.get("fn") or "").strip()
+                if fn and fn.lower() != name.lower():
+                    qs.insert(2, f"{fn} {pub} comics")
+                out.append((k, qs, (0, 0, 0), [name, "", "comic comics"]))
         for k in force:   # 没设本命的角色，在网页上点了「去 Pinterest 找」也要找
             m = re.fullmatch(r"r:(nm\d+):(tt\d+)", k or "")
             if m and f"{m.group(1)}~{m.group(2)}" not in roles:

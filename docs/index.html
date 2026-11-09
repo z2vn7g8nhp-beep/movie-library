@@ -4271,7 +4271,7 @@ async function watchImgs(key){
       const rec = S.chars?.w?.[key], n = rec?.i?.length || 0;
       if (n > n0 || (rec?.at || 0) > at0) {   // 后台处理过了：有新图，或者这次没搜到合适的
         found = true; render();
-        if (CS && $("#sheet").classList.contains("on") && !$("#fpv")) drawCharSheet();
+        if (CS && $("#sheet").classList.contains("on") && !$("#fpv")) { const keep = $("#sheet").scrollTop; drawCharSheet(); $("#sheet").scrollTop = keep; }
         if (FD && key === "p:" + FD.nm && $("#fpv")) { const keep = {k: FD.k, x: FD.x, y: FD.y}; pickFace(FD.nm); Object.assign(FD, keep); FD.tab = "w"; drawFace(); }
         toast(n > n0 ? `找到 ${n - n0} 张新图，在「选卡面」里` : "Pinterest 上没找到合适的图（说明里要提到角色名）。可以自己截一张");
         break;
@@ -4294,7 +4294,13 @@ function faceFb(c, f, w = 300){
   const alt = f.comic ? (charReal(c, w, true) || charPoster(c, w)) : (charComic(c, w) || (f.poster ? null : charPoster(c, w)));
   return alt && alt.src !== f.src ? ` data-fb="${esc(alt.src)}"` : "";
 }
-function charComic(c, w = 400){ return c.cm?.img ? {src: c.cm.img, pos: "50% 18%", comic: true} : c.cm?.s ? {src: COMIC(c.cm.s, w), pos: "50% 20%", comic: true} : null; }
+function comicOrig(c, w = 400){ return c.cm?.img ? {src: c.cm.img, pos: "50% 18%", comic: true} : c.cm?.s ? {src: COMIC(c.cm.s, w), pos: "50% 20%", comic: true} : null; }
+/* 后台从 Pinterest 找的更多漫画图（cm:专题id:角色）；选了其中一张，漫画那一面就用它 */
+const comicWebs = c => webImgs("cm:" + c.u + ":" + c.k).map(x => ({...x, t: "cw"}));
+function charComic(c, w = 400){
+  const pick = charPick(c), cw = pick && comicWebs(c).find(x => x.k === pick);
+  return cw ? {src: stillSrc(cw.k, w), pos: cw.h > cw.w ? "50% 18%" : "50% 30%", comic: true} : comicOrig(c, w);
+}
 function charFace(c, w = 400){
   const r = charReal(c, w) || charComic(c, w); if (r) return r;
   const deb = c.apps.find(wSeen) || c.apps[0];
@@ -4684,7 +4690,8 @@ function charSheet(uid, ck){
   const u = uniMap.get(uid), c = u?.ck.get(ck); if (!c) return;
   const lit = charLit(c), real = lit ? charReal(c, 600) : null;
   const pk = charPick(c);
-  if (!CS || CS.c !== c) CS = {u, c, side: !c.cm || (pk && pk !== "comic") ? "real" : "comic"};
+  const pkComic = pk === "comic" || comicWebs(c).some(x => x.k === pk);
+  if (!CS || CS.c !== c) CS = {u, c, side: !c.cm || (pk && !pkComic) ? "real" : "comic"};
   drawCharSheet();
   // 卡面要用海报兜底、但海报还在离线片库的分片里没读到：读到了再画一遍（不然大卡是空的）
   const deb = c.apps.find(wSeen) || c.apps[0];
@@ -4719,12 +4726,13 @@ function drawCharSheet(){
         ${facts.length ? `<dl class="csh-facts">${facts.map(([k, v]) => `<div><dt>${k}</dt><dd>${esc(v)}</dd></div>`).join("")}</dl>` : ""}
         <div class="csh-src">漫画版设定 · 数值 0–100 · 来源 SuperHero API</div></div>`
       : `<div class="csh-lock paper"><span>🔒</span>点亮后解锁漫画原型和六维设定数值</div>` : ""}
-    ${lit && (stills.length > 1 || (comic && stills.length)) ? (() => {
-        const useComic = comic && (!pick || pick === "comic" || !stills.some(x => x.k === pick));
-        const onK = useComic ? "comic" : stills.some(x => x.k === pick) ? pick : stills[0]?.k;
+    ${lit && stills.length + (comic ? 1 : 0) + comicWebs(c).length > 1 ? (() => {
+        const cws = comicWebs(c), inList = k => stills.some(x => x.k === k) || cws.some(x => x.k === k);
+        const useComic = comic && (!pick || pick === "comic" || !inList(pick));
+        const onK = useComic ? "comic" : inList(pick) ? pick : stills[0]?.k;
         return `<div class="lab">选卡面 <span class="muted" style="font-size:11.5px">列表、点亮墙里都显示这张${comic ? "" : ` · ${stills.length} 张剧照`}</span></div>
-      <div class="csh-pick">${comic ? `<button class="cm${onK === "comic" ? " on" : ""}" data-k="comic"><img src="${esc(charComic(c, 200).src)}" referrerpolicy="no-referrer" onerror="comicErr(this)"><em>漫画</em></button>` : ""}${stills.slice(0, 30).map(x => `<button class="${onK === x.k ? "on" : ""}" data-k="${esc(x.k)}">${x.t === "w" ? "<em>网图</em>" : x.t === "sc" ? "<em>名场面</em>" : ""}<img loading="lazy" src="${esc(stillSrc(x.k, 200))}" onerror="this.parentNode.remove()"></button>`).join("")}</div>`; })() : ""}
-    ${lit ? `<div class="csh-more"><button class="pill add" onclick="moreImgs('${esc(c.u + ":" + c.k)}',this)">${stills.length ? "图不够？再找找" : "还没有剧照，去 Pinterest 找找"}</button><a class="pill add" href="#/sc/${c.apps.find(wSeen)?.id || c.apps[0]?.id}" onclick="closeSheet()">✂ 自己截一张</a></div>` : ""}
+      <div class="csh-pick">${comic ? `<button class="cm${onK === "comic" ? " on" : ""}" data-k="comic"><img src="${esc(comicOrig(c, 200).src)}" referrerpolicy="no-referrer" onerror="comicErr(this)"><em>漫画</em></button>` : ""}${cws.map(x => `<button class="cm${onK === x.k ? " on" : ""}" data-k="${esc(x.k)}"><em>漫画</em><img loading="lazy" src="${esc(stillSrc(x.k, 200))}" onerror="this.parentNode.remove()"></button>`).join("")}${stills.slice(0, 30).map(x => `<button class="${onK === x.k ? "on" : ""}" data-k="${esc(x.k)}">${x.t === "w" ? "<em>网图</em>" : x.t === "sc" ? "<em>名场面</em>" : ""}<img loading="lazy" src="${esc(stillSrc(x.k, 200))}" onerror="this.parentNode.remove()"></button>`).join("")}</div>`; })() : ""}
+    ${lit ? `<div class="csh-more"><button class="pill add" onclick="moreImgs('${esc(c.u + ":" + c.k)}',this)">${stills.length ? "剧照不够？再找找" : "还没有剧照，去 Pinterest 找找"}</button>${comic ? `<button class="pill add" onclick="moreImgs('${esc("cm:" + c.u + ":" + c.k)}',this)">${comicWebs(c).length ? "再找些漫画图" : "找更多漫画图"}</button>` : ""}<a class="pill add" href="#/sc/${c.apps.find(wSeen)?.id || c.apps[0]?.id}" onclick="closeSheet()">✂ 自己截一张</a></div>` : ""}
     <div class="lab">出场作品</div>
     <div class="csh-ws">${c.apps.map(w => { const done = wDone(w), seenW = wSeen(w), out = wOut(w);
       return `<div class="cw ${seenW ? "got" : ""}"><a href="#/t/${w.id}" onclick="closeSheet()">${posterHTML(vm(w.id), 100)}<span><b>${esc(uniName(w))}</b><small>${w.y}${c.apps[0] === w ? " · 首次登场" : ""}${!out ? " · 待映" : ""}</small></span></a>
@@ -4748,8 +4756,8 @@ function drawCharSheet(){
   $$("#sheet [data-side]").forEach(b => b.onclick = () => flip(b.dataset.side));
   $$("#sheet [data-rel]").forEach(b => b.onclick = () => { const o = u.ck.get(b.dataset.rel); if (!o) return; CS = null; charSheet(u.id, o.k); $("#sheet").scrollTop = 0; });
   $$("#sheet .csh-pick [data-k]").forEach(b => b.onclick = () => {
-    const k = b.dataset.k; setFace(c.u + ":" + c.k, k);
-    CS.side = k === "comic" ? "comic" : "real"; toast(k === "comic" ? "卡面换回漫画原型" : "卡面换成这张剧照"); const keep = $("#sheet").scrollTop; drawCharSheet(); $("#sheet").scrollTop = keep; render();
+    const k = b.dataset.k, isCm = k === "comic" || comicWebs(c).some(x => x.k === k); setFace(c.u + ":" + c.k, k);
+    CS.side = isCm ? "comic" : "real"; toast(k === "comic" ? "卡面换回漫画原型" : isCm ? "卡面换成这张漫画图" : "卡面换成这张剧照"); const keep = $("#sheet").scrollTop; drawCharSheet(); $("#sheet").scrollTop = keep; render();
   });
 }
 
