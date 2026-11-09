@@ -393,7 +393,12 @@ class Sync:
             return m.get("title") or fallback
 
         out = []
-        for key, r in self.roles.items():
+        roles = dict(self.roles)
+        for k in force:   # 没设本命的角色，在网页上点了「去 Pinterest 找」也要找
+            m = re.fullmatch(r"r:(nm\d+):(tt\d+)", k or "")
+            if m and f"{m.group(1)}~{m.group(2)}" not in roles:
+                roles[f"{m.group(1)}~{m.group(2)}"] = {}
+        for key, r in roles.items():
             nm, _, tt = key.partition("~")
             P = self.persons.get(nm) or {}
             c = next((c for c in P.get("credits") or [] if c.get("id") == tt), {})

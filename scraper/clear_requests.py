@@ -25,6 +25,9 @@ if fix:
 people = [n for n in cur.get("people") or [] if n not in set(done.get("people") or [])]
 if people:
     out["people"] = people
+imgs = [k for k in cur.get("imgs") or [] if k not in set(done.get("imgs") or [])]
+if imgs:
+    out["imgs"] = imgs
 with open(sys.argv[1], "w", encoding="utf-8") as f:
     json.dump(out, f, ensure_ascii=False)
 print("剩下的请求：", out or "无")

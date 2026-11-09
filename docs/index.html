@@ -4033,6 +4033,7 @@ async function addRequest(req){
     if (req.q) d.q = req.q;
     if (req.fix) d.fix = {...(d.fix || {}), ...req.fix};
     if (req.people) d.people = [...new Set([...(d.people || []), ...req.people])];
+    if (req.imgs) d.imgs = [...new Set([...(d.imgs || []), ...req.imgs])];   // 角色网图：之前漏了这一项，后台收不到
     return d;
   }, req.q ? "在线搜索" : "补全详情");
   const r = await gh.site("POST", "/actions/workflows/sync.yml/dispatches", {ref: "main"});
@@ -4258,13 +4259,24 @@ async function moreImgs(key, btn){
 }
 let imgWatch = null;
 async function watchImgs(key){
-  const n0 = S.chars?.w?.[key]?.i?.length || 0, end = Date.now() + 4 * 60e3;
+  const rec0 = S.chars?.w?.[key], n0 = rec0?.i?.length || 0, at0 = rec0?.at || 0, end = Date.now() + 6 * 60e3;
   if (imgWatch) return; imgWatch = key;
   await new Promise(r => setTimeout(r, 40000));
+  let found = false;
   while (Date.now() < end) {
-    try { await pullMeta(); if ((S.chars?.w?.[key]?.i?.length || 0) > n0 || S.chars?.w?.[key]?.at > Date.now() / 1000 - 300) { render(); if (CS && $("#sheet").classList.contains("on")) drawCharSheet(); toast("找到新图了"); break; } } catch {}
+    try {
+      await pullMeta();
+      const rec = S.chars?.w?.[key], n = rec?.i?.length || 0;
+      if (n > n0 || (rec?.at || 0) > at0) {   // 后台处理过了：有新图，或者这次没搜到合适的
+        found = true; render();
+        if (CS && $("#sheet").classList.contains("on")) drawCharSheet();
+        toast(n > n0 ? `找到 ${n - n0} 张新图，在「选卡面」里` : "Pinterest 上没找到合适的图（说明里要提到角色名）。可以自己截一张");
+        break;
+      }
+    } catch {}
     await new Promise(r => setTimeout(r, 15000));
   }
+  if (!found) toast("后台还没处理完，过几分钟再打开看看");
   imgWatch = null;
 }
 /* 漫画图第一次从 akabab.github.io 拿，失败就换 jsDelivr 的镜像；看过一次就存在手机里（sw.js） */
