@@ -1918,9 +1918,50 @@ function route(){
 const scrollMem = {};
 let lastKey = "";
 let depth = 0, goingBack = false;
-window.addEventListener("hashchange", () => { closeSheet(); scrollMem[lastKey] = PAGES.includes(lastKey.split("/")[0]) ? $("#page").scrollTop : scrollY; if (goingBack) { depth = Math.max(0, depth - 1); goingBack = false; } else depth++; render(true); });
+window.addEventListener("hashchange", () => { closeSheet(); scrollMem[lastKey] = PAGES.includes(lastKey.split("/")[0]) ? $("#page").scrollTop : scrollY; if (goingBack) { depth = Math.max(0, depth - 1); goingBack = false; } else depth++; render(true); saveSpot(); });
 function go(h){ location.hash = h; }
 function back(){ if (depth > 0) { goingBack = true; history.back(); } else go("#/home"); }
+
+/* 切到别的 App 再切回来：手机内存紧时会把网页清掉，再打开只会从首页（start_url）开始。
+   所以随时记下"在哪一页、滚到哪、底下是哪个标签页"，重新打开时直接回到那里（6 小时内有效）。 */
+const isPageHash = h => PAGES.includes((h || "").replace(/^#\/?/, "").split("/")[0]);
+const keyOfHash = h => { const [n, a] = (h || "").replace(/^#\/?/, "").split("/"); return (n || "home") + "/" + decodeURIComponent(a || ""); };
+let tabHash = "#/home";
+function saveSpot(){
+  if (IS_PREVIEW) return;
+  const h = location.hash || "#/home", onPage = isPageHash(h);
+  if (!onPage) tabHash = h;
+  setPref("spot", {h, tab: tabHash, y: Math.round(onPage ? $("#page").scrollTop : scrollY), ty: Math.round(onPage ? scrollMem[keyOfHash(tabHash)] || 0 : scrollY), t: Date.now()});
+}
+function restoreSpot(){
+  if (IS_PREVIEW || location.hash.replace(/^#\/?/, "")) return null;   // 带着具体页面打开（比如别人发的链接）就照链接走
+  const s = getPref("spot", null);
+  if (!s || !s.h || Date.now() - (s.t || 0) > 6 * 3600e3) return null;
+  tabHash = s.tab || "#/home";
+  if (isPageHash(s.h)) {
+    // 详情页：先垫一层原来的标签页，点返回能回到那里（位置也还在）
+    history.replaceState(null, "", tabHash); history.pushState(null, "", s.h); depth = 1;
+    scrollMem[keyOfHash(tabHash)] = s.ty || 0;
+  } else history.replaceState(null, "", s.h);
+  return s;
+}
+/* 页面内容是陆续长出来的（专题数据、海报晚到），滚动位置要多试几次；手一碰屏幕就不管了 */
+function settleScroll(s){
+  const y = s?.y || 0; if (!y) return;
+  const onPage = isPageHash(s.h), el = $("#page"), h0 = location.hash;
+  let stop = false, n = 0;
+  const quit = () => { stop = true; };
+  addEventListener("touchstart", quit, {once: true, passive: true, capture: true});
+  addEventListener("wheel", quit, {once: true, passive: true, capture: true});
+  (function tick(){
+    if (stop || location.hash !== h0 || n++ > 40) return;
+    const cur = onPage ? el.scrollTop : scrollY;
+    if (Math.abs(cur - y) > 2) onPage ? (el.scrollTop = y) : scrollTo(0, y);
+    setTimeout(tick, 100);
+  })();
+}
+document.addEventListener("visibilitychange", () => { if (document.hidden) saveSpot(); });
+addEventListener("pagehide", saveSpot);
 
 /* 重画时，把已经显示过的图片元素原样搬进新页面（不重新下载、不重新解码，就不会闪一下空白） */
 function keepImages(root, ret){
@@ -4916,7 +4957,10 @@ function renderSettings(){
   }
   if (!IS_PREVIEW) ghCfgSave();
   if (chatOn()) loadChat().then(() => { if (["chat", "settings"].includes(route().name)) render(); }).catch(() => {});
+  const spot = restoreSpot();
+  if (!isPageHash(location.hash)) tabHash = location.hash || "#/home";
   render();
+  settleScroll(spot);
   loadIndex();
   loadUni();
   pullAll();
