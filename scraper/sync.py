@@ -375,6 +375,11 @@ class Sync:
         返回 [(key, [搜索词...], 优先级)]，key 和网页一致：本命 r:nm:tt；专题 专题id:角色key"""
         mine = {t for t, v in self.marks.items() if not v.get("del") and v.get("s") in ("done", "doing")}
         T = (self.chars.get("t") or {})
+        fol = {n for n, f in self.follows.items() if not f.get("del")}
+        recent = lambda tts: max([self.marks.get(t, {}).get("t") or 0 for t in tts] or [0])
+        # 排序：本命 > 追的人演的角色 > 最近看的片子里的角色
+        # 自动去找的只有：本命、追的人演的角色、看过两部以上都有 TA 的角色；其他的等网页上点「去 Pinterest 找」
+        rank = lambda pri, nms, tts: (pri if (pri == 0 or nms & fol or sum(1 for t in tts if t in mine) >= 2) else 9, 0 if nms & fol else 1, -recent(tts))
 
         def good_still(tts, nms):
             for t in tts:
@@ -396,7 +401,7 @@ class Sync:
             title = title_of(tt, c.get("n", ""))
             actor = P.get("n") or ""
             if role and title:
-                out.append((f"r:{nm}:{tt}", self._queries(role, actor, title), 0, [role, actor]))
+                out.append((f"r:{nm}:{tt}", self._queries(role, actor, title), rank(0, {nm}, [tt]), [role, actor]))
         try:
             U = json.loads((Path(__file__).resolve().parent.parent / "docs" / "universes.json").read_text(encoding="utf-8"))["universes"]
         except (OSError, ValueError, KeyError):
@@ -414,7 +419,7 @@ class Sync:
                 w0 = seen[0]
                 title = w0.get("en") or title_of(w0["id"])
                 actor = (c.get("a") or [["", ""]])[0][1]
-                out.append((key, self._queries(c["en"], actor, title), 1, [c["en"], actor]))
+                out.append((key, self._queries(c["en"], actor, title), rank(1, nms, [w["id"] for w in ws]), [c["en"], actor]))
         cmap = self.series.get("cm") or {}
         for q, d in (self.series.get("s") or {}).items():
             for c in d.get("c") or []:
@@ -428,7 +433,7 @@ class Sync:
                 title = title_of(seen[0])
                 actor = (c.get("a") or [["", ""]])[0][1]
                 if title:
-                    out.append((key, self._queries(c["en"], actor, title), 2, [c["en"], actor]))
+                    out.append((key, self._queries(c["en"], actor, title), rank(1, nms, c["w"]), [c["en"], actor]))
         return out
 
     @staticmethod
@@ -454,18 +459,18 @@ class Sync:
         return keys
 
     def _save_img(self, raw):
-        """缩到 600 宽的 JPEG，按内容起名存进 img/；返回 [路径, 宽, 高]"""
+        """缩到 560 宽的 JPEG，按内容起名存进 img/；返回 [路径, 宽, 高]"""
         import hashlib
         import io
         from PIL import Image
         im = Image.open(io.BytesIO(raw))
         im = im.convert("RGB")
-        if im.width > 600:
-            im = im.resize((600, round(im.height * 600 / im.width)), Image.LANCZOS)
+        if im.width > 560:
+            im = im.resize((560, round(im.height * 560 / im.width)), Image.LANCZOS)
         if im.height > 1000:
             im = im.crop((0, 0, im.width, 1000))
         buf = io.BytesIO()
-        im.save(buf, "JPEG", quality=82, optimize=True, progressive=True)
+        im.save(buf, "JPEG", quality=80, optimize=True, progressive=True)
         data = buf.getvalue()
         name = f"img/{hashlib.sha1(data).hexdigest()[:16]}.jpg"
         (self.dir / "img").mkdir(exist_ok=True)
@@ -478,7 +483,7 @@ class Sync:
         want = [k for k in (self.reqs.get("imgs") or []) if isinstance(k, str) and 3 < len(k) < 80][:8]
         targets = {k: (qs, pri, names) for k, qs, pri, names in self._web_targets(set(want))}
         jobs = [k for k in want if k in targets] + sorted(
-            [k for k in targets if k not in want and not W.get(k)], key=lambda k: targets[k][1])
+            [k for k in targets if k not in want and not W.get(k) and targets[k][1][0] < 9], key=lambda k: targets[k][1])
         jobs = jobs[:len([k for k in want if k in targets]) + budget]
         if not jobs:
             return
@@ -491,7 +496,7 @@ class Sync:
             have = {x[3] for x in rec["i"] if len(x) > 3}
             more = key in want
             keys = self._name_keys(names)
-            goal = 8 if more else 6
+            goal = 8 if more else 4
             added, tries, failed = 0, 0, False
             # 第一次从第一个词搜起；网页点了“再找找”就换没用过的词。图说明里得提到角色名或演员的姓才要
             for q in [q for q in qs if q not in rec["q"]]:
