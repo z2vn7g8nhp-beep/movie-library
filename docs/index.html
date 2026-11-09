@@ -3119,7 +3119,7 @@ function pickFace(nm, preK){
   const def = faceOf(nm);
   const extra = [];
   const D = S.persons[nm]?.db; if (D?.cover && !/default/.test(D.cover)) extra.push({k: D.cover, t: "d", w: 0, h: 0});
-  const items = [...all.filter(i => i.n <= 1 || i.t === "p"), ...extra];
+  const items = [...webImgs("p:" + nm), ...all.filter(i => i.n <= 1 || i.t === "p"), ...extra];
   const pre = preK ? all.find(i => i.k === preK) : null;
   FD = {nm, items, tab: "all", k: preK || cur?.k || "", x: cur?.x ?? 50, y: cur?.y ?? 20};
   if (pre) { FD.x = 50; FD.y = pre.w > pre.h ? 50 : 20; }
@@ -3128,13 +3128,14 @@ function pickFace(nm, preK){
 function faceSrcFD(w = 600){ return FD.k ? stillSrc(FD.k, w) : faceOf(FD.nm, w).src; }
 function drawFace(){
   const nm = FD.nm, items = FD.items;
-  const tabs = [["all", "全部", items.length], ["p", "写真", items.filter(i => i.t === "p" || i.t === "e" || i.t === "d" || i.t === "o").length], ["s", "剧照", items.filter(i => i.t === "s").length]];
-  const list = FD.tab === "all" ? items : items.filter(i => FD.tab === "s" ? i.t === "s" : i.t !== "s");
+  const tabs = [["all", "全部", items.length], ["w", "网图", items.filter(i => i.t === "w").length], ["p", "写真", items.filter(i => i.t === "p" || i.t === "e" || i.t === "d" || i.t === "o").length], ["s", "剧照", items.filter(i => i.t === "s").length]];
+  const list = FD.tab === "all" ? items : items.filter(i => FD.tab === "w" ? i.t === "w" : FD.tab === "s" ? i.t === "s" : !["s", "w"].includes(i.t));
   openSheet(`<div class="grab"></div><h3>换卡面<small>选一张照片，在卡上拖动调整位置</small></h3>
     <div class="fpv" id="fpv">${idolCard(nm, {w: 600, face: {src: faceSrcFD(), pos: `${FD.x}% ${FD.y}%`}, count: false})}</div>
     ${items.length ? `<div class="seg" style="margin:0">${tabs.filter(t => t[2] || t[0] === "all").map(([k, l, n]) => `<button class="${FD.tab === k ? "on" : ""}" data-tab="${k}">${l}<b>${n}</b></button>`).join("")}</div>
     <div class="fgrid">${list.map(i => `<button class="${i.k === FD.k ? "on" : ""}" data-k="${esc(i.k)}" data-l="${i.w > i.h ? 1 : 0}"><img loading="lazy" decoding="async" src="${esc(stillSrc(i.k, 240))}" onerror="this.parentNode.remove()"></button>`).join("")}</div>`
     : `<div class="empty" style="padding:20px">TA 的照片还在整理，过几分钟再来看看。</div>`}
+    <div class="csh-more"><button class="pill add" onclick="moreImgs('p:${nm}',this)">${webImgs("p:" + nm).length ? "再找找" : "去 Pinterest 找找"}</button></div>
     <div class="foot"><button class="btn ghost" id="freset">用默认照片</button><button class="btn rose" id="fsave">用这张</button></div>`);
   const sh = $("#sheet");
   sh.querySelectorAll("[data-tab]").forEach(b => b.onclick = () => { FD.tab = b.dataset.tab; drawFace(); });
@@ -4269,7 +4270,8 @@ async function watchImgs(key){
       const rec = S.chars?.w?.[key], n = rec?.i?.length || 0;
       if (n > n0 || (rec?.at || 0) > at0) {   // 后台处理过了：有新图，或者这次没搜到合适的
         found = true; render();
-        if (CS && $("#sheet").classList.contains("on")) drawCharSheet();
+        if (CS && $("#sheet").classList.contains("on") && !$("#fpv")) drawCharSheet();
+        if (FD && key === "p:" + FD.nm && $("#fpv")) { const keep = {k: FD.k, x: FD.x, y: FD.y}; pickFace(FD.nm); Object.assign(FD, keep); FD.tab = "w"; drawFace(); }
         toast(n > n0 ? `找到 ${n - n0} 张新图，在「选卡面」里` : "Pinterest 上没找到合适的图（说明里要提到角色名）。可以自己截一张");
         break;
       }

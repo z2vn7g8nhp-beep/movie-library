@@ -394,6 +394,12 @@ class Sync:
 
         out = []
         roles = dict(self.roles)
+        for k in force:   # 追的人换卡面时点了「再找找」：按演员名搜，图说明里要有 TA 的名字
+            m = re.fullmatch(r"p:(nm\d+)", k or "")
+            if m:
+                n = (self.persons.get(m.group(1)) or {}).get("n") or ""
+                if n:
+                    out.append((k, [n, f"{n} photoshoot", f"young {n}", f"{n} actor"], (0, 0, 0), [n, "", ""]))
         for k in force:   # 没设本命的角色，在网页上点了「去 Pinterest 找」也要找
             m = re.fullmatch(r"r:(nm\d+):(tt\d+)", k or "")
             if m and f"{m.group(1)}~{m.group(2)}" not in roles:
