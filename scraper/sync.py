@@ -19,7 +19,7 @@ from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).parent))
-from sources import IMDb, Wikidata, Douban, RottenTomatoes, Comics, SourceError, norm  # noqa: E402
+from sources import IMDb, Wikidata, Douban, RottenTomatoes, Comics, Pinterest, SourceError, norm, nap  # noqa: E402
 
 CST = timezone(timedelta(hours=8))
 DAY = 86400
@@ -105,7 +105,9 @@ class Sync:
         self.meta = load(self.dir / "meta.json", {})
         self.people = load(self.dir / "people.json", {})
         self.persons = load(self.dir / "persons.json", {})
-        self.follows = load(self.dir / "marks.json", {}).get("follows", {})
+        mk = load(self.dir / "marks.json", {})
+        self.follows = mk.get("follows", {})
+        self.roles = {k: v for k, v in (mk.get("roles") or {}).items() if not v.get("del")}   # 本命角色：{"nm~tt": {...}}
         self.reqs = load(self.dir / "requests.json", {})
         self.status = load(self.dir / "status.json", {"sources": {}})
         self.series = load(self.dir / "series.json", {})
@@ -113,6 +115,7 @@ class Sync:
         self.idx_cn = load_index_cn(idx) if idx else {}
         self.budget = budget          # 每次最多访问豆瓣 / 烂番茄多少部，别太频繁
         self.imdb, self.wd, self.db, self.rt, self.comics = IMDb(), Wikidata(), Douban(), RottenTomatoes(), Comics()
+        self.pin = Pinterest()
         self.changed = False
 
     # ------------------------------------------------------------ 工具
@@ -341,6 +344,195 @@ class Sync:
                     keep.append([k, w, h, kind.get(ty, "o"), names[0]])
             T[t] = {"at": now(), "i": keep[:30]}
         self.changed = True
+
+    # ------------------------------------------------------------ 剧集分集（按集打卡）
+    def refresh_eps(self, ids, priority=(), limit=12):
+        """标记过的剧集拉分集表：还在播的每周刷新，播完的四个月一次。点名要的先做。"""
+        def due(t):
+            m = self.meta.get(t) or {}
+            if m.get("missing") or m.get("type") not in ("tvSeries", "tvMiniSeries"):
+                return False
+            age = now() - (m.get("at") or {}).get("eps", 0)
+            return age > (7 if not m.get("ey") else 120) * DAY
+        todo = [t for t in dict.fromkeys(list(priority) + list(ids)) if due(t)]
+        todo.sort(key=lambda t: (t not in priority, "eps" in (self.meta.get(t) or {})))
+        for t in todo[:limit]:
+            try:
+                eps = self.imdb.episodes(t)
+                self.ok("imdb")
+            except SourceError as e:
+                self.fail("imdb", e)
+                return
+            m = self.meta[t]
+            if eps:
+                m["eps"] = eps
+            m.setdefault("at", {})["eps"] = now()
+            self.changed = True
+
+    # ------------------------------------------------------------ 冷门角色的图（Pinterest → 存进数据仓库 img/）
+    def _web_targets(self, force=()):
+        """要找图的角色：本命角色；点亮了、但 IMDb 没有像样单人剧照也没有漫画原型的专题角色。
+        返回 [(key, [搜索词...], 优先级)]，key 和网页一致：本命 r:nm:tt；专题 专题id:角色key"""
+        mine = {t for t, v in self.marks.items() if not v.get("del") and v.get("s") in ("done", "doing")}
+        T = (self.chars.get("t") or {})
+
+        def good_still(tts, nms):
+            for t in tts:
+                for k, w, h, ty, nm in (T.get(t) or {}).get("i") or []:
+                    if nm in nms and ty in ("P", "s") and min(w, h) >= 400:
+                        return True
+            return False
+
+        def title_of(t, fallback=""):
+            m = self.meta.get(t) or {}
+            return m.get("title") or fallback
+
+        out = []
+        for key, r in self.roles.items():
+            nm, _, tt = key.partition("~")
+            P = self.persons.get(nm) or {}
+            c = next((c for c in P.get("credits") or [] if c.get("id") == tt), {})
+            role = re.sub(r"\s*\(.*?\)", "", c.get("role") or r.get("n") or "").strip()
+            title = title_of(tt, c.get("n", ""))
+            actor = P.get("n") or ""
+            if role and title:
+                out.append((f"r:{nm}:{tt}", self._queries(role, actor, title), 0, [role, actor]))
+        try:
+            U = json.loads((Path(__file__).resolve().parent.parent / "docs" / "universes.json").read_text(encoding="utf-8"))["universes"]
+        except (OSError, ValueError, KeyError):
+            U = []
+        for u in U:
+            wk = {w["k"]: w for w in u["works"]}
+            for c in u["chars"]:
+                ws = [wk[k] for k in c["w"] if k in wk and wk[k].get("id")]
+                seen = [w for w in ws if w["id"] in mine]
+                nms = {a[0] for a in c.get("a") or [] if a and a[0]}
+                key = f"{u['id']}:{c['k']}"
+                if not nms or c.get("vo") or (key not in force and (not seen or c.get("cm") or good_still([w["id"] for w in ws], nms))):
+                    continue
+                seen = seen or ws
+                w0 = seen[0]
+                title = w0.get("en") or title_of(w0["id"])
+                actor = (c.get("a") or [["", ""]])[0][1]
+                out.append((key, self._queries(c["en"], actor, title), 1, [c["en"], actor]))
+        cmap = self.series.get("cm") or {}
+        for q, d in (self.series.get("s") or {}).items():
+            for c in d.get("c") or []:
+                seen = [t for t in c.get("w") or [] if t in mine]
+                nms = {a[0] for a in c.get("a") or [] if a and a[0]}
+                cm = cmap.get(c["k"]) or {}
+                key = f"{q}:{c['k']}"
+                if not nms or not c.get("en") or (key not in force and (not seen or cm.get("s") or cm.get("img") or good_still(c["w"], nms))):
+                    continue
+                seen = seen or c["w"]
+                title = title_of(seen[0])
+                actor = (c.get("a") or [["", ""]])[0][1]
+                if title:
+                    out.append((key, self._queries(c["en"], actor, title), 2, [c["en"], actor]))
+        return out
+
+    @staticmethod
+    def _queries(role, actor, title):
+        """名字短、常见（Peter、Vandal）的角色先带上演员名搜，不然会搜到别的同名角色"""
+        role = re.sub(r"\s*\(.*?\)|[\"“”]", "", role or "").strip()
+        title = re.sub(r"\s*\(.*?\)", "", title or "").strip()
+        plain = len(role.split()) < 2 or len(role) < 8
+        qs = [f"{actor} {role} {title}", f"{role} {title}"] if plain and actor else [f"{role} {title}", f"{actor} {role} {title}"]
+        if actor:
+            qs.append(f"{actor} as {role}")
+        return [re.sub(r"\s+", " ", q).strip() for q in qs if q.strip()]
+
+    @staticmethod
+    def _name_keys(names):
+        """用来判断一张图的说明里有没有提到这个角色 / 演员：角色名里的词，演员的姓"""
+        stop = {"the", "and", "mr", "mrs", "dr", "sr", "jr", "of", "von", "van", "de", "la", "le", "da"}
+        role, actor = (names + ["", ""])[:2]
+        keys = {w for w in re.findall(r"[a-z]{3,}", (role or "").lower()) if w not in stop}
+        last = [w for w in re.findall(r"[a-z]{3,}", (actor or "").lower()) if w not in stop]
+        if last:
+            keys.add(last[-1])
+        return keys
+
+    def _save_img(self, raw):
+        """缩到 600 宽的 JPEG，按内容起名存进 img/；返回 [路径, 宽, 高]"""
+        import hashlib
+        import io
+        from PIL import Image
+        im = Image.open(io.BytesIO(raw))
+        im = im.convert("RGB")
+        if im.width > 600:
+            im = im.resize((600, round(im.height * 600 / im.width)), Image.LANCZOS)
+        if im.height > 1000:
+            im = im.crop((0, 0, im.width, 1000))
+        buf = io.BytesIO()
+        im.save(buf, "JPEG", quality=82, optimize=True, progressive=True)
+        data = buf.getvalue()
+        name = f"img/{hashlib.sha1(data).hexdigest()[:16]}.jpg"
+        (self.dir / "img").mkdir(exist_ok=True)
+        (self.dir / name).write_bytes(data)
+        return [name, im.width, im.height]
+
+    def refresh_web(self, budget=14, seconds=120):
+        W = self.chars.setdefault("w", {})
+        deadline = now() + seconds
+        want = [k for k in (self.reqs.get("imgs") or []) if isinstance(k, str) and 3 < len(k) < 80][:8]
+        targets = {k: (qs, pri, names) for k, qs, pri, names in self._web_targets(set(want))}
+        jobs = [k for k in want if k in targets] + sorted(
+            [k for k in targets if k not in want and not W.get(k)], key=lambda k: targets[k][1])
+        jobs = jobs[:len([k for k in want if k in targets]) + budget]
+        if not jobs:
+            return
+        got_any = False
+        for key in jobs:
+            if now() > deadline and key not in want:
+                break
+            qs, _, names = targets[key]
+            rec = W.get(key) or {"i": [], "q": []}
+            have = {x[3] for x in rec["i"] if len(x) > 3}
+            more = key in want
+            keys = self._name_keys(names)
+            goal = 8 if more else 6
+            added, tries, failed = 0, 0, False
+            # 第一次从第一个词搜起；网页点了“再找找”就换没用过的词。图说明里得提到角色名或演员的姓才要
+            for q in [q for q in qs if q not in rec["q"]]:
+                if added >= (2 if not more else goal) or tries >= 2:
+                    break
+                tries += 1
+                try:
+                    res = self.pin.search(q)
+                    nap(1.0, 2.2)
+                except SourceError as e:
+                    self.fail("pinterest", e)
+                    failed = True
+                    break
+                rec["q"].append(q)
+                def score(x):
+                    t = x["t"].lower()
+                    return (-sum(1 for k in keys if k in t), 0 if 0.9 <= x["h"] / max(1, x["w"]) <= 1.9 else 1)
+                cands = [x for x in res if x["id"] not in have and x["w"] >= 250 and x["h"] >= 250
+                         and 0.5 <= x["h"] / max(1, x["w"]) <= 2.4 and any(k in x["t"].lower() for k in keys)]
+                cands.sort(key=score)
+                for x in cands:
+                    if added >= goal:
+                        break
+                    try:
+                        path, w, h = self._save_img(self.pin.fetch(x["url"]))
+                    except (SourceError, OSError, ValueError):
+                        continue
+                    have.add(x["id"])
+                    if any(i[0] == path for i in rec["i"]):
+                        continue
+                    rec["i"].append([path, w, h, x["id"], x["t"][:60]])
+                    added += 1
+                    nap(0.2, 0.5)
+            if failed and not rec["q"]:
+                break             # Pinterest 连不上：这轮先不做了，下次再试
+            rec["at"] = now()
+            W[key] = rec
+            got_any = True
+            self.changed = True
+        if got_any:
+            self.ok("pinterest", f"{len(W)} 位角色有网图")
 
     # ------------------------------------------------------------ 豆瓣
     def refresh_douban(self, tid, force=False):
@@ -671,6 +863,16 @@ class Sync:
         save(self.dir / "lookup.json", {"q": q, "at": iso(), "err": err, "results": out})
         self.changed = True
 
+    def clean_imgs(self):
+        """img/ 里没有被任何角色用到的图删掉（网图记录被清掉之后留下的）"""
+        d = self.dir / "img"
+        if not d.is_dir():
+            return
+        used = {x[0] for r in (self.chars.get("w") or {}).values() for x in r.get("i") or []}
+        for f in d.iterdir():
+            if f.is_file() and f"img/{f.name}" not in used:
+                f.unlink()
+
     # ------------------------------------------------------------ 主流程
     def run(self, force_ids=(), query=None):
         reqs_ids = [i for i in (self.reqs.get("ids") or []) if re.fullmatch(r"tt\d+", i)]
@@ -707,6 +909,7 @@ class Sync:
         self.refresh_series(priority)
         self.refresh_comics()
         self.refresh_chars()
+        self.refresh_eps(ids, priority)
 
         budget = self.budget
         for tid in priority + [i for i in ids if i not in priority]:
@@ -719,6 +922,9 @@ class Sync:
             used = self.refresh_douban(tid, force=tid in priority)
             used |= self.refresh_rt(tid, force=tid in priority)
             budget -= 1 if used else 0
+
+        # 冷门角色的网图放在最后做（不耽误刚标记的片子补详情），每轮限时
+        self.refresh_web()
 
         # 不在库里、也很久没看的详情清掉，免得 meta.json 越来越大
         keep = set(self.active()) | set(priority)
@@ -734,6 +940,7 @@ class Sync:
             save(self.dir / "series.json", self.series)
         if self.chars:
             save(self.dir / "chars.json", self.chars)
+        self.clean_imgs()
         keep_p = set(follows) | set(want)
         for nm in list(self.persons):
             if nm not in keep_p and now() - self.persons[nm].get("at", 0) > 60 * DAY:

@@ -240,6 +240,101 @@ class IMDb:
                         "img": img_key((x.get("i") or {}).get("imageUrl"))})
         return out
 
+    EPS = """query($id:ID!,$after:ID){ title(id:$id){ episodes{ episodes(first:250, after:$after){
+      pageInfo{hasNextPage endCursor} edges{ node{ id titleText{text}
+        series{ displayableEpisodeNumber{ displayableSeason{text} episodeNumber{text} } }
+        releaseDate{year month day} primaryImage{url} ratingsSummary{aggregateRating} } } } } } }"""
+
+    def episodes(self, tt, max_pages=4):
+        """剧集的分集表：[[季, 集, 编号, 标题, 首播日期, 剧照, IMDb 分], ...]（按集打卡用）"""
+        out, after = [], None
+        for _ in range(max_pages):
+            t = (self._gql(self.EPS, {"id": tt, "after": after}).get("title") or {})
+            block = ((t.get("episodes") or {}).get("episodes")) or {}
+            for e in block.get("edges") or []:
+                n = e.get("node") or {}
+                num = ((n.get("series") or {}).get("displayableEpisodeNumber")) or {}
+                try:
+                    s = int(((num.get("displayableSeason") or {}).get("text") or "").strip())
+                    ep = int(((num.get("episodeNumber") or {}).get("text") or "").strip())
+                except ValueError:
+                    continue          # 没编号的特别篇、未知季
+                if not (0 < s < 100 and 0 < ep < 1000):
+                    continue
+                d = n.get("releaseDate") or {}
+                date = "-".join(f"{x:02d}" if i else str(x) for i, x in enumerate(
+                    v for v in (d.get("year"), d.get("month"), d.get("day")) if v))
+                r = (n.get("ratingsSummary") or {}).get("aggregateRating")
+                out.append([s, ep, n.get("id", ""), (n.get("titleText") or {}).get("text", ""), date,
+                            img_key((n.get("primaryImage") or {}).get("url")), r])
+            pi = block.get("pageInfo") or {}
+            if not pi.get("hasNextPage"):
+                break
+            after = pi.get("endCursor")
+        out.sort(key=lambda x: (x[0], x[1]))
+        seen, uniq = set(), []
+        for x in out:
+            if (x[0], x[1]) not in seen:
+                seen.add((x[0], x[1]))
+                uniq.append(x)
+        return uniq
+
+
+# ---------------------------------------------------------------- Pinterest（冷门角色的图）
+class Pinterest:
+    """IMDb 上没有单人剧照、也没有漫画原型的角色，去 Pinterest 搜。
+    搜的是网页自己用的接口，不用登录；国内看不了 pinimg，所以挑中的图由后台下载、缩小后存进私有数据仓库。"""
+    UA = ("Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) "
+          "Chrome/124.0 Safari/537.36")
+
+    def __init__(self):
+        self.s = requests.Session()
+        self.s.headers.update({"User-Agent": self.UA, "Accept-Language": "en-US,en;q=0.9"})
+        self.warm = False
+
+    def search(self, q, n=25):
+        if not self.warm:
+            try:
+                self.s.get("https://www.pinterest.com/", timeout=20)
+            except requests.RequestException:
+                pass
+            self.warm = True
+        src = f"/search/pins/?q={requests.utils.quote(q)}&rs=typed"
+        data = {"options": {"query": q, "scope": "pins", "auto_correction_disabled": False, "rs": "typed", "page_size": n},
+                "context": {}}
+        try:
+            r = self.s.get("https://www.pinterest.com/resource/BaseSearchResource/get/",
+                           params={"source_url": src, "data": json.dumps(data, separators=(",", ":"))},
+                           headers={"X-Requested-With": "XMLHttpRequest", "Accept": "application/json, text/javascript, */*; q=0.01",
+                                    "X-Pinterest-AppState": "active", "X-Pinterest-Source-Url": src,
+                                    "X-Pinterest-PWS-Handler": "www/search/[scope].js"}, timeout=25)
+            res = (((r.json().get("resource_response") or {}).get("data")) or {}).get("results") or []
+        except (requests.RequestException, ValueError) as e:
+            raise SourceError(f"Pinterest 搜索失败：{e.__class__.__name__}")
+        if r.status_code != 200:
+            raise SourceError(f"Pinterest 返回 HTTP {r.status_code}")
+        out = []
+        for x in res:
+            if not isinstance(x, dict) or x.get("type") not in (None, "pin") or x.get("videos") or x.get("is_video"):
+                continue
+            im = x.get("images") or {}
+            big, orig = im.get("736x") or {}, im.get("orig") or {}
+            if not big.get("url"):
+                continue
+            text = " ".join(str(x.get(k) or "") for k in ("title", "grid_title", "description", "auto_alt_text"))
+            out.append({"id": str(x.get("id", "")), "url": big["url"], "w": orig.get("width") or big.get("width") or 0,
+                        "h": orig.get("height") or big.get("height") or 0, "t": re.sub(r"\s+", " ", text).strip()[:160]})
+        return out
+
+    def fetch(self, url):
+        try:
+            r = self.s.get(url, timeout=30)
+        except requests.RequestException as e:
+            raise SourceError(f"Pinterest 图片下载失败：{e.__class__.__name__}")
+        if r.status_code != 200 or not r.content:
+            raise SourceError(f"Pinterest 图片 HTTP {r.status_code}")
+        return r.content
+
 
 # ---------------------------------------------------------------- Wikidata（IMDb ↔ 豆瓣 / 烂番茄）
 class Wikidata:

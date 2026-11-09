@@ -1526,6 +1526,114 @@ body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;ba
 .ic.chc .plate b{overflow:hidden;text-overflow:ellipsis}
 .ic.chc .plate b.lat{letter-spacing:.01em;font-size:clamp(11px,10cqw,22px)}
 .ic.chc .plate b.lat.long{white-space:normal;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;font-size:clamp(10px,8.6cqw,19px);line-height:1.12}
+
+.ic[data-r=BM]{--rim:linear-gradient(145deg,#FFE3EC,#F2A7C3 22%,#FFF3F7 44%,#E7B98A 66%,#FFE1EA 86%,#F6C7D7);--ornc:#E58FB4;--gem:linear-gradient(180deg,#F4A0BF,#D16A93 60%,#C9A46C)}
+.ic.ben .rar b{font-family:var(--serif);font-style:normal;font-weight:900;letter-spacing:.08em}
+.ic.ben .plate small{display:block;font-size:clamp(8px,7cqw,13px);color:rgba(255,255,255,.75);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.rk[data-r=BM]{background:linear-gradient(180deg,#F4A0BF,#D16A93)}
+.csh-more{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0 0}
+.csh-pick button em{position:absolute;left:3px;bottom:3px;z-index:2;font-style:normal;font-size:9.5px;padding:0 4px;border-radius:4px;background:rgba(35,27,48,.7);color:#fff}
+.ben-tog{height:30px;padding:0 14px;border-radius:15px;font-size:13px;font-weight:600;color:var(--rose-ink);background:var(--rose-bg);box-shadow:0 0 0 1px var(--rose-line) inset}
+.ben-tog.on{color:#fff;background:linear-gradient(135deg,#F4A0BF,#D16A93)}
+.spot .ben-mini{position:absolute;right:12px;top:12px;height:26px;padding:0 10px;border-radius:13px;font-size:12px;font-weight:600;color:var(--rose-ink);background:var(--rose-bg);box-shadow:0 0 0 1px var(--rose-line) inset;z-index:3}
+.spot .ben-mini.on{color:#fff;background:linear-gradient(135deg,#F4A0BF,#D16A93);box-shadow:none}
+.spot{position:relative}
+.rtag.ben{background:linear-gradient(135deg,#F4A0BF,#D16A93);color:#fff}
+.rsh-prog{margin:12px 0 0;padding:12px 14px;border-radius:14px;background:var(--paper);box-shadow:var(--line);font-size:13px;color:var(--ink-2)}
+.rsh-prog .tr{display:block;height:6px;border-radius:3px;background:var(--hair);overflow:hidden;margin-top:8px}
+.rsh-prog .tr i{display:block;height:100%;background:linear-gradient(90deg,#F4A0BF,#C9A46C)}
+.rsh-prog b{font-family:var(--num);color:var(--rose-ink)}
+.tk-ep{flex:none;width:64px;height:38px;border-radius:5px;overflow:hidden;background:#3A3048}
+.tk-ep img{width:100%;height:100%;object-fit:cover}
+.rsh-pv{width:min(64vw,260px);aspect-ratio:3/4;margin:0 auto;border-radius:18px;overflow:hidden;background:var(--soft);box-shadow:0 14px 30px -18px rgba(70,40,110,.6)}
+.rsh-pv img{width:100%;height:100%;object-fit:cover}
+.spot-role{display:block;margin:10px 0 0 auto;font-size:12.5px;color:var(--rose-ink)}
+.scn-row{display:flex;gap:10px;overflow-x:auto;scrollbar-width:none;padding-bottom:4px}
+.scn-row::-webkit-scrollbar{display:none}
+.scroller.scn-row{padding-left:var(--pad);padding-right:var(--pad)}
+.scn{flex:none;position:relative;width:236px;aspect-ratio:16/9;border-radius:10px;overflow:hidden;background:#231B30;box-shadow:0 10px 22px -14px rgba(35,27,48,.9),0 0 0 1px rgba(255,255,255,.08) inset;text-align:left}
+.scn img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.scn em{position:absolute;left:7px;top:6px;font-style:normal;font-family:var(--num);font-size:10.5px;color:#fff;background:rgba(0,0,0,.45);padding:1px 6px;border-radius:6px}
+.scn-sub{position:absolute;left:0;right:0;bottom:0;padding:18px 10px 8px;text-align:center;background:linear-gradient(180deg,transparent,rgba(0,0,0,.55));display:flex;flex-direction:column;gap:1px;pointer-events:none}
+.scn-sub b{font-weight:600;font-size:12.5px;color:#fff;text-shadow:0 1px 2px #000,0 0 6px rgba(0,0,0,.6);line-height:1.3}
+.scn-sub i{font-style:normal;font-size:10.5px;color:#F6E7B8;text-shadow:0 1px 2px #000;line-height:1.3}
+.scn-big{position:relative;border-radius:14px;overflow:hidden;background:#231B30;box-shadow:0 14px 30px -18px rgba(35,27,48,.9)}
+.scn-big img{display:block;width:100%;height:auto}
+.scn-big .scn-sub{padding:30px 14px 12px}
+.scn-big .scn-sub b{font-size:16px}
+.scn-big .scn-sub i{font-size:12.5px}
+.scn-meta{margin:10px 2px 0;font-size:12.5px;color:var(--dim)}
+.scn-tags{display:flex;flex-wrap:wrap;gap:8px}
+.scn-tags .chip.on{background:var(--rose);color:#fff;box-shadow:none}
+.scn-empty{display:flex;align-items:center;gap:12px;margin:0 var(--pad);padding:14px 16px;border-radius:16px;background:var(--paper);box-shadow:var(--line);font-size:13px;color:var(--ink-2)}
+.scn-empty b{flex:none;width:38px;height:38px;border-radius:50%;display:grid;place-items:center;background:var(--rose-bg);color:var(--rose-ink);font-size:18px}
+.scm{padding:0 var(--pad) 30px}
+.scm-h{margin:6px 0 14px}
+.scm-h small{display:block;font-size:12.5px;color:var(--dim)}
+.scm-h b{font-family:var(--serif);font-weight:900;font-size:21px;letter-spacing:.06em}
+.scm-files{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.scm-f{position:relative;display:flex;flex-direction:column;gap:3px;padding:14px;border-radius:16px;background:var(--paper);box-shadow:var(--line);cursor:pointer;min-width:0}
+.scm-f input{position:absolute;inset:0;opacity:0;cursor:pointer}
+.scm-f b{font-size:14px}
+.scm-f small{font-size:11.5px;color:var(--dim);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.scm-stage{position:relative;margin-top:14px;border-radius:14px;overflow:hidden;background:#000}
+.scm-stage video{display:block;width:100%;max-height:60vh;background:#000}
+.scn-sub.live{bottom:44px;background:none}
+.scm-ctl{display:flex;gap:6px;margin-top:10px}
+.scm-ctl button{flex:1;height:34px;border-radius:10px;background:var(--paper);box-shadow:var(--line);font-family:var(--num);font-size:12.5px}
+.scm-shot{width:100%;margin-top:10px}
+.scm-se{display:grid;grid-template-columns:1fr 2fr;gap:8px}
+.scm-se select{height:40px}
+.ic.chc.lock .in > img.sil{filter:grayscale(.85) brightness(.55) contrast(1.1) blur(5px);transform:scale(1.12);opacity:.9}
+.ic.chc.lock .ini{z-index:1}
+.ic.chc.lock .in > img.sil ~ .ini{
+  background:linear-gradient(115deg,transparent 30%,rgba(255,255,255,.10) 45%,rgba(220,200,255,.16) 50%,transparent 65%),radial-gradient(70% 50% at 50% 40%,color-mix(in srgb,var(--hc) 35%,transparent),transparent 70%)}
+.person[data-r=UR] .avw{background:linear-gradient(145deg,#FFD3E6,#C6D6FF 30%,#E2D0FF 50%,#CCF3E8 70%,#FFEFC2)}
+.person[data-r=UR] .avw em{background:linear-gradient(180deg,#F08DB6,#8E7BEA)}
+/* ===== v6：按集打卡、网图、本命角色、名场面 ===== */
+.eps{margin:12px var(--pad) 0;display:flex;flex-direction:column;gap:10px}
+.eps-s{background:var(--paper);border-radius:16px;box-shadow:var(--line);overflow:hidden}
+.eps-h{display:flex;align-items:center;gap:10px;padding:10px 12px;position:relative}
+.eps-h .ck{flex:none;width:24px;height:24px;border-radius:50%;display:grid;place-items:center;color:#fff;font-size:12px;box-shadow:0 0 0 1.5px var(--faint) inset}
+.eps-h .ck.on{background:linear-gradient(145deg,#F6E7C6,#C9A46C);box-shadow:0 0 0 2px #fff,0 3px 8px -3px rgba(156,122,69,.8)}
+.eps-n{flex:1;display:flex;align-items:baseline;gap:8px;text-align:left;min-width:0}
+.eps-n b{font-family:var(--serif);font-weight:700;font-size:15px;letter-spacing:.06em}
+.eps-n small{font-size:12px;color:var(--dim);font-family:var(--num)}
+.eps-n i{margin-left:auto;width:16px;height:16px;color:var(--dim);transition:transform .2s;align-self:center}
+.eps-s.open .eps-n i{transform:rotate(180deg)}
+.eps-bar{position:absolute;left:12px;right:12px;bottom:0;height:2px;border-radius:1px;background:var(--hair);overflow:hidden}
+.eps-bar i{display:block;height:100%;background:linear-gradient(90deg,var(--rose),var(--gold))}
+.eps-s.full .eps-n b{color:var(--gold-ink)}
+.eps-roll{display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;padding:16px 12px 18px;
+  background:radial-gradient(circle,rgba(248,245,252,.85) 0 2.3px,transparent 2.7px) 0 3px/12px 8px repeat-x,
+             radial-gradient(circle,rgba(248,245,252,.85) 0 2.3px,transparent 2.7px) 0 calc(100% - 3px)/12px 8px repeat-x,#231B30}
+.eps-roll::-webkit-scrollbar{display:none}
+.ep{flex:none;width:104px;text-align:left;color:#fff}
+.ep-img{position:relative;display:block;width:104px;height:60px;border-radius:4px;overflow:hidden;background:#3A3048;box-shadow:0 0 0 1px rgba(255,255,255,.12)}
+.ep-img img{width:100%;height:100%;object-fit:cover;filter:grayscale(1) brightness(.55);transition:filter .3s}
+.ep-img em{position:absolute;left:5px;top:3px;font-style:normal;font-family:var(--latin);font-size:17px;font-weight:600;color:rgba(255,255,255,.92);text-shadow:0 1px 4px rgba(0,0,0,.6)}
+.ep.on .ep-img img{filter:none}
+.ep.on .ep-img{box-shadow:0 0 0 1.5px #E9CF9C,0 4px 12px -4px rgba(233,207,156,.7)}
+.ep-ok{position:absolute;right:4px;bottom:4px;width:18px;height:18px;border-radius:50%;background:linear-gradient(145deg,#F6E7C6,#C9A46C)}
+.ep-ok::after{content:"";position:absolute;left:5.5px;top:5px;width:7px;height:3.5px;border:solid #fff;border-width:0 0 2px 2px;transform:rotate(-45deg)}
+.ep-t{display:block;margin-top:6px;font-size:11.5px;line-height:1.3;color:rgba(255,255,255,.88);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ep small{display:block;font-size:10.5px;color:rgba(233,207,156,.75);font-family:var(--num)}
+.ep:not(.on) .ep-t{color:rgba(255,255,255,.55)}
+.ep.soon{opacity:.45}
+.ep.soon .ep-img{box-shadow:0 0 0 1px rgba(255,255,255,.25) inset;background:repeating-linear-gradient(135deg,#3A3048 0 6px,#2E2639 6px 12px)}
+.eps-next{display:flex;align-items:center;gap:6px;margin:10px var(--pad) 0;padding:10px 12px 10px 14px;border-radius:14px;background:var(--rose-bg);font-size:13px;color:var(--rose-ink)}
+.eps-next b{font-family:var(--num)}
+.eps-next button{margin-left:auto;flex:none;height:30px;padding:0 12px;border-radius:15px;background:var(--rose);color:#fff;font-size:12.5px;font-weight:600}
+.dw-ne{font-size:11.5px;opacity:.8}
+.fs-ep{flex:none;width:72px;height:42px;border-radius:3px;overflow:hidden;position:relative;background:#3A3048;box-shadow:0 0 0 1px rgba(255,255,255,.12)}
+.fs-ep img{width:100%;height:100%;object-fit:cover;filter:grayscale(1) brightness(.5)}
+.fs-ep.on img{filter:none}
+.fs-ep em{position:absolute;left:4px;top:1px;font-style:normal;font-family:var(--latin);font-size:13px;color:#fff;text-shadow:0 1px 3px rgba(0,0,0,.7)}
+.rn-eps{display:flex;gap:4px;overflow-x:auto;scrollbar-width:none;margin:8px 0 2px;padding:7px 6px;border-radius:6px;
+  background:radial-gradient(circle,rgba(248,245,252,.8) 0 1.6px,transparent 2px) 0 1px/9px 5px repeat-x,radial-gradient(circle,rgba(248,245,252,.8) 0 1.6px,transparent 2px) 0 calc(100% - 1px)/9px 5px repeat-x,#231B30}
+.rn-eps::-webkit-scrollbar{display:none}
+.rn-eps .fs-ep{width:46px;height:27px}
+.rn-eps .fs-ep em{font-size:11px}
 </style>
 </head>
 <body>
@@ -1540,7 +1648,6 @@ body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;ba
 <div class="mask" id="mask"></div>
 <div class="sheet" id="sheet"></div>
 <div class="toast" id="toast"></div>
-<script src="chat.js"></script>
 <script>
 "use strict";
 /* ================================================================ 基础 */
@@ -1606,12 +1713,32 @@ function toast(msg, act, fn, ms = 3200){
   t.classList.add("on"); clearTimeout(toast.t); toast.t = setTimeout(() => t.classList.remove("on"), act ? ms + 2000 : ms);
 }
 
+/* ================================================================ 角色聊天（实验）
+   默认关着：设置里打开才加载 chat.js（打开后它会替换下面这几个占位函数）。 */
+const chatOn = () => !!getPref("chatOn", false);
+let chatP = null;
+function loadChat(){
+  return chatP || (chatP = new Promise((res, rej) => { const sc = document.createElement("script"); sc.src = "chat.js?v=" + (S.idxInfo?.built || Date.now()).toString().slice(0, 13); sc.onload = res;
+    sc.onerror = () => { chatP = null; rej(new Error("聊天模块加载失败")); }; document.head.appendChild(sc); }));
+}
+function chatEntryHTML(){ return ""; }
+function aiSettingsHTML(){ return ""; }
+function bindAiSettings(){}
+async function renderChat(arg){
+  $("#page").innerHTML = `<div class="bar solid"><button class="icon-btn" onclick="back()" aria-label="返回">${IC.back}</button><div class="tt">聊天</div><span style="width:36px"></span></div><div class="empty" style="padding:60px 20px;text-align:center">加载中…</div>`;
+  try { await loadChat(); } catch (e) { toast(e.message); return; }
+  if (route().name === "chat") renderChat(arg);
+}
+
 /* ================================================================ 状态 */
 const S = {
   idx: [], byId: new Map(), idxReady: 0, idxInfo: null,   // 0 未加载 / 1 热门已加载 / 2 全部
   marks: {},       // tt -> {s, r, c, tags, d, ss, at, t, del}
   follows: {},     // nm -> {t, at, del}   追的影人
   lists: {},       // 片单 id -> {n, items: [tt...], t, at, del, from}
+  roles: {},       // 本命角色 "nm~tt" -> {t, at, n, del}
+  scenes: {},      // 名场面 id -> {tt, s, e, sec, zh, en, img, ch: [角色 key], t, at, del}
+  faces: {},       // 卡面选择（角色 / 本命）key -> {k, x, y, t, del}
   persons: {},     // nm -> 完整资料（后台抓的：作品表、照片、简介、获奖）
   meta: {}, people: {}, status: null, lookup: null,
   shardP: new Map(), shardN: new Map(), crew: new Map(),
@@ -1623,10 +1750,14 @@ const S = {
 
 /* ================================================================ 离线索引 */
 const IDX_BASE = "idx/";
-function parseIdx(text){
-  const out = [];
-  for (const line of text.split("\n")) {
+/* 片库索引一共 12 万多行：分小段解析，每段之间让出主线程，打开时不卡 */
+async function parseIdx(text){
+  const out = [], lines = text.split("\n");
+  let t0 = performance.now();
+  for (let i = 0; i < lines.length; i++) {
+    const line = lines[i];
     if (!line) continue;
+    if ((i & 511) === 0 && performance.now() - t0 > 10) { await new Promise(r => setTimeout(r, 0)); t0 = performance.now(); }
     const x = line.split("\t");
     const alt = x[7] ? x[7].split("|") : [];
     const row = {id: "tt" + x[0], t: x[1], y: +x[2] || 0, ey: +x[3] || 0, n: x[4], o: x[5], cn: x[6],
@@ -1645,7 +1776,8 @@ async function loadIndex(){
     for (const [i, f] of ["s1", "s2"].entries()) {
       const r = await fetch(`${IDX_BASE}${f}.txt?v=${v}`);
       if (!r.ok) throw new Error(r.status);
-      const rows = parseIdx(await r.text());
+      if (i === 1 && route().name !== "search") await new Promise(r => (window.requestIdleCallback || setTimeout)(r, {timeout: 2500}));   // 第二份等页面空下来再读
+      const rows = await parseIdx(await r.text());
       for (const row of rows) { S.idx.push(row); S.byId.set(row.id, row); }
       S.idxReady = i + 1; bump();
       if (i === 0) preloadCrew();
@@ -1817,7 +1949,7 @@ function keepImages(root, ret){
 }
 /* 底部四个页面渲染在 #main 里，详情、影人页等在 #page 里。
    进详情时 #main 只是藏起来，返回时原样显示，不重画、滚动位置不变；数据变了（S.ver 变了）才重画。 */
-const PAGES = ["t", "p", "quick", "settings", "uni", "u", "recall", "lists", "l", "chat"];
+const PAGES = ["t", "p", "quick", "settings", "uni", "u", "recall", "lists", "l", "chat", "sc"];
 let mainKey = "", mainVer = -1;
 const bump = () => { S.ver = (S.ver || 0) + 1; };
 function render(nav){
@@ -1830,7 +1962,7 @@ function render(nav){
     const entering = page.hidden;
     page.hidden = false;
     if (nav && entering) { page.classList.remove("out"); page.classList.remove("in"); void page.offsetWidth; page.classList.add("in"); }
-    const done = keepImages(page, () => ({t: renderTitle, p: renderPerson, quick: renderQuick, settings: renderSettings, uni: renderUniHub, u: renderUni, recall: renderRecall, lists: renderLists, l: renderList, chat: renderChat})[r.name](r.arg));
+    const done = keepImages(page, () => ({t: renderTitle, p: renderPerson, quick: renderQuick, settings: renderSettings, uni: renderUniHub, u: renderUni, recall: renderRecall, lists: renderLists, l: renderList, chat: renderChat, sc: renderSceneMaker})[r.name](r.arg));
     if (nav) { page.scrollTop = scrollMem[key] || 0; done.then(() => { if (route().name + "/" + route().arg === key) page.scrollTop = scrollMem[key] || 0; }); }
   } else {
     if (!page.hidden) {   // 关掉详情层：列表一直在底下，没被隐藏过，图片和位置都还在
@@ -1864,7 +1996,7 @@ function renderHome(){
   const films = done.filter(id => !vm(id).series).length, shows = done.length - films;
   const year = String(new Date().getFullYear()), thisYear = done.filter(id => (S.marks[id].d || "").startsWith(year)).length;
   const litN = UNI.reduce((n, u) => n + uniStat(u).lit.length, 0);
-  const since = all.map(([, k]) => k.at || "").filter(Boolean).sort()[0] || "";
+  const since = all.map(([, k]) => typeof k.at === "string" ? k.at : "").filter(Boolean).sort()[0] || "";
   const head = `<div class="top"><h1>影库</h1><a class="icon-btn" href="#/search" aria-label="搜索">${IC.search}</a><a class="icon-btn" href="#/settings" aria-label="设置">${IC.gear}</a></div>`;
   const syncNote = syncBanner();
   if (!all.length) {
@@ -1903,14 +2035,16 @@ function eager(fn){ eagerImgs = true; try { return fn(); } finally { eagerImgs =
 function doingSec(ids){
   const cards = ids.slice(0, 12).map(id => {
     const v = vm(id), k = mark(id), src = dbSmall(v.poster, 300) || imdbImg(v.posterKey, 300);
-    const ss = k?.ss || [], tot = v.m?.seasons || 0, seen = ss.length;
-    let nxt = 0; if (v.series) { for (let n = 1; n <= (tot || Math.max(0, ...ss) + 1); n++) if (!ss.includes(n)) { nxt = n; break; } }
-    const where = v.series ? (seen ? `看到第 ${Math.max(...ss)} 季${tot ? ` · 共 ${tot} 季` : ""}` : tot ? `还没开始 · 共 ${tot} 季` : "刚开始看") : "正在看";
+    const ss = k?.ss || [], ec = v.series ? epCount(id, k) : null, ne = ec ? nextEp(id, k) : null, le = ec ? lastEp(id, k) : null;
+    const tot = ec ? ec.tot : v.m?.seasons || 0, seen = ec ? ec.seen : ss.length;
+    let nxt = 0; if (v.series && !ec) { for (let n = 1; n <= (tot || Math.max(0, ...ss) + 1); n++) if (!ss.includes(n)) { nxt = n; break; } }
+    const where = ec ? (le ? `看到 ${epLabel(le)} · ${seen}/${tot} 集` : `还没开始 · 共 ${tot} 集`) + (ne?.n ? `<br><span class="dw-ne">下一集《${esc(ne.n)}》</span>` : "")
+      : v.series ? (seen ? `看到第 ${Math.max(...ss)} 季${tot ? ` · 共 ${tot} 季` : ""}` : tot ? `还没开始 · 共 ${tot} 季` : "刚开始看") : "正在看";
     return `<div class="dw" role="link" tabindex="0" onclick="go('#/t/${id}')">${src ? `<div class="dw-bg" style="background-image:url('${esc(src)}')"></div>` : ""}
       ${posterHTML(v, 220)}
       <div class="dw-b"><small>${v.series ? "剧集" : "电影"}${v.year ? ` · ${v.year}` : ""}</small><b>${esc(v.name)}</b><span class="dw-p">${where}</span>
         ${tot ? `<div class="dw-bar"><i style="width:${Math.min(100, seen / tot * 100)}%"></i></div>` : ""}
-        ${nxt || !v.series ? `<button class="dw-go" onclick="event.stopPropagation();doingTick('${id}',${nxt})">✓ ${nxt ? `第 ${nxt} 季看完了` : "看完了"}</button>` : ""}</div></div>`;
+        ${ne ? `<button class="dw-go" onclick="event.stopPropagation();tickEp('${id}',${ne.s},${ne.e})">✓ ${epLabel(ne)} 看完了</button>` : nxt || !v.series ? `<button class="dw-go" onclick="event.stopPropagation();doingTick('${id}',${nxt})">✓ ${nxt ? `第 ${nxt} 季看完了` : "看完了"}</button>` : ""}</div></div>`;
   }).join("");
   return `<div class="sec"><div class="sec-h"><h2>在看${ids.length > 1 ? `<small>${ids.length}</small>` : ""}</h2><a href="#/lib" onclick="libFilter({s:'doing'})">全部</a></div>
     <div class="scroller dws${ids.length === 1 ? " one" : ""}">${cards}</div></div>`;
@@ -1994,7 +2128,9 @@ function avatarErr(img){
   if (img.dataset.alt) { img.src = img.dataset.alt; delete img.dataset.alt; return; }
   const box = img.parentNode; img.remove(); if (box && box.dataset) box.textContent = box.dataset.i || "";
 }
-function personChip(p){ const r = p.c >= 10 ? "SSR" : p.c >= 5 ? "SR" : "R";
+function personChip(p){
+  // 追的人：和卡面一样按完整作品表的收集进度算稀有度；其他人按看过几部
+  const st = followed(p.id) ? personStat(p.id) : null, r = st ? tierOf(st.seen, st.tot).r : p.c >= 10 ? "SSR" : p.c >= 5 ? "SR" : "R";
   return `<a class="person ${followed(p.id) ? "fav" : ""}" data-r="${r}" href="#/p/${p.id}"><div class="avw">${avatarHTML(p)}<em>${r}</em></div><div class="nm">${esc(pname(p))}</div><div class="mt">${p.c} 部</div></a>`; }
 
 /* ================================================================ 片库 */
@@ -2266,13 +2402,14 @@ async function renderTitle(id){
       <button class="tolist" onclick="pickList('${id}')">${IC.list} ${(() => { const n = myLists().filter(l => l.items.includes(id)).length; return n ? `在 ${n} 个片单里` : "加入片单"; })()}</button>
     </div>
     ${uniBanner(id)}
-    ${v.series && nSeasons ? `<div class="blk" style="margin-bottom:-12px"><h3>分季 <span class="muted" style="font-size:12.5px;font-weight:400">点圆圈标记看完的季</span></h3></div>
+    ${v.series && epsOf(id) ? epsHTML(id) : v.series && nSeasons ? `<div class="blk" style="margin-bottom:-12px"><h3>分季 <span class="muted" style="font-size:12.5px;font-weight:400">点圆圈标记看完的季</span></h3></div>
       ${!seasonsDb.some(x => x.v) ? `<div class="spills">${Array.from({length: Math.min(nSeasons, 30)}, (_, i) => i + 1).map(n =>   // 没有分季评分：就是一排可以点的季，不画空进度条
         `<button class="${doneSeasons.has(n) ? "on" : ""}" onclick="toggleSeason('${id}',${n})" aria-label="第${n}季看完"><i>${doneSeasons.has(n) ? "✓" : ""}</i>第 ${n} 季</button>`).join("")}</div>` : `<div class="seasons">${Array.from({length: Math.min(nSeasons, 30)}, (_, i) => i + 1).map(n => {
         const s = seasonsDb.find(x => x.n === n);
         return `<div class="r"><button class="ck ${doneSeasons.has(n) ? "on" : ""}" onclick="toggleSeason('${id}',${n})" aria-label="第${n}季看完">${doneSeasons.has(n) ? "✓" : ""}</button>
           <span class="n">第 ${n} 季</span><span class="bar2"><i style="width:${s?.v ? Math.max(4, (s.v - 5) * 20) : 0}%"></i></span><b>${s?.v ? s.v.toFixed(1) : "–"}</b></div>`; }).join("")}</div>`}
       ${seasonsDb.length ? `<div class="cap" style="padding:0 var(--pad)">豆瓣分季评分</div>` : ""}` : ""}
+    ${sceneSec(id)}
     ${intro ? `<div class="blk"><h3>简介${!m?.intro ? ` <span class="muted" style="font-size:12px;font-weight:400">英文，豆瓣简介补全后替换</span>` : ""}</h3>
       <div class="intro clip" id="intro">${esc(intro)}</div><button class="more" id="more" onclick="$('#intro').classList.remove('clip');this.remove()">展开</button></div>` : ""}
     ${dirs.length || cast.length ? `<div class="sec"><div class="sec-h"><h2>演职员</h2></div><div class="cast">
@@ -2371,6 +2508,7 @@ function drawMarkSheet(){
     patch.d = D.s === "done" ? D.d : "";
     if (D.s === "done" && !D.d) patch.dn = 1;
     if (v.series) patch.ss = D.s === "wish" ? [] : D.ss;
+    if (v.series && D.s === "wish") patch.ep = {};   // 改回想看：按集的进度也清掉
     const first = !mark(D.id);
     setMark(D.id, patch);
     closeSheet(); render();
@@ -2402,7 +2540,13 @@ function askFeel(id){
 }
 
 function toggleSeason(id, n){
-  const k = mark(id), v = vm(id);
+  const k = mark(id), v = vm(id), M = epsOf(id);
+  if (M?.has(n)) {   // 有分集表：整季标上 / 整季取消
+    const list = M.get(n).filter(x => x.aired), full = list.length && list.every(x => epWatched(k, n, x.e));
+    const prev = k ? {...k} : null, fin = setEps(id, n, full ? [] : list.map(x => x.e));
+    toast(fin ? "全部看完，已标记为看过 🎉" : full ? `取消了第 ${n} 季` : `第 ${n} 季看完了 ✓`, "撤销", () => { setMark(id, prev); render(); });
+    render(); return;
+  }
   const ss = new Set(k?.ss || []);
   ss.has(n) ? ss.delete(n) : ss.add(n);
   const list = [...ss].sort((a, b) => a - b);
@@ -2411,6 +2555,87 @@ function toggleSeason(id, n){
   setMark(id, {s: unticked ? "doing" : k?.s === "done" || all ? "done" : "doing", ss: list, ...(all && k?.s !== "done" ? {d: today()} : {})});
   if (all && k?.s !== "done") toast("全部看完，已标记为看过 🎉");
   render();
+}
+
+/* ================================================================ 按集打卡
+   后台给标记过的剧拉分集表（meta.eps：[季, 集, 编号, 标题, 首播, 剧照, 分]）。
+   标记存在 marks：ss = 整季看完的季；ep = {季: [看过的集]}（整季看完就并进 ss）。 */
+function epsOf(id){
+  const E = S.meta[id]?.eps; if (!E?.length) return null;
+  const m = new Map(), t = today();
+  for (const [s, e, eid, n, d, img, r] of E) { if (!m.has(s)) m.set(s, []); m.get(s).push({s, e, id: eid, n, d, img, r, aired: !d || d.length < 10 ? (+(d || "0").slice(0, 4) || 0) <= +t.slice(0, 4) : d <= t}); }
+  return m;
+}
+function epWatched(k, s, e){ return !!k && (k.s === "done" && !(k.ss || []).length || (k.ss || []).includes(s) || (k.ep?.[s] || []).includes(e)); }
+function epCount(id, k = mark(id)){
+  const M = epsOf(id); if (!M) return null;
+  let seen = 0, tot = 0;
+  for (const [s, list] of M) for (const x of list) if (x.aired) { tot++; if (epWatched(k, s, x.e)) seen++; }
+  return {seen, tot};
+}
+function nextEp(id, k = mark(id)){
+  const M = epsOf(id); if (!M) return null;
+  for (const [s, list] of [...M].sort((a, b) => a[0] - b[0])) for (const x of list) if (x.aired && !epWatched(k, s, x.e)) return x;
+  return null;
+}
+function lastEp(id, k = mark(id)){
+  const M = epsOf(id); if (!M) return null; let last = null;
+  for (const [s, list] of [...M].sort((a, b) => a[0] - b[0])) for (const x of list) if (epWatched(k, s, x.e)) last = x;
+  return last;
+}
+const epLabel = x => `S${x.s}E${x.e}`;
+/* 一集的画面：自己截过这一集的名场面就用自己截的，没有用 IMDb 的单集剧照 */
+function epImg(tt, x, w){
+  const sc = Object.values(S.scenes || {}).find(y => !y.del && y.tt === tt && y.s === x.s && y.e === x.e && y.img);
+  return sc ? stillSrc("g:" + sc.img, w) : x.img ? imdbImg(x.img, w) : "";
+}
+/* 改完一季里看过哪些集：整季看完的并进 ss；全剧看完（而且已完结）→ 看过 */
+function setEps(id, s, list){
+  const k = mark(id) || {}, v = vm(id), M = epsOf(id), aired = (M?.get(s) || []).filter(x => x.aired).map(x => x.e);
+  const ss = new Set(k.s === "done" && !(k.ss || []).length && M ? [...M.keys()] : (k.ss || []));
+  const ep = {...(k.ep || {})};
+  const got = new Set(list);
+  const full = aired.length && aired.every(e => got.has(e)) && (M?.get(s) || []).every(x => x.aired);
+  if (full) { ss.add(s); delete ep[s]; } else { ss.delete(s); if (got.size) ep[s] = [...got].sort((a, b) => a - b); else delete ep[s]; }
+  const seasons = M ? [...M.keys()] : [];
+  const all = seasons.length && seasons.every(n => ss.has(n)) && !!v.m?.ey;
+  const any = ss.size || Object.keys(ep).length;
+  const st = all ? "done" : any ? "doing" : (k.s === "wish" ? "wish" : k.s === "done" ? "doing" : k.s || "doing");
+  setMark(id, {s: st, ss: [...ss].sort((a, b) => a - b), ep, ...(all && k.s !== "done" ? {d: today()} : {})});
+  return all && k.s !== "done";
+}
+/* 点一集：没看过 → 这一季从头标到这一集；看过 → 只取消这一集 */
+function tickEp(id, s, e){
+  const k = mark(id), prev = k ? {...k} : null, M = epsOf(id), list = (M?.get(s) || []).filter(x => x.aired);
+  const cur = new Set(list.filter(x => epWatched(k, s, x.e)).map(x => x.e));
+  let msg;
+  if (cur.has(e)) { cur.delete(e); msg = `取消了 ${epLabel({s, e})}`; }
+  else { const before = list.filter(x => x.e < e && !cur.has(x.e)).length; list.filter(x => x.e <= e).forEach(x => cur.add(x.e)); msg = before ? `标到了第 ${s} 季第 ${e} 集` : `${epLabel({s, e})} 看完了`; }
+  const fin = setEps(id, s, [...cur]);
+  render();
+  const undo = () => { setMark(id, prev); render(); };
+  toast(fin ? "全部看完，已标记为看过 🎉" : msg, "撤销", undo);
+  const f = document.querySelector(`.ep[data-ep="${s}-${e}"]`); if (f && cur.has(e)) { f.classList.add("pop"); burst(f, 5); }
+}
+let epsOpen = {};
+function epsHTML(id){
+  const M = epsOf(id); if (!M) return "";
+  const k = mark(id), seasonsDb = S.meta[id]?.seasons_db || [];
+  const nx = nextEp(id, k), openS = epsOpen[id] ?? (nx ? nx.s : null);
+  return `<div class="blk" style="margin-bottom:-6px"><h3>分集 <span class="muted" style="font-size:12.5px;font-weight:400">点一集＝看到这一集</span></h3></div>
+    <div class="eps">${[...M].sort((a, b) => a[0] - b[0]).map(([n, list]) => {
+      const aired = list.filter(x => x.aired), seen = aired.filter(x => epWatched(k, n, x.e)).length, full = aired.length && seen === aired.length;
+      const db = seasonsDb.find(x => x.n === n), open = openS === n;
+      return `<div class="eps-s${open ? " open" : ""}${full ? " full" : ""}">
+        <div class="eps-h"><button class="ck ${full ? "on" : ""}" onclick="toggleSeason('${id}',${n})" aria-label="第${n}季看完">${full ? "✓" : ""}</button>
+          <button class="eps-n" onclick="epsOpen['${id}']=${open ? -1 : n};render()"><b>第 ${n} 季</b><small>${seen}/${list.length} 集${db?.v ? ` · 豆瓣 ${db.v.toFixed(1)}` : ""}</small><i>${IC.down}</i></button>
+          <span class="eps-bar"><i style="width:${aired.length ? seen / aired.length * 100 : 0}%"></i></span></div>
+        ${open ? `<div class="eps-roll">${list.map(x => { const on = epWatched(k, n, x.e);
+          return `<button class="ep${on ? " on" : ""}${x.aired ? "" : " soon"}" data-ep="${n}-${x.e}" ${x.aired ? `onclick="tickEp('${id}',${n},${x.e})"` : "disabled"} title="${esc(x.n)}">
+            <span class="ep-img">${epImg(id, x, 240) ? `<img loading="lazy" decoding="async" src="${esc(epImg(id, x, 240))}" onerror="this.remove()">` : ""}<em>${x.e}</em>${on ? `<i class="ep-ok"></i>` : ""}</span>
+            <span class="ep-t">${esc(x.n || `第 ${x.e} 集`)}</span><small>${x.aired ? (x.r ? `★ ${(+x.r).toFixed(1)}` : x.d ? x.d.slice(0, 4) : "") : x.d ? `${x.d.slice(5).replace("-", ".")} 播出` : "未播"}</small></button>`; }).join("")}</div>` : ""}
+      </div>`; }).join("")}</div>
+    ${nx ? `<div class="eps-next">下一集 <b>${epLabel(nx)}</b>${nx.n ? `《${esc(nx.n)}》` : ""}<button onclick="tickEp('${id}',${nx.s},${nx.e})">✓ 看完了</button></div>` : ""}`;
 }
 
 /* ================================================================ 影人页 */
@@ -2509,11 +2734,12 @@ function refreshPersonCounts(nm){
   const nb = $("#page .pstat .nextb"); if (nb) nb.innerHTML = nextHint(st.seen, st.tot);
 }
 function nextHint(seen, tot){ const n = nextBadge(seen, tot); return n ? `再集 <b>${n.left}</b> 部解锁 ${n.ic}「${n.n}」` : "全部集齐，太强了 👑"; }
-/* 下一部推荐：没看过、已上映、评分高、人多 */
-/* 下一部：按上映时间从早到晚，挑最早一部还没看过的（想看的也算）；同一年里看的人多的优先 */
+/* 下一部：先在正经出演、有一定人看的作品里挑（客串一两集的、几乎没人看过的放最后）；
+   加了想看的优先，其余按上映时间从早到晚，同一年看的人多的优先 */
 function nextPick(ws){
   const cand = ws.filter(w => !w.self && !w.upcoming && !["done", "doing"].includes(mark(w.id)?.s) && w.y);
-  return cand.sort((a, b) => a.y - b.y || (b.v || 0) - (a.v || 0))[0] || null;
+  const main = cand.filter(w => !w.guest && (w.v || 0) >= 3000 && !(w.series && w.eps && w.eps <= 3));
+  return (main.length ? main : cand).sort((a, b) => (mark(b.id)?.s === "wish") - (mark(a.id)?.s === "wish") || a.y - b.y || (b.v || 0) - (a.v || 0))[0] || null;
 }
 
 /* ================================================================ 追影人 */
@@ -2653,7 +2879,10 @@ const pEn = nm => S.persons[nm]?.n || S.follows[nm]?.n || "";
 /* 卡面照片：自己选的 > IMDb 主照片 > 豆瓣头像 */
 function faceOf(nm, w = 600){
   const ph = followed(nm) ? S.follows[nm].ph : null;
-  if (ph?.k) return {src: /^https?:/.test(ph.k) ? ph.k : imdbImg(ph.k, w), pos: `${ph.x ?? 50}% ${ph.y ?? 20}%`, alt: ""};
+  if (ph?.k) return {src: stillSrc(ph.k, w), pos: `${ph.x ?? 50}% ${ph.y ?? 20}%`, alt: ""};
+  // 没自己选过：有本命角色就用那个角色的样子（追的是角色，不是红毯上的本人）
+  const ben = benList().filter(b => b.nm === nm).sort((a, b) => b.t - a.t);
+  for (const b of ben) { const f = roleFace(b.nm, b.tt, w, true); if (f) return {src: f.src, pos: f.pos, alt: ""}; }
   const k = S.persons[nm]?.img || personImg(nm), d = S.people[nm]?.dimg || "";
   return {src: k ? imdbImg(k, w) : d, alt: k && d ? d : "", pos: "50% 20%"};
 }
@@ -2725,7 +2954,7 @@ function roleOf(w){
 function rolesOf(nm, works){
   const P = S.persons[nm], known = new Set(P?.known || []);
   return works.filter(w => w.act && !w.self && (w.role || w.role_cn))
-    .sort((a, b) => known.has(b.id) - known.has(a.id) || !!rIntro(nm, b) - !!rIntro(nm, a) || (a.guest ? 1 : 0) - (b.guest ? 1 : 0) || (b.v || 0) - (a.v || 0))
+    .sort((a, b) => isBen(nm, b.id) - isBen(nm, a.id) || known.has(b.id) - known.has(a.id) || !!rIntro(nm, b) - !!rIntro(nm, a) || (a.guest ? 1 : 0) - (b.guest ? 1 : 0) || (b.v || 0) - (a.v || 0))
     .slice(0, 24);
 }
 /* 角色介绍：专题里手写过这个角色（比如 Homefront 的杰夫、漫威的托尼）就用手写的，没有再用后台从豆瓣简介里摘的 */
@@ -2736,9 +2965,9 @@ function uniRoleIntro(nm, id){
 }
 const rIntro = (nm, w) => uniRoleIntro(nm, w.id) || w.rintro || "";
 function roleCard(nm, w){
-  const r = roleOf(w), k = mark(w.id), st = stillsOf(nm, w.id)[0];
-  const img = st ? imdbImg(st.k, 480) : (w.img || vm(w.id).posterKey) ? imdbImg(w.img || vm(w.id).posterKey, 300) : "";
-  const tag = k?.s === "done" ? `<span class="rtag">♥ 已集</span>` : k ? `<span class="rtag w">${STATUS[k.s]}</span>` : "";
+  const r = roleOf(w), k = mark(w.id), f = roleFace(nm, w.id, 480, true);
+  const img = f ? f.src : (w.img || vm(w.id).posterKey) ? imdbImg(w.img || vm(w.id).posterKey, 300) : "";
+  const tag = isBen(nm, w.id) ? `<span class="rtag ben">♛ 本命</span>` : k?.s === "done" ? `<span class="rtag">♥ 已集</span>` : k ? `<span class="rtag w">${STATUS[k.s]}</span>` : "";
   return `<button class="rc" onclick="roleSheet('${nm}','${w.id}')"><div class="rimg">${img ? `<img loading="lazy" decoding="async" src="${esc(img)}" onerror="this.remove()">` : ""}${tag}
     <div class="rname"><b${r.cn ? "" : ' class="lat"'}>${esc(r.cn || r.en || r.any)}</b>${r.cn && r.en ? `<small>${esc(r.en)}</small>` : ""}</div></div>
     <div class="rbd"><div class="rw">《${esc(workName(w))}》<span>${w.y || ""}</span>${w.guest ? `<em>客串</em>` : ""}</div>
@@ -2746,37 +2975,132 @@ function roleCard(nm, w){
 }
 function roleSheet(nm, id){
   const P = S.persons[nm]; const w = (P?.credits || []).find(c => c.id === id); if (!w) return go(`#/t/${id}`);
-  const r = roleOf(w), ws = worksFromP({credits: [w]})[0], k = mark(id);
-  const st = stillsOf(nm, id).slice(0, 12);
-  openSheet(`<div class="grab"></div>
-    ${st.length ? `<div class="rstills">${st.map(i => `<img loading="lazy" src="${esc(imdbImg(i.k, 900))}" onerror="this.remove()">`).join("")}</div>` : ""}
-    <div class="rhead"><b${r.cn ? "" : ' class="lat"'}>${esc(r.cn || r.en || r.any || "角色")}</b>${r.cn && r.en ? `<div class="sign">${esc(r.en)}</div>` : ""}
-      <small>${esc(pName(nm))} 饰 ·《${esc(workName(w))}》${w.y || ""}${ws.guest ? ` · 客串 ${w.eps || ""} 集` : ws.series && w.eps ? ` · ${w.eps} 集` : ""}</small></div>
-    ${rIntro(nm, w) ? `<div class="rtext">${esc(rIntro(nm, w))}</div>` : w.wintro ? `<div class="rtext w">作品简介：${esc(w.wintro)}</div>` : `<div class="rtext w">角色介绍还在整理，后台每轮会补几部。</div>`}
-    <div class="foot"><a class="btn ghost" href="#/t/${id}">作品详情</a>${k?.s === "done" ? `<button class="btn ghost" disabled>♥ 已集</button>` : `<button class="btn rose" id="rstamp">插卡</button>`}</div>`);
+  const ws = worksFromP({credits: [w]})[0], k = mark(id), I = roleInfo(nm, id), on = isBen(nm, id), fk = roleFk(nm, id);
+  const st = roleStills(nm, id), cur = facePick(fk), sc = scenesOf(fk, id);
+  const ne = vm(id).series ? nextEp(id, k) : null;
+  openSheet(`<div class="grab"></div><div class="csh rsh" style="--hc:${I.color}">
+    <div class="csh-card" id="rshc">${on ? roleIdolCard(nm, id, {w: 600, cls: "big", eager: true}) : (() => { const f = roleFace(nm, id, 600); return `<div class="rsh-pv">${f?.src ? `<img src="${esc(f.src)}" style="object-position:${f.pos}" onerror="this.remove()">` : ""}</div>`; })()}</div>
+    <div class="csh-hd">${I.en ? `<div class="sign">${esc(I.en)}</div>` : ""}<b>${esc(I.name)}</b>
+      <small>${esc(pName(nm))} 饰 ·《${esc(workName(w))}》${w.y || ""}${ws.guest ? ` · 客串 ${w.eps || ""} 集` : ws.series && w.eps ? ` · ${w.eps} 集` : ""}</small>
+      <div class="csh-meta" style="justify-content:center"><button class="ben-tog${on ? " on" : ""}" id="rben">${on ? "♥ 本命" : "♡ 设为本命"}</button></div></div>
+    ${rIntro(nm, w) ? `<div class="csh-intro">${esc(rIntro(nm, w))}</div>` : w.wintro ? `<div class="csh-intro" style="color:var(--dim)">作品简介：${esc(w.wintro)}</div>` : ""}
+    ${k ? `<div class="rsh-prog">看了 <b>${I.seen}</b> / ${I.tot} ${I.unit}${I.full ? " · 👑 全部看完" : ne ? ` · 下一集 ${epLabel(ne)}${ne.n ? `《${esc(ne.n)}》` : ""}` : ""}<span class="tr"><i style="width:${I.tot ? I.seen / I.tot * 100 : 0}%"></i></span></div>` : ""}
+    ${sc.length ? `<div class="lab">名场面 <span class="muted" style="font-size:11.5px">${sc.length} 张</span></div><div class="scn-row">${sc.map(sceneTile).join("")}</div>` : ""}
+    <div class="lab">${on ? "选卡面" : "剧照"} <span class="muted" style="font-size:11.5px">${st.length ? `${st.length} 张${on ? " · 点一张就换" : ""}` : ""}</span></div>
+    ${st.length ? `<div class="csh-pick">${st.slice(0, 40).map(x => `<button class="${on && cur === x.k ? "on" : ""}" data-k="${esc(x.k)}">${x.t === "w" ? "<em>网图</em>" : x.t === "sc" ? "<em>名场面</em>" : ""}<img loading="lazy" src="${esc(stillSrc(x.k, 200))}" onerror="this.parentNode.remove()"></button>`).join("")}</div>` : `<div class="small" style="color:var(--dim)">还没有这个角色的图${on ? "，后台会去 Pinterest 找" : ""}</div>`}
+    <div class="csh-more"><button class="pill add" onclick="moreImgs('${esc(fk)}',this)">${st.length ? "再找找" : "去 Pinterest 找"}</button><a class="pill add" href="#/sc/${id}" onclick="closeSheet()">✂ 自己截一张</a></div>
+    <div class="foot"><a class="btn ghost" href="#/t/${id}" onclick="closeSheet()">作品详情</a>${k?.s === "done" ? `<button class="btn ghost" disabled>♥ 已集</button>` : `<button class="btn rose" id="rstamp">插卡</button>`}</div></div>`);
+  const card = $("#sheet .csh-card .ic"); if (card) { tiltable(card); flashCard(card); }
+  $("#rben").onclick = () => { const was = on; toggleBen(nm, id); roleSheet(nm, id); render(); if (!was) { burst($("#rben"), 10); } };
+  $$("#sheet .csh-pick [data-k]").forEach(b => b.onclick = () => {
+    if (!isBen(nm, id)) { window.__album = {nm, keys: st.map(x => x.k), src: true}; lightbox(st.findIndex(x => x.k === b.dataset.k)); return; }
+    setFace(fk, b.dataset.k); const keep = $("#sheet").scrollTop; roleSheet(nm, id); $("#sheet").scrollTop = keep; render(); toast("卡面换好了");
+  });
   const b = $("#rstamp"); if (b) b.onclick = () => {
     const v = vm(id); lightMeta(w);
     const msgs = stampAndCelebrate(id, {s: "done", d: k?.d || "", ...(v.series && v.m?.seasons ? {ss: Array.from({length: v.m.seasons}, (_, i) => i + 1)} : {})});
     closeSheet(); render(); toast(msgs[0] ? `+1 ${msgs[0]}` : `已集《${workName(w)}》`, "撤销", () => { setMark(id, k || null); render(); });
   };
 }
-let albumTab = "p", albumAll = false;
+/* ================================================================ 本命角色
+   追的是角色，不是演员本人：在影人页「TA 的角色」或作品页里把一个角色设为本命，
+   首页卡组最前面就是 TA；卡面用这个角色的剧照 / 网图 / 自己截的名场面。key = "nm~tt" */
+const roleKey = (nm, tt) => `${nm}~${tt}`;
+const roleFk = (nm, tt) => `r:${nm}:${tt}`;
+const isBen = (nm, tt) => { const r = S.roles?.[roleKey(nm, tt)]; return !!(r && !r.del); };
+const benList = () => Object.entries(S.roles || {}).filter(([, r]) => !r.del).map(([k, r]) => { const [nm, tt] = k.split("~"); return {nm, tt, key: k, t: r.t || 0}; });
+const roleCredit = (nm, tt) => (S.persons[nm]?.credits || []).find(c => c.id === tt) || null;
+function uniCharOf(nm, tt){
+  if (!UNI.length) return null;
+  for (const u of uniMap.values()) for (const c of u.chars) if (c.a.some(a => a[0] === nm) && c.apps.some(w => w.id === tt)) return c;
+  return null;
+}
+function roleStills(nm, tt){
+  const fk = roleFk(nm, tt), c = uniCharOf(nm, tt);
+  // 只要戏里的样子：剧照和其他单人图；活动照、写真（红毯上的本人）不算
+  const ps = stillsOf(nm, tt).filter(i => i.n === 1 && (i.t === "s" || i.t === "o")).map(i => ({k: i.k, w: i.w, h: i.h, t: i.t}));
+  const all = [...sceneImgs(fk), ...(c ? charStills(c) : []), ...ps, ...webImgs(fk)], seen = new Set();
+  return all.filter(x => !seen.has(x.k) && seen.add(x.k)).sort((a, b) => stillScore(a) - stillScore(b));
+}
+function roleFace(nm, tt, w = 600, realOnly){
+  const fk = roleFk(nm, tt), pick = facePick(fk), st = roleStills(nm, tt), f = S.faces?.[fk];
+  const one = (pick && (st.find(x => x.k === pick) || {k: pick, w: 2, h: 3})) || st.find(x => x.w <= x.h * 1.8) || st[0];
+  if (one) return {src: stillSrc(one.k, w), pos: pick && f?.x != null ? `${f.x}% ${f.y}%` : one.h > one.w ? "50% 18%" : "50% 30%", still: true};
+  if (realOnly) return null;
+  const c = uniCharOf(nm, tt), cm = c && charComic(c, w); if (cm) return cm;
+  const p = posterSrc(tt, w) || (roleCredit(nm, tt)?.img ? imdbImg(roleCredit(nm, tt).img, w) : "");
+  return p ? {src: p, pos: "50% 30%", poster: true} : null;
+}
+/* 这个角色的进度：剧集按集（TA 出场的集数为上限），电影就是看没看 */
+function roleInfo(nm, tt){
+  const cr = roleCredit(nm, tt), r = cr ? roleOf(cr) : {cn: "", en: S.roles?.[roleKey(nm, tt)]?.n || "", any: S.roles?.[roleKey(nm, tt)]?.n || ""};
+  const c = uniCharOf(nm, tt), v = vm(tt), k = mark(tt);
+  const name = c?.cn || r.cn || r.en || r.any || "角色", en = c?.en || (r.cn ? r.en : "") || (name !== (r.en || r.any) ? r.en || r.any : "");
+  let seen = k?.s === "done" ? 1 : 0, tot = 1, unit = "部";
+  const ec = v.series ? epCount(tt, k) : null;
+  if (ec && ec.tot) { tot = cr?.eps && cr.eps < ec.tot ? cr.eps : ec.tot; seen = k?.s === "done" ? tot : Math.min(tot, ec.seen); unit = "集"; }
+  else if (v.series && v.m?.seasons) { tot = v.m.seasons; seen = k?.s === "done" ? tot : (k?.ss || []).length; unit = "季"; }
+  return {name, en, actor: pName(nm), work: cr ? workName(cr) : v.name, y: cr?.y || v.year, seen, tot, unit, full: seen >= tot, c, cr, color: c?.c || `hsl(${hashOf(nm + tt) % 360} 38% 46%)`};
+}
+function roleIdolCard(nm, tt, o = {}){
+  const I = roleInfo(nm, tt), f = o.face || roleFace(nm, tt, o.w || 600);
+  return `<div class="ic chc ben${o.cls ? " " + o.cls : ""}" data-r="BM" data-nm="${roleKey(nm, tt)}" style="--hc:${I.color}"${o.click ? ` onclick="${o.click}"` : ""}>
+    <span class="crest"></span>${I.full ? `<span class="crown">👑</span>` : ""}
+    <div class="in"><div class="ini">${esc(I.name.slice(0, 1))}</div>
+      ${f?.src ? `<img decoding="async" ${o.eager ? "" : 'loading="lazy" '}class="${f.poster ? "pst" : ""}" src="${esc(f.src)}"${f.comic ? ' referrerpolicy="no-referrer"' : ""} style="object-position:${f.pos}" onerror="this.remove()">` : ""}
+      <div class="tint"></div><div class="holo"></div><div class="sheen"></div>
+      <i class="orn tl"></i><i class="orn tr"></i><i class="orn bl"></i><i class="orn br"></i>
+      <div class="rar"><b>本命</b></div>
+      ${o.count !== false ? `<div class="cnt">${I.seen}<i>/${I.tot}</i></div>` : ""}
+      <div class="plate">${I.en ? `<div class="sign">${esc(I.en)}</div>` : ""}<b${/[\u4e00-\u9fff]/.test(I.name) ? "" : ` class="lat${I.name.length > 11 ? " long" : ""}"`}>${esc(I.name)}</b><small>${esc(I.actor)} 饰 ·《${esc(I.work)}》</small></div>
+    </div></div>`;
+}
+function toggleBen(nm, tt, quiet){
+  const on = !isBen(nm, tt), cr = roleCredit(nm, tt);
+  S.roles[roleKey(nm, tt)] = on ? {t: Date.now(), at: new Date().toISOString(), n: cr?.role || ""} : {t: Date.now(), del: true};
+  saveMap("roles");
+  const I = roleInfo(nm, tt);
+  if (!quiet) toast(on ? `${I.name} 设为本命 ♥ 首页卡组最前面就是 TA` : `${I.name} 不再是本命`);
+  // 第一次设为本命、还没有网图：叫后台去 Pinterest 找（等标记同步上去再叫）
+  if (on && gh.token() && !IS_PREVIEW && !webImgs(roleFk(nm, tt)).length) setTimeout(() => addRequest({imgs: [roleFk(nm, tt)]}).then(() => watchImgs(roleFk(nm, tt))).catch(() => {}), 4000);
+  return on;
+}
+/* 本命角色的换卡面：这个角色的剧照、网图、名场面里挑 */
+function pickRoleFace(nm, tt){
+  const fk = roleFk(nm, tt), st = roleStills(nm, tt), cur = facePick(fk);
+  openSheet(`<div class="grab"></div><h3>换卡面<small>${esc(roleInfo(nm, tt).name)} · 点一张就换</small></h3>
+    <div class="fpv">${roleIdolCard(nm, tt, {w: 600, count: false, eager: true})}</div>
+    ${st.length ? `<div class="csh-pick" style="margin-top:14px">${st.slice(0, 40).map(x => `<button class="${cur === x.k ? "on" : ""}" data-k="${esc(x.k)}">${x.t === "w" ? "<em>网图</em>" : x.t === "sc" ? "<em>名场面</em>" : ""}<img loading="lazy" src="${esc(stillSrc(x.k, 200))}" onerror="this.parentNode.remove()"></button>`).join("")}</div>`
+      : `<div class="empty" style="padding:16px">还没有这个角色的图</div>`}
+    <div class="csh-more"><button class="pill add" onclick="moreImgs('${esc(fk)}',this)">再找找</button><a class="pill add" href="#/sc/${tt}" onclick="closeSheet()">✂ 自己截一张</a></div>
+    <div class="foot"><button class="btn ghost" id="rfreset">用默认</button><button class="btn rose" onclick="closeSheet()">好了</button></div>`);
+  $$("#sheet .csh-pick [data-k]").forEach(b => b.onclick = () => { setFace(fk, b.dataset.k); pickRoleFace(nm, tt); render(); flashCard($("#sheet .fpv .ic")); });
+  $("#rfreset").onclick = () => { setFace(fk, ""); pickRoleFace(nm, tt); render(); };
+}
+
+let albumTab = "s", albumAll = false, albumWork = "";
 function albumHTML(nm){
   const all = albumOf(nm); if (!all.length) return "";
-  const groups = {p: all.filter(i => i.t === "p" || i.t === "e" || i.t === "o"), s: all.filter(i => i.t === "s")};
-  if (!groups[albumTab].length) albumTab = groups.p.length ? "p" : "s";
-  const list = groups[albumTab], show = albumAll ? list : list.slice(0, 18);
+  // 剧照在前、按角色分：追的是角色，先看 TA 在戏里的样子
+  const groups = {s: all.filter(i => i.t === "s"), p: all.filter(i => i.t === "p" || i.t === "e" || i.t === "o")};
+  if (!groups[albumTab].length) albumTab = groups.s.length ? "s" : "p";
+  const works = albumTab === "s" ? countBy(groups.s.map(i => i.tt).filter(Boolean), tt => [tt]).slice(0, 12) : [];
+  if (albumWork && !works.some(([tt]) => tt === albumWork)) albumWork = "";
+  const list = albumWork ? groups.s.filter(i => i.tt === albumWork) : groups[albumTab], show = albumAll ? list : list.slice(0, 18);
   window.__album = {nm, keys: list.map(i => i.k)};
+  const cr = tt => (S.persons[nm]?.credits || []).find(c => c.id === tt);
   return `<div class="sec"><div class="sec-h"><h2>相册 <small>${all.length}</small></h2></div>
-    ${groups.p.length && groups.s.length ? `<div class="seg" style="margin:0 var(--pad) 10px">${[["p", "写真与活动", groups.p.length], ["s", "剧照", groups.s.length]].map(([k, l, n]) =>
-      `<button class="${albumTab === k ? "on" : ""}" onclick="albumTab='${k}';albumAll=false;render()">${l}<b>${n}</b></button>`).join("")}</div>` : ""}
+    ${groups.p.length && groups.s.length ? `<div class="seg" style="margin:0 var(--pad) 10px">${[["s", "剧照", groups.s.length], ["p", "写真与活动", groups.p.length]].map(([k, l, n]) =>
+      `<button class="${albumTab === k ? "on" : ""}" onclick="albumTab='${k}';albumAll=false;albumWork='';render()">${l}<b>${n}</b></button>`).join("")}</div>` : ""}
+    ${works.length > 1 ? `<div class="chips" style="margin:0 0 10px">${[["", "全部", groups.s.length], ...works].map(([tt, n0, n]) => { const c = tt && cr(tt), r = c ? roleOf(c) : null;
+      return `<button class="chip${albumWork === tt ? " on" : ""}" onclick="albumWork='${tt}';albumAll=false;render()">${tt ? esc(r?.cn || r?.en || (c ? workName(c) : vm(tt).name)) : "全部"} <b>${tt ? n0 : n}</b></button>`; }).join("")}</div>` : ""}
     <div class="album">${show.map((i, j) => `<button onclick="lightbox(${j})"><img loading="lazy" decoding="async" src="${esc(imdbImg(i.k, 300))}" onload="this.classList.add('ok')" onerror="this.parentNode.remove()"></button>`).join("")}</div>
     ${list.length > show.length ? `<button class="more2" onclick="albumAll=true;render()">展开全部 ${list.length} 张</button>` : ""}</div>`;
 }
 function lightbox(i){
   const A = window.__album; if (!A?.keys?.length) return;
   const el = document.createElement("div"); el.className = "lbox";
-  el.innerHTML = `<div class="lbs">${A.keys.map((k, j) => `<div><img ${Math.abs(j - i) > 1 ? 'loading="lazy" ' : ""}decoding="async" src="${esc(imdbImg(k, 1000))}"></div>`).join("")}</div>
+  el.innerHTML = `<div class="lbs">${A.keys.map((k, j) => `<div><img ${Math.abs(j - i) > 1 ? 'loading="lazy" ' : ""}decoding="async" src="${esc(stillSrc(k, 1000))}"></div>`).join("")}</div>
     <div class="lbar"><span class="lbn"><span>${i + 1}</span> / ${A.keys.length}</span>${followed(A.nm) ? `<button class="setf">设为卡面</button>` : ""}</div>`;
   document.body.appendChild(el);
   const sc = el.querySelector(".lbs"); let cur = i;
@@ -2801,7 +3125,7 @@ function pickFace(nm, preK){
   if (pre) { FD.x = 50; FD.y = pre.w > pre.h ? 50 : 20; }
   drawFace();
 }
-function faceSrcFD(w = 600){ return FD.k ? (/^https?:/.test(FD.k) ? FD.k : imdbImg(FD.k, w)) : faceOf(FD.nm, w).src; }
+function faceSrcFD(w = 600){ return FD.k ? stillSrc(FD.k, w) : faceOf(FD.nm, w).src; }
 function drawFace(){
   const nm = FD.nm, items = FD.items;
   const tabs = [["all", "全部", items.length], ["p", "写真", items.filter(i => i.t === "p" || i.t === "e" || i.t === "d" || i.t === "o").length], ["s", "剧照", items.filter(i => i.t === "s").length]];
@@ -2809,7 +3133,7 @@ function drawFace(){
   openSheet(`<div class="grab"></div><h3>换卡面<small>选一张照片，在卡上拖动调整位置</small></h3>
     <div class="fpv" id="fpv">${idolCard(nm, {w: 600, face: {src: faceSrcFD(), pos: `${FD.x}% ${FD.y}%`}, count: false})}</div>
     ${items.length ? `<div class="seg" style="margin:0">${tabs.filter(t => t[2] || t[0] === "all").map(([k, l, n]) => `<button class="${FD.tab === k ? "on" : ""}" data-tab="${k}">${l}<b>${n}</b></button>`).join("")}</div>
-    <div class="fgrid">${list.map(i => `<button class="${i.k === FD.k ? "on" : ""}" data-k="${esc(i.k)}" data-l="${i.w > i.h ? 1 : 0}"><img loading="lazy" decoding="async" src="${esc(/^https?:/.test(i.k) ? i.k : imdbImg(i.k, 240))}" onerror="this.parentNode.remove()"></button>`).join("")}</div>`
+    <div class="fgrid">${list.map(i => `<button class="${i.k === FD.k ? "on" : ""}" data-k="${esc(i.k)}" data-l="${i.w > i.h ? 1 : 0}"><img loading="lazy" decoding="async" src="${esc(stillSrc(i.k, 240))}" onerror="this.parentNode.remove()"></button>`).join("")}</div>`
     : `<div class="empty" style="padding:20px">TA 的照片还在整理，过几分钟再来看看。</div>`}
     <div class="foot"><button class="btn ghost" id="freset">用默认照片</button><button class="btn rose" id="fsave">用这张</button></div>`);
   const sh = $("#sheet");
@@ -2877,9 +3201,23 @@ function bdaySection(){
   return `<a class="bday-pill" href="#/p/${b.nm}"><span>🎂</span><b>${esc(name)}</b> 生日还有 <em>${b.days}</em> 天<small>${b.m} 月 ${b.d} 日${b.age ? ` · ${b.age} 岁` : ""}</small></a>`;
 }
 function followSection(){
-  const list = followList(); if (!list.length) return "";
+  const list = followList(), bens = benList();
+  if (!list.length && !bens.length) return "";
   const order = [...list].sort((a, b) => lastActive(b) - lastActive(a));
   const slides = [], infos = [], news = [];
+  // 本命角色排在最前面（最近看过 TA 的排前）
+  for (const b of bens.sort((x, y) => Math.max(y.t, mark(y.tt)?.t || 0) - Math.max(x.t, mark(x.tt)?.t || 0))) {
+    const I = roleInfo(b.nm, b.tt), ne = vm(b.tt).series ? nextEp(b.tt) : null;
+    slides.push(`<div class="slide">${roleIdolCard(b.nm, b.tt, {w: 600, click: `roleSheet('${b.nm}','${b.tt}')`, eager: true})}</div>`);
+    infos.push(`<div class="di"><div class="bond paper">
+      <div class="b-top"><div class="b-cnt"><b>${I.seen}</b><i>/ ${I.tot}</i><span>${I.unit === "部" ? "已看" : `已看${I.unit}数`}</span></div>
+        <div class="b-tags"><span>♛ <em>本命</em></span><span>${esc(I.actor)} 饰</span></div></div>
+      <div class="exp"><span class="rk" data-r="BM">本命</span><span class="tr"><i style="width:${Math.max(I.tot ? I.seen / I.tot * 100 : 0, I.seen ? 4 : 0)}%"></i></span><span>👑</span></div>
+      <div class="exp-note">${I.full ? "全部看完，皇冠已戴上" : I.unit === "集" ? `再看 <b>${I.tot - I.seen}</b> 集，给 TA 戴上皇冠` : I.unit === "季" ? `再看 <b>${I.tot - I.seen}</b> 季，给 TA 戴上皇冠` : "看完这部，给 TA 戴上皇冠"}</div>
+      ${ne ? `<a class="tk" href="#/t/${b.tt}"><span class="tk-l"><em>Next</em><small>下一集</small></span><span class="tk-m"><span class="tk-ep">${ne.img ? `<img loading="lazy" src="${esc(imdbImg(ne.img, 200))}" onerror="this.remove()">` : ""}</span><span class="tk-t"><b>${epLabel(ne)}${ne.n ? ` ${esc(ne.n)}` : ""}</b><small>《${esc(I.work)}》</small></span></span><span class="tk-go">›</span></a>`
+        : !I.full ? `<a class="tk" href="#/t/${b.tt}"><span class="tk-l"><em>Next</em><small>去看</small></span><span class="tk-m">${posterHTML(vm(b.tt), 80)}<span class="tk-t"><b>${esc(I.work)}</b><small>${I.y || ""}</small></span></span><span class="tk-go">›</span></a>` : ""}
+      <div class="dbtn"><button class="btn rose" onclick="roleSheet('${b.nm}','${b.tt}')">角色档案</button><button class="btn ghost" onclick="pickRoleFace('${b.nm}','${b.tt}')">换卡面</button></div></div></div>`);
+  }
   for (const nm of order) {
     const st = personStat(nm), name = pName(nm);
     const up = st ? st.ws.filter(w => w.upcoming && !w.self && !(w.ty === "video" && !w.y)) : [];
@@ -2899,7 +3237,7 @@ function followSection(){
       <div class="dbtn"><a class="btn rose" href="#/p/${nm}">进入档案</a><button class="btn ghost" onclick="pickFace('${nm}')">换卡面</button></div></div></div>`);
   }
   slides.push(`<div class="slide"><a class="add" href="#/search"><div><b>+</b>再追一个</div></a></div>`);
-  infos.push(`<div class="di"><div class="bond paper" style="text-align:center;font-size:13.5px;color:var(--ink-2)">搜一个影人，进 TA 的页面点「追 TA」，就会多一张卡。</div></div>`);
+  infos.push(`<div class="di"><div class="bond paper" style="text-align:center;font-size:13.5px;color:var(--ink-2)">搜一个影人，进 TA 的页面点「追 TA」，就会多一张卡。<br>在 TA 的「角色」里点一个角色设为本命，本命卡排在最前面。</div></div>`);
   const seenIds = new Set(); const uniq = news.filter(w => !seenIds.has(w.id) && seenIds.add(w.id)).sort((a, b) => (a.y || 9999) - (b.y || 9999));
   return `<div class="deckwrap"><div class="deck" id="deck">${eager(() => slides.join(""))}</div>
     <div class="dots">${slides.map(() => "<i></i>").join("")}</div><div class="dinfo">${eager(() => infos.join(""))}</div></div>
@@ -3037,8 +3375,10 @@ function spotlight(id, dirs, cast){
       <div class="sb"><small>♥ 你追的 ${esc(pName(nm))}</small>
         ${r.any ? `<b${r.cn ? "" : ' class="lat"'}>${esc(r.cn || r.en || r.any)}</b>${r.cn && r.en ? `<i>${esc(r.en)}</i>` : ""}` : `<b>${what}</b>`}
         <div class="sm">${r.any ? `<span>${what}</span>` : ""}${t ? `<span class="rk" data-r="${t.r}">${t.r}</span><span>已集 ${stat.seen}/${stat.tot}</span>` : ""}</div></div><span class="sgo">›</span></a>
+      ${r.any && P && c.cats.includes("actor") ? `<button class="ben-mini${isBen(nm, id) ? " on" : ""}" onclick="toggleBen('${nm}','${id}');render()">${isBen(nm, id) ? "♥ 本命" : "♡ 本命"}</button>` : ""}
       ${rIntro(nm, {...c, id}) ? `<p>${esc(rIntro(nm, {...c, id}))}</p>` : ""}
-      ${st.length ? `<div class="sst">${st.map((s, j) => `<button onclick="spotBox('${nm}','${id}',${j})"><img loading="lazy" decoding="async" src="${esc(imdbImg(s.k, 360))}" onerror="this.parentNode.remove()"></button>`).join("")}</div>` : ""}</div>`);
+      ${st.length ? `<div class="sst">${st.map((s, j) => `<button onclick="spotBox('${nm}','${id}',${j})"><img loading="lazy" decoding="async" src="${esc(imdbImg(s.k, 360))}" onerror="this.parentNode.remove()"></button>`).join("")}</div>` : ""}
+      ${P && r.any ? `<button class="spot-role" onclick="roleSheet('${nm}','${id}')">角色档案 ›</button>` : ""}</div>`);
   }
   return out.join("");
 }
@@ -3052,6 +3392,174 @@ function ceremonyEvolve(nm, from, to, b){
   requestAnimationFrame(() => { el.classList.add("on"); setTimeout(() => flashCard(el.querySelector(".ic")), 500); });
   setTimeout(() => burst(el.querySelector(".evo"), 16), 300);
   el.onclick = () => { el.classList.remove("on"); setTimeout(() => el.remove(), 300); };
+}
+
+/* ================================================================ 名场面
+   在网页里选本地的视频（和做好的双语字幕），拖到那一刻截一帧，自动带出那一句中英台词；
+   图存进私有数据仓库 scenes/，信息和标记一起存在 marks.json 的 scenes 里。可以给角色当卡面。 */
+const scenesOf = (key, tt) => Object.entries(S.scenes || {}).filter(([, x]) => !x.del && (!key || (x.ch || []).includes(key) || (key.startsWith("r:") && (() => { const [, nm, t2] = key.split(":"); const c = uniCharOf(nm, t2); return c && (x.ch || []).includes(c.u + ":" + c.k); })())) && (!tt || x.tt === tt))
+  .sort((a, b) => (a[1].s || 0) - (b[1].s || 0) || (a[1].e || 0) - (b[1].e || 0) || (a[1].sec || 0) - (b[1].sec || 0)).map(([id, x]) => ({id, ...x}));
+const fmtSec = n => { n = Math.max(0, Math.floor(n || 0)); const h = Math.floor(n / 3600), m = Math.floor(n % 3600 / 60), s2 = n % 60; return (h ? h + ":" + String(m).padStart(2, "0") : m) + ":" + String(s2).padStart(2, "0"); };
+function sceneTile(x){
+  return `<button class="scn" onclick="openScene('${x.id}')"><img loading="lazy" decoding="async" src="${esc(stillSrc("g:" + x.img, 600))}" onerror="this.remove()">
+    ${x.zh || x.en ? `<span class="scn-sub">${x.zh ? `<b>${esc(x.zh)}</b>` : ""}${x.en ? `<i>${esc(x.en)}</i>` : ""}</span>` : ""}${x.s ? `<em>S${x.s}E${x.e || "?"}</em>` : ""}</button>`;
+}
+function sceneSec(tt){
+  const list = scenesOf("", tt), k = mark(tt);
+  if (!list.length && !k) return "";
+  return `<div class="sec"><div class="sec-h"><h2>名场面${list.length ? ` <small>${list.length}</small>` : ""}</h2><a href="#/sc/${tt}">✂ 截一张</a></div>
+    ${list.length ? `<div class="scroller scn-row">${list.map(sceneTile).join("")}</div>` : `<a class="scn-empty" href="#/sc/${tt}"><b>✂</b><span>选一段本地视频，截下喜欢的那一帧，带上那一句中英台词，做成卡</span></a>`}</div>`;
+}
+/* 可以打上的角色：这部里的专题角色 + 追的人在这部里演的角色 */
+function sceneTagsFor(tt){
+  const out = [], seen = new Set();
+  for (const u of uniMap.values()) for (const c of u.chars) if (c.apps.some(w => w.id === tt)) {
+    const key = c.u + ":" + c.k; if (seen.has(key)) continue; seen.add(key);
+    out.push({key, n: c.cn, fav: c.a.some(a => followed(a[0])), nm: c.a[0]?.[0] || ""});
+  }
+  for (const nm of followList()) { const cr = roleCredit(nm, tt); if (!cr || !cr.cats.includes("actor") || !(cr.role || cr.role_cn)) continue;
+    const c = uniCharOf(nm, tt); if (c) continue;
+    const r = roleOf(cr); out.push({key: roleFk(nm, tt), n: r.cn || r.en || r.any, fav: true, nm}); }
+  return out.sort((a, b) => b.fav - a.fav);
+}
+function openScene(id){
+  const x = S.scenes[id]; if (!x || x.del) return;
+  const v = vm(x.tt), tags = sceneTagsFor(x.tt).filter(t => (x.ch || []).includes(t.key));
+  openSheet(`<div class="grab"></div><div class="scn-big"><img src="${esc(stillSrc("g:" + x.img, 1200))}" onerror="this.remove()">${x.zh || x.en ? `<div class="scn-sub">${x.zh ? `<b>${esc(x.zh)}</b>` : ""}${x.en ? `<i>${esc(x.en)}</i>` : ""}</div>` : ""}</div>
+    <div class="scn-meta">《${esc(v.name)}》${x.s ? ` S${x.s}E${x.e || "?"}` : ""}${x.sec != null ? ` · ${fmtSec(x.sec)}` : ""}${x.at ? ` · ${esc(x.at.slice(0, 10))} 截` : ""}</div>
+    ${tags.length ? `<div class="lab">设为卡面</div><div class="scn-tags">${tags.map(t => `<button class="chip" data-face="${esc(t.key)}">${esc(t.n)}${facePick(t.key) === "g:" + x.img ? " ✓" : ""}</button>`).join("")}</div>` : ""}
+    <div class="foot"><button class="btn ghost" id="scdel">删除</button><button class="btn ghost" onclick="closeSheet()">关闭</button></div>`);
+  $$("#sheet [data-face]").forEach(b => b.onclick = () => { setFace(b.dataset.face, "g:" + x.img); toast(`${b.textContent.replace(" ✓", "")} 的卡面换成这一帧了`); openScene(id); render(); });
+  $("#scdel").onclick = async () => {
+    const was = S.scenes[id]; S.scenes[id] = {t: Date.now(), del: true}; saveMap("scenes"); closeSheet(); render();
+    let gone = false;
+    toast("删掉了", "撤销", () => { if (gone) return; S.scenes[id] = {...was, t: Date.now()}; saveMap("scenes"); render(); }, 4000);
+    setTimeout(async () => { if (!S.scenes[id]?.del || !gh.token() || IS_PREVIEW || !was.img) return; gone = true;
+      try { const sha = await shaOf(was.img); if (sha) await gh.data("DELETE", `/contents/${was.img}`, {message: "删掉名场面", sha}); } catch {} }, 7000);
+  };
+}
+/* ---------- 字幕：.ass / .ssa / .srt / .vtt ---------- */
+function parseSubs(text){
+  const cues = [], t2s = t => { const m = t.trim().match(/(?:(\d+):)?(\d+):(\d+)[.,](\d+)/); return m ? (+(m[1] || 0)) * 3600 + (+m[2]) * 60 + (+m[3]) + +("0." + m[4]) : NaN; };
+  const clean = x => x.replace(/\{[^}]*\}/g, "").replace(/\\h/g, " ").replace(/<[^>]+>/g, "").split(/\\N|\\n|\n/).map(l => l.trim()).filter(Boolean);
+  if (/^\s*\[Script Info\]/im.test(text) || /^Dialogue:/m.test(text)) {
+    let fmt = ["Layer", "Start", "End", "Style", "Name", "MarginL", "MarginR", "MarginV", "Effect", "Text"];
+    for (const line of text.split(/\r?\n/)) {
+      if (/^Format:/i.test(line) && /Text\s*$/i.test(line)) fmt = line.slice(7).split(",").map(x => x.trim());
+      if (!/^Dialogue:/i.test(line)) continue;
+      const parts = line.slice(9).split(","), n = fmt.length;
+      const f = Object.fromEntries(fmt.map((k, i) => [k.toLowerCase(), i === n - 1 ? parts.slice(i).join(",") : parts[i]]));
+      const a = t2s(f.start || ""), b = t2s(f.end || ""); if (isNaN(a)) continue;
+      cues.push({a, b, lines: clean(f.text || "")});
+    }
+  } else {
+    for (const blk of text.replace(/\r/g, "").split(/\n\s*\n/)) {
+      const ls = blk.split("\n"), i = ls.findIndex(l => /-->/.test(l)); if (i < 0) continue;
+      const [a, b] = ls[i].split("-->").map(t2s); if (isNaN(a)) continue;
+      cues.push({a, b, lines: clean(ls.slice(i + 1).join("\n"))});
+    }
+  }
+  return cues.sort((x, y) => x.a - y.a);
+}
+function subAt(cues, t){
+  const hit = (cues || []).filter(c => c.a <= t + .05 && t <= c.b + .05);
+  const lines = hit.flatMap(c => c.lines), cjk = /[㐀-鿿]/;
+  return {zh: lines.filter(l => cjk.test(l)).join(" "), en: lines.filter(l => !cjk.test(l)).join(" ")};
+}
+/* ---------- 截帧页 #/sc/片子 ---------- */
+let SC = null;
+function renderSceneMaker(tt){
+  if (!/^tt\d+$/.test(tt)) return go("#/home");
+  const page = $("#page");
+  if (SC && SC.tt === tt && SC.root) { page.innerHTML = ""; page.appendChild(SC.root); return; }   // 同步重画时不要把正在播的视频弄丢
+  if (SC?.url) URL.revokeObjectURL(SC.url);
+  const v = vm(tt), M = v.series ? epsOf(tt) : null;
+  SC = {tt, cues: null, url: "", shot: null, s: 0, e: 0, ch: new Set(sceneTagsFor(tt).filter(t => t.fav && (isBen(t.nm, tt) || t.key.startsWith("r:") || uniCharOf(t.nm, tt))).slice(0, 1).map(t => t.key))};
+  const root = document.createElement("div"); SC.root = root;
+  root.innerHTML = `<div class="bar solid"><button class="icon-btn" onclick="back()" aria-label="返回">${IC.back}</button><div class="tt">截名场面</div><span style="width:36px"></span></div>
+    <div class="scm">
+      <div class="scm-h"><small>《${esc(v.name)}》</small><b>把喜欢的那一帧做成卡</b></div>
+      <div class="scm-files"><label class="scm-f"><input type="file" id="scvid" accept="video/*,.mp4,.mov,.m4v,.webm"><b>🎞 选视频</b><small id="scvn">mp4 / mov，存在手机或电脑里的</small></label>
+        <label class="scm-f"><input type="file" id="scsub" accept=".ass,.ssa,.srt,.vtt,text/plain"><b>💬 选字幕</b><small id="scsn">可选 · .ass / .srt，用来自动带出台词</small></label></div>
+      <div class="scm-stage" id="scstage" hidden><video id="scv" playsinline controls preload="metadata"></video><div class="scn-sub live" id="sclive"></div></div>
+      <div class="scm-ctl" id="scctl" hidden>${[-5, -1, -.2, .2, 1, 5].map(d => `<button data-d="${d}">${d > 0 ? "+" : "−"}${Math.abs(d)}s</button>`).join("")}</div>
+      <button class="btn rose scm-shot" id="scshot" hidden>✂ 截这一帧</button>
+      <div id="sced"></div>
+      <div class="hint" style="margin-top:16px">视频只在这台手机上读，不会上传；上传的只有截下来的那一张图（压缩到 1280 宽）。iPhone 上 mkv 放不了，可以先转成 mp4。</div>
+    </div>`;
+  page.innerHTML = ""; page.appendChild(root);
+  const vid = root.querySelector("#scv"), live = root.querySelector("#sclive");
+  const showLive = () => { const t = subAt(SC.cues, vid.currentTime); live.innerHTML = t.zh || t.en ? `${t.zh ? `<b>${esc(t.zh)}</b>` : ""}${t.en ? `<i>${esc(t.en)}</i>` : ""}` : ""; };
+  vid.addEventListener("timeupdate", showLive); vid.addEventListener("seeked", showLive);
+  root.querySelector("#scvid").onchange = e => {
+    const f = e.target.files[0]; if (!f) return;
+    if (SC.url) URL.revokeObjectURL(SC.url);
+    SC.url = URL.createObjectURL(f); vid.src = SC.url; SC.fname = f.name;
+    root.querySelector("#scvn").textContent = f.name;
+    const m = f.name.match(/S(\d{1,2})\s*E(\d{1,3})/i) || f.name.match(/(\d{1,2})x(\d{2,3})/);
+    if (m) { SC.s = +m[1]; SC.e = +m[2]; }
+    ["#scstage", "#scctl", "#scshot"].forEach(q => root.querySelector(q).hidden = false);
+    vid.onerror = () => toast("这个视频手机放不了（mkv 之类），先转成 mp4 再试");
+  };
+  root.querySelector("#scsub").onchange = async e => {
+    const f = e.target.files[0]; if (!f) return;
+    try { SC.cues = parseSubs(await f.text()); root.querySelector("#scsn").textContent = `${f.name} · ${SC.cues.length} 句`; showLive(); }
+    catch { toast("字幕读不出来"); }
+  };
+  root.querySelectorAll("[data-d]").forEach(b => b.onclick = () => { vid.pause(); vid.currentTime = Math.max(0, vid.currentTime + +b.dataset.d); });
+  root.querySelector("#scshot").onclick = () => {
+    if (!vid.videoWidth) { toast("视频还没加载好"); return; }
+    vid.pause();
+    const W = Math.min(1280, vid.videoWidth), H = Math.round(vid.videoHeight * W / vid.videoWidth);
+    const cv = document.createElement("canvas"); cv.width = W; cv.height = H;
+    cv.getContext("2d").drawImage(vid, 0, 0, W, H);
+    const t = subAt(SC.cues, vid.currentTime);
+    SC.shot = {cv, sec: vid.currentTime, zh: t.zh, en: t.en};
+    drawSceneEditor();
+    root.querySelector("#sced").scrollIntoView({behavior: "smooth", block: "start"});
+  };
+}
+function drawSceneEditor(){
+  const box = SC.root.querySelector("#sced"), x = SC.shot; if (!x) { box.innerHTML = ""; return; }
+  const v = vm(SC.tt), M = v.series ? epsOf(SC.tt) : null, tags = sceneTagsFor(SC.tt);
+  box.innerHTML = `<div class="scn-big" style="margin-top:16px"><img src="${x.cv.toDataURL("image/jpeg", .7)}"><div class="scn-sub" id="scpv">${x.zh ? `<b>${esc(x.zh)}</b>` : ""}${x.en ? `<i>${esc(x.en)}</i>` : ""}</div></div>
+    <div class="lab">台词 <span class="muted" style="font-size:11.5px">${SC.cues ? "从字幕里带出来的，可以改" : "没选字幕，可以自己写"}</span></div>
+    <input class="field" id="sczh" placeholder="中文台词（可空）" value="${esc(x.zh)}"><input class="field" id="scen" placeholder="English line (optional)" value="${esc(x.en)}" style="margin-top:8px">
+    ${v.series ? `<div class="lab">哪一集</div><div class="scm-se"><select class="field" id="scs">${(M ? [...M.keys()] : Array.from({length: v.m?.seasons || 1}, (_, i) => i + 1)).map(n => `<option value="${n}"${n === SC.s ? " selected" : ""}>第 ${n} 季</option>`).join("")}</select>
+      <select class="field" id="sce"></select></div>` : ""}
+    ${tags.length ? `<div class="lab">是谁 <span class="muted" style="font-size:11.5px">选了的角色能用这一帧当卡面</span></div><div class="scn-tags">${tags.map(t => `<button class="chip${SC.ch.has(t.key) ? " on" : ""}" data-tag="${esc(t.key)}">${t.fav ? "♥ " : ""}${esc(t.n)}</button>`).join("")}</div>` : ""}
+    <div class="foot"><button class="btn ghost" id="scre">重截</button><button class="btn rose" id="scsave">做成卡</button></div>`;
+  const fillEps = () => { const sel = box.querySelector("#sce"); if (!sel) return; const s2 = +box.querySelector("#scs").value, list = M?.get(s2) || [];
+    sel.innerHTML = list.length ? list.map(e => `<option value="${e.e}"${e.e === SC.e ? " selected" : ""}>第 ${e.e} 集${e.n ? ` · ${esc(e.n)}` : ""}</option>`).join("") : Array.from({length: 30}, (_, i) => `<option value="${i + 1}"${i + 1 === SC.e ? " selected" : ""}>第 ${i + 1} 集</option>`).join(""); };
+  if (v.series) { if (!SC.s) SC.s = +box.querySelector("#scs").value; fillEps(); box.querySelector("#scs").onchange = () => { SC.s = +box.querySelector("#scs").value; SC.e = 0; fillEps(); }; box.querySelector("#sce").onchange = e => SC.e = +e.target.value; }
+  const pv = () => { const zh = box.querySelector("#sczh").value.trim(), en = box.querySelector("#scen").value.trim(); box.querySelector("#scpv").innerHTML = `${zh ? `<b>${esc(zh)}</b>` : ""}${en ? `<i>${esc(en)}</i>` : ""}`; };
+  box.querySelector("#sczh").oninput = pv; box.querySelector("#scen").oninput = pv;
+  box.querySelectorAll("[data-tag]").forEach(b => b.onclick = () => { const k = b.dataset.tag; SC.ch.has(k) ? SC.ch.delete(k) : SC.ch.add(k); b.classList.toggle("on"); });
+  box.querySelector("#scre").onclick = () => { SC.shot = null; drawSceneEditor(); SC.root.querySelector("#scv").scrollIntoView({behavior: "smooth", block: "center"}); };
+  box.querySelector("#scsave").onclick = async e => {
+    const btn = e.currentTarget;
+    if (!gh.token() && !IS_PREVIEW) { toast("名场面要存进 GitHub，先在设置里连接。", "去设置", () => go("#/settings")); return; }
+    btn.disabled = true; btn.textContent = "保存中…";
+    try {
+      const id = Date.now().toString(36) + Math.random().toString(36).slice(2, 6), path = `scenes/${id}.jpg`;
+      const blob = await new Promise(r => x.cv.toBlob(r, "image/jpeg", .86));
+      let img = path;
+      if (IS_PREVIEW) img = x.cv.toDataURL("image/jpeg", .8);
+      else {
+        const buf = new Uint8Array(await blob.arrayBuffer()); let bin = ""; for (let i = 0; i < buf.length; i += 0x8000) bin += String.fromCharCode(...buf.subarray(i, i + 0x8000));
+        const r = await gh.data("PUT", `/contents/${path}`, {message: "名场面", content: btoa(bin)});
+        if (!r.ok) throw new Error(`上传失败（HTTP ${r.status}）`);
+        ghBlobs.set(path, Promise.resolve(URL.createObjectURL(blob)));
+        caches.open("yingku-ghimg").then(c => c.put(new URL(ghSrc(path), location.href).pathname, new Response(blob, {headers: {"Content-Type": "image/jpeg"}}))).catch(() => {});
+      }
+      const s2 = v.series ? +(SC.root.querySelector("#scs")?.value || SC.s || 0) : 0, e2 = v.series ? +(SC.root.querySelector("#sce")?.value || SC.e || 0) : 0;
+      S.scenes[id] = {tt: SC.tt, s: s2 || undefined, e: e2 || undefined, sec: Math.round(x.sec), zh: box.querySelector("#sczh").value.trim(), en: box.querySelector("#scen").value.trim(),
+        img, ch: [...SC.ch], t: Date.now(), at: new Date().toISOString()};
+      saveMap("scenes");
+      SC.shot = null; drawSceneEditor();
+      toast("做成卡了 ✂ 在作品页和角色档案里都能看到", "看看", () => openScene(id));
+    } catch (err) { toast(err.message || "保存失败"); btn.disabled = false; btn.textContent = "做成卡"; }
+  };
 }
 
 /* ================================================================ 分享图（画在 canvas 上，iPhone 上能直接存相册 / 发微信） */
@@ -3379,7 +3887,7 @@ function renderStats(){
   const ring = (f, inner, cls = "") => `<div class="j-ring ${cls}" style="--f:${Math.round(Math.min(1, f) * 360)}deg">${inner}</div>`;
   const unis = Y === "all" ? UNI.filter(u => u.works.some(wSeen)).map(u => { const st = uniStat(u); return {n: u.n, href: `#/u/${u.id}`, s: st.seen.length, t: st.main.length, c: u.theme[0]}; }) : [];
   const sers = Y === "all" ? autoSeries().map(s => { const st = autoStat(s); return {n: s.base || s.n, href: `#/u/${s.q}`, s: st.seen.length, t: st.main.length || s.items.length, c: "var(--gold)"}; }).slice(0, 9) : [];
-  const fans = Y === "all" ? followList().map(nm => ({nm, st: personStat(nm), n: S.persons[nm]?.cn || S.people[nm]?.cn || S.follows[nm]?.n || nm})).filter(x => x.st) : [];
+  const fans = Y === "all" ? followList().map(nm => ({nm, st: personStat(nm), n: pName(nm)})).filter(x => x.st) : [];
   const litN = Y === "all" ? UNI.reduce((s, u) => s + uniStat(u).lit.length, 0) : 0;
   const gmax = gs[0]?.[1] || 1;
   const dmax = Math.max(...ds.map(d => d[1]), 1);
@@ -3439,6 +3947,26 @@ const gh = {
   data(method, path, body, accept, extra){ return gh.req(gh.dataRepo(), method, path, body, accept, extra); },
   site(method, path, body){ return gh.req(gh.repo(), method, path, body); },
 };
+/* 私有数据仓库里的图（网图、名场面）：页面写 ghimg/路径，由 sw.js 带上密钥去 GitHub 取并缓存；
+   没有 sw.js（第一次打开、预览）时，下面的兜底在出错时用 fetch 取成 blob 再换上 */
+const ghSrc = path => "ghimg/" + path;
+function ghCfgSave(){ kv.set("ghcfg", {token: gh.token(), repo: gh.dataRepo()}); }
+const ghBlobs = new Map();
+function ghBlob(path){
+  if (!ghBlobs.has(path)) ghBlobs.set(path, (async () => {
+    if (!gh.token()) return "";
+    const r = await gh.data("GET", `/contents/${path}`, null, "application/vnd.github.raw");
+    if (!r.ok) return "";
+    return URL.createObjectURL(await r.blob());
+  })().catch(() => ""));
+  return ghBlobs.get(path);
+}
+document.addEventListener("error", e => {
+  const im = e.target; if (!im || im.tagName !== "IMG" || im.dataset.ghx) return;
+  const m = (im.getAttribute("src") || "").match(/(?:^|\/)ghimg\/(.+)$/); if (!m) return;
+  e.stopImmediatePropagation(); im.dataset.ghx = 1;
+  ghBlob(m[1]).then(u => { if (u) im.src = u; else if (typeof im.onerror === "function") im.onerror(); else im.remove(); });
+}, true);
 const b64e = s => { const b = new TextEncoder().encode(s); let o = ""; for (let i = 0; i < b.length; i += 0x8000) o += String.fromCharCode(...b.subarray(i, i + 0x8000)); return btoa(o); };
 /* 大文件（详情、影人、系列、角色）带上次的 ETag 去问：没变 GitHub 回 304，不用再下载一遍，也不占次数 */
 const etags = getPref("etags", {});
@@ -3470,6 +3998,9 @@ async function writeJSON(path, mutate, message){
   }
   throw new Error("保存冲突，请稍后再试");
 }
+/* 和标记一起存在 marks.json 里的几张表：追的人、片单、本命角色、名场面、卡面选择 */
+const SYNC_MAPS = ["follows", "lists", "roles", "scenes", "faces"];
+function saveMap(k){ bump(); kv.set(k, S[k]); S.dirty = true; setPref("dirty", true); scheduleSave(); }
 function mergeMarks(a, b){
   const out = {...a};
   for (const [id, x] of Object.entries(b || {})) if (!out[id] || (x.t || 0) > (out[id].t || 0)) out[id] = x;
@@ -3482,14 +4013,12 @@ async function saveRemote(){
   if (saving) { scheduleSave(); return; }
   saving = true;
   try {
-    const before = S.marks;
-    const fb = S.follows, lb = S.lists;
-    const merged = await writeJSON("marks.json", d => ({v: 1, items: mergeMarks((d && d.items) || {}, before),
-      follows: mergeMarks((d && d.follows) || {}, fb), lists: mergeMarks((d && d.lists) || {}, lb)}), "更新标记");
+    const before = S.marks, local = Object.fromEntries(SYNC_MAPS.map(k => [k, S[k]]));
+    const merged = await writeJSON("marks.json", d => ({...(d || {}), v: 1, items: mergeMarks((d && d.items) || {}, before),
+      ...Object.fromEntries(SYNC_MAPS.map(k => [k, mergeMarks((d && d[k]) || {}, local[k])]))}), "更新标记");
     S.marks = mergeMarks(merged.items, S.marks);
-    S.follows = mergeMarks(merged.follows || {}, S.follows);
-    S.lists = mergeMarks(merged.lists || {}, S.lists);
-    kv.set("marks", S.marks); kv.set("follows", S.follows); kv.set("lists", S.lists);
+    for (const k of SYNC_MAPS) { S[k] = mergeMarks(merged[k] || {}, S[k]); kv.set(k, S[k]); }
+    kv.set("marks", S.marks);
     S.dirty = false; setPref("dirty", false);
     const need = [...S.pending].filter(id => mark(id));
     if (need.length) await addRequest({ids: need});
@@ -3589,12 +4118,16 @@ async function pullAll(){
       return;
     }
     const [mk, st] = await Promise.all([readJSON("marks.json"), readJSON("status.json")]);
-    const remote = (mk.data && mk.data.items) || {}, rf = (mk.data && mk.data.follows) || {}, rl = (mk.data && mk.data.lists) || {};
-    const merged = mergeMarks(remote, S.marks), mf = mergeMarks(rf, S.follows), ml = mergeMarks(rl, S.lists);
-    const changedLocal = Object.keys(merged).some(id => merged[id] !== remote[id]) || Object.keys(mf).some(id => mf[id] !== rf[id]) || Object.keys(ml).some(id => ml[id] !== rl[id]);
-    const changedRemote = Object.keys(remote).some(id => S.marks[id]?.t !== remote[id]?.t) || Object.keys(rf).some(id => S.follows[id]?.t !== rf[id]?.t) || Object.keys(rl).some(id => S.lists[id]?.t !== rl[id]?.t);
-    S.follows = mf; kv.set("follows", mf);
-    S.lists = ml; kv.set("lists", ml);
+    const remote = (mk.data && mk.data.items) || {};
+    const merged = mergeMarks(remote, S.marks);
+    let changedLocal = Object.keys(merged).some(id => merged[id] !== remote[id]);
+    let changedRemote = Object.keys(remote).some(id => S.marks[id]?.t !== remote[id]?.t);
+    for (const k of SYNC_MAPS) {
+      const r = (mk.data && mk.data[k]) || {}, m = mergeMarks(r, S[k]);
+      if (Object.keys(m).some(id => m[id] !== r[id])) changedLocal = true;
+      if (Object.keys(r).some(id => S[k][id]?.t !== r[id]?.t)) changedRemote = true;
+      S[k] = m; kv.set(k, m);
+    }
     if (changedRemote) bump();
     S.marks = merged; kv.set("marks", S.marks);
     S.status = st.data; setPref("status", S.status);
@@ -3692,22 +4225,47 @@ function uniNext(u, tl){ return uniOrder(u, tl).find(w => !w.x && wOut(w) && !wD
    还没抓到就用漫画原型；都没有用首次登场那部的海报。 */
 const COMIC = (slug, w) => `https://akabab.github.io/superhero-api/api/images/${w <= 200 ? "sm" : "md"}/${slug}.jpg`;
 function posterSrc(id, w = 300){ const v = vm(id); return dbSmall(v.poster, w) || imdbImg(v.posterKey || S.crew.get(id)?.poster, w); }
+/* 一张“剧照”的编号：IMDb 图片编号；g:路径 = 存在私有数据仓库里的图（Pinterest 网图、自己截的名场面）；http 开头 = 外链 */
+function stillSrc(k, w = 400){ return !k ? "" : k.startsWith("g:data:") ? k.slice(2) : k.startsWith("g:") ? ghSrc(k.slice(2)) : /^(https?|data):/.test(k) ? k : imdbImg(k, w); }
+const webImgs = key => (S.chars?.w?.[key]?.i || []).map(([p, w, h]) => ({k: "g:" + p, w, h, t: "w"}));
+const sceneImgs = key => Object.values(S.scenes || {}).filter(x => !x.del && x.img && (x.ch || []).includes(key)).sort((a, b) => (b.t || 0) - (a.t || 0)).map(x => ({k: "g:" + x.img, w: 16, h: 9, t: "sc"}));
+/* 排序：角色海报 > 自己截的名场面 > 清楚的剧照 > 网图 > 小剧照 > 其他单人图；竖图优先、太宽的往后 */
+const stillScore = x => ({P: 0, sc: 1.5, w: 2.5, o: 4}[x.t] ?? (Math.min(x.w, x.h) >= 450 ? 2 : 3.5)) - (x.h > x.w ? 1 : 0) + (x.w > x.h * 1.8 ? 2 : 0);
 function charStills(c){
   const T = S.chars?.t || {}, nms = new Set(c.a.map(a => a[0]).filter(Boolean)), out = [], seen = new Set();
   const apps = [...c.apps].sort((a, b) => wSeen(b) - wSeen(a));   // 看过的片子里的图排前面
   for (const w of apps) for (const [k, wd, ht, ty, nm] of T[w.id]?.i || [])
-    if (nms.has(nm) && (ty === "P" || ty === "s") && !seen.has(k)) { seen.add(k); out.push({k, w: wd, h: ht, t: ty, tt: w.id}); }   // 只要角色海报和剧照，不要活动照、写真
-  const score = x => (x.t === "P" ? 0 : x.t === "s" ? 2 : 3) - (x.h > x.w ? 1 : 0) + (x.w > x.h * 1.8 ? 2 : 0);
-  return out.sort((a, b) => score(a) - score(b));
+    if (nms.has(nm) && ["P", "s", "o"].includes(ty) && !seen.has(k)) { seen.add(k); out.push({k, w: wd, h: ht, t: ty, tt: w.id}); }   // 只要这个演员一个人的图（后台已经筛过）
+  const key = c.u + ":" + c.k;
+  return [...sceneImgs(key), ...out, ...webImgs(key)].sort((a, b) => stillScore(a) - stillScore(b));
 }
-/* 卡面：有漫画原型的角色一律用漫画；没有漫画的（小辣椒、雷普利……）用最好的一张剧照。
-   自己在档案里选过的剧照永远优先。any=true 时也给有漫画的角色挑一张剧照（档案里翻面用）。 */
-const charPick = (c) => (getPref("cimg", {}) || {})[c.u + ":" + c.k];
+/* 卡面选择（会同步）：key = 专题id:角色 或 r:影人:作品 */
+const facePick = key => { const f = S.faces?.[key]; return f && !f.del ? f.k : ""; };
+const charPick = c => facePick(c.u + ":" + c.k);
+function setFace(key, k){ S.faces[key] = k ? {k, t: Date.now()} : {t: Date.now(), del: true}; saveMap("faces"); }
 function charReal(c, w = 400, any){
   const pick = charPick(c), st = charStills(c);
   const auto = any || !c.cm ? st.find(x => x.w <= x.h * 1.8) || st[0] : null;
   const one = (pick && st.find(x => x.k === pick)) || auto;
-  return one ? {src: imdbImg(one.k, w), pos: one.h > one.w ? "50% 18%" : "50% 30%", still: true} : null;
+  return one ? {src: stillSrc(one.k, w), pos: one.h > one.w ? "50% 18%" : "50% 30%", still: true} : null;
+}
+/* 让后台去 Pinterest 再找几张 */
+async function moreImgs(key, btn){
+  if (!gh.token() || IS_PREVIEW) { toast("要用到后台，先在设置里连接 GitHub。", "去设置", () => go("#/settings")); return; }
+  if (btn) { btn.disabled = true; btn.textContent = "后台在找…"; }
+  try { await addRequest({imgs: [key]}); toast("后台去 Pinterest 找图了，一两分钟后回来看"); watchImgs(key); }
+  catch (e) { toast(e.message); if (btn) { btn.disabled = false; btn.textContent = "再找找"; } }
+}
+let imgWatch = null;
+async function watchImgs(key){
+  const n0 = S.chars?.w?.[key]?.i?.length || 0, end = Date.now() + 4 * 60e3;
+  if (imgWatch) return; imgWatch = key;
+  await new Promise(r => setTimeout(r, 40000));
+  while (Date.now() < end) {
+    try { await pullMeta(); if ((S.chars?.w?.[key]?.i?.length || 0) > n0 || S.chars?.w?.[key]?.at > Date.now() / 1000 - 300) { render(); if (CS && $("#sheet").classList.contains("on")) drawCharSheet(); toast("找到新图了"); break; } } catch {}
+    await new Promise(r => setTimeout(r, 15000));
+  }
+  imgWatch = null;
 }
 /* 漫画图第一次从 akabab.github.io 拿，失败就换 jsDelivr 的镜像；看过一次就存在手机里（sw.js） */
 function comicErr(img){
@@ -3732,10 +4290,11 @@ const actorName = ([nm, name]) => (nm && (S.people[nm]?.cn || S.persons[nm]?.db?
 function charCard(c, o = {}){
   const lit = o.lit ?? charLit(c), seen = charSeenN(c), tot = charTot(c);
   const f = lit ? (o.face !== undefined ? o.face : charFace(c, o.w || 400)) : null, full = lit && seen >= tot;
+  const sil = !lit && o.sil !== false ? (charReal(c, 200) || charComic(c, 200)) : null;   // 没点亮：一张看不清的剪影，看完才揭晓
   const deb = c.apps[0];
   return `<div class="ic chc${lit ? "" : " lock"}${o.cls ? " " + o.cls : ""}" data-r="${c.rar}" style="--hc:${c.c}"${o.click !== false ? ` onclick="charSheet('${c.u}','${c.k}')"` : ""}>
     <span class="crest"></span>${full && tot > 1 ? `<span class="crown">👑</span>` : ""}
-    <div class="in"><div class="ini">${lit ? esc(c.cn.slice(0, 1)) : "?"}</div>
+    <div class="in">${sil ? `<img class="sil" loading="lazy" decoding="async" src="${esc(sil.src)}"${sil.comic ? ' referrerpolicy="no-referrer"' : ""} style="object-position:${sil.pos}" onerror="this.remove()">` : ""}<div class="ini">${lit ? esc(c.cn.slice(0, 1)) : "?"}</div>
       ${f ? `<img decoding="async" ${o.eager ? "" : 'loading="lazy" '}class="${f.poster ? "pst" : ""}" src="${esc(f.src)}"${f.comic ? ' referrerpolicy="no-referrer"' : ""}${faceFb(c, f)} style="object-position:${f.pos}" onerror="comicErr(this)">` : ""}
       <div class="tint"></div><div class="holo"></div><div class="sheen"></div>
       <i class="orn tl"></i><i class="orn tr"></i><i class="orn bl"></i><i class="orn br"></i>
@@ -3947,9 +4506,21 @@ function renderUniHub(){
 /* ---------- 单个宇宙页 ---------- */
 let uTab = {}, uTl = {}, uFilter = "all", uOpen = {};
 /* 看完的一段收成一条胶片：一眼看到这段全集齐了，点一下再展开 */
-function filmStrip(ids, key){
-  return `<button class="fstrip" onclick="uOpen['${key}']=1;render()" aria-label="展开"><div class="fs-roll">${ids.map(id => `<div class="fs-f">${posterHTML(vm(id), 120)}</div>`).join("")}</div>
-    <span class="fs-cap">全部 ${ids.length} 部已看 · 点开看详情</span></button>`;
+/* 制霸的阶段收成一条胶片：电影一格一张海报；按季拆开的剧，一格一集（用每集的剧照） */
+function filmStrip(ws, key){
+  let eps = 0;
+  const frames = ws.map(w => { const M = w.ss ? epsOf(w.id)?.get(w.ss) : null;
+    if (!M) return `<div class="fs-f">${posterHTML(vm(w.id), 120)}</div>`;
+    eps += M.length; const k = mark(w.id);
+    return M.map(x => `<div class="fs-ep${epWatched(k, x.s, x.e) ? " on" : ""}">${epImg(w.id, x, 160) ? `<img loading="lazy" src="${esc(epImg(w.id, x, 160))}" onerror="this.remove()">` : ""}<em>${x.e}</em></div>`).join(""); }).join("");
+  return `<button class="fstrip" onclick="uOpen['${key}']=1;render()" aria-label="展开"><div class="fs-roll">${frames}</div>
+    <span class="fs-cap">${eps ? `全部 ${eps} 集已看` : `全部 ${ws.length} 部已看`} · 点开看详情</span></button>`;
+}
+/* 专题路线里按季拆开的剧：下面挂一条小胶片，看过的集亮起来 */
+function routeEps(w){
+  const M = w.ss ? epsOf(w.id)?.get(w.ss) : null; if (!M) return "";
+  const k = mark(w.id);
+  return `<div class="rn-eps">${M.map(x => `<span class="fs-ep${epWatched(k, x.s, x.e) ? " on" : ""}" title="${esc(x.n)}">${epImg(w.id, x, 100) ? `<img loading="lazy" src="${esc(epImg(w.id, x, 100))}" onerror="this.remove()">` : ""}<em>${x.e}</em></span>`).join("")}</div>`;
 }
 function renderUni(id){
   if (/^Q\d+$/.test(id)) { const cur = UNI.find(u => (u.wd || []).includes(id)); if (cur) id = cur.id; }   // 手写专题对应的 Wikidata 系列，去手写专题
@@ -3989,7 +4560,7 @@ function uniRoute(u){
       <a href="#/t/${w.id}" class="rn-ps">${posterHTML(v, 120)}</a>
       <a href="#/t/${w.id}" class="rn-bd"><b>${esc(uniName(w))}</b>${u.works.some(o => o !== w && uniName(o) === uniName(w)) && v.sub ? `<small class="o">${esc(v.sub)}</small>` : ""}<small>${tl && (w.tll || w.tl) ? `${w.tll ? esc(w.tll) : `故事 ${Math.floor(w.tl)} 年`} · ` : ""}${w.y}${w.ty && ["s", "ms"].includes(w.ty) ? " · 剧集" : w.ty === "sp" || w.ty === "tm" ? " · 特别篇" : ""}${w.x ? " · 外传" : ""}${!out ? " · 待映" : ""}${k && !done ? ` · ${STATUS[k.s]}` : ""}</small>
         ${cs.length ? `<div class="rn-cs">${cs.map(c => { const lit = charLit(c); const f = lit ? charFace(c, 80) : null;
-          return `<i class="${lit ? "on" : ""}" style="--hc:${c.c}" title="${esc(c.cn)}">${esc(lit ? c.cn.slice(0, 1) : "?")}${f ? `<img loading="lazy" src="${esc(f.src)}"${f.comic ? ' referrerpolicy="no-referrer"' : ""}${faceFb(c, f)} style="object-position:${f.pos}" onerror="comicErr(this)">` : ""}</i>`; }).join("")}${w.chars.length > 6 ? `<small>+${w.chars.length - 6}</small>` : ""}</div>` : ""}</a>
+          return `<i class="${lit ? "on" : ""}" style="--hc:${c.c}" title="${esc(c.cn)}">${esc(lit ? c.cn.slice(0, 1) : "?")}${f ? `<img loading="lazy" src="${esc(f.src)}"${f.comic ? ' referrerpolicy="no-referrer"' : ""}${faceFb(c, f)} style="object-position:${f.pos}" onerror="comicErr(this)">` : ""}</i>`; }).join("")}${w.chars.length > 6 ? `<small>+${w.chars.length - 6}</small>` : ""}</div>` : ""}${routeEps(w)}</a>
       ${done ? `<span class="rn-ok" aria-label="看过"></span>` : out ? `<button class="rn-ck" onclick="uniStamp(event,'${w.id}',0,${w.ss || 0})" aria-label="看过了"></button>` : `<span class="rn-soon">待映</span>`}</div>`;
   };
   if (tl) return html + `<div class="route">${uniOrder(u, true).map(node).join("")}</div>`;
@@ -3997,7 +4568,7 @@ function uniRoute(u){
     const ws = secWorks(u, s.k), out = ws.filter(wOut), seen = out.filter(wDone), full = secDone(u, s.k);
     html += `<div class="rsec${full ? " full" : ""}"><div class="rs-h"><div><b>${esc(s.n)}</b><small>${esc(s.en)}</small></div><span class="rs-n">${seen.length}<i>/${out.length || ws.length}</i></span></div>
       <div class="rs-bar"><i style="width:${out.length ? seen.length / out.length * 100 : 0}%"></i></div>${full ? `<div class="rs-stamp">制霸</div>` : ""}</div>
-      ${full && !uOpen[u.id + "/" + s.k] ? filmStrip(ws.map(w => w.id), `${u.id}/${s.k}`) : `<div class="route">${ws.map(node).join("")}</div>${full ? `<button class="fs-fold" onclick="delete uOpen['${u.id}/${s.k}'];render()">收起成胶片</button>` : ""}`}`;
+      ${full && !uOpen[u.id + "/" + s.k] ? filmStrip(ws, `${u.id}/${s.k}`) : `<div class="route">${ws.map(node).join("")}</div>${full ? `<button class="fs-fold" onclick="delete uOpen['${u.id}/${s.k}'];render()">收起成胶片</button>` : ""}`}`;
   }
   return html;
 }
@@ -4060,7 +4631,7 @@ function renderSeries(q){
       ${nx ? `<a class="unext paper" href="#/t/${nx.id}" style="margin-top:14px"><em>下一部</em>${posterHTML(vm(nx.id), 160)}<div class="ux-bd"><b>${esc(vm(nx.id).name)}</b><small>${nx.y || ""}</small></div><button class="ux-go" onclick="uniStamp(event,'${nx.id}')">看过了</button></a>` : ""}
       ${eager(() => (s.subs ? seriesSecs(s) : [{k: "all", ids: null}]).map(sec => { const its = s.items.filter(it => !sec.ids || sec.ids.has(it.id)), o2 = its.filter(it => st.main.includes(it)), s2 = o2.filter(it => mark(it.id)?.s === "done"), full = o2.length && s2.length === o2.length;
         return (sec.n && s.subs?.length ? `<div class="rsec${full ? " full" : ""}"><div class="rs-h"><div><b>${esc(sec.n)}</b><small>${esc(sec.en || "")}</small></div><span class="rs-n">${s2.length}<i>/${o2.length || its.length}</i></span></div><div class="rs-bar"><i style="width:${o2.length ? s2.length / o2.length * 100 : 0}%"></i></div>${full ? `<div class="rs-stamp">制霸</div>` : ""}</div>` : "")
-        + (full && s.subs?.length && !uOpen[q + "/" + sec.k] ? filmStrip(its.map(it => it.id), q + "/" + sec.k) : `<div class="route" style="margin-top:16px">${its.map(it => { const k = mark(it.id), done = k?.s === "done", out = st.main.includes(it), v = vm(it.id);
+        + (full && s.subs?.length && !uOpen[q + "/" + sec.k] ? filmStrip(its.map(it => ({id: it.id})), q + "/" + sec.k) : `<div class="route" style="margin-top:16px">${its.map(it => { const k = mark(it.id), done = k?.s === "done", out = st.main.includes(it), v = vm(it.id);
         return `<div class="rn ${done ? "got" : out ? "" : "soon"}${nx === it ? " nx" : ""}"><i class="rn-dot"></i><a href="#/t/${it.id}" class="rn-ps">${posterHTML(v, 120)}</a>
           <a href="#/t/${it.id}" class="rn-bd"><b>${esc(v.name)}</b><small>${it.y || ""}${v.series ? " · 剧集" : ""}${!out ? " · 待映" : ""}${k && !done ? ` · ${STATUS[k.s]}` : ""}</small>${v.sub ? `<small class="o">${esc(v.sub)}</small>` : ""}</a>
           ${done ? `<span class="rn-ok" aria-label="看过"></span>` : out ? `<button class="rn-ck" onclick="uniStamp(event,'${it.id}')" aria-label="看过了"></button>` : `<span class="rn-soon">待映</span>`}</div>`; }).join("")}</div>`); }).join(""))}
@@ -4104,7 +4675,7 @@ function drawCharSheet(){
   const real = still || (lit && comic ? charPoster(c, 600) : null), both = !!(real && comic);
   const nx = c.apps.find(w => wOut(w) && !wDone(w)), cm = c.cm, stills = lit ? charStills(c) : [];
   const side = both ? CS.side : real ? "real" : "comic";
-  const face = side === "comic" ? comic : real || comic || undefined;
+  const face = side === "comic" && comic ? comic : real || comic || undefined;   // 都没有：undefined → 卡片自己用海报兜底（之前这里给了 null，卡面就空了）
   const pick = charPick(c);
   const facts = cm ? [["真名", cm.fn], ["漫画首次登场", cm.fa], ["种族", RACE_ZH[cm.race]], ["身高", cm.h], ["体重", cm.wt], ["阵营", AL_ZH[cm.al]]].filter(x => x[1]) : [];
   openSheet(`<div class="grab"></div><div class="csh" style="--hc:${c.c}">
@@ -4115,8 +4686,9 @@ function drawCharSheet(){
     <div class="csh-hd"><div class="sign">${esc(c.en)}</div><b>${esc(c.cn)}</b><small>${esc(c.sub)}</small>
       <div class="csh-meta"><span class="rk" data-r="${c.rar}">${c.rar}</span>${c.a.length ? `${c.vo ? "配音" : "演员"} ${c.a.map(a => a[0] ? `<a href="#/p/${a[0]}" onclick="closeSheet()">${esc(actorName(a))}</a>` : esc(a[1])).join(" / ")}` : c.vo ? "" : "生物"}</div>
       ${c.f?.length ? `<div class="csh-tags">${c.f.map(t => `<span>${esc(t)}</span>`).join("")}</div>` : ""}</div>
-    ${chatEntryHTML(c)}
+    ${chatOn() ? chatEntryHTML(c) : ""}
     ${c.i ? `<div class="csh-intro">${esc(c.i)}</div>` : ""}
+    ${(() => { const sc = scenesOf(c.u + ":" + c.k); return sc.length ? `<div class="lab">名场面 <span class="muted" style="font-size:11.5px">${sc.length} 张</span></div><div class="scn-row">${sc.map(sceneTile).join("")}</div>` : ""; })()}
     ${c.x?.length ? lit ? `<div class="lab">小档案</div><div class="csh-prof paper"><i class="orn tl"></i><i class="orn br"></i><dl>${c.x.map(([k, v]) => `<div class="${(k + v).length > 13 ? "w" : ""}"><dt>${esc(k)}</dt><dd>${esc(v)}</dd></div>`).join("")}</dl></div>`
       : `<div class="csh-lock paper"><span>🔒</span>点亮后解锁 TA 的小档案（${c.x.length} 条）</div>` : ""}
     ${c.rel?.length ? `<div class="lab">羁绊</div><div class="csh-rel">${c.rel.map(([k, l]) => { const o = u.ck.get(k); if (!o) return ""; const on = charLit(o), f = on ? charFace(o, 160) : null;
@@ -4130,7 +4702,8 @@ function drawCharSheet(){
         const useComic = comic && (!pick || pick === "comic" || !stills.some(x => x.k === pick));
         const onK = useComic ? "comic" : stills.some(x => x.k === pick) ? pick : stills[0]?.k;
         return `<div class="lab">选卡面 <span class="muted" style="font-size:11.5px">列表、点亮墙里都显示这张${comic ? "" : ` · ${stills.length} 张剧照`}</span></div>
-      <div class="csh-pick">${comic ? `<button class="cm${onK === "comic" ? " on" : ""}" data-k="comic"><img src="${esc(charComic(c, 200).src)}" referrerpolicy="no-referrer" onerror="comicErr(this)"><em>漫画</em></button>` : ""}${stills.slice(0, 24).map(x => `<button class="${onK === x.k ? "on" : ""}" data-k="${esc(x.k)}"><img loading="lazy" src="${esc(imdbImg(x.k, 200))}" onerror="this.parentNode.remove()"></button>`).join("")}</div>`; })() : ""}
+      <div class="csh-pick">${comic ? `<button class="cm${onK === "comic" ? " on" : ""}" data-k="comic"><img src="${esc(charComic(c, 200).src)}" referrerpolicy="no-referrer" onerror="comicErr(this)"><em>漫画</em></button>` : ""}${stills.slice(0, 30).map(x => `<button class="${onK === x.k ? "on" : ""}" data-k="${esc(x.k)}">${x.t === "w" ? "<em>网图</em>" : x.t === "sc" ? "<em>名场面</em>" : ""}<img loading="lazy" src="${esc(stillSrc(x.k, 200))}" onerror="this.parentNode.remove()"></button>`).join("")}</div>`; })() : ""}
+    ${lit ? `<div class="csh-more"><button class="pill add" onclick="moreImgs('${esc(c.u + ":" + c.k)}',this)">${stills.length ? "图不够？再找找" : "还没有剧照，去 Pinterest 找找"}</button><a class="pill add" href="#/sc/${c.apps.find(wSeen)?.id || c.apps[0]?.id}" onclick="closeSheet()">✂ 自己截一张</a></div>` : ""}
     <div class="lab">出场作品</div>
     <div class="csh-ws">${c.apps.map(w => { const done = wDone(w), seenW = wSeen(w), out = wOut(w);
       return `<div class="cw ${seenW ? "got" : ""}"><a href="#/t/${w.id}" onclick="closeSheet()">${posterHTML(vm(w.id), 100)}<span><b>${esc(uniName(w))}</b><small>${w.y}${c.apps[0] === w ? " · 首次登场" : ""}${!out ? " · 待映" : ""}</small></span></a>
@@ -4154,7 +4727,7 @@ function drawCharSheet(){
   $$("#sheet [data-side]").forEach(b => b.onclick = () => flip(b.dataset.side));
   $$("#sheet [data-rel]").forEach(b => b.onclick = () => { const o = u.ck.get(b.dataset.rel); if (!o) return; CS = null; charSheet(u.id, o.k); $("#sheet").scrollTop = 0; });
   $$("#sheet .csh-pick [data-k]").forEach(b => b.onclick = () => {
-    const m = getPref("cimg", {}) || {}, k = b.dataset.k; m[c.u + ":" + c.k] = k; setPref("cimg", m); bump();
+    const k = b.dataset.k; setFace(c.u + ":" + c.k, k);
     CS.side = k === "comic" ? "comic" : "real"; toast(k === "comic" ? "卡面换回漫画原型" : "卡面换成这张剧照"); const keep = $("#sheet").scrollTop; drawCharSheet(); $("#sheet").scrollTop = keep; render();
   });
 }
@@ -4167,12 +4740,15 @@ function uniSnap(id){
       secs: new Set(u.secs.filter(s => secDone(u, s.k)).map(s => s.k))}; });
 }
 let uniCere = null, uniCereT = 0;
+/* 庆祝过的解锁记下来：标错了取消、再勾回去，不再重复放一遍仪式 */
+const celebrated = new Set(getPref("celebrated", []));
+const celeb = (u, kind, k) => { const key = `${u.id}:${kind}:${k}`; if (celebrated.has(key)) return false; celebrated.add(key); setPref("celebrated", [...celebrated].slice(-3000)); return true; };
 function uniAfter(snap){
   for (const b of snap) {
     const u = b.u, add = uniCere?.[u.id] || {chars: [], decks: [], secs: []};
-    for (const c of u.chars) if (charLit(c) && !b.lit.has(c.k) && !add.chars.includes(c)) add.chars.push(c);
-    for (const d of u.decks) if (deckDone(u, d) && !b.decks.has(d.k) && !add.decks.includes(d)) add.decks.push(d);
-    for (const s of u.secs) if (secDone(u, s.k) && !b.secs.has(s.k) && !add.secs.includes(s)) add.secs.push(s);
+    for (const c of u.chars) if (charLit(c) && !b.lit.has(c.k) && !add.chars.includes(c) && celeb(u, "c", c.k)) add.chars.push(c);
+    for (const d of u.decks) if (deckDone(u, d) && !b.decks.has(d.k) && !add.decks.includes(d) && celeb(u, "d", d.k)) add.decks.push(d);
+    for (const s of u.secs) if (secDone(u, s.k) && !b.secs.has(s.k) && !add.secs.includes(s) && celeb(u, "s", s.k)) add.secs.push(s);
     if (add.chars.length || add.decks.length || add.secs.length) { uniCere = uniCere || {}; uniCere[u.id] = add; }
   }
   if (uniCere) { clearTimeout(uniCereT); uniCereT = setTimeout(showUniCere, 900); }
@@ -4211,7 +4787,8 @@ function uniStamp(ev, id, inSheet, ss){
     if ((k?.ss || []).includes(ss)) return;
     const list = [...new Set([...(k?.ss || []), ss])].sort((a, b) => a - b);
     const all = v.m?.seasons && list.length >= v.m.seasons && v.m.ey;
-    patch = {s: all ? "done" : "doing", ss: list, ...(all ? {d: k?.d || today()} : {})};
+    const ep = {...(k?.ep || {})}; delete ep[ss];
+    patch = {s: all ? "done" : "doing", ss: list, ep, ...(all ? {d: k?.d || today()} : {})};
   } else patch = {s: "done", d: k?.d || "", ...(v.series && v.m?.seasons ? {ss: Array.from({length: v.m.seasons}, (_, i) => i + 1)} : {})};
   const msgs = stampAndCelebrate(id, patch);
   burst(ev.currentTarget, 6);
@@ -4244,7 +4821,7 @@ function uniBanner(id){
 /* ================================================================ 设置 */
 function renderSettings(){
   const st = S.status?.sources || {};
-  const NAMES = {imdb: "IMDb", douban: "豆瓣", rt: "烂番茄", wikidata: "Wikidata（编号对照）", comics: "漫画原型（SuperHero API / 漫画维基）", search: "在线搜索"};
+  const NAMES = {imdb: "IMDb", douban: "豆瓣", rt: "烂番茄", wikidata: "Wikidata（编号对照）", comics: "漫画原型（SuperHero API / 漫画维基）", search: "在线搜索", pinterest: "Pinterest（冷门角色的图）"};
   $("#page").innerHTML = `<div class="bar solid"><button class="icon-btn" onclick="back()" aria-label="返回">${IC.back}</button><div class="tt">设置</div><span style="width:36px"></span></div>
     <div style="padding:0 var(--pad)">
     <div class="set-sec"><h4>GitHub 同步</h4><div class="set-card" style="padding:14px">
@@ -4258,7 +4835,9 @@ function renderSettings(){
         <input class="field" id="drepo" placeholder="数据仓库，如 name/movie-library-data" value="${esc(getPref("ghDataRepo", ""))}" style="margin-top:8px">
         <button class="pill add" id="saverepo" style="margin-top:8px">保存</button></details>
     </div></div>
-    ${aiSettingsHTML()}
+    <div class="set-sec"><h4>实验功能</h4><div class="set-card"><label class="opt"><span class="k">和角色聊天（乙女模式）</span><input type="checkbox" id="chaton"${chatOn() ? " checked" : ""}></label></div>
+      <div class="small" style="margin-top:6px">打开后，角色档案里会出现「和他说话」（目前只有钢铁侠），需要填免费模型的 key。</div></div>
+    ${chatOn() ? aiSettingsHTML() : ""}
     ${Object.keys(st).length ? `<div class="set-sec"><h4>数据源${S.status?.updated ? ` · 后台上次运行 ${esc(S.status.updated.slice(5, 16).replace("T", " "))}` : ""}</h4><div class="set-card">
       ${Object.entries(st).map(([k, s]) => `<div class="opt"><span class="dot ${s.ok ? "" : "bad"}"></span><span class="k">${NAMES[k] || k}</span><b style="max-width:55%;text-align:right;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${esc(s.msg)}</b></div>`).join("")}</div></div>` : ""}
     <div class="set-sec"><h4>离线片库</h4><div class="set-card"><div class="opt"><span class="k">收录</span><b>${S.idxInfo ? `${S.idxInfo.titles.toLocaleString()} 部` : S.idxReady < 0 ? "加载失败" : "加载中"}</b></div>
@@ -4267,7 +4846,8 @@ function renderSettings(){
     <div class="set-sec"><h4>备份</h4><div class="set-card"><div class="opt" id="exp"><span class="k">导出全部标记（JSON）</span>›</div>
       <label class="opt"><span class="k">从备份恢复</span>›<input type="file" id="imp" accept="application/json" class="hide"></label></div></div>
     <div class="small" style="margin:20px 0 30px;text-align:center">数据来自 IMDb、豆瓣、烂番茄，仅供个人使用。</div></div>`;
-  bindAiSettings();
+  if (chatOn()) bindAiSettings();
+  $("#chaton").onchange = async e => { setPref("chatOn", e.target.checked); if (e.target.checked) { try { await loadChat(); } catch (err) { toast(err.message); } } render(); };
   const link = $("#link");
   if (link) link.onclick = async () => {
     const t = $("#tok").value.trim(); if (!t) return;
@@ -4275,18 +4855,18 @@ function renderSettings(){
     try {
       const r = await gh.data("GET", "");
       if (!r.ok) throw new Error(r.status === 404 ? `找不到数据仓库 ${gh.dataRepo()}，确认已经建好、密钥里勾选了它` : `连接失败（HTTP ${r.status}）`);
-      toast("连接成功，正在同步"); await pullAll(); render();
+      ghCfgSave(); toast("连接成功，正在同步"); await pullAll(); render();
     } catch (e) { setPref("ghToken", ""); toast(e.message); link.disabled = false; link.textContent = "连接"; }
   };
-  const ul = $("#unlink"); if (ul) ul.onclick = () => { setPref("ghToken", ""); render(); };
-  $("#saverepo").onclick = () => { setPref("ghRepo", $("#repo").value.trim()); setPref("ghDataRepo", $("#drepo").value.trim()); toast("已保存"); render(); };
+  const ul = $("#unlink"); if (ul) ul.onclick = () => { setPref("ghToken", ""); ghCfgSave(); render(); };
+  $("#saverepo").onclick = () => { setPref("ghRepo", $("#repo").value.trim()); setPref("ghDataRepo", $("#drepo").value.trim()); ghCfgSave(); toast("已保存"); render(); };
   $("#exp").onclick = () => {
-    const blob = new Blob([JSON.stringify({exported: new Date().toISOString(), items: S.marks, follows: S.follows, lists: S.lists}, null, 1)], {type: "application/json"});
+    const blob = new Blob([JSON.stringify({exported: new Date().toISOString(), items: S.marks, ...Object.fromEntries(SYNC_MAPS.map(k => [k, S[k]]))}, null, 1)], {type: "application/json"});
     const a = document.createElement("a"); a.href = URL.createObjectURL(blob); a.download = `影库备份-${today()}.json`; a.click();
   };
   $("#imp").onchange = async e => {
     try { const j = JSON.parse(await e.target.files[0].text()); const n = Object.keys(j.items || {}).length; if (!n) throw 0;
-      S.marks = mergeMarks(S.marks, j.items); S.follows = mergeMarks(S.follows, j.follows || {}); kv.set("follows", S.follows); S.lists = mergeMarks(S.lists, j.lists || {}); kv.set("lists", S.lists); Object.keys(j.items).forEach(id => { if (!S.meta[id]) S.pending.add(id); }); persistLocal(); scheduleSave(); toast(`已恢复 ${n} 条标记`); }
+      S.marks = mergeMarks(S.marks, j.items); for (const k of SYNC_MAPS) { S[k] = mergeMarks(S[k], j[k] || {}); kv.set(k, S[k]); } Object.keys(j.items).forEach(id => { if (!S.meta[id]) S.pending.add(id); }); persistLocal(); scheduleSave(); toast(`已恢复 ${n} 条标记`); }
     catch { toast("这个文件不是影库的备份"); }
   };
 }
@@ -4295,11 +4875,18 @@ function renderSettings(){
 (async function boot(){
   if (window.__PREVIEW__) {
     const P = window.__PREVIEW__;
-    S.marks = P.marks; S.meta = P.meta; S.people = P.people; S.status = P.status; S.follows = P.follows || {}; S.lists = P.lists || {}; S.persons = P.persons || {}; S.series = P.series || null; S.chars = P.chars || null;
+    S.marks = P.marks; S.meta = P.meta; S.people = P.people; S.status = P.status; S.persons = P.persons || {}; S.series = P.series || null; S.chars = P.chars || null;
+    for (const k of SYNC_MAPS) S[k] = P[k] || {};
   } else {
-    const [mk, mt, pp, fo, ps, se, chs, ls] = await Promise.all([kv.get("marks"), kv.get("meta"), kv.get("people"), kv.get("follows"), kv.get("persons"), kv.get("series"), kv.get("chars"), kv.get("lists")]);
-    S.marks = mk || {}; S.meta = mt || {}; S.people = pp || {}; S.follows = fo || {}; S.lists = ls || {}; S.persons = ps || {}; S.series = se || null; S.chars = chs || null; S.status = getPref("status", null);
+    const [mk, mt, pp, ps, se, chs, ...maps] = await Promise.all([kv.get("marks"), kv.get("meta"), kv.get("people"), kv.get("persons"), kv.get("series"), kv.get("chars"), ...SYNC_MAPS.map(k => kv.get(k))]);
+    S.marks = mk || {}; S.meta = mt || {}; S.people = pp || {}; S.persons = ps || {}; S.series = se || null; S.chars = chs || null; S.status = getPref("status", null);
+    SYNC_MAPS.forEach((k, i) => { S[k] = maps[i] || {}; });
+    // 以前角色卡面只存在这台手机上（cimg），搬进会同步的 faces
+    const old = getPref("cimg", null);
+    if (old && typeof old === "object") { for (const [k, v] of Object.entries(old)) if (!S.faces[k]) S.faces[k] = {k: v, t: 1}; kv.set("faces", S.faces); setPref("cimg", null); }
   }
+  if (!IS_PREVIEW) ghCfgSave();
+  if (chatOn()) loadChat().then(() => { if (["chat", "settings"].includes(route().name)) render(); }).catch(() => {});
   render();
   loadIndex();
   loadUni();
