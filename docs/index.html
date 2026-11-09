@@ -3080,21 +3080,22 @@ function pickRoleFace(nm, tt){
 
 let albumTab = "s", albumAll = false, albumWork = "";
 function albumHTML(nm){
-  const all = albumOf(nm); if (!all.length) return "";
-  // 剧照在前、按角色分：追的是角色，先看 TA 在戏里的样子
-  const groups = {s: all.filter(i => i.t === "s"), p: all.filter(i => i.t === "p" || i.t === "e" || i.t === "o")};
-  if (!groups[albumTab].length) albumTab = groups.s.length ? "s" : "p";
+  const web = webImgs("p:" + nm), all = [...albumOf(nm), ...web]; if (!all.length) return "";
+  // 剧照在前、按角色分：追的是角色，先看 TA 在戏里的样子；网图是后台从 Pinterest 找的
+  const groups = {s: all.filter(i => i.t === "s"), p: all.filter(i => i.t === "p" || i.t === "e" || i.t === "o"), w: web};
+  if (!groups[albumTab].length) albumTab = groups.s.length ? "s" : groups.p.length ? "p" : "w";
   const works = albumTab === "s" ? countBy(groups.s.map(i => i.tt).filter(Boolean), tt => [tt]).slice(0, 12) : [];
   if (albumWork && !works.some(([tt]) => tt === albumWork)) albumWork = "";
   const list = albumWork ? groups.s.filter(i => i.tt === albumWork) : groups[albumTab], show = albumAll ? list : list.slice(0, 18);
   window.__album = {nm, keys: list.map(i => i.k)};
   const cr = tt => (S.persons[nm]?.credits || []).find(c => c.id === tt);
-  return `<div class="sec"><div class="sec-h"><h2>相册 <small>${all.length}</small></h2></div>
-    ${groups.p.length && groups.s.length ? `<div class="seg" style="margin:0 var(--pad) 10px">${[["s", "剧照", groups.s.length], ["p", "写真与活动", groups.p.length]].map(([k, l, n]) =>
+  const canMore = !!S.persons[nm];
+  return `<div class="sec"><div class="sec-h"><h2>相册 <small>${all.length}</small></h2>${canMore ? `<button onclick="albumTab='w';moreImgs('p:${nm}',this)">${web.length ? "再找找" : "去 Pinterest 找"}</button>` : ""}</div>
+    ${[groups.s, groups.p, groups.w].filter(g => g.length).length > 1 ? `<div class="seg" style="margin:0 var(--pad) 10px">${[["s", "剧照", groups.s.length], ["p", "写真与活动", groups.p.length], ["w", "网图", groups.w.length]].filter(x => x[2]).map(([k, l, n]) =>
       `<button class="${albumTab === k ? "on" : ""}" onclick="albumTab='${k}';albumAll=false;albumWork='';render()">${l}<b>${n}</b></button>`).join("")}</div>` : ""}
     ${works.length > 1 ? `<div class="chips" style="margin:0 0 10px">${[["", "全部", groups.s.length], ...works].map(([tt, n0, n]) => { const c = tt && cr(tt), r = c ? roleOf(c) : null;
       return `<button class="chip${albumWork === tt ? " on" : ""}" onclick="albumWork='${tt}';albumAll=false;render()">${tt ? esc(r?.cn || r?.en || (c ? workName(c) : vm(tt).name)) : "全部"} <b>${tt ? n0 : n}</b></button>`; }).join("")}</div>` : ""}
-    <div class="album">${show.map((i, j) => `<button onclick="lightbox(${j})"><img loading="lazy" decoding="async" src="${esc(imdbImg(i.k, 300))}" onload="this.classList.add('ok')" onerror="this.parentNode.remove()"></button>`).join("")}</div>
+    <div class="album">${show.map((i, j) => `<button onclick="lightbox(${j})"><img loading="lazy" decoding="async" src="${esc(stillSrc(i.k, 300))}" onload="this.classList.add('ok')" onerror="this.parentNode.remove()"></button>`).join("")}</div>
     ${list.length > show.length ? `<button class="more2" onclick="albumAll=true;render()">展开全部 ${list.length} 张</button>` : ""}</div>`;
 }
 function lightbox(i){
@@ -3120,7 +3121,7 @@ function pickFace(nm, preK){
   const extra = [];
   const D = S.persons[nm]?.db; if (D?.cover && !/default/.test(D.cover)) extra.push({k: D.cover, t: "d", w: 0, h: 0});
   const items = [...webImgs("p:" + nm), ...all.filter(i => i.n <= 1 || i.t === "p"), ...extra];
-  const pre = preK ? all.find(i => i.k === preK) : null;
+  const pre = preK ? items.find(i => i.k === preK) : null;
   FD = {nm, items, tab: "all", k: preK || cur?.k || "", x: cur?.x ?? 50, y: cur?.y ?? 20};
   if (pre) { FD.x = 50; FD.y = pre.w > pre.h ? 50 : 20; }
   drawFace();
