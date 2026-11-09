@@ -4680,6 +4680,9 @@ function charSheet(uid, ck){
   const pk = charPick(c);
   if (!CS || CS.c !== c) CS = {u, c, side: !c.cm || (pk && pk !== "comic") ? "real" : "comic"};
   drawCharSheet();
+  // 卡面要用海报兜底、但海报还在离线片库的分片里没读到：读到了再画一遍（不然大卡是空的）
+  const deb = c.apps.find(wSeen) || c.apps[0];
+  if (deb?.id && !posterSrc(deb.id)) shard("p", deb.id).then(() => { if (CS?.c === c && $("#sheet").classList.contains("on")) { const keep = $("#sheet").scrollTop; drawCharSheet(); $("#sheet").scrollTop = keep; } });
 }
 function drawCharSheet(){
   const {u, c} = CS, lit = charLit(c), seen = charSeenN(c), tot = charTot(c);

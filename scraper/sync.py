@@ -418,12 +418,13 @@ class Sync:
                 seen = [w for w in ws if w["id"] in mine]
                 nms = {a[0] for a in c.get("a") or [] if a and a[0]}
                 key = f"{u['id']}:{c['k']}"
-                if not nms or c.get("vo") or (key not in force and (not seen or c.get("cm") or good_still([w["id"] for w in ws], nms))):
+                # 没有演员的生物（破胸者、猫鹅……）和配音角色也找：搜词用角色名 + 作品名，图说明里要有角色名
+                if key not in force and (not seen or c.get("cm") or (nms and good_still([w["id"] for w in ws], nms))):
                     continue
                 seen = seen or ws
                 w0 = seen[0]
                 title = w0.get("en") or title_of(w0["id"])
-                actor = (c.get("a") or [["", ""]])[0][1]
+                actor = "" if c.get("vo") else (c.get("a") or [["", ""]])[0][1]
                 out.append((key, self._queries(c["en"], actor, title), rank(1, nms, [w["id"] for w in ws]), [c["en"], actor, title]))
         cmap = self.series.get("cm") or {}
         for q, d in (self.series.get("s") or {}).items():
@@ -450,7 +451,14 @@ class Sync:
         qs = [f"{actor} {role} {title}", f"{role} {title}"] if plain and actor else [f"{role} {title}", f"{actor} {role} {title}"]
         if actor:
             qs.append(f"{actor} as {role}")
-        return [re.sub(r"\s+", " ", q).strip() for q in qs if q.strip()]
+        else:
+            qs.append(f"{role} movie")
+        out = []
+        for q in qs:
+            q = re.sub(r"\s+", " ", q).strip()
+            if q and q not in out:
+                out.append(q)
+        return out
 
     @staticmethod
     def _name_keys(names):
