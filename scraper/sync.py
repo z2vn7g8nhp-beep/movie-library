@@ -401,7 +401,7 @@ class Sync:
             title = title_of(tt, c.get("n", ""))
             actor = P.get("n") or ""
             if role and title:
-                out.append((f"r:{nm}:{tt}", self._queries(role, actor, title), rank(0, {nm}, [tt]), [role, actor]))
+                out.append((f"r:{nm}:{tt}", self._queries(role, actor, title), rank(0, {nm}, [tt]), [role, actor, title]))
         try:
             U = json.loads((Path(__file__).resolve().parent.parent / "docs" / "universes.json").read_text(encoding="utf-8"))["universes"]
         except (OSError, ValueError, KeyError):
@@ -419,7 +419,7 @@ class Sync:
                 w0 = seen[0]
                 title = w0.get("en") or title_of(w0["id"])
                 actor = (c.get("a") or [["", ""]])[0][1]
-                out.append((key, self._queries(c["en"], actor, title), rank(1, nms, [w["id"] for w in ws]), [c["en"], actor]))
+                out.append((key, self._queries(c["en"], actor, title), rank(1, nms, [w["id"] for w in ws]), [c["en"], actor, title]))
         cmap = self.series.get("cm") or {}
         for q, d in (self.series.get("s") or {}).items():
             for c in d.get("c") or []:
@@ -433,7 +433,7 @@ class Sync:
                 title = title_of(seen[0])
                 actor = (c.get("a") or [["", ""]])[0][1]
                 if title:
-                    out.append((key, self._queries(c["en"], actor, title), rank(1, nms, c["w"]), [c["en"], actor]))
+                    out.append((key, self._queries(c["en"], actor, title), rank(1, nms, c["w"]), [c["en"], actor, title]))
         return out
 
     @staticmethod
@@ -449,14 +449,21 @@ class Sync:
 
     @staticmethod
     def _name_keys(names):
-        """用来判断一张图的说明里有没有提到这个角色 / 演员：角色名里的词，演员的姓"""
-        stop = {"the", "and", "mr", "mrs", "dr", "sr", "jr", "of", "von", "van", "de", "la", "le", "da"}
-        role, actor = (names + ["", ""])[:2]
-        keys = {w for w in re.findall(r"[a-z]{3,}", (role or "").lower()) if w not in stop}
+        """判断一张图是不是这个角色：说明里有角色名的词；或者同时有演员的姓和作品名（只有演员名的多半是现在的本人照）"""
+        stop = {"the", "and", "mr", "mrs", "dr", "sr", "jr", "of", "von", "van", "de", "la", "le", "da", "a", "an", "in", "on"}
+        role, actor, title = (list(names) + ["", "", ""])[:3]
+        words = lambda x: {w for w in re.findall(r"[a-z]{3,}", (x or "").lower()) if w not in stop}
         last = [w for w in re.findall(r"[a-z]{3,}", (actor or "").lower()) if w not in stop]
-        if last:
-            keys.add(last[-1])
-        return keys
+        return {"role": words(role), "actor": set(last[-1:]), "title": words(title)}
+
+    @staticmethod
+    def _match(keys, text):
+        t = (text or "").lower()
+        r = sum(1 for w in keys["role"] if w in t)
+        a = any(w in t for w in keys["actor"])
+        ti = sum(1 for w in keys["title"] if w in t)
+        ok = r > 0 or (a and ti > 0)
+        return ok, r * 2 + ti + (1 if a else 0)
 
     def _save_img(self, raw):
         """缩到 560 宽的 JPEG，按内容起名存进 img/；返回 [路径, 宽, 高]"""
@@ -482,6 +489,16 @@ class Sync:
         deadline = now() + seconds
         want = [k for k in (self.reqs.get("imgs") or []) if isinstance(k, str) and 3 < len(k) < 80][:8]
         targets = {k: (qs, pri, names) for k, qs, pri, names in self._web_targets(set(want))}
+        # 旧规则（只要提到演员名）找的图再筛一遍：只有演员本人、没提角色也没提作品的去掉；都去掉了就重新找
+        for k, rec in list(W.items()):
+            if rec.get("v") == 2 or k not in targets:
+                continue
+            keys = self._name_keys(targets[k][2])
+            rec["i"] = [x for x in rec["i"] if len(x) < 5 or self._match(keys, x[4])[0]]
+            rec["v"] = 2
+            if not rec["i"]:
+                del W[k]
+            self.changed = True
         jobs = [k for k in want if k in targets] + sorted(
             [k for k in targets if k not in want and not W.get(k) and targets[k][1][0] < 9], key=lambda k: targets[k][1])
         jobs = jobs[:len([k for k in want if k in targets]) + budget]
@@ -492,7 +509,7 @@ class Sync:
             if now() > deadline and key not in want:
                 break
             qs, _, names = targets[key]
-            rec = W.get(key) or {"i": [], "q": []}
+            rec = W.get(key) or {"i": [], "q": [], "v": 2}
             have = {x[3] for x in rec["i"] if len(x) > 3}
             more = key in want
             keys = self._name_keys(names)
@@ -512,10 +529,9 @@ class Sync:
                     break
                 rec["q"].append(q)
                 def score(x):
-                    t = x["t"].lower()
-                    return (-sum(1 for k in keys if k in t), 0 if 0.9 <= x["h"] / max(1, x["w"]) <= 1.9 else 1)
+                    return (-self._match(keys, x["t"])[1], 0 if 0.9 <= x["h"] / max(1, x["w"]) <= 1.9 else 1)
                 cands = [x for x in res if x["id"] not in have and x["w"] >= 250 and x["h"] >= 250
-                         and 0.5 <= x["h"] / max(1, x["w"]) <= 2.4 and any(k in x["t"].lower() for k in keys)]
+                         and 0.5 <= x["h"] / max(1, x["w"]) <= 2.4 and self._match(keys, x["t"])[0]]
                 cands.sort(key=score)
                 for x in cands:
                     if added >= goal:
