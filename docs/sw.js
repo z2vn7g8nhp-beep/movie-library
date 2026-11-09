@@ -2,7 +2,7 @@
 //  - 网页本身：先走网络（拿到最新版），没网用缓存
 //  - 片库索引：按版本号缓存，打开秒出、没网也能搜
 //  - 海报、头像、照片：看过一次就存在手机里，下次直接显示（不用再从 IMDb / 豆瓣下载）
-const SHELL = "yingku-shell-v13", IDX = "yingku-idx", IMG = "yingku-img-v1", IMG_MAX = 2500, GHI = "yingku-ghimg";
+const SHELL = "yingku-shell-v14", IDX = "yingku-idx", IMG = "yingku-img-v1", IMG_MAX = 2500, GHI = "yingku-ghimg";
 self.addEventListener("install", e => { self.skipWaiting(); e.waitUntil(caches.open(SHELL).then(c => c.addAll(["./", "manifest.json", "icon-180.png"]).catch(() => {}))); });
 self.addEventListener("activate", e => e.waitUntil((async () => {
   for (const k of await caches.keys()) if (k.startsWith("yingku-shell-") && k !== SHELL) await caches.delete(k);
@@ -47,11 +47,26 @@ self.addEventListener("fetch", e => {
     }));
     return;
   }
-  // 网页本身每次都向服务器确认有没有新版（GitHub 会让浏览器缓存 10 分钟，不这样会一直拿到旧版）
-  e.respondWith(fetch(req, {cache: "no-cache"}).then(r => {
-    if (r.ok) { const cp = r.clone(); caches.open(SHELL).then(c => c.put(req, cp)); }
-    return r;
-  }).catch(() => caches.match(req, {ignoreSearch: true}).then(r => r || caches.match("./"))));
+  // 网页本身每次都向服务器确认有没有新版（GitHub 会让浏览器缓存 10 分钟，不这样会一直拿到旧版）。
+  // 国内连 github.io 时好时坏：3 秒还没回来、或者连不上，就先用手机里存的上一版打开（不再一直白屏），新版在后台存好下次用
+  e.respondWith((async () => {
+    const net = fetch(req, {cache: "no-cache"}).then(r => {
+      if (r.ok) { const cp = r.clone(); caches.open(SHELL).then(c => c.put(req, cp)); }
+      return r;
+    });
+    const cached = () => caches.match(req, {ignoreSearch: true}).then(r => r || (req.mode === "navigate" ? caches.match("./") : null));
+    const slow = new Promise(res => setTimeout(res, 3000, "slow"));
+    try {
+      const first = await Promise.race([net, slow]);
+      if (first !== "slow") return first;
+      const c = await cached();
+      if (c) { e.waitUntil(net.catch(() => {})); return c; }
+      return await net;
+    } catch {
+      const c = await cached();
+      return c || new Response("连不上网站，换个网络再试试", {status: 503, headers: {"Content-Type": "text/plain; charset=utf-8"}});
+    }
+  })());
 });
 
 // 私有数据仓库里的图（Pinterest 网图、自己截的名场面）：页面写 ghimg/路径，这里带上密钥去 GitHub 取，取到就一直存着
