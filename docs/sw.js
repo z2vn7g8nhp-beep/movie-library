@@ -2,7 +2,7 @@
 //  - 网页本身：先走网络（拿到最新版），没网用缓存
 //  - 片库索引：按版本号缓存，打开秒出、没网也能搜
 //  - 海报、头像、照片：看过一次就存在手机里，下次直接显示（不用再从 IMDb / 豆瓣下载）
-const SHELL = "yingku-shell-v14", IDX = "yingku-idx", IMG = "yingku-img-v1", IMG_MAX = 2500, GHI = "yingku-ghimg";
+const SHELL = "yingku-shell-v15", IDX = "yingku-idx", IMG = "yingku-img-v1", IMG_MAX = 2500, GHI = "yingku-ghimg";
 self.addEventListener("install", e => { self.skipWaiting(); e.waitUntil(caches.open(SHELL).then(c => c.addAll(["./", "manifest.json", "icon-180.png"]).catch(() => {}))); });
 self.addEventListener("activate", e => e.waitUntil((async () => {
   for (const k of await caches.keys()) if (k.startsWith("yingku-shell-") && k !== SHELL) await caches.delete(k);
@@ -69,7 +69,7 @@ self.addEventListener("fetch", e => {
   })());
 });
 
-// 私有数据仓库里的图（Pinterest 网图、自己截的名场面）：页面写 ghimg/路径，这里带上密钥去 GitHub 取，取到就一直存着
+// 私有数据仓库里的图（Pinterest 网图）：页面写 ghimg/路径，这里带上密钥去 GitHub 取，取到就一直存着
 function ghCfg(){
   return new Promise(res => {
     try {
