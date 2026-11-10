@@ -23,14 +23,14 @@ optimus | 擎天柱 | Optimus Prime | 汽车人领袖 | vo:Peter Cullen | tf1 tf
 > 汽车人的领袖，温和、正直、永远挡在最前面。他的配音彼得·库伦从 1984 年的动画就开始为他发声，一说话，就是童年。
 bumblebee | 大黄蜂 | Bumblebee | 黄色的小战士 | vo:Dylan O'Brien; Keegan-Michael Key | tf1 tf2 tf3 tf4 tf5 bb rotb tfone | #E0B02E | 汽车人;侦察兵 | 变形形态:雪佛兰科迈罗（贝氏）、大众甲壳虫（《大黄蜂》）;特点:声音模块坏了，用收音机片段说话;旧编号:B-127 | optimus:最敬重的领袖;sam:第一个人类朋友;charlie:最懂他的女孩;orion:一起长大的朋友
 > 声带受损、只能用收音机片段说话的小个子侦察兵。他是每个人类主角的第一个汽车人朋友，也是所有人最想要的那辆车。
-ironhide | 铁皮 | Ironhide | 武器专家 | vo:Jess Harnell | tf1 tf2 tf3 | #2E2E36 | 汽车人 | 变形形态:GMC TopKick 皮卡;武器:双手加农炮 | optimus:老战友
-> 汽车人的武器专家，一言不合就掏炮，嘴硬心软。
+ironhide | 铁皮 | Ironhide | 武器专家 | vo:Jess Harnell | tf1 tf2 tf3 | #2E2E36 | 汽车人;武器专家 | 变形形态:GMC TopKick C4500 皮卡;武器:双臂加农炮;性格:嘴硬心软，手比嘴快;名场面:初次见面就亮出双炮，问一句“觉得自己走运吗” | optimus:追随多年的老战友;lennox:并肩作战的上尉
+> 汽车人的武器专家，一身黑甲、两门加农炮，开口三句不离“轰了它”。脾气最冲的是他，最靠得住的也是他，擎天柱身边永远有这位老兵。
 ratchet | 救护车 | Ratchet | 汽车人军医 | vo:Robert Foxworth | tf1 tf2 tf3 tf4 | #6A9A3A | 汽车人;军医 | 变形形态:悍马 H2 救援车 | optimus:老战友
 > 汽车人的军医，冷静、细致，什么伤都能修。
 jazz | 爵士 | Jazz | 爱耍酷的副官 | vo:Darius McCrary | tf1 | #C0C4CC | 汽车人 | 变形形态:庞蒂亚克 Solstice;口头禅:What's crackin', little bitches?
 > 个子最小、嘴最贫的汽车人，最爱跟人类打招呼。
-sideswipe | 横炮 | Sideswipe | 用轮子滑行的剑客 | vo:André Sogliuzzo | tf2 tf3 | #C0C4CC | 汽车人 | 变形形态:雪佛兰科尔维特 Stingray 概念车;武器:双臂利刃;特点:脚上是轮子
-> 脚底是轮子、手上是刀刃的汽车人，滑行起来像在溜冰。
+sideswipe | 横炮 | Sideswipe | 用轮子滑行的剑客 | vo:André Sogliuzzo | tf2 tf3 | #C0C4CC | 汽车人;剑客 | 变形形态:雪佛兰科尔维特 Stingray 概念车;武器:双臂利刃;特点:脚上是轮子，打架像花样滑冰;名场面:上海街头滑行着把对手一刀两半 | optimus:领袖;ironhide:并肩作战的前辈
+> 一身银甲、脚底是轮子、双臂是利刃的汽车人。别人是跑着打，他是滑着打，出手干净利落，还不忘夸自己一句。
 arcee_b | 阿尔茜 | Arcee | 贝氏版 · 三姐妹 | vo:Grey DeLisle | tf2 | #D86AA0 | 汽车人 | 变形形态:杜卡迪摩托
 > 第二部里的摩托车三姐妹，是贝氏电影里最早的女性汽车人。
 jetfire | 天火 | Jetfire | 年迈的老兵 | vo:Mark Ryan | tf2 | #8A8A8A | 霸天虎→汽车人 | 变形形态:SR-71 黑鸟侦察机;特点:老得掉零件、拄着拐杖 | optimus:把零件给了他的人
@@ -68,8 +68,10 @@ cheetor | 豹王 | Cheetor | 猛兽侠 | vo:Tongayi Chirisa | rotb | #C9A040 | �
 airazor | 空中鹰 | Airazor | 猛兽侠 | vo:Michelle Yeoh | rotb | #8A6A4A | 猛兽侠 | 变形形态:游隼;配音:杨紫琼 | primal:领袖
 > 猛兽侠里的游隼战士，杨紫琼配音，优雅又温柔。
 # —— 霸天虎
-megatron | 威震天 | Megatron | 霸天虎首领 | vo:Hugo Weaving | tf1 tf2 tf3 tf5 | #8A8A9A | 霸天虎;领袖 | 变形形态:赛博坦喷气机（第一部）、坦克（第二部）、油罐车（第三部）;武器:融合炮、链锤 | optimus:昔日兄弟、宿敌;starscream:不忠的副官;fallen:效忠的主人;galvatron:被重造后的自己;d16:年轻时的自己
+megatron | 威震天 | Megatron | 霸天虎首领 | vo:Hugo Weaving | tf1 tf2 tf3 tf5 | #8A8A9A | 霸天虎;领袖 | 变形形态:赛博坦喷气机（第一部）、坦克（第二部）、油罐车（第三部）;武器:融合炮、链锤 | optimus:昔日兄弟、宿敌;starscream:不忠的副官;fallen:效忠的主人;galvatron:被重造后的自己;megatron_k:换上骑士铠甲的自己;d16:年轻时的自己
 > 霸天虎的首领，一心想统治宇宙。他和擎天柱曾是兄弟，后来成了几百万年的宿敌。
+megatron_k | 威震天 | Megatron | 骑士形态 · 最后的骑士 | vo:Frank Welker | tf5 | #7A7F96 | 霸天虎;领袖;骑士形态 | 变形形态:赛博坦战机;武器:右臂融合炮，能变成一柄长剑;造型:骑士头盔一样的面甲和披挂整齐的肩甲;名场面:坐上谈判桌，一个一个点名把手下要出来;配音:弗兰克·维尔克，1984 年动画里威震天的原声 | megatron:从前的自己;optimus:宿敌;quintessa:这一次效力的人;barricade:召回的旧部
+> 第五部里重新归来的威震天，换了一身中世纪骑士般的铠甲：头盔式的面甲、披挂整齐的肩甲，右臂的融合炮一转就是一柄长剑。不再是前几部破破烂烂的样子，往谈判桌前一站，就是一位来要人的王。
 galvatron | 惊破天 | Galvatron | 被人类重造的威震天 | vo:Frank Welker | tf4 | #6A6A8A | 霸天虎;人造变形金刚 | 变形形态:福莱纳 Argosy 卡车 | megatron:原本的自己;joyce:造出他的人
 > 人类用威震天的头颅数据造出的变形金刚，渐渐被威震天的意识占据。
 starscream | 红蜘蛛 | Starscream | 霸天虎副官 | vo:Charlie Adler | tf1 tf2 tf3 | #8A8A9A | 霸天虎 | 变形形态:F-22 猛禽战斗机;性格:胆小、狡猾、时刻想篡位 | megatron:想取代的老大
@@ -78,8 +80,8 @@ soundwave | 声波 | Soundwave | 情报官 | vo:Frank Welker | tf2 tf3 | #4A4A8A
 > 霸天虎的情报官，在太空里监听一切。他是威震天身边最忠心的部下。
 laserbeak | 激光鸟 | Laserbeak | 声波的宠物 | - | tf3 | #6A6AA0 | 霸天虎 | 能力:变形成任何物件潜伏;特点:像一只秃鹫 | soundwave:主人
 > 声波手下的机械鸟，能伪装成打印机潜入人类的家里。
-shockwave | 震荡波 | Shockwave | 独眼科学家 | vo:Frank Welker | tf3 | #6A3A8A | 霸天虎;科学家 | 坐骑:钻地虫;特点:一只独眼
-> 独眼的霸天虎，带着一条巨型钻地虫把芝加哥的大楼拦腰钻断。
+shockwave | 震荡波 | Shockwave | 独眼科学家 | vo:Frank Welker | tf3 | #6A3A8A | 霸天虎;科学家;独眼 | 坐骑:钻探兽（Driller），一条巨型机械蠕虫;武器:手臂上的重型加农炮;特点:一只红色独眼，没有表情，几乎不说话;登场:从切尔诺贝利的地下破土而出;名场面:站在钻探兽身上，独眼一亮 | megatron:效忠的首领;optimus:芝加哥之战的对手;soundwave:同僚
+> 只有一只红色独眼的霸天虎，没有表情，也几乎不开口，光是站在那里就够吓人。他驯养着一条叫钻探兽的巨型机械蠕虫，把芝加哥的摩天大楼拦腰绞断的，就是它。戏份不多，压迫感第一。
 barricade | 路障 | Barricade | 警车里的霸天虎 | vo:Jess Harnell | tf1 tf2 tf5 | #2A2A2A | 霸天虎 | 变形形态:福特野马警车;车门上的字:惩罚与奴役
 > 伪装成警车的霸天虎，车门上写着“惩罚与奴役”。
 blackout | 黑旋风 | Blackout | 第一个出场的霸天虎 | - | tf1 | #3A3A3A | 霸天虎 | 变形形态:MH-53 铺路者直升机
@@ -88,16 +90,16 @@ devastator | 大力神 | Devastator | 合体金刚 | - | tf2 | #6A6A3A | 霸天�
 > 七辆工程车合体而成的巨人，一口吸起整片沙漠。
 fallen | 堕落金刚 | The Fallen | 初代领袖之一 | vo:Tony Todd | tf2 | #6A4A3A | 初代领袖 | 野心:用太阳收割机吞噬太阳 | megatron:徒弟
 > 七位初代领袖中背叛了同伴的那一位，威震天的师父。
-lockdown | 禁闭 | Lockdown | 宇宙赏金猎人 | vo:Mark Ryan | tf4 | #5A5A6A | 赏金猎人 | 变形形态:兰博基尼 Aventador;武器:脸能变成大炮 | optimus:要捉拿的目标
-> 不属于任何阵营的赏金猎人，受创造者之托来地球抓捕擎天柱。
+lockdown | 禁闭 | Lockdown | 宇宙赏金猎人 | vo:Mark Ryan | tf4 | #5A5A6A | 赏金猎人;无阵营;收藏家 | 变形形态:兰博基尼 Aventador LP 700-4;武器:整张脸变形成的狙击炮;飞船:一座关满猎物和战利品的移动监牢;立场:汽车人、霸天虎都不认，只认雇主;性格:冷淡、优雅，不屑于炫耀 | optimus:要捉拿的目标;attinger:各取所需的交易对象
+> 不属于任何阵营的赏金猎人，受“创造者”之托来地球抓捕擎天柱。开着一辆哑光灰的兰博基尼出场，瞄准时整张脸折叠成一门狙击炮；汽车人和霸天虎的战争在他眼里只是小孩打架。真人版里气质最独特的一位：优雅，而且危险。
 quintessa | 昆塔莎 | Quintessa | 创造者 | vo:Gemma Chan | tf5 | #8A5AA0 | 创造者 | 自称:变形金刚的造物主 | optimus:被她控制过的人
 > 自称创造了所有变形金刚的神秘存在，把擎天柱变成了“尼米西斯”。
 shatter | 碎片 | Shatter | 三变战士 | vo:Angela Bassett | bb | #B83A3A | 霸天虎 | 变形形态:普利茅斯 Fury、鹞式战斗机 | dropkick:搭档
 > 来地球追捕大黄蜂的三变战士，优雅又冷酷。
 dropkick | 猛踢 | Dropkick | 三变战士 | vo:Justin Theroux | bb | #3A5A8A | 霸天虎 | 变形形态:AMC Javelin、AH-1 眼镜蛇直升机 | shatter:搭档
 > 碎片的搭档，脾气暴躁，最喜欢把敌人撕成碎片。
-scourge | 天灾 | Scourge | 恐惧兵团首领 | vo:Peter Dinklage | rotb | #3A3A4A | 恐惧兵团 | 主人:宇宙大帝 | unicron:主人
-> 宇宙大帝的先锋，带着恐惧兵团来地球寻找时空之钥。
+scourge | 天灾 | Scourge | 恐惧兵团首领 | vo:Peter Dinklage | rotb | #3A3A4A | 恐惧兵团;猎人;宇宙大帝的先锋 | 变形形态:黑色的重型伐木卡车;战利品:把手下败将的标志烙在自己身上;主人:宇宙大帝;力量:宇宙大帝赐予的黑暗能量;性格:狂、狠，赢了就要让所有人看见 | unicron:主人;optimus:正面交手的对手;primal:追猎多年的猛兽侠
+> 宇宙大帝的先锋，带着恐惧兵团来地球寻找时空之钥。他每打倒一个对手，就把对方的标志烙在自己的装甲上，一身战利品走到哪亮到哪。和禁闭那种冷淡的收藏家不同，他是要炫耀的那一种猎人。
 unicron | 宇宙大帝 | Unicron | 吞噬星球的神 | vo:Colman Domingo | rotb | #4A3A5A | 混沌之神 | 形态:一颗能吞噬星球的行星 | scourge:先锋
 > 体积有一颗行星那么大的混沌之神，靠吞噬星球为生。
 # —— 起源（动画）
@@ -173,6 +175,8 @@ aoe | 绝迹重生小队 | Age of Extinction Squad | 🗡 | optimus bumblebee ho
 maximals | 猛兽侠 | The Maximals | 🦍 | primal rhinox cheetor airazor
 primes | 领袖们 | The Primes | 👑 | optimus sentinel sentinel_o alphatrion primal fallen
 megas | 威震天的三个名字 | Megatron's Faces | ⚙ | megatron galvatron d16
+villains | 反派美学 | Villain Aesthetics | 🖤 | lockdown shockwave megatron_k scourge
+crush | 些许好感 | A Little Crush | 💘 | optimus ironhide sideswipe
 origin | 赛博坦的起源 | Cybertron Origins | 🔥 | orion d16 elita bumblebee alphatrion
 witwicky | 维特维奇一家 | The Witwickys | 🏡 | sam ron judy bumblebee
 nest | NEST 部队 | N.E.S.T. | 🎖 | lennox epps simmons
@@ -185,4 +189,5 @@ heroines | 女主角们 | The Heroines | 💖 | mikaela carly tessa vivian charl
 knights | 骑士与古堡 | The Last Knight | 🏰 | burton cogman vivian hotrod izabella
 """
 
-RARE = {"UR": "optimus bumblebee megatron"}
+RARE = {"UR": "optimus bumblebee megatron",
+        "SSR": "lockdown shockwave megatron_k scourge ironhide sideswipe"}
