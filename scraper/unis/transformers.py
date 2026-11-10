@@ -82,8 +82,8 @@ laserbeak | 激光鸟 | Laserbeak | 声波的宠物 | - | tf3 | #6A6AA0 | 霸天
 > 声波手下的机械鸟，能伪装成打印机潜入人类的家里。
 shockwave | 震荡波 | Shockwave | 独眼科学家 | vo:Frank Welker | tf3 | #6A3A8A | 霸天虎;科学家;独眼 | 坐骑:钻探兽（Driller），一条巨型机械蠕虫;武器:手臂上的重型加农炮;特点:一只红色独眼，没有表情，几乎不说话;登场:从切尔诺贝利的地下破土而出;名场面:站在钻探兽身上，独眼一亮 | megatron:效忠的首领;optimus:芝加哥之战的对手;soundwave:同僚
 > 只有一只红色独眼的霸天虎，没有表情，也几乎不开口，光是站在那里就够吓人。他驯养着一条叫钻探兽的巨型机械蠕虫，把芝加哥的摩天大楼拦腰绞断的，就是它。戏份不多，压迫感第一。
-barricade | 路障 | Barricade | 警车里的霸天虎 | vo:Jess Harnell | tf1 tf2 tf5 | #2A2A2A | 霸天虎 | 变形形态:福特野马警车;车门上的字:惩罚与奴役
-> 伪装成警车的霸天虎，车门上写着“惩罚与奴役”。
+barricade | 路障 | Barricade | 警车里的霸天虎 | vo:Jess Harnell | tf1 tf3 tf5 | #2A2A2A | 霸天虎;侦察兵;警车 | 变形形态:萨林 S281 福特野马警车（第一部）、新款福特野马警车（第五部）;车身上的字:To punish and enslave（惩罚与奴役），把警车的“保护与服务”反着写;搭档:小个子间谍迷乱;名场面:把山姆按在引擎盖上，逼问他的网名;第五部:指节上多了两排字，PUNISH 和 ENSLAVE;特点:从第一部活到第五部的老资格 | megatron:追随的首领;megatron_k:又被他召回身边;bumblebee:第一部里的死对头;sam:审问过的人类
+> 伪装成警车的霸天虎，黑白涂装、警灯一亮，车身上却写着“惩罚与奴役”。第一部里他追着山姆满城跑，和大黄蜂在废车场打得天昏地暗；到了第五部换了一身新野马，照样跟在威震天身边。霸天虎换了一茬又一茬，这辆警车一直都在。
 blackout | 黑旋风 | Blackout | 第一个出场的霸天虎 | - | tf1 | #3A3A3A | 霸天虎 | 变形形态:MH-53 铺路者直升机
 > 第一部开场袭击卡塔尔美军基地的直升机霸天虎。
 devastator | 大力神 | Devastator | 合体金刚 | - | tf2 | #6A6A3A | 霸天虎;工程师 | 组成:七辆工程车合体
@@ -175,7 +175,7 @@ aoe | 绝迹重生小队 | Age of Extinction Squad | 🗡 | optimus bumblebee ho
 maximals | 猛兽侠 | The Maximals | 🦍 | primal rhinox cheetor airazor
 primes | 领袖们 | The Primes | 👑 | optimus sentinel sentinel_o alphatrion primal fallen
 megas | 威震天的三个名字 | Megatron's Faces | ⚙ | megatron galvatron d16
-villains | 反派美学 | Villain Aesthetics | 🖤 | lockdown shockwave megatron_k scourge
+villains | 反派美学 | Villain Aesthetics | 🖤 | lockdown shockwave megatron_k scourge barricade
 crush | 些许好感 | A Little Crush | 💘 | optimus ironhide sideswipe
 origin | 赛博坦的起源 | Cybertron Origins | 🔥 | orion d16 elita bumblebee alphatrion
 witwicky | 维特维奇一家 | The Witwickys | 🏡 | sam ron judy bumblebee
@@ -190,4 +190,4 @@ knights | 骑士与古堡 | The Last Knight | 🏰 | burton cogman vivian hotrod
 """
 
 RARE = {"UR": "optimus bumblebee megatron",
-        "SSR": "lockdown shockwave megatron_k scourge ironhide sideswipe"}
+        "SSR": "lockdown shockwave megatron_k scourge ironhide sideswipe barricade"}
