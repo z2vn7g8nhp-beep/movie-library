@@ -2,21 +2,14 @@
 <html lang="zh-CN">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="theme-color" content="#F8F5FC">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#F3F4F8">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="影库">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <link rel="preconnect" href="https://m.media-amazon.com" crossorigin>
-<link rel="preconnect" href="https://img9.doubanio.com">
-<link rel="preconnect" href="https://img1.doubanio.com">
-<link rel="preconnect" href="https://img2.doubanio.com">
-<link rel="preconnect" href="https://img3.doubanio.com">
-<link rel="preload" href="fonts/cormorant-garamond-latin-600-normal.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="preload" href="fonts/cormorant-garamond-latin-600-italic.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="preload" href="fonts/head-900.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="manifest" href="manifest.json">
 <link rel="apple-touch-icon" href="icon-180.png">
 <link rel="icon" href="icon-192.png">
@@ -61,9 +54,7 @@ img{display:block}
 .hide{display:none!important}
 
 /* ---------- 顶部 / 底栏 ---------- */
-#app{min-height:100dvh;padding:calc(var(--st) + 6px) 0 calc(var(--sb) + 78px);overflow-x:clip}
-/* 装到主屏幕后没有浏览器地址栏，状态栏和刘海挨得更近，多留一点呼吸 */
-@media (display-mode:standalone){#app{padding-top:calc(var(--st) + 14px)}}
+#app{min-height:100vh;padding:calc(var(--st) + 6px) 0 calc(var(--sb) + 78px);overflow-x:clip}
 #page{position:fixed;inset:0;z-index:15;background:var(--bg);overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;overscroll-behavior:contain;
   padding:0 0 calc(var(--sb) + 30px)}
 #page.in{animation:pin .28s cubic-bezier(.2,.8,.2,1)}
@@ -73,11 +64,11 @@ img{display:block}
 .top{display:flex;align-items:center;gap:10px;padding:8px var(--pad) 6px;min-height:52px}
 .top h1{flex:1;margin:0;font-family:var(--serif);font-weight:700;font-size:26px;letter-spacing:.06em}
 .top .sub{font-size:12px;color:var(--dim);letter-spacing:0}
-.icon-btn{width:44px;height:44px;border-radius:22px;display:grid;place-items:center;background:var(--card);color:var(--ink-2);box-shadow:0 1px 3px rgba(40,36,28,.08);flex:none}
-.icon-btn svg{width:19px;height:19px}
+.icon-btn{width:36px;height:36px;border-radius:18px;display:grid;place-items:center;background:var(--card);color:var(--ink-2);box-shadow:0 1px 3px rgba(40,36,28,.08);flex:none}
+.icon-btn svg{width:18px;height:18px}
 .tabs{position:fixed;left:0;right:0;bottom:0;z-index:20;background:#fbfaf7;border-top:.5px solid var(--hair);
   display:flex;padding:6px 8px calc(var(--sb) + 6px)}
-.tabs a{flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;font-size:10.5px;color:var(--dim);padding:2px 0;font-weight:500}
+.tabs a{flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;font-size:10.5px;color:var(--faint);padding:2px 0;font-weight:500}
 .tabs a svg{width:23px;height:23px}
 .tabs a.on{color:var(--ink)}
 #app.page + .tabs{display:none}
@@ -90,7 +81,7 @@ img{display:block}
 .sec-h a,.sec-h button{font-size:13px;color:var(--dim)}
 .card{background:var(--card);border-radius:16px;box-shadow:var(--shadow)}
 .muted{color:var(--dim)}
-.chip{position:relative;display:inline-flex;align-items:center;gap:4px;height:34px;padding:0 13px;border-radius:17px;background:var(--card);
+.chip{display:inline-flex;align-items:center;gap:4px;height:30px;padding:0 12px;border-radius:15px;background:var(--card);
   border:.5px solid var(--hair);font-size:13px;color:var(--ink-2);white-space:nowrap;flex:none}
 .chip b{font-family:var(--num);font-weight:500;color:var(--dim);font-size:12px}
 .chip.on{background:var(--ink);border-color:var(--ink);color:#fff}
@@ -117,7 +108,7 @@ img{display:block}
 
 .shelf-item{width:104px;flex:none}
 .shelf-item .nm{margin-top:7px;font-size:13px;line-height:1.3;font-weight:500;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
-.shelf-item .mt{font-size:12px;color:var(--dim);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.shelf-item .mt{font-size:11.5px;color:var(--dim);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .stars{display:inline-flex;gap:1px;vertical-align:-1px}
 .stars i{width:11px;height:11px;background:var(--faint);-webkit-mask:var(--star) center/contain no-repeat;mask:var(--star) center/contain no-repeat}
 .stars i.f{background:var(--gold)}
@@ -160,8 +151,7 @@ img{display:block}
 .seg button{flex:1;height:34px;border-radius:9px;font-size:14px;color:var(--ink-2);font-weight:500}
 .seg button b{font-family:var(--num);font-weight:400;font-size:12px;color:var(--dim);margin-left:3px}
 .seg button.on{background:var(--card);color:var(--ink);box-shadow:0 1px 3px rgba(40,36,28,.1)}
-.filters{display:flex;gap:8px;overflow-x:auto;padding:12px var(--pad) 4px;scrollbar-width:none;overscroll-behavior-x:contain;
-  -webkit-mask:linear-gradient(90deg,#000 calc(100% - 26px),rgba(0,0,0,.15));mask:linear-gradient(90deg,#000 calc(100% - 26px),rgba(0,0,0,.15))}
+.filters{display:flex;gap:8px;overflow-x:auto;padding:12px var(--pad) 4px;scrollbar-width:none}
 .filters::-webkit-scrollbar{display:none}
 .filters .chip svg{width:12px;height:12px;opacity:.6}
 .libmeta{padding:8px var(--pad) 10px;font-size:12.5px;color:var(--dim);display:flex;justify-content:space-between;align-items:center}
@@ -182,9 +172,9 @@ img{display:block}
 .pill.doing{background:var(--doing-bg);color:var(--doing)}
 .pill.done{background:var(--acc-bg);color:var(--acc-ink)}
 .sc{display:inline-flex;align-items:center;gap:4px;font-family:var(--num);font-size:12.5px;font-weight:500}
-.sc i{font-style:normal;font-size:10px;font-weight:800;padding:1px 3px;border-radius:3px;color:#fff;letter-spacing:.02em;line-height:1.25}
+.sc i{font-style:normal;font-size:9.5px;font-weight:800;padding:1px 3px;border-radius:3px;color:#fff;letter-spacing:.02em;line-height:1.2}
 .sc i.db{background:var(--db)} .sc i.im{background:var(--im);color:#000} .sc i.tm{background:var(--tm)}
-.sc.none{color:var(--dim)}
+.sc.none{color:var(--faint)}
 
 /* ---------- 搜索 ---------- */
 .sbox{position:sticky;top:0;z-index:5;background:var(--bg);padding:calc(var(--st) + 8px) var(--pad) 8px;margin-top:calc(-6px - var(--st))}
@@ -207,8 +197,7 @@ img{display:block}
 /* ---------- 条目页 ---------- */
 .bar{position:sticky;top:0;z-index:6;display:flex;align-items:center;gap:8px;padding:calc(var(--st) + 6px) 12px 6px;margin-top:0;
   background:rgba(247,246,242,.0);transition:background .2s}
-.bar.solid{background:rgba(250,248,253,.94);box-shadow:0 .5px 0 var(--hair)}
-@supports ((backdrop-filter:blur(2px)) or (-webkit-backdrop-filter:blur(2px))){.bar.solid{-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px)}}
+.bar.solid{background:rgba(250,248,253,.94);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);box-shadow:0 .5px 0 var(--hair)}
 .bar .tt{flex:1;font-weight:600;font-size:15px;text-align:center;opacity:0;transition:opacity .2s;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .bar.solid .tt{opacity:1}
 .hero{position:relative;padding:4px var(--pad) 0;display:flex;gap:16px}
@@ -230,7 +219,7 @@ img{display:block}
 .ratings .lb i{width:6px;height:6px;border-radius:3px}
 .ratings .v{font-family:var(--num);font-size:26px;font-weight:300;line-height:1.1;letter-spacing:-.02em}
 .ratings .v small{font-size:13px;color:var(--dim);font-weight:400;margin-left:1px}
-.ratings .v.na{font-size:14px;color:var(--dim);font-weight:400;padding:7px 0 4px;letter-spacing:0}
+.ratings .v.na{font-size:14px;color:var(--faint);font-weight:400;padding:7px 0 4px;letter-spacing:0}
 .ratings .c{font-size:11px;color:var(--dim);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .seasons{margin:10px var(--pad) 0;padding:6px 14px;background:var(--card);border-radius:14px;box-shadow:0 0 0 .5px var(--hair) inset}
 .seasons .r{display:flex;align-items:center;gap:10px;height:34px;font-size:13px}
@@ -361,7 +350,7 @@ textarea.field{min-height:84px;resize:none;line-height:1.6}
 .pstat .big{font-size:16px;font-weight:500}
 .pstat .big b{font-family:var(--num);font-size:24px;font-weight:500;color:var(--rose-ink)}
 .pstat .sm{font-size:12.5px;color:var(--ink-2);margin-top:3px}
-.pstat .faint{color:var(--dim);font-size:11.5px}
+.pstat .faint{color:var(--faint);font-size:11.5px}
 .note.rosey{background:var(--rose-bg);color:var(--rose-ink)}
 .note.rosey button{color:var(--rose-ink)}
 .photos{display:flex;gap:8px;overflow-x:auto;padding:2px var(--pad) 6px;scrollbar-width:none;scroll-snap-type:x proximity;scroll-padding:0 var(--pad)}
@@ -422,7 +411,7 @@ textarea.field{min-height:84px;resize:none;line-height:1.6}
 
 /* ---------- 集邮 ---------- */
 .badges{display:flex;flex-wrap:wrap;gap:6px;width:100%;margin-top:4px}
-.bd2{display:inline-flex;align-items:center;gap:3px;height:24px;padding:0 9px 0 6px;border-radius:12px;background:var(--soft);color:var(--dim);font-size:11.5px;font-weight:500}
+.bd2{display:inline-flex;align-items:center;gap:3px;height:24px;padding:0 9px 0 6px;border-radius:12px;background:var(--soft);color:var(--faint);font-size:11.5px;font-weight:500}
 .bd2 i{font-style:normal;font-size:13px;filter:grayscale(1);opacity:.5}
 .bd2.on{background:var(--rose-bg);color:var(--rose-ink)}
 .bd2.on i{filter:none;opacity:1}
@@ -442,7 +431,7 @@ textarea.field{min-height:84px;resize:none;line-height:1.6}
 .wi.got .ps{box-shadow:0 4px 14px rgba(40,36,28,.16)}
 .wi .nm{margin-top:6px;font-size:12.5px;line-height:1.3;font-weight:500;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
 .wi.not .nm{color:var(--dim)}
-.wi .mt{font-size:11px;color:var(--dim)}
+.wi .mt{font-size:11px;color:var(--faint)}
 .chk{position:absolute;right:6px;bottom:6px;width:32px;height:32px;border-radius:16px;background:#fff;box-shadow:0 0 0 2px var(--rose),0 3px 10px rgba(120,20,60,.25);z-index:2}
 .chk::after{content:"";position:absolute;left:11px;top:8px;width:7px;height:12px;border:solid var(--rose);border-width:0 2.5px 2.5px 0;transform:rotate(45deg)}
 .chk:active{transform:scale(.88)}
@@ -486,7 +475,7 @@ textarea.field{min-height:84px;resize:none;line-height:1.6}
 .ibar i{display:block;height:100%;border-radius:3px;background:linear-gradient(90deg,#f28cae,var(--rose))}
 .ibadges{display:flex;gap:4px;margin-top:10px;font-size:17px;min-height:22px}
 .ibadges i{font-style:normal}
-.ibadges span{font-size:12px;color:var(--dim)}
+.ibadges span{font-size:12px;color:var(--faint)}
 .igot{display:flex;gap:5px;margin-top:10px}
 .igot span{width:34px;flex:none}
 .igot .ps{border-radius:4px}
@@ -524,17 +513,13 @@ textarea.field{min-height:84px;resize:none;line-height:1.6}
 @font-face{font-family:"Pinyon";src:url(fonts/pinyon-script-latin-400-normal.woff2) format("woff2");font-display:swap}
 @font-face{font-family:"Cormorant";src:url(fonts/cormorant-garamond-latin-600-normal.woff2) format("woff2");font-weight:600;font-display:swap}
 @font-face{font-family:"Cormorant";src:url(fonts/cormorant-garamond-latin-600-italic.woff2) format("woff2");font-weight:600;font-style:italic;font-display:swap}
-/* 标题宋体：只带界面标题、按钮、导航会用到的 100 多个字（影库、片库、收藏、统计、宇宙、想看、看过…）。
-   两个文件各 20KB，先 preload 900 那份；片名、人名这些不可预知的字继续用系统宋体 / 黑体，缺字不会变豆腐块 */
-@font-face{font-family:"Yingku Song";src:url(fonts/head-600.woff2) format("woff2");font-weight:600;font-display:swap}
-@font-face{font-family:"Yingku Song";src:url(fonts/head-900.woff2) format("woff2");font-weight:800 900;font-display:swap}
 :root{
   --bg:#F8F5FC; --card:#FFFFFF; --paper:rgba(255,255,255,.82); --soft:#F0EBF7; --hair:rgba(74,52,110,.10);
-  --ink:#3A2E52; --ink-2:#5F5379; --dim:#6F6685; --faint:#A298B6;
-  --acc:#EC6F9C; --acc-ink:#AB3A68; --acc-bg:#FFEAF2; --acc-line:#F7CBDC;
-  --rose:#EC6F9C; --rose-ink:#AB3A68; --rose-bg:#FFEAF2; --rose-line:#F7CBDC;
-  --gold:#C9A46C; --gold-2:#EAD8B2; --gold-ink:#846330;
-  --wish:#4A6ABE; --wish-bg:#EAF0FF; --doing:#6A52CE; --doing-bg:#F1ECFF;
+  --ink:#3A2E52; --ink-2:#665A80; --dim:#9A90B0; --faint:#CBC3DC;
+  --acc:#EC6F9C; --acc-ink:#C24D7C; --acc-bg:#FFEAF2; --acc-line:#F7CBDC;
+  --rose:#EC6F9C; --rose-ink:#C24D7C; --rose-bg:#FFEAF2; --rose-line:#F7CBDC;
+  --gold:#C9A46C; --gold-2:#EAD8B2; --gold-ink:#9C7A45;
+  --wish:#7F9FEA; --wish-bg:#EAF0FF; --doing:#9B86E3; --doing-bg:#F1ECFF;
   --star-c:#F1B544;
   --serif:"Songti SC","STSong","Noto Serif SC","Noto Serif CJK SC","Source Han Serif SC",serif;
   --sans:-apple-system,BlinkMacSystemFont,"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
@@ -594,12 +579,9 @@ body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;ba
 
 /* 底部导航：磨砂 + 金线，当前页上方一颗小星 */
 .tabs{left:50%;right:auto;bottom:calc(var(--sb) + 10px);transform:translateX(-50%);width:min(320px,calc(100% - 44px));border:0;border-radius:26px;padding:6px 8px;
-  background:rgba(255,255,255,.88);
-  box-shadow:0 0 0 .5px var(--hair) inset,var(--line),0 14px 30px -14px rgba(90,60,140,.45)}
-@supports ((backdrop-filter:blur(2px)) or (-webkit-backdrop-filter:blur(2px))){.tabs{-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px)}}
-.tabs a{position:relative;font-family:var(--sans);font-weight:600;font-size:11px;color:var(--ink-2);padding:7px 0 5px;letter-spacing:.06em;min-height:44px}
-.tabs a:not(.on) svg{opacity:.72}
-.tabs a:active{transform:scale(.94)}
+  background:rgba(255,255,255,.88);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);
+  box-shadow:var(--line),0 14px 30px -14px rgba(90,60,140,.45)}
+.tabs a{position:relative;font-family:var(--sans);font-weight:600;font-size:10.5px;color:var(--faint);padding:5px 0 3px;letter-spacing:.06em}
 .tabs a svg{width:22px;height:22px}
 .tabs a.on{color:var(--acc-ink);background:none}
 .tabs a.on::before{content:"";position:absolute;top:-3px;left:50%;width:7px;height:7px;margin-left:-3.5px;background:var(--gold);-webkit-mask:var(--spark) center/contain no-repeat;mask:var(--spark) center/contain no-repeat}
@@ -870,7 +852,7 @@ body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;ba
 .spot .sb i{display:block;font-family:var(--latin);font-style:italic;font-size:15px;color:var(--dim);line-height:1.2}
 .spot .sb .sm{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--dim);margin-top:5px}
 .spot .sb .sm .rk{font-size:11px;padding:1px 6px 2px}
-.spot .sgo{color:var(--dim);font-size:20px;flex:none}
+.spot .sgo{color:var(--faint);font-size:20px;flex:none}
 .spot p{margin:12px 0 0;padding-left:10px;border-left:2px solid var(--gold-2);font-size:13.5px;line-height:1.75;color:var(--ink-2)}
 .spot .sst{display:flex;gap:6px;overflow-x:auto;margin:12px -14px 0;padding:0 14px;scrollbar-width:none}
 .spot .sst::-webkit-scrollbar{display:none}
@@ -1130,7 +1112,7 @@ body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;ba
 .ach-h{font-size:13px;color:var(--ink-2);margin-bottom:12px}
 .ach-h b{font-family:var(--num);font-size:20px;color:var(--ink)}
 .agrid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px 8px}
-.ach{text-align:center;color:var(--dim)}
+.ach{text-align:center;color:var(--faint)}
 .ach .medal{position:relative;width:64px;height:64px;margin:0 auto 6px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#fff,#EEE9F4);box-shadow:0 0 0 1px var(--hair) inset}
 .ach .medal svg{position:absolute;inset:2px;width:60px;height:60px;color:var(--faint)}
 .ach .medal span{position:absolute;inset:0;display:grid;place-items:center;font-family:var(--latin);font-weight:600;font-size:22px;filter:grayscale(1);opacity:.45}
@@ -1211,7 +1193,7 @@ body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;ba
 .csh-facts div{min-width:0}
 .csh-facts dt{font-size:11px;color:var(--dim)}
 .csh-facts dd{margin:1px 0 0;font-size:13px;font-weight:600;color:var(--ink);line-height:1.35;word-break:break-word}
-.csh-src{font-size:10.5px;color:var(--dim);margin-top:10px;text-align:right}
+.csh-src{font-size:10.5px;color:var(--faint);margin-top:10px;text-align:right}
 .csh-tags{display:flex;flex-wrap:wrap;justify-content:center;gap:5px;margin-top:9px}
 .csh-tags span{font-size:11.5px;font-weight:600;padding:3px 9px;border-radius:10px;color:color-mix(in srgb,var(--hc) 78%,#000);background:color-mix(in srgb,var(--hc) 9%,#fff);box-shadow:0 0 0 1px color-mix(in srgb,var(--hc) 26%,transparent) inset}
 .csh-prof{position:relative;padding:12px 14px 13px;background:linear-gradient(170deg,#FFFDF8,color-mix(in srgb,var(--hc) 5%,#FFF8EC))}
@@ -1361,7 +1343,7 @@ body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;ba
 .binder{gap:18px 12px}
 .binder .shelf-item{position:relative}
 .binder .shelf-item .ps{border-radius:10px;padding:0;box-shadow:0 0 0 3px #fff,0 0 0 4px rgba(201,164,108,.35)}   /* 卡套：只用不模糊的描边，两百多张一起画也不卡 */
-.b-page{content-visibility:auto;contain-intrinsic-size:auto 250px}   /* 屏幕外的分页先不排版不绘制；占位按实测一页 ≈248px，估太大会把滚动条撑长 700px */
+.b-page{content-visibility:auto;contain-intrinsic-size:auto 600px}   /* 屏幕外的分页先不排版不绘制 */
 .binder .shelf-item .nm{margin-top:10px;font-family:var(--serif);font-weight:700;font-size:13px}
 .binder .shelf-item .mt{font-family:var(--num);font-size:12px}
 .b-fan{position:absolute;left:-6px;top:-6px;width:22px;height:22px;border-radius:50%;display:grid;place-items:center;background:linear-gradient(180deg,#F286AE,#E8608F);color:#fff;font-size:11px;
@@ -1460,7 +1442,7 @@ body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;ba
 .rc-ic{font-size:24px}
 .recall-n b{display:block;font-family:var(--serif);font-size:14px}
 .recall-n small{display:block;font-size:11.5px;color:var(--dim);line-height:1.45;margin-top:2px}
-.recall-n button{flex:none;width:28px;height:28px;color:var(--dim);font-size:12px}
+.recall-n button{flex:none;width:28px;height:28px;color:var(--faint);font-size:12px}
 .recall{padding:6px var(--pad) 0}
 .rc-intro{font-size:13px;line-height:1.6;color:var(--ink-2);margin:6px 0 12px}
 .rc-intro b{font-family:var(--num);font-size:17px;color:var(--acc-ink)}
@@ -1629,7 +1611,7 @@ body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;ba
 .kb-t em{display:block;font-style:normal;font-family:var(--serif);font-weight:900;font-size:11.5px;letter-spacing:.14em;color:var(--gold-ink);margin-bottom:1px}
 .kb.say .kb-t span{font-family:var(--serif);font-weight:700;color:var(--ink);font-size:14.5px}
 .kb.say .kb-t span::before{content:"「"}.kb.say .kb-t span::after{content:"」"}
-.kb-b > i{flex:none;font-style:normal;font-size:14px;color:var(--dim)}
+.kb-b > i{flex:none;font-style:normal;font-size:14px;color:var(--faint)}
 .kb-b.pop{animation:kbpop .28s cubic-bezier(.3,1.5,.5,1)}
 @keyframes kbpop{from{transform:scale(.96);opacity:.5}to{transform:none;opacity:1}}
 .kb-sign{flex:none;width:54px;border-radius:16px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;color:#fff;
@@ -1673,17 +1655,17 @@ body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;ba
 .sg-watch .ps{width:44px;flex:none;border-radius:6px}
 .sg-watch .ps .ph{display:none}
 .sg-watch em{display:block;font-style:normal;font-size:12px;color:var(--dim)}
-.sg-watch > i{flex:none;font-style:normal;color:var(--dim);font-size:20px}
+.sg-watch > i{flex:none;font-style:normal;color:var(--faint);font-size:20px}
 .sg-foot{margin:14px 0 0;font-size:11.5px;color:var(--dim)}
 
 /* ---------- 夜间主题：深蓝星空 + 香槟金 ---------- */
 html[data-theme=night]{color-scheme:dark;
   --bg:#17132A; --card:#262042; --paper:rgba(42,35,72,.86); --soft:#2B2549; --hair:rgba(220,205,255,.12);
-  --ink:#F1ECFF; --ink-2:#CFC7E8; --dim:#A49CC2; --faint:#847CA8;
+  --ink:#F1ECFF; --ink-2:#C9C0E4; --dim:#9087B0; --faint:#5D5580;
   --acc:#F07FA9; --acc-ink:#FF9DC0; --acc-bg:rgba(240,127,169,.16); --acc-line:rgba(240,127,169,.35);
   --rose:#F07FA9; --rose-ink:#FF9DC0; --rose-bg:rgba(240,127,169,.16); --rose-line:rgba(240,127,169,.35);
   --gold:#D9B77E; --gold-2:#8A7350; --gold-ink:#E6C992;
-  --wish:#9DBBFF; --wish-bg:rgba(127,159,234,.18); --doing:#C2B2FF; --doing-bg:rgba(155,134,227,.2);
+  --wish:#8FAEFF; --wish-bg:rgba(127,159,234,.18); --doing:#B4A1FF; --doing-bg:rgba(155,134,227,.2);
   --line:0 0 0 1px rgba(217,183,126,.26) inset;
   --shadow:0 14px 34px -20px rgba(0,0,0,.8);
   --sky:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cg fill='%23F3E3C0'%3E%3Ccircle cx='22' cy='30' r='1.1' fill-opacity='.7'/%3E%3Ccircle cx='96' cy='14' r='.8' fill-opacity='.5'/%3E%3Ccircle cx='160' cy='52' r='1.3' fill-opacity='.6'/%3E%3Ccircle cx='60' cy='92' r='.7' fill-opacity='.45'/%3E%3Ccircle cx='130' cy='120' r='1' fill-opacity='.55'/%3E%3Ccircle cx='30' cy='150' r='.9' fill-opacity='.5'/%3E%3Ccircle cx='180' cy='170' r='.8' fill-opacity='.45'/%3E%3Ccircle cx='100' cy='184' r='1.2' fill-opacity='.55'/%3E%3Cpath d='M150 96c.3 2.400 1.100 3.200 3.200 3.5-2.100.3-2.900 1.100-3.200 3.5-.3-2.400-1.100-3.200-3.200-3.5 2.100-.3 2.900-1.100 3.200-3.500z' fill-opacity='.6'/%3E%3Cpath d='M48 44c.3 2 .9 2.700 2.700 3-1.800.3-2.400 1-2.700 3-.3-2-.9-2.700-2.700-3 1.800-.3 2.400-1 2.700-3z' fill-opacity='.5'/%3E%3C/g%3E%3C/svg%3E"),
@@ -1744,9 +1726,7 @@ html[data-theme=night] .hello.mc .row2 a.rb.quick{background:rgba(217,183,126,.2
 /* ---------- 首页：入口一排 ---------- */
 .hub{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:14px var(--pad) 0}
 .hub a{display:flex;flex-direction:column;align-items:center;gap:5px;padding:12px 4px 10px;border-radius:16px;background:var(--paper);box-shadow:var(--line);font-size:12px;font-weight:600;color:var(--ink-2)}
-.hub a i{font-style:normal;width:34px;height:34px;border-radius:50%;display:grid;place-items:center;font-size:17px;color:var(--gold-ink);background:linear-gradient(145deg,#FFF6E0,#EAD8B2);box-shadow:0 0 0 1px rgba(201,164,108,.5) inset}
-.hub a i svg{width:19px;height:19px}
-html[data-theme=night] .hub a i{color:var(--gold)}
+.hub a i{font-style:normal;width:34px;height:34px;border-radius:50%;display:grid;place-items:center;font-size:17px;background:linear-gradient(145deg,#FFF6E0,#EAD8B2);box-shadow:0 0 0 1px rgba(201,164,108,.5) inset}
 html[data-theme=night] .hub a i{background:linear-gradient(145deg,#4A3F72,#332A58)}
 
 /* ---------- 观影月历 ---------- */
@@ -1870,7 +1850,7 @@ html[data-theme=night] .hub a i{background:linear-gradient(145deg,#4A3F72,#332A5
 .rg-n.on i{color:#fff;background:var(--hc);box-shadow:0 0 0 2px var(--card),0 0 0 3.5px color-mix(in srgb,var(--hc) 70%,var(--gold)),0 8px 14px -8px rgba(40,20,70,.7)}
 .rg-n i img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
 .rg-n b{margin-top:3px;max-width:70px;font-size:10.5px;font-weight:700;line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:var(--ink-2);padding:1px 5px;border-radius:7px;background:var(--paper)}
-.rg-n:not(.on) b{color:var(--dim);font-weight:500}
+.rg-n:not(.on) b{color:var(--faint);font-weight:500}
 .rg-n.c{width:96px;z-index:2}.rg-n.c i{width:78px;height:78px;font-size:26px}
 .rg-n.c b{font-size:13px;max-width:110px;font-family:var(--serif);font-weight:900;color:var(--ink)}
 .rg.all .rg-n{width:46px}.rg.all .rg-n i{width:36px;height:36px;font-size:13px}.rg.all .rg-n b{font-size:9.5px;max-width:54px}
@@ -1885,8 +1865,8 @@ html[data-theme=night] .hub a i{background:linear-gradient(145deg,#4A3F72,#332A5
 .rg-list button + button{border-top:1px dashed rgba(201,164,108,.25)}
 .rg-list b{flex:none;max-width:42%;font-family:var(--serif);font-weight:900;font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;padding-left:10px;border-left:3px solid var(--hc)}
 .rg-list span{flex:1;min-width:0;font-size:12.5px;color:var(--ink-2);line-height:1.4}
-.rg-list button:not(.on) span{color:var(--dim)}
-.rg-list i{font-style:normal;color:var(--dim)}
+.rg-list button:not(.on) span{color:var(--faint)}
+.rg-list i{font-style:normal;color:var(--faint)}
 
 /* ---------- 角色时间轴 ---------- */
 .ctl{position:relative;margin-top:8px;padding-left:22px}
@@ -1986,257 +1966,7 @@ html[data-theme=night] #page[data-skin=retro] .bar.solid{background:rgba(244,235
 html[data-theme=night] #page[data-skin=retro] .icon-btn{background:#FFFDF6;color:#3B2E20}
 html[data-theme=night] #page[data-skin=comic] .hero h2{color:#1D1930}
 
-/* ---------- 手机手感：44pt 的点击区、不误选、不断行 ---------- */
-/* 看得见的按钮还是原来那么大，看不见的手指落点有 44 高（图标按钮、片名行、标签、小链接） */
-.icon-btn,.chip,.sbox .x{position:relative}
-.icon-btn::after,.chip::after{content:"";position:absolute;left:0;right:0;top:50%;height:44px;transform:translateY(-50%);border-radius:inherit}
-.sbox .x::after{content:"";position:absolute;left:50%;top:50%;width:44px;height:44px;transform:translate(-50%,-50%)}
-.sec-h a,.sec-h button,.libmeta button,.more2,.hint b,.small a,.prof .row a,.rstills a{position:relative}
-.sec-h a::after,.sec-h button::after,.libmeta button:only-child::after,.more2::after{content:"";position:absolute;left:-8px;right:-8px;top:50%;height:44px;transform:translateY(-50%)}
-.btn{min-height:44px}
-/* 标签、卡片、图片不许长按选中、拖来拖去 —— 长得像 App 而不是网页 */
-.tabs,.top,.sec-h,.hub,.deck,.dws,.shelf,.grid,.binder,.chips,.filters,.libmeta,.people,.cast,.lrow,.bar,.sheet .opt,.seg{
-  -webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
-.ps img,.av img,.ic img,.rimg img,.sst img,.album img,.csh-pick img{-webkit-user-drag:none;user-drag:none}
-/* 横向滑动更顺：到头不把整页带着滑 */
-.deck,.dws,.scroller,.cast,.roles,.idols,.rstills,.albums{overscroll-behavior-x:contain}
-/* 轻微按下反馈（只有变了形的元素会重绘，长列表也不卡） */
-.shelf-item:active .ps,.lrow:active .ps,.hub a:active,.b-h:active{transform:scale(.972);transition:transform .12s}
-.people .person:active,.tabs a:active,.chip:active{opacity:.72}
-@media (prefers-reduced-motion:reduce){.shelf-item:active .ps,.lrow:active .ps{transform:none}}
-/* ---------- 320～430 的窄屏：一行放下四个筛选、标签不挤成两行 ---------- */
-@media (max-width:430px){
-  :root{--pad:16px}
-  .top h1{font-size:24px;letter-spacing:.1em}
-  .tabs{width:calc(100% - 32px);max-width:340px}
-  .tabs a{font-size:12px;letter-spacing:.02em;gap:1px}
-  .tabs a svg{width:21px;height:21px}
-  .chip{font-size:12.5px;height:32px;padding:0 11px;gap:3px}
-  .filters{gap:6px;padding-right:10px}
-  .libmeta{font-size:12px}
-  .hub a{font-size:11.5px;padding:10px 2px 9px;gap:4px}
-  .hub a i{width:32px;height:32px;font-size:16px}
-  .hello .num b{font-size:34px}
-  .sec-h h2{font-size:17px}
-  .hero h2{font-size:21px}
-  .ratings .v{font-size:23px}
-  .shelf-item .nm{font-size:12.5px}
-  .grid{gap:14px 10px}
-  .b-h b{font-size:20px}
-  .person{width:66px}
-  .btn{font-size:14.5px}
-}
-@media (max-width:340px){
-  :root{--pad:13px}
-  .tabs a{font-size:11px}
-  .top h1{font-size:22px}
-  .chip{font-size:11.5px;padding:0 9px;height:30px}
-  .grid{grid-template-columns:repeat(3,1fr)}
-}
-/* 桌面打开也不拉成一张巨大的手机截图 */
-@media (min-width:720px){
-  #app,#page{max-width:560px;margin-left:auto;margin-right:auto}
-  .tabs{max-width:360px}
-  body::before{background-attachment:fixed}
-}
-@media (prefers-reduced-motion:reduce){
-  #page.in,#page.out,.pop,.kb-b.pop,.cere.on .cc{animation:none!important;transition:none!important}
-}
-/* 键盘弹出来的时候（输入框获得焦点），底部导航先让开，别盖住输入框 */
-html.kb-open .tabs{transform:translate(-50%,140%);transition:transform .2s;pointer-events:none}
-html.kb-open #app{padding-bottom:calc(var(--sb) + 24px)}
-/* 页面标题用自带宋体（影库 / 片库 / 收藏 / 统计 …），片名和人名继续用系统宋体，缺字也不会花 */
-.top h1{font-family:"Yingku Song",var(--serif);font-synthesis:none}
-.home .fin b{font-family:"Yingku Song",var(--serif)}
-/* 「最近看过」「在看」这类小标题，字几乎全在标题字体里，可以一起换 */
-.home .sec-h h2,.dw-b small,.dw-p,.hub a,.shelf-item .mt,.libmeta{font-feature-settings:"kern","liga"}
 /*V7CSS-END*/
-
-/* ================================================================
-   V8：艺术品层
-   一条规则：整个 App 只有一种材质（晨雾纸 + 香槟金 + 星屑）、一种节奏、一种笔迹。
-   下面所有东西都只许用这里的 token；新功能不要再自己发明字号和圆角。
-   ================================================================ */
-:root{
-  /* 字号：四档，别再写 11.5 / 12.5 / 13.5 这种半档 */
-  --t-display:28px;  --t-title:17px;  --t-body:15px;  --t-note:12px;
-  /* 字重 */
-  --w-display:900;   --w-title:700;   --w-body:400;   --w-note:400;
-  /* 圆角：三档 */
-  --r-card:18px;     --r-img:10px;   --r-pill:999px;
-  /* 间距：只用 4 的倍数 */
-  --s1:4px; --s2:8px; --s3:12px; --s4:16px; --s5:24px; --s6:32px; --s7:48px;
-  /* 节奏 */
-  --ease:cubic-bezier(.2,.9,.2,1); --dur:220ms;
-  --grain:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='120' height='120' filter='url(%23n)' opacity='.5'/%3E%3C/svg%3E");
-}
-/* ---------- 材质：纸纹。只在 body 上铺一张，别的都不许再叠 ---------- */
-body::after{content:"";position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.035;background:var(--grain);background-size:120px;mix-blend-mode:multiply}
-html[data-theme=night] body::after{opacity:.05;mix-blend-mode:screen}
-#app,.tabs,.sheet,.mask{position:relative;z-index:1}
-
-/* 页面进入：0.28s 偏慢 → 0.22s，曲线更「推」 */
-#page.in{animation-duration:.22s;animation-timing-function:var(--ease)}
-
-/* ================================================================
-   1. 作品页：全屏海报 + 压在海报上的片头字卡 + 票根 + 倒片胶片
-   ================================================================ */
-.t-stage{position:relative;margin:0 0 4px;overflow:hidden;border-radius:0 0 22px 22px;
-  background:linear-gradient(180deg,color-mix(in srgb,var(--tint,#3a2e52) 62%,#120d1e) 0%,color-mix(in srgb,var(--tint,#3a2e52) 22%,#120d1e) 55%,#120d1e 100%);
-  /* 顶部用 mask 淡出，让页面自己的晨雾底透出来 —— 不要叠一块纯色，否则跟渐变对不上 */
-  -webkit-mask:linear-gradient(180deg,transparent 0,#000 64px,#000 100%);mask:linear-gradient(180deg,transparent 0,#000 64px,#000 100%)}
-.t-stage .bg{position:absolute;inset:0;z-index:0}
-.t-stage .bg img{width:100%;height:100%;object-fit:cover;object-position:50% 22%;filter:blur(26px) saturate(1.5) brightness(.42);transform:scale(1.3);
-  -webkit-mask:linear-gradient(180deg,#000 0%,#000 46%,transparent 94%);mask:linear-gradient(180deg,#000 0%,#000 46%,transparent 94%)}
-.t-stage .bg::after{content:"";position:absolute;inset:0;background:
-  radial-gradient(120% 80% at 50% 0%,rgba(255,255,255,.06),transparent 55%),
-  linear-gradient(180deg,rgba(12,8,24,.30) 0%,rgba(12,8,24,.58) 40%,rgba(12,8,24,.90) 78%,#120D1E 100%)}
-/* 一点点星屑。只用星点，不要把首页那组晨雾径向渐变也铺进来 —— 平铺 + screen 会糊成一片亮斑 */
-.t-stage::after{content:"";position:absolute;inset:0;z-index:1;pointer-events:none;opacity:.85;
-  background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cg fill='%23E9CB8B' fill-opacity='.5'%3E%3Cpath d='M30 20c.4 3 1.4 4 4 4.4-2.6.4-3.6 1.4-4 4.4-.4-3-1.4-4-4-4.4 2.6-.4 3.6-1.4 4-4.4z'/%3E%3Cpath d='M140 96c.3 2 1 2.8 3 3-2 .3-2.7 1-3 3-.3-2-1-2.7-3-3 2-.2 2.7-1 3-3z'/%3E%3C/g%3E%3Cg fill='%23CFC7E8' fill-opacity='.4'%3E%3Ccircle cx='96' cy='40' r='1.2'/%3E%3Ccircle cx='60' cy='140' r='1'/%3E%3Ccircle cx='160' cy='160' r='1.3'/%3E%3C/g%3E%3C/svg%3E") 0 0/180px 180px repeat}
-.t-stage .fg{position:relative;z-index:3;display:flex;gap:14px;align-items:flex-end;padding:74px var(--pad) 20px}
-.t-stage .ps{width:112px;flex:none;border-radius:var(--r-img);box-shadow:0 18px 40px -14px rgba(0,0,0,.7),0 0 0 1px rgba(255,255,255,.18)}
-.t-stage .bd{flex:1;min-width:0;color:#fff}
-.t-stage .kick{font-family:var(--latin);font-style:italic;font-size:12px;letter-spacing:.18em;color:rgba(255,255,255,.72);margin-bottom:6px}
-.t-stage h2{font-family:var(--serif);font-weight:900;font-size:clamp(22px,7.2vw,30px);line-height:1.12;margin:0;letter-spacing:.02em;
-  text-shadow:0 2px 18px rgba(0,0,0,.55);animation:titleIn .5s var(--ease) both}
-.t-stage .o{font-family:var(--latin);font-style:italic;font-size:13.5px;color:rgba(255,255,255,.78);margin-top:5px;line-height:1.3}
-.t-stage .o span{font-family:var(--num);font-style:normal}
-.t-stage .gold{height:1px;margin-top:12px;background:linear-gradient(90deg,rgba(233,203,139,.95),rgba(233,203,139,.15));transform-origin:left;animation:ruleIn .7s .1s var(--ease) both}
-@keyframes titleIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
-@keyframes ruleIn{from{transform:scaleX(0)}to{transform:scaleX(1)}}
-/* Ken Burns：只在页面可见时跑，3% 位移，18 秒，一次呼吸 */
-@media (prefers-reduced-motion:no-preference){
-  .t-stage.live .bg img{animation:kb 18s var(--ease) both}
-  @keyframes kb{from{transform:scale(1.30) translate3d(0,0,0)}to{transform:scale(1.36) translate3d(-1%,-1.2%,0)}}
-}
-/* 滚动时标题缩进顶栏（顶栏本来就有的 .solid 逻辑 + 这里把海报区压暗） */
-.t-stage.scrolled .fg{opacity:.35;transition:opacity .2s}
-
-/* 票根：评分 + 日期 + 短评。像从票夹里抽出来的一张 */
-.t-ticket{position:relative;margin:16px var(--pad) 0;padding:16px 16px 14px;border-radius:var(--r-card);
-  background:var(--card);box-shadow:var(--shadow),0 0 0 1px rgba(201,164,108,.22) inset;z-index:2}
-.t-ticket::before,.t-ticket::after{content:"";position:absolute;top:50%;width:18px;height:18px;margin-top:-9px;border-radius:50%;background:var(--bg);box-shadow:0 0 0 1px rgba(201,164,108,.22) inset}
-.t-ticket::before{left:-9px}.t-ticket::after{right:-9px}
-.t-ticket .row{display:flex;align-items:center;justify-content:space-between;gap:12px}
-.t-ticket .lab{font-family:var(--latin);font-style:italic;font-size:11.5px;letter-spacing:.14em;color:var(--gold-ink)}
-.t-ticket .d{font-family:var(--num);font-size:13px;color:var(--dim)}
-.t-ticket .q{margin-top:10px;font-family:var(--sign);font-size:19px;line-height:1.35;color:var(--ink-2);word-break:break-word}
-html[data-theme=night] .t-ticket::before,html[data-theme=night] .t-ticket::after{background:var(--bg)}
-/* 倒片胶片：剧照一条，左右滑像倒片 */
-.filmroll{margin:16px 0 2px}
-.filmroll .fr-h{display:flex;align-items:center;gap:8px;padding:0 var(--pad);margin-bottom:8px}
-.filmroll .fr-h b{font-family:var(--serif);font-weight:900;font-size:14px;letter-spacing:.08em;color:var(--ink-2)}
-.filmroll .fr-h i{flex:1;height:1px;background:linear-gradient(90deg,rgba(201,164,108,.5),transparent)}
-.filmroll .fr-h small{font-family:var(--latin);font-style:italic;font-size:11.5px;color:var(--gold-ink)}
-.fr-roll{display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;scroll-snap-type:x proximity;padding:14px 10px;
-  background:radial-gradient(circle,rgba(248,245,252,.8) 0 2.2px,transparent 2.6px) 0 1px/12px 8px repeat-x,
-    radial-gradient(circle,rgba(248,245,252,.8) 0 2.2px,transparent 2.6px) 0 calc(100% - 1px)/12px 8px repeat-x,#241c30}
-.fr-roll::-webkit-scrollbar{display:none}
-.fr-roll button{flex:none;width:210px;aspect-ratio:16/9;border-radius:4px;overflow:hidden;scroll-snap-align:center;
-  box-shadow:0 8px 18px -10px rgba(0,0,0,.9),0 0 0 1px rgba(255,255,255,.1) inset;position:relative;background:#120e1c}
-.fr-roll img{width:100%;height:100%;object-fit:cover;display:block}
-
-/* ================================================================
-   2. 卡牌工艺：UR/SSR 浮雕倒角 + 倾斜跟随已经有 --hx/--hy
-   ================================================================ */
-.ic[data-r=UR],.ic[data-r=SSR],.ic[data-r=BM]{
-  filter:drop-shadow(0 2px 0 rgba(255,255,255,.55)) drop-shadow(0 -1px 0 rgba(120,80,40,.25)) drop-shadow(0 20px 30px rgba(70,40,110,.28));
-}
-.ic[data-r=UR]::after,.ic[data-r=SSR]::after,.ic[data-r=BM]::after{content:"";position:absolute;inset:0;border-radius:18px;pointer-events:none;z-index:7;
-  background:linear-gradient(155deg,rgba(255,255,255,.55),rgba(255,255,255,0) 28%,rgba(255,255,255,0) 72%,rgba(255,255,255,.35));
-  mix-blend-mode:overlay;opacity:.75}
-.ic.tilting{will-change:transform;transition:none}
-.ic[data-r=UR] .holo{opacity:.85}
-
-/* 开包：从暗到亮；稀有度越高，停顿越久 */
-.ic[data-r=UR]{--pack:1.05s}.ic[data-r=BM]{--pack:1.15s}.ic[data-r=SSR]{--pack:.85s}.ic[data-r=SR]{--pack:.6s}
-@media (prefers-reduced-motion:no-preference){
-  .ic.unpack{animation:unpack var(--pack,.6s) var(--ease) both}
-  @keyframes unpack{0%{filter:brightness(.15) saturate(.2) blur(6px);transform:scale(.94);opacity:.2}
-    55%{filter:brightness(1.35) saturate(1.15) blur(0);opacity:1}100%{filter:none;transform:none}}
-}
-
-/* ================================================================
-   3. 版式 token 落地：给现有大件挂上唯一字号
-   ================================================================ */
-.top h1{font-size:var(--t-display);font-weight:var(--w-display);line-height:1.1}
-.hero-stat .big,.yr-big b,.hello .num b{font-variant-numeric:tabular-nums}
-.sec-h h2,.blk h3,.yr-c h3{font-weight:var(--w-title)}
-.mc,.t-ticket,.hero-stat,.yr-c,.card{--r:var(--r-card)}
-
-/* ================================================================
-   4. 动效：数字 countUp + 标记完成划过一条金线
-   ================================================================ */
-.gold-run{position:relative;overflow:hidden}
-.gold-run::after{content:"";position:absolute;left:0;top:0;height:2px;width:100%;transform-origin:left;
-  background:linear-gradient(90deg,rgba(233,203,139,0),#E9CB8B,rgba(233,203,139,0));
-  animation:runGold .9s var(--ease) both}
-@keyframes runGold{0%{transform:scaleX(0);opacity:1}70%{transform:scaleX(1);opacity:1}100%{transform:scaleX(1);opacity:0}}
-@media (prefers-reduced-motion:reduce){.gold-run::after{animation:none;opacity:0}}
-
-/* ================================================================
-   5. 声音开关行
-   ================================================================ */
-.opt .sw{position:relative;width:46px;height:28px;flex:none}
-.opt .sw input{position:absolute;inset:0;opacity:0;margin:0;width:100%;height:100%}
-.opt .sw i{display:block;width:46px;height:28px;border-radius:14px;background:var(--soft);box-shadow:0 0 0 1px var(--hair) inset;transition:background .2s}
-.opt .sw i::after{content:"";display:block;width:22px;height:22px;border-radius:11px;margin:3px;background:#fff;box-shadow:0 1px 3px rgba(40,20,70,.28);transition:transform .2s var(--ease)}
-.opt .sw input:checked + i{background:var(--acc)}
-.opt .sw input:checked + i::after{transform:translateX(18px)}
-
-/* ================================================================
-   6. 年报：一本可以翻的小画册（6 页，横向 snap）
-   ================================================================ */
-.book{margin-top:6px}
-.book-track{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;gap:14px;padding:4px var(--pad) 18px;
-  scroll-padding-left:var(--pad);overscroll-behavior-x:contain}
-.book-track::-webkit-scrollbar{display:none}
-.book-pg{flex:none;width:calc(100vw - var(--pad) * 2 - 22px);max-width:calc(560px - var(--pad) * 2 - 22px);scroll-snap-align:center;
-  border-radius:var(--r-card);padding:22px 20px 24px;background:var(--card);box-shadow:var(--shadow),0 0 0 1px rgba(201,164,108,.18) inset;
-  min-height:calc(100dvh - 240px);display:flex;flex-direction:column;position:relative;overflow:hidden}
-.book-pg .pg-n{position:absolute;right:18px;top:16px;font-family:var(--latin);font-style:italic;font-size:12px;color:var(--gold-ink);letter-spacing:.1em}
-.book-pg .pg-k{font-family:var(--latin);font-style:italic;font-size:12.5px;letter-spacing:.2em;color:var(--gold-ink);margin-bottom:10px}
-.book-pg h3{font-family:var(--serif);font-weight:900;font-size:22px;margin:0 0 14px;letter-spacing:.06em}
-.book-pg .pg-note{margin-top:auto;padding-top:18px;font-size:12.5px;line-height:1.7;color:var(--dim)}
-.book-pg .big-n{font-family:var(--num);font-weight:600;font-size:84px;line-height:.9;letter-spacing:.01em;
-  background:linear-gradient(180deg,#E0C083,#A77F43 60%,#CFAE72);-webkit-background-clip:text;background-clip:text;color:transparent}
-.book-dots{display:flex;gap:7px;justify-content:center;padding:0 0 14px}
-.book-dots i{width:6px;height:6px;border-radius:3px;background:var(--faint);transition:all .2s var(--ease)}
-.book-dots i.on{width:18px;background:var(--gold)}
-/* 类型指纹雷达 */
-.radar{display:block;margin:4px auto 0;width:min(76vw,280px);height:auto}
-.radar .ring{fill:none;stroke:rgba(201,164,108,.35);stroke-width:1}
-.radar .ax{stroke:rgba(201,164,108,.22);stroke-width:1}
-.radar .area{fill:rgba(236,111,156,.22);stroke:#C24D7C;stroke-width:1.6;stroke-linejoin:round}
-.radar .dot{fill:#C24D7C}
-.radar text{font-size:10px;fill:var(--ink-2)}
-
-/* ================================================================
-   7. 角色开口：一句话 + 朗读
-   ================================================================ */
-.spk{display:inline-flex;align-items:center;gap:6px;height:32px;padding:0 12px;border-radius:16px;
-  background:var(--card);box-shadow:0 0 0 1px var(--rose-line) inset;color:var(--rose-ink);font-size:12.5px;font-weight:600}
-.spk svg{width:14px;height:14px}
-.spk.on{background:var(--rose-bg)}
-.spk[disabled]{opacity:.5}
-.spk-line{margin:10px 0 0;font-family:var(--sign);font-size:18px;line-height:1.45;color:var(--ink-2)}
-.spk-line::before{content:"「"}.spk-line::after{content:"」"}
-
-/* ================================================================
-   8. 首页做减法：一块「更多」
-   ================================================================ */
-.fold{margin:26px var(--pad) 0}
-.fold > summary{list-style:none;display:flex;align-items:center;gap:10px;cursor:pointer;color:var(--dim);font-size:12.5px;letter-spacing:.12em;min-height:44px}
-.fold > summary::-webkit-details-marker{display:none}
-.fold > summary::before,.fold > summary::after{content:"";flex:1;height:1px;background:linear-gradient(90deg,transparent,rgba(201,164,108,.4))}
-.fold > summary::after{background:linear-gradient(270deg,transparent,rgba(201,164,108,.4))}
-.fold > summary b{font-family:var(--latin);font-style:italic;font-weight:600;color:var(--gold-ink);letter-spacing:.02em}
-.fold[open] > summary{color:var(--ink-2)}
-.fold .fold-in{padding-top:4px;animation:foldIn .24s var(--ease) both}
-@keyframes foldIn{from{opacity:0;transform:translateY(-4px)}to{opacity:1;transform:none}}
-.home .fold .sec:first-child{margin-top:14px}
-
 </style>
 </head>
 <body>
@@ -2371,21 +2101,6 @@ async function parseIdx(text){
   }
   return out;
 }
-/* 键盘弹出时把底部导航让开（iOS 只在输入框获得焦点时把键盘算进 visualViewport） */
-(function kbGuard(){
-  const vv = window.visualViewport; if (!vv) return;
-  let base = vv.height;
-  const sync = () => {
-    const shrunk = base - vv.height > 120;
-    document.documentElement.classList.toggle("kb-open", shrunk);
-    const a = document.activeElement;
-    if (shrunk && a && /^(INPUT|TEXTAREA)$/.test(a.tagName) && document.body.contains(a)) setTimeout(() => a.scrollIntoView({block: "center", behavior: "smooth"}), 120);
-  };
-  vv.addEventListener("resize", sync);
-  addEventListener("orientationchange", () => setTimeout(() => { base = vv.height; sync(); }, 300));
-  base = vv.height;
-})();
-
 async function loadIndex(){
   try {
     const info = await (await fetch(IDX_BASE + "info.json", {cache: "no-cache"})).json();
@@ -2650,7 +2365,6 @@ function render(nav){
 /* ================================================================ 首页 */
 function renderHome(){
   const all = active();
-  const moreOpen = !!getPref("moreOpen", false);   // 首页「更多」是展开还是收着
   const dk = k => k.d ? (k.d.length === 4 ? k.d + "-06-30" : k.d) : "0000" + (k.at || "");   // 记了日期的按日期，只记了年份的算年中，没记的排最后
   const by = s => all.filter(([, k]) => k.s === s).sort((a, b) => dk(b[1]).localeCompare(dk(a[1])) || b[1].t - a[1].t).map(([id]) => id);
   const done = by("done"), doing = by("doing"), wish = all.filter(([, k]) => k.s === "wish").sort((a, b) => b[1].t - a[1].t).map(([id]) => id);
@@ -2675,42 +2389,20 @@ function renderHome(){
     <div class="hello mc"><div class="mc-holo"></div>
       <div class="mc-h"><span class="mc-en">My Collection</span><span class="mc-no">No.${String(done.length).padStart(4, "0")}</span></div>
       <div class="ln">${greet()}，影库里已经收藏了</div>
-      <div class="num"><div><b data-cu="${films}">0</b><span>部电影</span></div><div><b data-cu="${shows}">0</b><span>部剧集</span></div>${litN ? `<div><b data-cu="${litN}">0</b><span>位角色点亮</span></div>` : `<div><b data-cu="${thisYear}">0</b><span>今年看过</span></div>`}</div>
+      <div class="num"><div><b>${films}</b><span>部电影</span></div><div><b>${shows}</b><span>部剧集</span></div>${litN ? `<div><b>${litN}</b><span>位角色点亮</span></div>` : `<div><b>${thisYear}</b><span>今年看过</span></div>`}</div>
       <div class="row2"><a class="rb doing" href="#/lib" onclick="libFilter({s:'doing'})">在看 <b>${doing.length}</b></a>
         <a class="rb wish" href="#/lib" onclick="libFilter({s:'wish'})">想看 <b>${wish.length}</b></a>
         <a class="rb quick" href="#/quick">⚡ 快速标记</a></div></div>
-    <div class="hub"><a href="#/shrine"><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 9h14l-1.2 10.2a1.8 1.8 0 0 1-1.8 1.6H8a1.8 1.8 0 0 1-1.8-1.6z"/><path d="M4 9c0-2.8 2-5 5-5 1.5 0 2.4 1 3 2 .6-1 1.5-2 3-2 3 0 5 2.2 5 5"/><path d="M9.5 13h5"/></svg></i>痛柜</a><a href="#/cal"><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="5" width="17" height="15.5" rx="2.5"/><path d="M3.5 9.5h17M8 3.5v3.5M16 3.5v3.5"/><path d="M7.5 13h2M11 13h2M14.5 13h2M7.5 17h2M11 17h2"/></svg></i>月历</a><a href="#/year/${year}"><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"><path d="M12 2.8c.9 5.6 2.6 7.3 8.2 8.2-5.6.9-7.3 2.6-8.2 8.2-.9-5.6-2.6-7.3-8.2-8.2 5.6-.9 7.3-2.6 8.2-8.2z"/><path d="M18.5 17.5c.3 1.9.8 2.4 2.7 2.7-1.9.3-2.4.8-2.7 2.7-.3-1.9-.8-2.4-2.7-2.7 1.9-.3 2.4-.8 2.7-2.7z"/></svg></i>${year} 年报</a><a href="#/lists"><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 4h11.5A1.5 1.5 0 0 1 19 5.5v14.7a.8.8 0 0 1-1.2.7L12 17.6l-5.8 3.3a.8.8 0 0 1-1.2-.7V5.5A1.5 1.5 0 0 1 6.5 4z"/><path d="M9 8.5h6M9 12h4"/></svg></i>片单</a></div>
+    <div class="hub"><a href="#/shrine"><i>🎀</i>痛柜</a><a href="#/cal"><i>🗓</i>月历</a><a href="#/year/${year}"><i>✦</i>${year} 年报</a><a href="#/lists"><i>📜</i>片单</a></div>
+    ${recallNudge(done)}
+    ${uniHomeSec()}
     ${doing.length ? doingSec(doing) : ""}
     ${done.length ? shelfSec("最近看过", done.slice(0, 20), "done", done.length) : ""}
-    <details class="fold"${moreOpen ? " open" : ""}>
-      <summary><b>更多</b></summary>
-      <div class="fold-in">
-      ${recallNudge(done)}
-      ${uniHomeSec()}
-      ${wish.length ? shelfSec("想看", wish.slice(0, 20), "wish", wish.length) : ""}
-      ${ppl.length ? `<div class="sec"><div class="sec-h"><h2>常看的影人</h2><a href="#/stats">更多</a></div><div class="people">${ppl.map(personChip).join("")}</div></div>` : ""}
-      ${gs.length ? `<div class="sec"><div class="sec-h"><h2>类型</h2></div><div class="chips">${gs.map(([g, c]) => `<a class="chip" href="#/lib" onclick="libFilter({s:'done',genre:'${esc(g)}'})">${esc(g)} <b>${c}</b></a>`).join("")}</div></div>` : ""}
-      ${tags.length ? `<div class="sec"><div class="sec-h"><h2>我的标签</h2></div><div class="chips">${tags.map(([g, c]) => `<a class="chip" href="#/lib" onclick="libFilter({s:'',tag:'${esc(g)}'})"># ${esc(g)} <b>${c}</b></a>`).join("")}</div></div>` : ""}
-      </div>
-    </details>
-    <div class="fin"><i class="orn-l"></i><b>影库</b><span>已收藏 ${done.length} 部${litN ? ` · 点亮 ${litN} 位角色` : ""}${followList().length ? ` · 追了 ${followList().length} 个人` : ""}</span>${since ? `<small>since ${since.slice(0, 4)}.${since.slice(5, 7)}</small>` : ""}</div></div>`;  initDeck(); countUp($("#main"));
-  const fd = $("#main .fold"); if (fd) fd.addEventListener("toggle", () => setPref("moreOpen", fd.open));
-}
-/* 数字 countUp：统计页 / 年报 / 首页大数字。只跑一次，滚出视野就停 */
-function countUp(root){
-  if (matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-  const els = [...(root || document).querySelectorAll("[data-cu]")].filter(e => !e.dataset.cuDone);
-  if (!els.length || !("IntersectionObserver" in window)) return;
-  const io = new IntersectionObserver(es => es.forEach(en => {
-    if (!en.isIntersecting) return; const el = en.target; io.unobserve(el); el.dataset.cuDone = "1";
-    const to = +el.dataset.cu || 0, t0 = performance.now(), dur = 800;
-    const step = t => { const p = Math.min(1, (t - t0) / dur), e = 1 - Math.pow(1 - p, 3);
-      el.textContent = String(Math.round(to * e)); if (p < 1) requestAnimationFrame(step); };
-    requestAnimationFrame(step);
-  }), {threshold: .4});
-  els.forEach(e => io.observe(e));
-  // 兜底：横向翻页的容器里，观察器有时一辈子不触发；1.2 秒后还没动就直接给结果
-  setTimeout(() => els.forEach(e => { if (!e.dataset.cuDone) { e.dataset.cuDone = "1"; e.textContent = e.dataset.cu; } }), 1200);
+    ${wish.length ? shelfSec("想看", wish.slice(0, 20), "wish", wish.length) : ""}
+    ${ppl.length ? `<div class="sec"><div class="sec-h"><h2>常看的影人</h2><a href="#/stats">更多</a></div><div class="people">${ppl.map(personChip).join("")}</div></div>` : ""}
+    ${gs.length ? `<div class="sec"><div class="sec-h"><h2>类型</h2></div><div class="chips">${gs.map(([g, c]) => `<a class="chip" href="#/lib" onclick="libFilter({s:'done',genre:'${esc(g)}'})">${esc(g)} <b>${c}</b></a>`).join("")}</div></div>` : ""}
+    ${tags.length ? `<div class="sec"><div class="sec-h"><h2>我的标签</h2></div><div class="chips">${tags.map(([g, c]) => `<a class="chip" href="#/lib" onclick="libFilter({s:'',tag:'${esc(g)}'})"># ${esc(g)} <b>${c}</b></a>`).join("")}</div></div>` : ""}
+    <div class="fin"><i class="orn-l"></i><b>影库</b><span>已收藏 ${done.length} 部${litN ? ` · 点亮 ${litN} 位角色` : ""}${followList().length ? ` · 追了 ${followList().length} 个人` : ""}</span>${since ? `<small>since ${since.slice(0, 4)}.${since.slice(5, 7)}</small>` : ""}</div></div>`;  initDeck();
 }
 function greet(){ const h = new Date().getHours(); return h < 5 ? "夜深了" : h < 11 ? "早上好" : h < 14 ? "中午好" : h < 18 ? "下午好" : "晚上好"; }
 function eager(fn){ eagerImgs = true; try { return fn(); } finally { eagerImgs = false; } }
@@ -3051,18 +2743,12 @@ async function renderTitle(id){
   const doneSeasons = new Set(k?.ss || []);
   $("#page").innerHTML = `
     <div class="bar" id="bar"><button class="icon-btn" onclick="back()" aria-label="返回">${IC.back}</button><div class="tt">${esc(v.name)}</div><span style="width:36px"></span></div>
-    <div class="t-stage live" id="tstage"><div class="bg">${(() => {
-      const bsrc = (v.poster ? String(v.poster).replace(/\/m_ratio_poster\//, "/l_ratio_poster/").replace(/\/s_ratio_poster\//, "/l_ratio_poster/") : "") || (imdbKeyOf(id) ? imdbImg(imdbKeyOf(id), 720) : "");
-      return bsrc ? `<img src="${esc(bsrc)}" alt="" onerror="this.remove()">` : "";
-    })()}</div>
-      <div class="fg">${eager(() => posterHTML(v, 360))}<div class="bd">
-        <div class="kick">${TYPE_ZH[v.t] === "剧集" ? "A SERIES" : "A FILM"}${years ? ` · ${esc(String(years))}` : ""}</div>
-        <h2>${esc(v.name)}</h2>
-        ${v.sub ? `<div class="o">${esc(v.sub)}</div>` : ""}
-        <div class="gold"></div>
-      </div></div></div>
-    <div class="blk" style="margin-top:2px"><div class="info" style="padding:0 var(--pad);font-size:12.5px;color:var(--ink-2);line-height:1.7">${infoBits.join("<br>")}</div>
-      ${v.genres.length ? `<div class="gtags" style="padding:0 var(--pad);margin-top:10px">${v.genres.slice(0, 5).map(g => `<a href="#/lib" onclick="libFilter({s:'',genre:'${esc(g)}'})">${esc(g)}</a>`).join("")}</div>` : ""}</div>
+    <div class="hero">${eager(() => posterHTML(v, 360))}<div class="bd">
+      <h2>${esc(v.name)}</h2>
+      ${v.sub || years ? `<div class="o">${esc(v.sub)}${years ? ` <span>(${years})</span>` : ""}</div>` : ""}
+      <div class="info">${infoBits.join("<br>")}</div>
+      ${v.genres.length ? `<div class="gtags">${v.genres.slice(0, 5).map(g => `<a href="#/lib" onclick="libFilter({s:'',genre:'${esc(g)}'})">${esc(g)}</a>`).join("")}</div>` : ""}
+    </div></div>
     <div class="ratings">
       <div><span class="lb"><i style="background:var(--db)"></i>豆瓣${v.douban?.season ? ` · ${esc(v.douban.season)}` : ""}</span>
         ${v.douban?.v ? `<span class="v">${v.douban.v.toFixed(1)}</span>${starsHTML(v.douban.v)}<span class="c">${fmtCount(v.douban.c)} 人评价</span>`
@@ -3077,8 +2763,6 @@ async function renderTitle(id){
     ${spotlight(id, dirs, cast)}
     ${!enriched ? `<div class="note">${waiting ? `<div class="spin"></div><div class="bd">后台正在补全海报、简介、演职员和三家评分，一两分钟后自动刷新。</div>`
       : `<div class="bd">${k ? "详情还没补全。" : "现在显示的是离线片库里的基本信息。"}</div><button onclick="requestDetail('${id}')">获取完整信息</button>`}</div>` : ""}
-    ${k && (k.r || k.c || k.d) ? ticketHTML(id, k) : ""}
-    ${filmRollHTML(id, dirs, cast)}
     <div class="mine">
       <div class="acts">
         <button class="wish ${k?.s === "wish" ? "on" : ""}" onclick="openMark('${id}','wish')">${IC.heart}想看</button>
@@ -3086,9 +2770,10 @@ async function renderTitle(id){
         <button class="done ${k?.s === "done" ? "on" : ""}" onclick="openMark('${id}','done')">${IC.check}看过</button>
       </div>
       ${k ? `<div class="rec">
-        <div class="rec-st">${STATUS[k.s]}${k.s === "done" && k.d && !(k.r || k.c) ? ` · ${k.d}` : ""}${v.series && doneSeasons.size ? ` · 看完 ${doneSeasons.size} 季` : ""}</div>
+        <div>${STATUS[k.s]}${k.s === "done" && k.d ? ` · ${k.d}` : ""}${k.r ? ` · ${myStars(k.r)} ${RATE_WORD[k.r]}` : ""}${v.series && doneSeasons.size ? ` · 看完 ${doneSeasons.size} 季` : ""}</div>
+        ${k.c ? `<div class="q">${esc(k.c)}</div>` : ""}
         ${(k.tags || []).length ? `<div class="mtags">${k.tags.map(t => `<span># ${esc(t)}</span>`).join("")}</div>` : ""}
-        <button class="edit" onclick="openMark('${id}','${k.s}')">${k.r || k.c ? "修改评分和短评" : "修改"}</button></div>` : ""}
+        <button class="edit" onclick="openMark('${id}','${k.s}')">修改${k.s === "done" ? "评分和短评" : ""}</button></div>` : ""}
       <button class="tolist" onclick="pickList('${id}')">${IC.list} ${(() => { const n = myLists().filter(l => l.items.includes(id)).length; return n ? `在 ${n} 个片单里` : "加入片单"; })()}</button>
     </div>
     ${uniBanner(id)}
@@ -3110,58 +2795,26 @@ async function renderTitle(id){
       ${enriched ? `<button class="more" style="margin-top:10px" onclick="fixDouban('${id}')">豆瓣条目对不上？</button>` : ""}</div>
     <div style="height:20px"></div>`;
   tint(v);
-  bindStage();
   $("#page").dataset.skin = skinOf(id);
   const intr = $("#intro"); if (intr && intr.scrollHeight <= intr.clientHeight + 2) $("#more")?.remove();
   hydratePosters($("#page"));
-}
-/* 票根：你的评分 / 那次看的日期 / 当时的短评 —— 从海报底下抽出来的一张纸 */
-function ticketHTML(id, k){
-  const r = k.r || 0, d = k.d ? (k.d.length === 4 ? `${k.d}` : `${k.d.slice(0, 4)}.${k.d.slice(5, 7)}.${k.d.slice(8, 10)}`) : "";
-  if (!r && !k.c) return "";   // 只有日期的时候不占一张票根
-  return `<div class="t-ticket">
-    <div class="row"><span class="lab">ADMIT ONE</span>${r ? `<span class="stars">${[1, 2, 3, 4, 5].map(i => `<i class="${r >= i ? "f" : ""}"></i>`).join("")}</span>` : `<span class="d">${k.c ? "一句话" : ""}</span>`}</div>
-    <div class="row" style="margin-top:6px"><span class="d">${d ? `看于 ${d}` : (k.at ? `标记于 ${esc(String(k.at).slice(0, 10))}` : "")}</span>${r && RATE_WORD[r] ? `<span class="d">${RATE_WORD[r]}</span>` : ""}</div>
-    ${k.c ? `<div class="q">${esc(k.c)}</div>` : ""}
-  </div>`;
-}
-/* 倒片：这一页只有一个「大字」和一条「金线」，其余全交给剧照 */
-function filmRollHTML(id, dirs, cast){
-  const keys = new Set();
-  const who = [...(dirs || []).slice(0, 2), ...(cast || []).slice(0, 4)].map(p => p.id);
-  for (const nm of who) { const P = S.persons?.[nm]; if (!P?.imgs?.length) continue;
-    for (const it of P.imgs) if (it[4] === id && /^\d/.test(String(it[0])) && it[1] > it[2]) keys.add(it[0]);   // 本片剧照（横的）
-    if (keys.size >= 10) break; }
-  const list = [...keys].slice(0, 10);
-  if (!list.length) return "";
-  return `<div class="filmroll"><div class="fr-h"><b>剧照</b><i></i><small>reel</small></div>
-    <div class="fr-roll">${list.map(k => `<button onclick="lightbox('${esc(k)}')" aria-label="看大图"><img loading="lazy" decoding="async" src="${esc(stillSrc(k, 400))}" onerror="this.closest('button').remove()"></button>`).join("")}</div></div>`;
-}
-/* 舞台：滚过海报之后把它压暗；只在可见时跑 Ken Burns */
-let stageH = null;
-function bindStage(){
-  const page = $("#page");
-  if (stageH) page.removeEventListener("scroll", stageH);
-  const st = $("#tstage");
-  stageH = () => { if (!st || !st.isConnected) return; const y = page.scrollTop;
-    st.classList.toggle("scrolled", y > 90); if (y > page.clientHeight) st.classList.remove("live"); };
-  page.addEventListener("scroll", stageH, {passive: true});
 }
 function castCard(p, role){
   return `<a class="person ${followed(p.id) ? "fav" : ""}" href="#/p/${p.id}">${avatarHTML(p, 160)}<div class="nm">${esc(pname(p))}</div>${role ? `<div class="role">${esc(role)}</div>` : ""}</a>`;
 }
 $("#page").addEventListener("scroll", () => { const b = $("#bar"); if (b) b.classList.toggle("solid", $("#page").scrollTop > 120); }, {passive: true});
-/* 用海报的主色给顶部染一层淡淡的颜色（同源图才画得出来；跨域就退回夜空紫） */
+/* 用海报的主色给顶部染一层淡淡的颜色 */
 function tint(v){
-  const shown = $(".t-stage .ps img"); if (!shown || !shown.complete || !shown.naturalWidth) return;
-  try {
+  const shown = $(".hero .ps img"); if (!shown) return;
+  const img = new Image(); img.crossOrigin = "anonymous";   // 单独加载一份来取色，取不到就算了
+  const run = () => { try {
     const c = document.createElement("canvas"); c.width = c.height = 8;
-    const x = c.getContext("2d", {willReadFrequently: true}); x.drawImage(shown, 0, 0, 8, 8);
+    const x = c.getContext("2d"); x.drawImage(img, 0, 0, 8, 8);
     const d = x.getImageData(0, 0, 8, 8).data; let r = 0, g = 0, b = 0;
     for (let i = 0; i < d.length; i += 4) { r += d[i]; g += d[i + 1]; b += d[i + 2]; }
-    const n = d.length / 4;
-    $(".t-stage")?.style.setProperty("--tint", `rgb(${r / n | 0},${g / n | 0},${b / n | 0})`);
-  } catch {}
+    const n = d.length / 4; $(".hero").style.setProperty("--tint", `rgb(${r / n | 0},${g / n | 0},${b / n | 0})`);
+  } catch {} };
+  img.onload = run; img.src = shown.src;
 }
 
 /* ================================================================ 标记 */
@@ -3185,7 +2838,7 @@ function openMark(id, s){
   if (s === "done" && k?.s !== "done") {   // 一键盖章，评分短评可以跳过
     const msgs = stampAndCelebrate(id, {s: "done", d: S.markDay || today(), ...(v.series && v.m?.seasons ? {ss: Array.from({length: v.m.seasons}, (_, i) => i + 1)} : {})});
     k = mark(id); stamped = true; S.markDay = ""; render();
-    const b = $("#page .mine .acts .done"); if (b) { b.classList.add("pop"); burst(b, 7); goldRun($("#page .bar") || $("#page .t-stage")); sfx("paper"); }
+    const b = $("#page .mine .acts .done"); if (b) { b.classList.add("pop"); burst(b, 7); }
     if (msgs.length) toast(`+1 ${msgs.join("  ")}`);
   }
   markDraft = {id, s, r: k?.r || 0, c: k?.c || "", tags: [...(k?.tags || [])], d: k?.d ?? today(), ss: [...(k?.ss || [])]};
@@ -3496,41 +3149,6 @@ async function watchPeople(){
   watchingPeople = false;
 }
 /* 点"追 TA"时冒几颗小心心 */
-/* ================================================================
-   拟音：用 WebAudio 现场合成，不下载任何音频文件。默认关闭。
-   纸声 = 短噪声 + 低通；铃 = 两个正弦泛音，衰减 0.5s。
-   ================================================================ */
-const sfxOn = () => !!getPref("sfx", false);
-let sfxCtx = null;
-function sfx(kind){
-  if (!sfxOn()) return;
-  try {
-    if (!sfxCtx) sfxCtx = new (window.AudioContext || window.webkitAudioContext)();
-    if (sfxCtx.state === "suspended") sfxCtx.resume();
-    const t = sfxCtx.currentTime;
-    if (kind === "paper" || kind === "tear") {   // 盖章 / 撕卡包：一段噪声
-      const dur = kind === "tear" ? .34 : .09;
-      const len = Math.floor(sfxCtx.sampleRate * dur);
-      const buf = sfxCtx.createBuffer(1, len, sfxCtx.sampleRate), d = buf.getChannelData(0);
-      for (let i = 0; i < len; i++) { const k = i / len; d[i] = (Math.random() * 2 - 1) * Math.pow(1 - k, kind === "tear" ? 1.4 : 3.2) * .5; }
-      const src = sfxCtx.createBufferSource(); src.buffer = buf;
-      const f = sfxCtx.createBiquadFilter(); f.type = "bandpass"; f.frequency.value = kind === "tear" ? 2400 : 1300; f.Q.value = .7;
-      const g = sfxCtx.createGain(); g.gain.value = kind === "tear" ? .5 : .33;
-      src.connect(f).connect(g).connect(sfxCtx.destination); src.start(t);
-    } else {                                     // 铃：F5 + A5
-      [698.5, 880].forEach((hz, i) => {
-        const o = sfxCtx.createOscillator(), g = sfxCtx.createGain();
-        o.type = "sine"; o.frequency.value = hz;
-        g.gain.setValueAtTime(0, t); g.gain.linearRampToValueAtTime(i ? .07 : .11, t + .01);
-        g.gain.exponentialRampToValueAtTime(.0001, t + (i ? .42 : .55));
-        o.connect(g).connect(sfxCtx.destination); o.start(t); o.stop(t + .6);
-      });
-    }
-  } catch {}
-}
-/* 标记完成：一条极细的金线从标题上划过去，只划一次 */
-function goldRun(el){ if (!el) return; el.classList.remove("gold-run"); void el.offsetWidth; el.classList.add("gold-run");
-  setTimeout(() => el.classList.remove("gold-run"), 1000); }
 function burst(el, n = 9){
   const r = el.getBoundingClientRect();
   for (let i = 0; i < n; i++) {
@@ -3726,49 +3344,6 @@ function roleCard(nm, w){
     <div class="rbd"><div class="rw">《${esc(workName(w))}》<span>${w.y || ""}</span>${w.guest ? `<em>客串</em>` : ""}</div>
     ${rIntro(nm, w) ? `<p>${esc(rIntro(nm, w))}</p>` : w.wintro ? `<p class="w">${esc(w.wintro)}</p>` : `<p class="w">${w.series ? `${w.eps ? w.eps + " 集" : "剧集"}` : "电影"}${w.r ? ` · IMDb ${(+w.r).toFixed(1)}` : ""}</p>`}</div></button>`;
 }
-/* ================================================================
-   让角色开口：一句台词 + 系统朗读（SpeechSynthesis，零流量、零 GPU）
-   不自动开口 —— 手机上突然出声很失礼；点一下才读。
-   ================================================================ */
-const LINES = {
-  "钢铁侠": ["I am Iron Man.", "有时候你得先跑起来，才能学会飞。", "贾维斯，把这段记下来。"],
-  "托尼·斯塔克": ["I am Iron Man.", "天才、亿万富翁、花花公子、慈善家。", "别浪费我的时间，也别浪费我的酒。"],
-  "蜘蛛侠": ["能力越大，责任越大。", "我还是那个邻家男孩。", "史塔克先生说过…算了，我自己来。"],
-  "彼得·帕克": ["能力越大，责任越大。", "我只是想帮忙。"],
-  "黑寡妇": ["我有一个非常特别的技能：我什么都知道。", "红房子教会我的第一件事是——别回头。"],
-  "美国队长": ["我可以这样打一整天。", "自由的代价是永远保持警惕。"],
-  "雷神": ["我是雷神索尔。", "这地方不错，就是酒太淡了。"],
-  "奇异博士": ["我们只有两种选择：赢，或者输。", "别碰那个咒语。"],
-  "猩红女巫": ["我什么都感觉到了。", "这不合常理——但我不在乎。"],
-  "洛基": ["I am burdened with glorious purpose.", "你该跪下了。"],
-  "蝙蝠侠": ["I'm Batman.", "这座城市需要的不是一个英雄，是一个象征。"],
-  "小丑": ["Why so serious?", "疯狂就像地心引力，你只需要轻轻一推。"],
-  "猫女": ["我叫塞琳娜。", "别挡我的路，除非你想被挠。"],
-  "超人": ["真理、正义与美国方式。", "我在这里，是因为你们需要有人在这里。"],
-  "神奇女侠": ["我是戴安娜，天堂岛的公主。", "爱不是弱点。"],
-  "哈利·波特": ["我是哈利，哈利·波特。", "我们都有选择，选择决定了我们是谁。"],
-  "赫敏": ["是「羽加迪姆 勒维奥萨」，不是「羽加迪姆 勒维奥萨」！", "书本！还有一点小聪明。"],
-  "达斯·维达": ["I am your father.", "你对黑暗面的力量一无所知。"],
-  "汉·索罗": ["我有一种不好的预感。", "永远别告诉我概率。"],
-  "莱娅公主": ["帮帮我，欧比旺·克诺比。", "这艘船比看上去大。"],
-  "异形女王": [],
-};
-function lineOf(nm){
-  const name = pName(nm);
-  for (const k of Object.keys(LINES)) if (name.includes(k) || k.includes(name)) return LINES[k];
-  return [];
-}
-function speakLine(text, btn){
-  const S2 = window.speechSynthesis;
-  if (!S2) return toast("这台设备不支持朗读");
-  if (S2.speaking) { S2.cancel(); return; }
-  const u = new SpeechSynthesisUtterance(text);
-  u.lang = "zh-CN"; u.rate = .95; u.pitch = 1;
-  const vs = S2.getVoices().filter(v => /zh|Chinese/i.test(v.lang));
-  if (vs.length) u.voice = vs[0];
-  if (btn) { btn.classList.add("on"); u.onend = u.onerror = () => btn.classList.remove("on"); }
-  S2.speak(u);
-}
 function roleSheet(nm, id){
   const P = S.persons[nm]; const w = (P?.credits || []).find(c => c.id === id); if (!w) return go(`#/t/${id}`);
   const ws = worksFromP({credits: [w]})[0], k = mark(id), I = roleInfo(nm, id), on = isBen(nm, id), fk = roleFk(nm, id);
@@ -3780,15 +3355,12 @@ function roleSheet(nm, id){
       <small>${esc(pName(nm))} 饰 ·《${esc(workName(w))}》${w.y || ""}${ws.guest ? ` · 客串 ${w.eps || ""} 集` : ws.series && w.eps ? ` · ${w.eps} 集` : ""}</small>
       <div class="csh-meta" style="justify-content:center"><button class="ben-tog${on ? " on" : ""}" id="rben">${on ? "♥ 本命" : "♡ 设为本命"}</button></div></div>
     ${rIntro(nm, w) ? `<div class="csh-intro">${esc(rIntro(nm, w))}</div>` : w.wintro ? `<div class="csh-intro" style="color:var(--dim)">作品简介：${esc(w.wintro)}</div>` : ""}
-    ${(() => { const ls = lineOf(nm); if (!ls.length) return ""; const ln = ls[(id.length + nm.length) % ls.length];
-      return `<div class="csh-line"><p class="spk-line">${esc(ln)}</p><button class="spk" data-say="${esc(ln)}">${IC7.sound}<span>听 TA 说</span></button></div>`; })()}
     ${k ? `<div class="rsh-prog">看了 <b>${I.seen}</b> / ${I.tot} ${I.unit}${I.full ? " · 👑 全部看完" : ne ? ` · 下一集 ${epLabel(ne)}${ne.n ? `《${esc(ne.n)}》` : ""}` : ""}<span class="tr"><i style="width:${I.tot ? I.seen / I.tot * 100 : 0}%"></i></span></div>` : ""}
     <div class="lab">${on ? "选卡面" : "剧照"} <span class="muted" style="font-size:11.5px">${st.length ? `${st.length} 张${on ? " · 点一张就换" : ""}` : ""}</span></div>
     ${st.length ? `<div class="csh-pick">${st.slice(0, 40).map(x => `<button class="${on && cur === x.k ? "on" : ""}" data-k="${esc(x.k)}">${x.t === "w" ? "<em>网图</em>" : ""}<img loading="lazy" src="${esc(stillSrc(x.k, 200))}" onerror="this.parentNode.remove()"></button>`).join("")}</div>` : `<div class="small" style="color:var(--dim)">还没有这个角色的图${on ? "，后台会去 Pinterest 找" : ""}</div>`}
     <div class="csh-more"><button class="pill add" onclick="moreImgs('${esc(fk)}',this)">${st.length ? "再找找" : "去 Pinterest 找"}</button></div>
     <div class="foot"><a class="btn ghost" href="#/t/${id}" onclick="closeSheet()">作品详情</a>${k?.s === "done" ? `<button class="btn ghost" disabled>♥ 已集</button>` : `<button class="btn rose" id="rstamp">插卡</button>`}</div></div>`);
   const card = $("#sheet .csh-card .ic"); if (card) { tiltable(card); flashCard(card); }
-  $$("#sheet [data-say]").forEach(bb => bb.onclick = () => speakLine(bb.dataset.say, bb));
   $("#rben").onclick = () => { const was = on; toggleBen(nm, id); roleSheet(nm, id); render(); if (!was) { burst($("#rben"), 10); } };
   $$("#sheet .csh-pick [data-k]").forEach(b => b.onclick = () => {
     if (!isBen(nm, id)) { window.__album = {nm, keys: st.map(x => x.k), src: true}; lightbox(st.findIndex(x => x.k === b.dataset.k)); return; }
@@ -4061,15 +3633,7 @@ function initDeck(){
   // 标记之后卡组会按最近动态重新排序：停在原来那个人身上，而不是原来那个位置
   const byNm = S.deckNm ? slides.findIndex(s => s.querySelector(".ic")?.dataset.nm === S.deckNm) : -1;
   const i0 = byNm >= 0 ? byNm : Math.min(S.deckI || 0, slides.length - 1);
-  setOn(i0, !S.deckFlashed);
-  if (!S.deckFlashed) [i0 - 1, i0, i0 + 1].forEach((j, n) => {   // 开包：从中间一张开始，两边各慢半拍
-    const ic = slides[j]?.querySelector(".ic"); if (!ic) return;
-    ic.classList.remove("unpack"); void ic.offsetWidth;
-    ic.style.animationDelay = (n ? n * 90 : 0) + "ms"; ic.classList.add("unpack");
-    if (!n) { sfx("tear"); setTimeout(() => sfx("bell"), 260); }
-    setTimeout(() => { ic.classList.remove("unpack"); ic.style.animationDelay = ""; }, 1600);
-  });
-  S.deckFlashed = true;   // 卡面闪光只在第一次打开时放；之后回首页不再放（大卡片上的动画在手机上很吃力）
+  setOn(i0, !S.deckFlashed); S.deckFlashed = true;   // 卡面闪光只在第一次打开时放；之后回首页不再放（大卡片上的动画在手机上很吃力）
   requestAnimationFrame(() => { const s = slides[i0]; if (s) d.scrollLeft = s.offsetLeft - (d.clientWidth - s.offsetWidth) / 2; });
   let t = 0;
   d.addEventListener("scroll", () => { clearTimeout(t); t = setTimeout(() => {
@@ -5340,7 +4904,6 @@ function charSheet(uid, ck){
   const deb = c.apps.find(wSeen) || c.apps[0];
   if (deb?.id && !posterSrc(deb.id)) shard("p", deb.id).then(() => { if (CS?.c === c && $("#sheet").classList.contains("on")) { const keep = $("#sheet").scrollTop; drawCharSheet(); $("#sheet").scrollTop = keep; } });
 }
-function bindSays(root){ $$("[data-say]", root || document).forEach(b => b.onclick = () => speakLine(b.dataset.say, b)); }
 function drawCharSheet(){
   const {u, c} = CS, lit = charLit(c), seen = charSeenN(c), tot = charTot(c);
   const still = lit ? charReal(c, 600, true) : null, comic = lit ? charComic(c, 600) : null;
@@ -5359,8 +4922,6 @@ function drawCharSheet(){
       <div class="csh-meta"><span class="rk" data-r="${c.rar}">${c.rar}</span>${c.a.length ? `${c.vo ? "配音" : "演员"} ${c.a.map(a => a[0] ? `<a href="#/p/${a[0]}" onclick="closeSheet()">${esc(actorName(a))}</a>` : esc(a[1])).join(" / ")}` : c.vo ? "" : "生物"}</div>
       ${c.f?.length ? `<div class="csh-tags">${c.f.map(t => `<span>${esc(t)}</span>`).join("")}</div>` : ""}</div>
     ${chatOn() ? chatEntryHTML(c) : ""}
-    ${(() => { const ls = LINES[c.cn] || []; if (!ls.length) return ""; const ln = ls[(c.k.length + ls.length) % ls.length];
-      return `<div class="csh-line"><p class="spk-line">${esc(ln)}</p><button class="spk" data-say="${esc(ln)}">${IC7.sound}<span>听 TA 说</span></button></div>`; })()}
     ${c.i ? `<div class="csh-intro">${esc(c.i)}</div>` : ""}
     ${c.x?.length ? lit ? `<div class="lab">小档案</div><div class="csh-prof paper"><i class="orn tl"></i><i class="orn br"></i><dl>${c.x.map(([k, v]) => `<div class="${(k + v).length > 13 ? "w" : ""}"><dt>${esc(k)}</dt><dd>${esc(v)}</dd></div>`).join("")}</dl></div>`
       : `<div class="csh-lock paper"><span>🔒</span>点亮后解锁 TA 的小档案（${c.x.length} 条）</div>` : ""}
@@ -5384,7 +4945,6 @@ function drawCharSheet(){
       return `<span class="${g === d.m.length ? "on" : ""}">${d.ic} ${esc(d.n)} <b>${g}/${d.m.length}</b></span>`; }).join("")}</div>` : ""}
   </div>`);
   hydratePosters($("#sheet"));
-  bindSays($("#sheet"));
   const card = $("#sheet .csh-card .ic");
   tiltable(card); flashCard(card);
   const flip = to => {
@@ -5502,8 +5062,6 @@ function renderSettings(){
     <div style="padding:0 var(--pad)">
     <div class="set-sec"><h4>外观</h4><div class="set-card" style="padding:14px"><div class="seg" style="margin:0">${[["auto", "跟随系统"], ["day", "白天"], ["night", "夜间"]].map(([k, l]) => `<button class="${getPref("theme", "auto") === k ? "on" : ""}" onclick="setPref('theme','${k}');applyTheme();bump();render()">${l}</button>`).join("")}</div>
       <div class="small" style="margin-top:8px">夜间是深蓝星空配香槟金。首页右上角的月亮也能随手切换。</div></div></div>
-    <div class="set-sec"><h4>声音</h4><div class="set-card"><label class="opt"><span class="k">拟音<br><small class="muted" style="font-size:11.5px">盖章的纸声、开包的一声铃。现场合成，不占流量</small></span>
-      <span class="sw"><input type="checkbox" id="sfxon"${sfxOn() ? " checked" : ""}><i></i></span></label></div></div>
     <div class="set-sec"><h4>GitHub 同步</h4><div class="set-card" style="padding:14px">
       ${gh.token() ? `<div style="display:flex;align-items:center;gap:8px"><span class="dot"></span><b style="flex:1;font-weight:500">已连接</b><button class="pill add" id="unlink">断开</button></div>
         <div class="small" style="margin-top:6px">网站仓库 ${esc(gh.repo())}<br>数据仓库 ${esc(gh.dataRepo())}${S.synced ? `<br>上次同步 ${new Date(S.synced).toLocaleTimeString("zh-CN", {hour: "2-digit", minute: "2-digit"})}` : ""}</div>`
@@ -5527,7 +5085,6 @@ function renderSettings(){
       <label class="opt"><span class="k">从备份恢复</span>›<input type="file" id="imp" accept="application/json" class="hide"></label></div></div>
     <div class="small" style="margin:20px 0 30px;text-align:center">数据来自 IMDb、豆瓣、烂番茄，仅供个人使用。</div></div>`;
   if (chatOn()) bindAiSettings();
-  $("#sfxon").onchange = e => { setPref("sfx", e.target.checked); if (e.target.checked) sfx("bell"); };
   $("#chaton").onchange = async e => { setPref("chatOn", e.target.checked); if (e.target.checked) { try { await loadChat(); } catch (err) { toast(err.message); } } render(); };
   const link = $("#link");
   if (link) link.onclick = async () => {
@@ -5561,13 +5118,6 @@ function applyTheme(){
   const n = isNight();
   document.documentElement.dataset.theme = n ? "night" : "day";
   document.querySelectorAll('meta[name="theme-color"]').forEach(m => { if (!m.dataset.day) m.dataset.day = m.getAttribute("content"); m.setAttribute("content", n ? "#17132A" : m.dataset.day); });
-  // 状态栏和底部条的颜色跟着主题走（以前是先白后黑闪一下）
-  const sk = n ? {bg: "#17132A", bar: "#42325E", dot: "rgba(217,183,126,.55)", home: "#F1ECFF"} : {bg: "#F8F5FC", bar: "#FFDCE9", dot: "rgba(201,164,108,.45)", home: "#3A2E52"};
-  const cs = (m, k, v) => m.setAttribute(k, v);
-  cs(document.querySelector('meta[name="color-scheme"]') || document.head.appendChild(Object.assign(document.createElement("meta"), {name: "color-scheme"})), "content", n ? "dark" : "light");
-  cs(document.querySelector('meta[name="theme-color"]'), "content", sk.bg);
-  document.querySelectorAll('meta[name="msapplication-navbutton-color"]').forEach(m => m.setAttribute("content", sk.bar));
-  document.querySelector('meta[name="apple-mobile-web-app-status-bar-style"]')?.setAttribute("content", "black-translucent");
 }
 function toggleTheme(){ setPref("theme", isNight() ? "day" : "night"); applyTheme(); bump(); render(); }
 themeMq?.addEventListener?.("change", () => { if (getPref("theme", "auto") === "auto") applyTheme(); });
@@ -5576,7 +5126,6 @@ const IC7 = {
   moon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.500z"/></svg>',
   sun: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 3v2M12 19v2M3 12h2M19 12h2M5.6 5.6 7 7M17 17l1.400 1.400M5.6 18.400 7 17M17 7l1.400-1.400"/></svg>',
   cal: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="5.5" width="16" height="14.5" rx="2.5"/><path d="M4 10h16M8.5 3.500v4M15.5 3.500v4"/></svg>',
-  sound: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M5 9.5h3l4-3.5v12l-4-3.5H5z"/><path d="M16.5 9a4 4 0 0 1 0 6M19 6.5a7.5 7.5 0 0 1 0 11"/></svg>',
 };
 const themeBtn = () => `<button class="icon-btn" onclick="toggleTheme()" aria-label="${isNight() ? "换成白天" : "换成夜间"}">${isNight() ? IC7.sun : IC7.moon}</button>`;
 
@@ -5777,77 +5326,32 @@ function yearData(Y){
     : g0 ? [`${g0}片爱好者`, `看得最多的是${g0}片`] : ["新馆开张", "影库刚刚开始"];
   return {Y, added, dated, films, shows, mins, gs, withY, ds, loved, firstAt, fans, unis, lit, topLit, decks, months, title};
 }
-/* 年报 → 一本可以翻的小画册：6 页，横向 snap，每页一个主题 */
-function genreRadar(gs, size = 280){
-  const n = Math.max(3, gs.length), R = size / 2 - 34, cx = size / 2, cy = size / 2;
-  const max = Math.max(...gs.map(g => g[1]), 1);
-  const pt = (i, r) => { const a = -Math.PI / 2 + i * 2 * Math.PI / n; return [cx + Math.cos(a) * r, cy + Math.sin(a) * r]; };
-  const rings = [0.34, 0.67, 1].map(f => `<polygon class="ring" points="${Array.from({length: n}, (_, i) => pt(i, R * f).map(v => v.toFixed(1)).join(",")).join(" ")}"/>`).join("");
-  const axes = Array.from({length: n}, (_, i) => { const [x, y] = pt(i, R); return `<line class="ax" x1="${cx}" y1="${cy}" x2="${x.toFixed(1)}" y2="${y.toFixed(1)}"/>`; }).join("");
-  const pts = gs.map((g, i) => pt(i, R * (0.18 + 0.82 * g[1] / max)));
-  const area = `<polygon class="area" points="${pts.map(v => v.map(x => x.toFixed(1)).join(",")).join(" ")}"/>` + pts.map(([x, y]) => `<circle class="dot" cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="2.6"/>`).join("");
-  const labels = gs.map((g, i) => { const [x, y] = pt(i, R + 17); return `<text x="${x.toFixed(1)}" y="${(y + 3.5).toFixed(1)}" text-anchor="${Math.abs(x - cx) < 8 ? "middle" : x > cx ? "start" : "end"}">${esc(g[0])}</text>`; }).join("");
-  return `<svg class="radar" viewBox="0 0 ${size} ${size}" role="img" aria-label="类型指纹">${rings}${axes}${area}${labels}</svg>`;
-}
 function renderYear(arg){
   const Y = /^\d{4}$/.test(arg) ? arg : String(new Date().getFullYear()), d = yearData(Y);
   const bar = `<div class="bar solid"><button class="icon-btn" onclick="back()" aria-label="返回">${IC.back}</button><div class="tt">${Y} 年度报告</div><button class="icon-btn" onclick="shareYear('${Y}')" aria-label="分享">${IC.share}</button></div>`;
   if (!d.added.length) { $("#page").innerHTML = bar + `<div class="empty"><div class="big">${Y} 年还没有记录</div>标记几部今年看过的片子，年度报告就会长出来。</div>`; return; }
+  const old = d.withY[0], neo = d.withY[d.withY.length - 1], gmax = d.gs[0]?.[1] || 1, fa = d.firstAt;
   const mmax = Math.max(...d.months, 1), bestM = d.months.indexOf(Math.max(...d.months));
-  const old = d.withY[0], neo = d.withY[d.withY.length - 1];
-  const first = d.added[0], last = d.added[d.added.length - 1];
-  const N = 6;
-  const pg = (i, kick, h3, inner, note) => `<section class="book-pg"><span class="pg-n">${i} / ${N}</span><div class="pg-k">${kick}</div><h3>${h3}</h3>${inner}${note ? `<div class="pg-note">${note}</div>` : ""}</section>`;
-  // 第 1 页：封面
-  const cover = `<section class="book-pg" data-cover>
-    <div class="yr-cover" style="padding:14px 0 0"><span>My Film Year</span><b>${Y}</b><em>影库年度报告</em><i>称号</i><strong>${esc(d.title[0])}</strong><small>${esc(d.title[1])}</small></div>
-    <div class="pg-note" style="text-align:center;margin-top:auto">左右滑动翻页 · 共 ${N} 页</div></section>`;
-  // 第 3 页：类型指纹
-  const p3 = d.gs.length ? pg(3, "FINGERPRINT", "你的类型指纹",
-    genreRadar(d.gs) + `<div style="margin-top:8px">${d.gs.map(([g, n], i) => `<div class="yr-g"><span>${i === 0 ? "♛ " : ""}${esc(g)}</span><i><u style="width:${n / (d.gs[0]?.[1] || 1) * 100}%"></u></i><b>${n}</b></div>`).join("")}</div>`,
-    old && neo && old !== neo ? `最老的一部是 ${vm(old).year} 年的《${esc(vm(old).name)}》，最新的是 ${vm(neo).year} 年的《${esc(vm(neo).name)}》。` : "") : "";
-  const pages = [
-    cover,
-    pg(2, "THE COUNT", "这一年收进影库",
-      `<div class="big-n" data-cu="${d.added.length}">0</div>
-       <div class="yr-row" style="margin-top:14px"><span><b data-cu="${d.films.length}">0</b>部电影</span><span><b data-cu="${d.shows}">0</b>部剧集</span>${d.mins ? `<span><b data-cu="${Math.round(d.mins / 60)}">0</b>小时的电影</span>` : ""}</div>
-       ${d.dated.length >= 3 ? `<div class="months" style="margin-top:20px">${d.months.map((n, i) => `<div class="m ${i === bestM && n ? "sel" : ""}"><b>${n}</b><i class="${n ? "" : "z"}" style="height:${n / mmax * 68}%"></i><span>${i + 1}</span></div>`).join("")}</div>` : ""}`,
-      `${d.dated.length >= 3 ? `${bestM + 1} 月看得最凶，${d.months[bestM]} 部。<br>` : ""}${d.firstAt ? `${+d.firstAt[1].at.slice(5, 7)} 月 ${+d.firstAt[1].at.slice(8, 10)} 日，你标下了今年的第一部《${esc(vm(d.firstAt[0]).name)}》。` : ""}${d.dated.length < d.added.length ? `<br>其中 ${d.dated.length} 部记了观看日期，其余按收进影库的时间算。` : ""}`),
-    p3,
-    pg(4, "THE HELD DEAR", "追的人",
-      d.fans.length ? `<div class="yr-fans">${d.fans.slice(0, 3).map(({nm, st}) => `<a href="#/p/${nm}">${idolCard(nm, {w: 300, count: false})}<small><b>${st.seen}</b> / ${st.tot} 部</small></a>`).join("")}</div>`
-        : `<div class="empty-s" style="margin:24px 0;text-align:left">这一年还没有追的影人。<br>在影人的页面点「追 TA」，卡组里就会多一张卡，这里也会长出一页。</div>`,
-      d.fans.length ? `集得最多的是 ${esc(pName(d.fans[0].nm))}，${d.fans[0].st.seen} 部${d.fans[0].st.tot ? `，收集度 ${Math.round(d.fans[0].st.seen / d.fans[0].st.tot * 100)}%` : ""}。` : ""),
-    // 第 5 页：第一次和最后一次 + 点亮
-    pg(5, "FIRST & LAST", "第一次，和最后一次",
-      `<div style="display:flex;gap:10px;margin-top:4px">${[[first, "第一次"], [last, "最后一次"]].map(([id, lab]) => id ? `<a href="#/t/${id}" style="flex:1;min-width:0">${posterHTML(vm(id), 260)}<div class="nm" style="font-family:var(--serif);font-weight:700;font-size:13px;margin-top:8px">${esc(vm(id).name)}</div><div style="font-family:var(--latin);font-style:italic;font-size:11.5px;color:var(--gold-ink)">${lab}</div></a>` : "").join("")}</div>
-       ${d.lit.length ? `<div style="margin-top:18px"><div class="pg-k" style="margin-bottom:6px">ALL LIT UP</div><div class="yr-row"><span><b data-cu="${d.lit.length}">0</b>位角色点亮</span><span><b data-cu="${d.unis.length}">0</b>个宇宙和系列</span><span><b data-cu="${d.decks}">0</b>副套牌集齐</span></div>
-       <div class="yr-chars" style="margin-top:12px">${d.topLit.slice(0, 3).map(c => charCard(c, {count: false, w: 300})).join("")}</div></div>` : ""}`,
-      d.unis[0] ? `点亮最多的是${esc(d.unis[0].u.n)}，${d.unis[0].st.lit.length} 位角色、${d.unis[0].st.seen.length} 部作品。` : ""),
-    // 第 6 页：一句话总结 + 分享
-    pg(6, "ONE LINE", "一句话",
-      `<div style="margin:auto 0;font-family:var(--serif);font-weight:900;font-size:20px;line-height:2.1;letter-spacing:.02em;color:var(--ink)">
-        ${d.added.length} 部片子，<br>${d.lit.length} 位角色，<br>${d.unis.length} 个宇宙。<br>
-        <span style="color:var(--acc-ink)">${d.gs[0] ? `看得最多的是${esc(d.gs[0][0])}片。` : ""}${d.fans[0] ? `追得最紧的是${esc(pName(d.fans[0].nm))}。` : ""}</span></div>
-       <div style="padding-top:18px"><button class="btn acc" style="width:100%" onclick="shareYear('${Y}')">${IC.share} 生成分享图</button></div>`,
-      `数据到 ${today().replace(/-/g, ".")} 为止，年底再来看会不一样。`)
-  ].filter(Boolean);
-  $("#page").innerHTML = bar + `<div class="book">
-    <div class="book-track" id="bookTrack">${pages.join("")}</div>
-    <div class="book-dots" id="bookDots">${pages.map((_, i) => `<i class="${i ? "" : "on"}"></i>`).join("")}</div>
-  </div><div style="height:24px"></div>`;
-  // 翻页时点亮页码；数字进视野再滚
-  const tr = $("#bookTrack");
-  if (tr) {
-    let t = 0;
-    tr.addEventListener("scroll", () => { clearTimeout(t); t = setTimeout(() => {
-      const ps = [...tr.children], mid = tr.scrollLeft + tr.clientWidth / 2;
-      let best = 0, bd = 1e9; ps.forEach((p, i) => { const dd = Math.abs(p.offsetLeft + p.offsetWidth / 2 - mid); if (dd < bd) { bd = dd; best = i; } });
-      $$("#bookDots i").forEach((x, i) => x.classList.toggle("on", i === best));
-    }, 70); }, {passive: true});
-  }
+  const card = (cls, inner) => `<section class="yr-c paper ${cls}">${inner}</section>`;
+  $("#page").innerHTML = bar + `<div class="yr">
+    <header class="yr-cover"><span>My Film Year</span><b>${Y}</b><em>影库年度报告</em><i>称号</i><strong>${esc(d.title[0])}</strong><small>${esc(d.title[1])}</small></header>
+    ${card("", `<h3>这一年收进影库</h3><div class="yr-big"><b>${d.added.length}</b><span>部</span></div>
+      <div class="yr-row"><span><b>${d.films.length}</b>部电影</span><span><b>${d.shows}</b>部剧集</span>${d.mins ? `<span><b>${Math.round(d.mins / 60)}</b>小时的电影</span>` : ""}</div>
+      ${fa ? `<p>${+fa[1].at.slice(5, 7)} 月 ${+fa[1].at.slice(8, 10)} 日，你在影库标下了今年的第一部：《${esc(vm(fa[0]).name)}》。</p>` : ""}
+      ${d.dated.length < d.added.length ? `<p class="yr-note">其中 ${d.dated.length} 部记了观看日期，其余按收进影库的时间算。<a href="#/recall">去补记日期</a></p>` : ""}`)}
+    ${d.dated.length >= 3 ? card("", `<h3>每个月</h3><div class="months">${d.months.map((n, i) => `<div class="m ${i === bestM && n ? "sel" : ""}"><b>${n}</b><i class="${n ? "" : "z"}" style="height:${n / mmax * 68}%"></i><span>${i + 1}</span></div>`).join("")}</div><p>${bestM + 1} 月看得最凶，${d.months[bestM]} 部。</p>`) : ""}
+    ${d.gs.length ? card("", `<h3>口味</h3>${d.gs.map(([g, n], i) => `<div class="yr-g"><span>${i === 0 ? "♛ " : ""}${esc(g)}</span><i><u style="width:${n / gmax * 100}%"></u></i><b>${n}</b></div>`).join("")}
+      ${old && neo && old !== neo ? `<p>最老的一部是 ${vm(old).year} 年的《${esc(vm(old).name)}》，最新的是 ${vm(neo).year} 年的《${esc(vm(neo).name)}》${d.ds[0] ? `；${d.ds[0][0]} 年代的片子最多，${d.ds[0][1]} 部` : ""}。</p>` : ""}`) : ""}
+    ${d.fans.length ? card("", `<h3>追的人</h3><div class="yr-fans">${d.fans.slice(0, 3).map(({nm, st}) => `<a href="#/p/${nm}">${idolCard(nm, {w: 300, count: false})}<small><b>${st.seen}</b> / ${st.tot} 部</small></a>`).join("")}</div>
+      <p>集得最多的是 ${esc(pName(d.fans[0].nm))}，${d.fans[0].st.seen} 部${d.fans[0].st.tot ? `，收集度 ${Math.round(d.fans[0].st.seen / d.fans[0].st.tot * 100)}%` : ""}。</p>`) : ""}
+    ${d.lit.length ? card("", `<h3>点亮的角色</h3><div class="yr-big"><b>${d.lit.length}</b><span>位</span></div>
+      <div class="yr-row"><span><b>${d.unis.length}</b>个宇宙和系列</span><span><b>${d.decks}</b>副套牌集齐</span></div>
+      <div class="yr-chars">${d.topLit.map(c => charCard(c, {count: false, w: 300})).join("")}</div>
+      ${d.unis[0] ? `<p>点亮最多的是${esc(d.unis[0].u.n)}，${d.unis[0].st.lit.length} 位角色、${d.unis[0].st.seen.length} 部作品。</p>` : ""}`) : ""}
+    ${d.loved.length ? card("", `<h3>今年的五星</h3><div class="scroller" style="margin:0 -16px;padding:0 16px">${d.loved.slice(0, 12).map(id => `<a class="shelf-item" href="#/t/${id}">${posterHTML(vm(id), 220)}<div class="nm">${esc(vm(id).name)}</div></a>`).join("")}</div>`) : ""}
+    <div class="yr-end"><button class="btn acc" onclick="shareYear('${Y}')">${IC.share} 生成分享图</button><small>数据到 ${today().replace(/-/g, ".")} 为止，年底再来看会不一样</small></div>
+  </div><div style="height:30px"></div>`;
   hydratePosters($("#page"));
-  countUp($("#page"));
 }
 function shareYear(Y){
   const d = yearData(Y);
@@ -5866,13 +5370,6 @@ function shareYear(Y){
       x.save(); x.shadowColor = "rgba(70,40,110,.3)"; x.shadowBlur = 16; x.shadowOffsetY = 8; rrect(x, X, Yp, W, H, 12); x.fillStyle = "#fff"; x.fill(); x.restore();
       x.save(); rrect(x, X, Yp, W, H, 12); x.clip(); if (im) cover(x, im, X, Yp, W, H); x.restore(); });
     if (d.fans[0]) { x.fillStyle = "#665A80"; x.font = '32px "PingFang SC", sans-serif'; x.fillText(`集得最多：${pName(d.fans[0].nm)} ${d.fans[0].st.seen} / ${d.fans[0].st.tot}`, 540, 1200); }
-    // 画册第 6 页那句「一句话」也印在下面
-    if (d.gs[0] || d.lit.length) {
-      x.fillStyle = "#9C7A45"; x.font = 'italic 30px "Cormorant", serif'; x.fillText(`${Y} ONE LINE`, 540, 1246);
-      x.fillStyle = "#3A2E52"; x.font = 'bold 34px "Songti SC", serif';
-      x.fillText(`${d.added.length} 部片子 · ${d.lit.length} 位角色 · ${d.unis.length} 个宇宙`, 540, 1300);
-      if (d.gs[0]) { x.fillStyle = "#665A80"; x.font = '26px "PingFang SC", sans-serif'; x.fillText(`看得最多的是${d.gs[0][0]}片`, 540, 1344); }
-    }
   }, `影库${Y}年报`);
 }
 
